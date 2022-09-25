@@ -13,8 +13,6 @@ namespace ShoeStoreManagement.Models
         string customerPhone = String.Empty;
         string customerEmail = String.Empty;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string CustomerId
         {
             get { return customerId; }

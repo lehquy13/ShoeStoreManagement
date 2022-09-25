@@ -2,7 +2,7 @@
 
 namespace ShoeStoreManagement.Models
 {
-    internal class Order
+    public class Order
     {
         string orderId = String.Empty;
         string cartId = String.Empty;
@@ -11,8 +11,7 @@ namespace ShoeStoreManagement.Models
         string orderVoucherId = String.Empty;
         string orderNote = String.Empty;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+        
         public string OrderId
         {
             get { return orderId; }

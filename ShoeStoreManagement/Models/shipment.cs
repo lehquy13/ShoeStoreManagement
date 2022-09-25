@@ -10,8 +10,7 @@ namespace ShoeStoreManagement.Models
         int shipmentPrice = 0;
         string shipmentState = String.Empty;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+  
         public string ShipmentId
         {
             get { return shipmentId; }

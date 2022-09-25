@@ -8,8 +8,6 @@ namespace ShoeStoreManagement.Models
         string customerId = String.Empty;
         int cartTotalPrice = 0;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string CartId
         {
             get { return cartId; }

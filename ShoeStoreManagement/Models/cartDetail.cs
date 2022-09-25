@@ -6,12 +6,10 @@ namespace ShoeStoreManagement.Models
     {
         string cartDetailId = String.Empty;
         string cartId = String.Empty;
-        string goodId = String.Empty;
+        string productId = String.Empty;
         int cartDetailAmount = 0;
         int cartDetailTotalSum = 0;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string CartDetailId
         {
             get { return cartDetailId; }
@@ -22,10 +20,10 @@ namespace ShoeStoreManagement.Models
             get { return cartId; }
             set { cartId = value; }
         }
-        public string CartDetailGoodsId
+        public string CartDetailProductId
         {
-            get { return goodId; }
-            set { goodId = value; }
+            get { return productId; }
+            set { productId = value; }
         }
         public int CartDetailAmount
         {

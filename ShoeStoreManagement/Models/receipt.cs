@@ -11,8 +11,6 @@ namespace ShoeStoreManagement.Models
         string receiptVoucherId = String.Empty;
         string receiptNote = String.Empty;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string ReceiptId
         {
             get { return receiptId; }
