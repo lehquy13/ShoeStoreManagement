@@ -9,8 +9,6 @@ namespace ShoeStoreManagement.Models
         string accountPassword = String.Empty;
         int accountType = 0;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string AccountId
         {
             get { return accountId; }

@@ -12,8 +12,7 @@ namespace ShoeStoreManagement.Models
         string cartId = String.Empty;
         DateTime receiptDetailDate = DateTime.Now;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+        
         public string ReceiptDetailId
         {
             get { return receiptDetailId; }

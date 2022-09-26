@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Cart Page";
+}
+
+<div class="row justify-content-sm-between">
+    <section class="col-sm-6 col-12" aria-label="list of cart item">
+        <label>Order</label>
+        <div class="cart-list mt-3">
+            <div class="card cart-item">
+                <div class="row">
+                    <div class="col-sm-3">
+                        @*<img class="card-img" />*@
+                        <div class="cart-item-img"></div>
+                    </div>
+                    <div class="card-body col-sm-9 pe-4">
+                        <div class="d-flex justify-content-between align-items-cen">
+                            <h5 class="card-title">Card title</h5>
+                            <i class="fa-solid fa-chevron-right"></i>
+                            @*<h6>x1</h6>*@
+                        </div>
+                        <h5 class="card-title product-card-price fw-bold">20.000</h5>
+                        <div class="d-flex align-items-end justify-content-between">
+                            <div class="d-flex mt-3">
+                                <button>-</button>
+                                <input class="w-25" />
+                                <button>+</button>
+                            </div>
+                            <i class="fa-regular fa-trash-can icon-small"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="col-sm-3 col-12" aria-label="price">
+        <div class="d-flex justify-content-between">
+            <h5>Total price</h5>
+            <h5>20.000</h5>
+        </div>
+        <a asp-controller="Order" asp-action="Index" class="btn btn-primary w-100 mt-5">
+            buy now
+        </a>
+        @*<button class="btn btn-primary w-100 mt-5">buy now</button>*@
+    </section>
+</div>
+

@@ -15,8 +15,7 @@ namespace ShoeStoreManagement.Models
         string staffEmail = String.Empty;
         string staffCitizenid = String.Empty;
 
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+  
         public string StaffId
         {
             get { return staffId; }
