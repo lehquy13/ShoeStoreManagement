@@ -4,11 +4,11 @@ namespace ShoeStoreManagement.Models
 {
     public class ProductCategory
     {
-        string productCategoryId = String.Empty;
+        Guid productCategoryId = Guid.Empty;
         string productCategoryName = String.Empty;
 
        
-        public string ProductCategoryId
+        public Guid ProductCategoryId
         {
             get { return productCategoryId; }
             set { productCategoryId = value; }

@@ -4,8 +4,8 @@ namespace ShoeStoreManagement.Models
 {
     public class Customer
     {
-        string customerId = String.Empty;
-        string accountId = String.Empty;
+        Guid customerId = Guid.Empty;
+        Guid accountId = Guid.Empty;
         string customerName = String.Empty;
         int customerAge = 0;
         string customerGender = String.Empty;
@@ -13,13 +13,13 @@ namespace ShoeStoreManagement.Models
         string customerPhone = String.Empty;
         string customerEmail = String.Empty;
 
-        public string CustomerId
+        public Guid CustomerId
         {
             get { return customerId; }
             set { customerId = value; }
         }
             
-        public string AccountId
+        public Guid AccountId
         {
             get { return customerId; }
             set { customerId = value; }

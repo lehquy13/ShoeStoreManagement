@@ -4,19 +4,19 @@ namespace ShoeStoreManagement.Models
 {
     public class Shipment
     {
-        string shipmentId = String.Empty;
-        string orderID = String.Empty;
+        Guid shipmentId = Guid.Empty;
+        Guid orderID = Guid.Empty;
         DateTime shipmentDate = DateTime.Now;
         int shipmentPrice = 0;
         string shipmentState = String.Empty;
 
   
-        public string ShipmentId
+        public Guid ShipmentId
         {
             get { return shipmentId; }
             set { shipmentId = value; }
         }
-        public string OrderID
+        public Guid OrderID
         {
             get { return orderID; }
             set { orderID = value; }

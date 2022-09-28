@@ -4,23 +4,23 @@ namespace ShoeStoreManagement.Models
 {
     public class CartDetail
     {
-        string cartDetailId = String.Empty;
-        string cartId = String.Empty;
-        string productId = String.Empty;
+        Guid cartDetailId = Guid.Empty;
+        Guid cartId = Guid.Empty;
+        Guid productId = Guid.Empty;
         int cartDetailAmount = 0;
         int cartDetailTotalSum = 0;
 
-        public string CartDetailId
+        public Guid CartDetailId
         {
             get { return cartDetailId; }
             set { cartDetailId = value; }
         }
-        public string CartId
+        public Guid CartId
         {
             get { return cartId; }
             set { cartId = value; }
         }
-        public string CartDetailProductId
+        public Guid CartDetailProductId
         {
             get { return productId; }
             set { productId = value; }

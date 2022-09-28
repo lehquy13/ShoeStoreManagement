@@ -4,13 +4,13 @@ namespace ShoeStoreManagement.Models
 {
     public class Product
     {
-        string productId = String.Empty;
+        Guid productId = Guid.Empty;
         string productName = String.Empty;
-        string categoryId = String.Empty;
+        Guid categoryId = Guid.Empty;
         int productUnitPrice = 0;
         float productDiscount = 0;
 
-        public string ProductId
+        public Guid ProductId
         {
             get { return productId; }
             set { productId = value; }
@@ -20,7 +20,7 @@ namespace ShoeStoreManagement.Models
             get { return productName; }
             set { productName = value; }
         }
-        public string CategoryId
+        public Guid CategoryId
         {
             get { return categoryId; }
             set { categoryId = value; }

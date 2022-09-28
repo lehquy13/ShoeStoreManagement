@@ -4,20 +4,20 @@ namespace ShoeStoreManagement.Models
 {
     public class Order
     {
-        string orderId = String.Empty;
-        string cartId = String.Empty;
+        Guid orderId = Guid.Empty;
+        Guid cartId = Guid.Empty;
         DateTime orderDate = DateTime.Now;
         int orderTotalPayment = 0;
-        string orderVoucherId = String.Empty;
+        Guid orderVoucherId = Guid.Empty;
         string orderNote = String.Empty;
 
         
-        public string OrderId
+        public Guid OrderId
         {
             get { return orderId; }
             set { orderId = value; }
         }
-        public string CartId
+        public Guid CartId
         {
             get { return cartId; }
             set { cartId = value; }
@@ -32,7 +32,7 @@ namespace ShoeStoreManagement.Models
             get { return orderTotalPayment; }
             set { orderTotalPayment = value; }
         }
-        public string OrderVoucherId
+        public Guid OrderVoucherId
         {
             get { return orderVoucherId; }
             set { orderVoucherId = value; }

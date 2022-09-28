@@ -4,12 +4,12 @@ namespace ShoeStoreManagement.Models
 {
     public class Account
     {
-        string accountId = String.Empty;
+        Guid accountId = Guid.Empty;
         string accountUsername = String.Empty;
         string accountPassword = String.Empty;
         int accountType = 0;
 
-        public string AccountId
+        public Guid AccountId
         {
             get { return accountId; }
             set { accountId = value; }

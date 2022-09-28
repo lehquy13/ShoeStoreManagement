@@ -4,19 +4,19 @@ namespace ShoeStoreManagement.Models
 {
     public class Receipt
     {
-        string receiptId = String.Empty;
-        string cartId = String.Empty;
+        Guid receiptId = Guid.Empty;
+        Guid cartId = Guid.Empty;
         DateTime receiptDate = DateTime.Now;
         int receiptTotalPayment = 0;
-        string receiptVoucherId = String.Empty;
+        Guid receiptVoucherId = Guid.Empty;
         string receiptNote = String.Empty;
 
-        public string ReceiptId
+        public Guid ReceiptId
         {
             get { return receiptId; }
             set { receiptId = value; }
         }
-        public string CartId
+        public Guid CartId
         {
             get { return cartId; }
             set { cartId = value; }
@@ -31,7 +31,7 @@ namespace ShoeStoreManagement.Models
             get { return receiptTotalPayment; }
             set { receiptTotalPayment = value; }
         }
-        public string ReceiptVoucherId
+        public Guid ReceiptVoucherId
         {
             get { return receiptVoucherId; }
             set { receiptVoucherId = value; }
