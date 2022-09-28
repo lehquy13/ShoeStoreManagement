@@ -5,35 +5,35 @@ namespace ShoeStoreManagement.Models
 {
     public class ReceiptDetail
     {
-        string receiptDetailId = String.Empty;
-        string receiptId = String.Empty;
-        string customerId = String.Empty;
-        string staffId = String.Empty;
-        string cartId = String.Empty;
+        Guid receiptDetailId = Guid.Empty;
+        Guid receiptId = Guid.Empty;
+        Guid customerId = Guid.Empty;
+        Guid staffId = Guid.Empty;
+        Guid cartId = Guid.Empty;
         DateTime receiptDetailDate = DateTime.Now;
 
         
-        public string ReceiptDetailId
+        public Guid ReceiptDetailId
         {
             get { return receiptDetailId; }
             set { receiptDetailId = value; }
         }
-        public string ReceiptId
+        public Guid ReceiptId
         {
             get { return receiptId; }
             set { receiptId = value; }
         }
-        public string CustomerId
+        public Guid CustomerId
         {
             get { return customerId; }
             set { customerId = value; }
         }
-        public string StaffId
+        public Guid StaffId
         {
             get { return staffId; }
             set { staffId = value; }
         }
-        public string CartId
+        public Guid CartId
         {
             get { return cartId; }
             set { cartId = value; }

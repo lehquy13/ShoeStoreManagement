@@ -5,8 +5,8 @@ namespace ShoeStoreManagement.Models
 {
     public class Staff
     {
-        string staffId = String.Empty;
-        string accountId = String.Empty;
+        Guid staffId = String.Empty;
+        Guid accountId = String.Empty;
         string staffName = String.Empty;
         int staffAge = 0;
         int staffGender = 0;
@@ -16,13 +16,13 @@ namespace ShoeStoreManagement.Models
         string staffCitizenid = String.Empty;
 
   
-        public string StaffId
+        public Guid StaffId
         {
             get { return staffId; }
             set { staffId = value; }
         }
 
-        public string AccountId
+        public Guid AccountId
         {
             get { return accountId; }
             set { accountId = value; }
