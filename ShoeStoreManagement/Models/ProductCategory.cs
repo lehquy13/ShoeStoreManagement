@@ -1,14 +1,14 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ShoeStoreManagement.Models
 {
     public class ProductCategory
     {
-        Guid productCategoryId = Guid.Empty;
+        string productCategoryId = String.Empty;
         string productCategoryName = String.Empty;
 
-       
-        public Guid ProductCategoryId
+        [Key]
+        public string ProductCategoryId
         {
             get { return productCategoryId; }
             set { productCategoryId = value; }

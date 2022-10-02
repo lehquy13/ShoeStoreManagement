@@ -1,16 +1,20 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿
+
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoeStoreManagement.Models
 {
     public class Product
     {
-        Guid productId = Guid.Empty;
+        string productId = Guid.NewGuid().ToString();
         string productName = String.Empty;
-        Guid categoryId = Guid.Empty;
+        string productCategoryId = String.Empty;
         int productUnitPrice = 0;
         float productDiscount = 0;
 
-        public Guid ProductId
+        [Key]
+        public string ProductId
         {
             get { return productId; }
             set { productId = value; }
@@ -20,10 +24,13 @@ namespace ShoeStoreManagement.Models
             get { return productName; }
             set { productName = value; }
         }
-        public Guid CategoryId
+
+        [Required]
+        [ForeignKey("ProductCategoryId")]
+        public string ProductCategoryId
         {
-            get { return categoryId; }
-            set { categoryId = value; }
+            get { return productCategoryId; }
+            set { productCategoryId = value; }
         }
         public int ProductUnitPrice
         {

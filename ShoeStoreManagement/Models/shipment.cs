@@ -1,25 +1,29 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoeStoreManagement.Models
 {
     public class Shipment
     {
-        Guid shipmentId = Guid.Empty;
-        Guid orderID = Guid.Empty;
+        string shipmentId = Guid.NewGuid().ToString();
+        string orderId = String.Empty;
         DateTime shipmentDate = DateTime.Now;
         int shipmentPrice = 0;
         string shipmentState = String.Empty;
 
-  
-        public Guid ShipmentId
+        [Key]
+        public string ShipmentId
         {
             get { return shipmentId; }
             set { shipmentId = value; }
         }
-        public Guid OrderID
+
+        [Required]
+        [ForeignKey("OrderId")]
+        public string OrderId
         {
-            get { return orderID; }
-            set { orderID = value; }
+            get { return orderId; }
+            set { orderId = value; }
         }
         public DateTime ShipmentDate
         {
