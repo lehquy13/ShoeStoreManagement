@@ -18,7 +18,7 @@ namespace ShoeStoreManagement.Models
         public string OrderId
         {
             get { return orderId; }
-            set { orderId = value; }
+            set {  }
         }
 
         [Required]

@@ -20,7 +20,7 @@
     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
         <section class="container-fluid mt-5">
             <div class="row gx-3 gy-4 overflow-hidden">
-                @while (i < 6)
+                @foreach (var product in ViewData["products"] as List<Product>)
                 {
                     <div class="col-sm-3">
                         <div class="product-card card">
@@ -28,7 +28,7 @@
                             <div class="card-img-top"></div>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start">
-                                    <h5 class="card-title">Product name</h5>
+                                    <h5 class="card-title">@product.ProductName</h5>
                                     <i class="fa-regular fa-heart icon-small"></i>
                                 </div>
                                 <h5 class="card-title product-card-price fw-bold">20.000</h5>

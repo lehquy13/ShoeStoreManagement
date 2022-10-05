@@ -26,7 +26,7 @@ namespace ShoeStoreManagement.Models
         public string CustomerId
         {
             get { return customerId.ToString(); }
-            set { customerId = value; }
+            set {  }
         }
 
         [Required]

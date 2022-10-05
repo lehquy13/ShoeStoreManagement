@@ -1,12 +1,12 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
-
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoeStoreManagement.Models
 {
     public class Staff
     {
-        Guid staffId = String.Empty;
-        Guid accountId = String.Empty;
+        string staffId = Guid.NewGuid().ToString();
+        string accountId = String.Empty;
         string staffName = String.Empty;
         int staffAge = 0;
         int staffGender = 0;
@@ -15,14 +15,16 @@ namespace ShoeStoreManagement.Models
         string staffEmail = String.Empty;
         string staffCitizenid = String.Empty;
 
-  
-        public Guid StaffId
+        [Key]
+        public string StaffId
         {
             get { return staffId; }
-            set { staffId = value; }
+            set {  }
         }
 
-        public Guid AccountId
+        [Required]
+        [ForeignKey("AccountId")]
+        public string AccountId
         {
             get { return accountId; }
             set { accountId = value; }

@@ -17,7 +17,7 @@ namespace ShoeStoreManagement.Models
         public string ProductId
         {
             get { return productId; }
-            set { productId = value; }
+            set { }
         }
         public string ProductName
         {

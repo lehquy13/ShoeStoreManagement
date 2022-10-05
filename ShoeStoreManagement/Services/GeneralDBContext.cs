@@ -27,8 +27,6 @@ namespace ShoeStoreManagement.Services
         public GeneralDBContext(DbContextOptions<GeneralDBContext> options)
             : base(options) {}
 
-       
-
         
     }
 }

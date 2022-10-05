@@ -14,7 +14,7 @@ namespace ShoeStoreManagement.Models
         public string AccountId
         {
             get { return accountId; }
-            set { accountId = value; }
+            set {   }
         }
         public string AccountUsername
         {

@@ -16,7 +16,7 @@ namespace ShoeStoreManagement.Models
         public string CartDetailId
         {
             get { return cartDetailId; }
-            set { cartDetailId = value; }
+            set {  }
         }
 
         [Required]
