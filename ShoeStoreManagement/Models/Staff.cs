@@ -19,7 +19,7 @@ namespace ShoeStoreManagement.Models
         public string StaffId
         {
             get { return staffId; }
-            set { staffId = value; }
+            set {  }
         }
 
         [Required]

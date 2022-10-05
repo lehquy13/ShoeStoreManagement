@@ -1,18 +1,20 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿
+using System.ComponentModel.DataAnnotations;
 
 namespace ShoeStoreManagement.Models
 {
     public class Account
     {
-        Guid accountId = Guid.Empty;
+        string accountId = Guid.NewGuid().ToString();
         string accountUsername = String.Empty;
         string accountPassword = String.Empty;
         int accountType = 0;
 
-        public Guid AccountId
+        [Key]
+        public string AccountId
         {
             get { return accountId; }
-            set { accountId = value; }
+            set {   }
         }
         public string AccountUsername
         {
