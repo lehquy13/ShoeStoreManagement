@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using ShoeStoreManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

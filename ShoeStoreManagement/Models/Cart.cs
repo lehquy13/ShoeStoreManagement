@@ -1,4 +1,5 @@
 ﻿
+using ShoeStoreManagement.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,8 @@ namespace ShoeStoreManagement.Models
     {
         string cartId = Guid.NewGuid().ToString();
         List<CartDetail> cartDetails = new List<CartDetail>();
-        string customerId = string.Empty;
+        string userId = string.Empty;
+        ApplicationUser user = null;
         int cartTotalPrice = 0;
 
 
@@ -20,12 +22,19 @@ namespace ShoeStoreManagement.Models
         }
 
         [Required]
-        [ForeignKey("CustomerId")]
-        public string CustomerId
+        [ForeignKey("Id")]
+        public string UserId
         {
-            get { return customerId; }
-            set { customerId = value; }
+            get { return userId; }
+            set { userId = value; }
         }
+
+        public ApplicationUser User
+        {
+            get { return user; }
+            set { user = value; }
+        }
+
 
         public List<CartDetail> CartDetails
         {

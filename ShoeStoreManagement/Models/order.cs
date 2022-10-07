@@ -1,4 +1,5 @@
 ﻿
+using ShoeStoreManagement.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,8 @@ namespace ShoeStoreManagement.Models
     {
         string orderId = Guid.NewGuid().ToString();
        List<OrderDetail> orderDetails = new List<OrderDetail>();
-        string customerId = String.Empty;
+        string userId = String.Empty;
+        ApplicationUser user = null;
         DateTime orderDate = DateTime.Now;
         int orderTotalPayment = 0;
         string orderVoucherId = String.Empty;
@@ -22,12 +24,19 @@ namespace ShoeStoreManagement.Models
         }
 
         [Required]
-        [ForeignKey("CustomerId")]
-        public string CustomerId
+        [ForeignKey("Id")]
+        public string UserId
         {
-            get { return customerId; }
-            set { customerId = value; }
+            get { return userId; }
+            set { userId = value; }
         }
+
+        public ApplicationUser User
+        {
+            get { return user; }
+            set { user = value; }
+        }
+    
 
         public List<OrderDetail> OrderDetails
         {

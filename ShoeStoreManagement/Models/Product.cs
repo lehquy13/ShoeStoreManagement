@@ -26,7 +26,7 @@ namespace ShoeStoreManagement.Models
         }
 
         [Required]
-        [ForeignKey("ProductCategoryId")]
+        [ForeignKey("ProductCategory")]
         public string ProductCategoryId
         {
             get { return productCategoryId; }

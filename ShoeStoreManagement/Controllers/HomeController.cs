@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Models;
-using ShoeStoreManagement.Services;
 using System.Diagnostics;
 
 namespace ShoeStoreManagement.Controllers
@@ -9,9 +9,9 @@ namespace ShoeStoreManagement.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly GeneralDBContext _generalDBContext;
+        private readonly ApplicationDbContext _generalDBContext;
 
-        public HomeController(ILogger<HomeController> logger, GeneralDBContext generalDBContext)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext generalDBContext)
         {
             _logger = logger;
             _generalDBContext = generalDBContext;

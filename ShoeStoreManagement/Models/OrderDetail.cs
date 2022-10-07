@@ -19,7 +19,7 @@ namespace ShoeStoreManagement.Models
         }
 
         [Required]
-        [ForeignKey("OrderId")]
+        [ForeignKey("Order")]
         public string OrderId
         {
             get { return orderId; }
@@ -27,7 +27,7 @@ namespace ShoeStoreManagement.Models
         }
 
         [Required]
-        [ForeignKey("ProductId")]
+        [ForeignKey("Product")]
         public string ProductId
         {
             get { return productId; }
