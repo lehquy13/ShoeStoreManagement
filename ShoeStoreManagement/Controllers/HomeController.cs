@@ -21,18 +21,18 @@ namespace ShoeStoreManagement.Controllers
         {
             List<Product> products = await _generalDBContext.Products.ToListAsync();
             ViewData["products"] = products;
+            ViewBag.Home = true;
             return View();
         }
-
-
 
         public IActionResult Privacy()
         {
             return View();
         }
 
-        public IActionResult Wishes()
+        public IActionResult WishList()
         {
+            ViewBag.WishList = true;
             return View();
         }
 

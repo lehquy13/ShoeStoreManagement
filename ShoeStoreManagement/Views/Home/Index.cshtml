@@ -2,86 +2,12 @@
     ViewData["Title"] = "Home Page";
 }
 
-@{
-    var i = 0;
-}
+<h1>hi</h1>
 
-<div class="banner">this is banner!</div>
+<button class="btn btn-primary icon-arrow" onclick="location.href='@(Url.Action("Privacy", "Home"))'">hihi</button>
 
-<nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
-        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
-        <button class="nav-link" id="nav-disabled-tab" data-bs-toggle="tab" data-bs-target="#nav-disabled" type="button" role="tab" aria-controls="nav-disabled" aria-selected="false" disabled>Disabled</button>
-    </div>
-</nav>
-<div class="tab-content" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" tabindex="0">
-        <section class="container-fluid mt-5">
-            <div class="row gx-3 gy-4 overflow-hidden">
-                @foreach (var product in ViewData["products"] as List<Product>)
-                {
-                    <div class="col-sm-3">
-                        <div class="product-card card">
-                            @*<img src="" class="card-img-top" alt="">*@
-                            <div class="card-img-top"></div>
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start">
-                                    <h5 class="card-title">@product.ProductName</h5>
-                                    <i class="fa-regular fa-heart icon-small"></i>
-                                </div>
-                                <h5 class="card-title product-card-price fw-bold">20.000</h5>
-                                <a href="#" class="btn btn-primary float-end mt-4">Add to Cart</a>
-                            </div>
-                        </div>
-                    </div>
-                    i++;
-                }
-            </div>
-            <nav aria-label="Page navigation" class="mt-5">
-                <ul class="pagination pagination-lg justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </section>
-    </div>
-    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">...</div>
-    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">...</div>
-    <div class="tab-pane fade" id="nav-disabled" role="tabpanel" aria-labelledby="nav-disabled-tab" tabindex="0">...</div>
-</div>
+@*<base href="~/" />*@
+@*<partial name="./Components/btnPrimary" onclick="location.href='@(Url.Action("Privacy", "Home"))'"/>*@
+@*<component type="typeof(BtnPrimary)" render-mode="Static" />*@
+@*<button type="button" class="plus-icon">hihihi</button>*@
 
-@*<section class="container-fluid mt-5">
-    <div class="row gx-3 gy-4 overflow-hidden">
-        @while (i < 6) {
-            <div class="col-sm-3">
-                <div class="product-card card">
-                    @*@*@*<img src="" class="card-img-top" alt="">*@*@*@
-                    <div class="card-img-top"></div>
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="card-title">Product name</h5>
-                            <i class="fa-regular fa-heart icon-small"></i>
-                        </div>
-                        <h5 class="card-title product-card-price fw-bold">20.000</h5>
-                        <a href="#" class="btn btn-primary float-end mt-4">Add to Cart</a>
-                    </div>
-                </div>
-            </div>
-            i++;
-        }
-    </div>
-    <nav aria-label="Page navigation" class="mt-5">
-        <ul class="pagination pagination-lg justify-content-center">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-        </ul>
-    </nav>
-</section>*@

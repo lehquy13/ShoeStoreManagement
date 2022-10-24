@@ -20,13 +20,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+    public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
 
-    //public virtual DbSet<Customer> Customers { get; set; } = null!; //v2
-    //public virtual DbSet<Account> Accounts { get; set; } = null!; // v1
-    public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;//v1
-
-    public virtual DbSet<Product> Products { get; set; } = null!;//v2
-    //public virtual DbSet<Staff> Staffs { get; set; } = null!;//v2
+    public virtual DbSet<Product> Products { get; set; } = null!;
 
 
     public virtual DbSet<Cart> Carts { get; set; } = null!;

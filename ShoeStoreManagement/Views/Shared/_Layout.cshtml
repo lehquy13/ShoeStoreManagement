@@ -4,44 +4,38 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ShoeStoreManagement</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ShoeStoreManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 pe-3">
+    <header class="ms-5">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 mx-5">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ShoeStoreManagement</a>
+                <a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">Shoe</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Wishes">Wishes</a>
-                        </li>
-                        <partial name="_AdminMenuPartial" />
-                    </ul>
-                </div>
+                <partial name="_HeaderNavbar" />
                 <partial name="_LoginPartial" />
             </div>
-            <div class="d-flex gap-2">
-                <a asp-controller="Customer" asp-action="Index">
-                    <i class="fa-regular fa-circle-user nav-icon"></i>
+            <div class="d-flex gap-3 align-items-center">
+                <a class="nav-icon-link" asp-controller="Notification" asp-action="Index">
+                    <i class="fa-regular fa-bell nav-icon"></i>
                 </a>
-                <a asp-controller="Cart" asp-action="Index">
+                <a class="nav-icon-link" asp-controller="Cart" asp-action="Index">
                     <i class="fa-solid fa-cart-shopping nav-icon"></i>
+                </a>
+                <a class="nav-icon-link" asp-controller="Customer" asp-action="Index">
+                    <i class="fa-regular fa-circle-user nav-icon"></i>
                 </a>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container px-5">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

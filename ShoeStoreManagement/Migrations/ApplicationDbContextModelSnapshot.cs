@@ -241,7 +241,7 @@ namespace ShoeStoreManagement.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Models.CartDetail", b =>
@@ -269,7 +269,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartDetails");
+                    b.ToTable("CartDetails", (string)null);
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Models.Order", b =>
@@ -299,7 +299,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Models.OrderDetail", b =>
@@ -322,7 +322,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Models.Product", b =>
@@ -346,7 +346,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Models.ProductCategory", b =>
@@ -360,7 +360,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("ProductCategoryId");
 
-                    b.ToTable("ProductCategories");
+                    b.ToTable("ProductCategories", (string)null);
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Models.Shipment", b =>
@@ -384,7 +384,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("ShipmentId");
 
-                    b.ToTable("Shipments");
+                    b.ToTable("Shipments", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

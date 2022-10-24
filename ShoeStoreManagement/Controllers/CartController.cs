@@ -6,6 +6,7 @@ namespace ShoeStoreManagement.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.Orders = true;
             return View();
         }
     }
