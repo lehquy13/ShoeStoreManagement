@@ -66,3 +66,70 @@
         opacity: .5;
     }
 
+
+
+.rowWrapCustom {
+    display: -ms-flexbox; /* IE10 */
+    display: flex;
+    -ms-flex-wrap: wrap; /* IE10 */
+    flex-wrap: wrap;
+}
+/* Style the tab */
+.tabCustom {
+    margin-inline-start: 15px;
+    float: left;
+    /*background-color: #f1f1f1;*/
+    width: 30%;
+    height: auto;
+}
+
+    /* Style the buttons that are used to open the tab content */
+    .tabCustom button {
+        display: block;
+        background-color: inherit;
+        color: black;
+        padding: 22px 16px;
+        width: 100%;
+        border: none;
+        text-underline-offset: 0.1em;
+        outline: none;
+        text-align: left;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        /* Change background color of buttons on hover */
+
+
+        /* Create an active/current "tab button" class */
+        .tabCustom button:focus, button:active, button:visited, .active {
+            background-color: #ddd;
+            text-decoration: underline;
+            color: black;
+        }
+
+/* Style the tab content */
+.tabCustomContent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 300px;
+}
+
+.radioLayoutTabCustom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px 16px;
+    gap: 16px;
+    width: 127px;
+    height: 132px;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
