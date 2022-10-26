@@ -5,113 +5,20 @@
     [Parameter]
     public object objectList { get; set; } = null;
 }
-<style>
-    * {
-        box-sizing: border-box
-    }
-
-    .row {
-        display: -ms-flexbox; /* IE10 */
-        display: flex;
-        -ms-flex-wrap: wrap; /* IE10 */
-        flex-wrap: wrap;
-    }
-    /* Style the tab */
-    .tab {
-        margin-inline-start: 15px;
-        float: left;
-        
-        /*background-color: #f1f1f1;*/
-        width: 30%;
-        height: auto;
-    }
-
-        /* Style the buttons that are used to open the tab content */
-        .tab button {
-            display: block;
-            background-color: inherit;
-            color: black;
-            padding: 22px 16px;
-            width: 100%;
-            border: none;
-            text-underline-offset: 0.1em;
-            outline: none;
-            text-align: left;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-            /* Change background color of buttons on hover */
 
 
-            /* Create an active/current "tab button" class */
-            .tab button:focus, button:active, button:visited, .active {
-                background-color: #ddd;
-                text-decoration: underline;
-                color: black;
-            }
-
-    /* Style the tab content */
-    .tabcontent {
-        float: left;
-        padding: 0px 12px;
-        border: 1px solid #ccc;
-        width: 70%;
-        border-left: none;
-        height: 300px;
-    }
-
-    .radioLayout{
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 0px 16px;
-        gap: 16px;
-        width: 127px;
-        height: 132px;
-        /* Inside auto layout */
-
-        flex: none;
-        order: 1;
-        flex-grow: 0;
-    }
-</style>
-
-<div class="row">
+<div class="rowWrapCustom">
     <div>
         <ii>Category</ii>
     </div>
-    <div class="tab">
+    <div class="tabCustom">
+        <button class="tablinks" onclick="openCity(event, 'London')">Test1</button>
+        <button class="tablinks" onclick="openCity(event, 'London')">Test2</button>
+        <button class="tablinks" onclick="openCity(event, 'London')">Test3</button>
 
-        @if (objectList != null)
-        {
-            //var element = objectList.FirstOrDefault();
-            if (objectList is List<ApplicationUser>)
-            {
-                foreach (ApplicationUser obj in (List<ApplicationUser>)objectList)
-                {
-                    <button class="tablinks" onclick="openCity(event, 'London')">@obj.EmailConfirmed.</button>
-
-                }
-            }
-            else if (objectList is List<ProductCategory>)
-            {
-                foreach (ProductCategory obj in (List<ProductCategory>)objectList)
-                {
-                    <button class="tablinks" onclick="openCity(event, 'London')">@obj.ProductCategoryName</button>
-
-                }
-            }
-            else
-            {
-                <button class="tablinks" onclick="openCity(event, 'London')">Test1</button>
-                <button class="tablinks" onclick="openCity(event, 'London')">Test2</button>
-                <button class="tablinks" onclick="openCity(event, 'London')">Test3</button>
-            }
-        }
     </div>
 
-    <div class="radioLayout">
+    <div class="radioLayoutTabCustom">
         <ii>Category1</ii>
         <label class="radio">
             <input type="radio" name="answer">
@@ -128,7 +35,7 @@
             Very Yes
         </label>
     </div>
-   
+
 </div>
 
 
