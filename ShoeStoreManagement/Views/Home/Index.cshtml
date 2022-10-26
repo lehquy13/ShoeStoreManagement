@@ -1,12 +1,14 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var orders = ViewData["orders"] as List<ApplicationUser>;
 }
-
+@using ShoeStoreManagement.Areas.Identity.Data
+@using ShoeStoreManagement.Views.Shared
 <h1>hi</h1>
 
-<button class="btn btn-primary icon-arrow" onclick="location.href='@(Url.Action("Privacy", "Home"))'">hihi</button>
-
-@*<base href="~/" />*@
+<component type="typeof(_DropDownPartial)" render-mode="Static" param-objectList="orders" />
+@*<button class="btn btn-primary icon-arrow" onclick="location.href='@(Url.Action("Privacy", "Home"))'">hihi</button>
+*@@*<base href="~/" />*@
 @*<partial name="./Components/btnPrimary" onclick="location.href='@(Url.Action("Privacy", "Home"))'"/>*@
 @*<component type="typeof(BtnPrimary)" render-mode="Static" />*@
 @*<button type="button" class="plus-icon">hihihi</button>*@
