@@ -6,11 +6,18 @@
     <title>@ViewData["Title"] - ShoeStoreManagement</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/color.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/font.css"asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/icons.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ShoeStoreManagement.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+    @{
+        var isShowNavbar = true;
+    }
     <header class="ms-5">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 mx-5">
             <div class="container-fluid">
@@ -19,7 +26,10 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <partial name="_HeaderNavbar" />
+                @if (isShowNavbar)
+                {
+                    <partial name="_HeaderNavbar" />
+                }
                 <partial name="_LoginPartial" />
             </div>
             <div class="d-flex gap-3 align-items-center">
@@ -38,12 +48,10 @@
     <div class="container px-5">
         <main role="main" class="pb-3">
             @RenderBody()
-            <partial name="_PaginationPartial" />
-            <partial name="_CounterPartial" />
         </main>
     </div>
     
-    <footer class="border-top">
+   @* <footer class="border-top">
         <div class="ft_col_1">
             <p class="ft_text">Address</p>
             <p class="ft_text_smaller">P.Linh Trung, Tp.Thu Duc, Tp.Ho Chi Minh</p>
@@ -72,7 +80,7 @@
             <p class="ft_text">Support</p>
             <p class="ft_text_smaller">09xx.xxx.xxx</p>
         </div>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

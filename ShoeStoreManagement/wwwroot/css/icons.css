@@ -9,13 +9,27 @@
 }
 
 .icon-plus:after {
-    content: "\f0d4";
+    content: "\002b";
     font-family: 'FontAwesome';
     padding-left: 5px;
 }
 
 .icon-arrow:after {
     content: "\f061";
+    font-family: 'FontAwesome';
+    padding-left: 5px;
+    margin-left: 5px;
+}
+
+.icon-cart:after {
+    content: "\f07a";
+    font-family: 'FontAwesome';
+    padding-left: 5px;
+    margin-left: 5px;
+}
+
+.icon-search:after {
+    content: "\f002";
     font-family: 'FontAwesome';
     padding-left: 5px;
     margin-left: 5px;

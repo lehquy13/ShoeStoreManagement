@@ -1,46 +1,18 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@using ShoeStoreManagement.Views.Shared.Components;
 
-
-@*@using ShoeStoreManagement.Views.Shared.Components;
-    @using ShoeStoreManagement.Models;
-    @using ShoeStoreManagement.Areas.Identity.Data;
-    @using ShoeStoreManagement.Views.Shared;*@
-
-
-@*<partial name="./Components/btnPrimary" onclick="location.href='@(Url.Action("Privacy", "Home"))'"/>*@
-@*<component type="typeof(ProductCard)" render-mode="Static" param-e/>*@
-
-@*This is component*@
-@*@(
-    await Html.RenderComponentAsync<ProductCard>(RenderMode.Static, new { eHandler = "Shoes", product = new Product() { ProductName = "Tail" } })
-    )*@
-
-@*<div class="row">
-    @{
-        var temp = new List<Product>();
-        temp.Add(new Product() { ProductName = "Shoes", ProductUnitPrice = 20, ProductColor = "Black" });
-        temp.Add(new Product() { ProductName = "Shoess", ProductUnitPrice = 30, ProductColor = "Black" });
-        temp.Add(new Product() { ProductName = "Shoesss", ProductUnitPrice = 15, ProductColor = "Black" });
-
-        @foreach (var item in temp)
-        {
-            <div class="card border-0 col-3">
-                <img src="image/shoe.jpg" class="card-img-top img h-auto w-auto" alt="image" />
-                <div class="card-body">
-                    <div class="d-flex justify-content-between mb-1">
-                        <p class="fw-bold h5">@item.ProductName</p>
-                        <p class="fw-bold h5">$@item.ProductUnitPrice</p>
-                    </div>
-                    <p class="h6 mb-2">@item.ProductColor</p>
-                </div>
-                <button class="btn btn-primary" onclick="location.href='@(Url.Action("Privacy", "Home"))'">Add to Cart</button>
-            </div>
+<div class="row">
+    <div class="col-3">
+        <component type="typeof(Filter)" render-mode="Static" />
+    </div>
+    <div class="col-9 row">
+        @for(var i = 0; i < 5; i++) {
+            <component type="typeof(ProductCard)" render-mode="Static" />
         }
-    }
-    </div>*@
+    </div>
+</div>
 
-
-@*<button type="button" class="plus-icon">hihihi</button>*@
+<p>pagination</p>
 

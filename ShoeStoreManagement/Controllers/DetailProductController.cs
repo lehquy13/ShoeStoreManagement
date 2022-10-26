@@ -2,14 +2,9 @@
 
 namespace ShoeStoreManagement.Controllers
 {
-    public class OrderController : Controller
+    public class DetailProductController : Controller
     {
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult MakeAnOrder()
         {
             return View();
         }

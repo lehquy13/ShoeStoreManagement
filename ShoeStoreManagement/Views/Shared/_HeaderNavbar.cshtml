@@ -7,7 +7,7 @@
             <a class="nav-link text-secondary h6 @(ViewBag.WishList==true?"active":"")" asp-area="" asp-controller="Home" asp-action="WishList">WishList</a>
         </li>
         <li class="nav-item px-3">
-            <a class="nav-link text-secondary h6 @(ViewBag.Orders==true?"active":"")" asp-area="" asp-controller="Cart" asp-action="Index">Orders</a>
+            <a class="nav-link text-secondary h6 @(ViewBag.Orders==true?"active":"")" asp-area="" asp-controller="DetailProduct" asp-action="Index">Orders</a>
         </li>
         <li class="nav-item px-3">
             <a class="nav-link text-secondary h6 @(ViewBag.Text==true?"active":"")" asp-area="" asp-controller="" asp-action="">...</a>
@@ -15,3 +15,7 @@
         <partial name="_AdminMenuPartial" />
     </ul>
 </div>
+
+@{
+
+}

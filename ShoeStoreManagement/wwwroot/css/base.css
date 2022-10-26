@@ -11,7 +11,38 @@
     border-color: rgba(20, 33, 61, 0.25);
 }
 
+.border-dash {
+    background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='rgba(20, 33, 61, 0.25)' stroke-width='1' stroke-dasharray='20' stroke-dashoffset='30' stroke-linecap='round'/%3e%3c/svg%3e");
+    border-radius: 8px;
+}
+
 /*BUTTON*/
+.btn-secondary {
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(20, 33, 61);
+    background-color: transparent;
+    color: rgb(20, 33, 61);
+    font-weight: 700;
+}
+
+    .btn-secondary:hover {
+        background-color: rgba(20, 33, 61, 0.2);
+        color: rgba(20, 33, 61, 0.8);
+        transition-delay: 100ms;
+        transition-duration: 100ms;
+    }
+    .btn-secondary:active {
+        background-color: inherit;
+        color: inherit;
+        font-weight: inherit;
+    }
+    .btn-secondary:focus {
+        background-color: inherit;
+        color: inherit;
+        font-weight: inherit;
+    }
+
 .btn:active {
     background-color: #E59512;
     border: none;
