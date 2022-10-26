@@ -1,0 +1,23 @@
+﻿.w-30 {
+    width: 30%;
+}
+
+.w-65 {
+    width: 65%;
+}
+
+/*BORDER*/
+.border-app {
+    border-color: rgba(20, 33, 61, 0.25);
+}
+
+/*BUTTON*/
+.btn:active {
+    background-color: #E59512;
+    border: none;
+}
+
+.btn-icon {
+    width: fit-content;
+    height: auto;
+}

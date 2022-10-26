@@ -1,59 +1,10 @@
-.h1 {
-    font-size: 31px;
-    font-weight: 700;
-}
-
-.h2 {
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.h3 {
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.h4 {
-    font-size: 18px;
-    font-weight: 700;
-}
-
-.h5 {
-    font-size: 16px;
-}
-
-.h6 {
-    font-size: 15px;
-    font-weight: 700;
-}
-
-.text-secondary {
-}
-
-.button {
-    font-size: 14px;
-    font-weight: 700;
-}
-
-.caption {
-    font-size: 12px;
-}
-
-.small-caption {
-    font-size: 10px;
-}
-
+/*NAV*/
 .nav-icon {
     color: black
 }
 
 .nav-icon-link {
     font-size: 20px;
-}
-
-.btn:active {
-    background-color: #E59512;
-    border:none;
 }
 
 .nav-link {
@@ -65,19 +16,7 @@
     color: var(--bs-dark)!important;
 } 
 
-.icon-small {
-    font-size: 20px;
-}
-
-.btn-icon {
-    width: fit-content;
-    height: auto;
-}
-
-.img {
-    
-}
-
+/*CARD*/
 .card-img-top {
     width: 100%;
     height: 250px;
@@ -90,19 +29,7 @@
     background-color: #dfdfdf;
 }
 
-.icon-plus:after {
-    content: "\f0d4";
-    font-family: 'FontAwesome';
-    padding-left: 5px;
-}
-
-.icon-arrow:after {
-    content: "\f061";
-    font-family: 'FontAwesome';
-    padding-left: 5px;
-    margin-left: 5px;
-}
-
+/*DROPDOWN*/
 .btn-for-dropdown {
     color: var(--button-color);
     background-color: var(--button-background-color);
@@ -138,21 +65,4 @@
     .btn-for-dropdown.is-disabled {
         opacity: .5;
     }
-}
 
-.icon-delete:after {
-    content: "\f2ed";
-    font-family: 'FontAwesome';
-}
-
-.w-30 {
-    width: 30%;
-}
-
-.w-65 {
-    width: 65%;
-}
-
-.border-app {
-    border-color: rgba(20, 33, 61, 0.25);
-}

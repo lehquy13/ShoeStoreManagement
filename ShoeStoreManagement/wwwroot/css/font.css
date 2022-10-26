@@ -1,0 +1,41 @@
+﻿.h1 {
+    font-size: 31px;
+    font-weight: 700;
+}
+
+.h2 {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.h3 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.h4 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.h5 {
+    font-size: 16px;
+}
+
+.h6 {
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.button {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.caption {
+    font-size: 12px;
+}
+
+.small-caption {
+    font-size: 10px;
+}
