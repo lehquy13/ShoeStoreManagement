@@ -1,0 +1,19 @@
+﻿@using ShoeStoreManagement.Models
+
+<div class="row">
+	<div class="card border-0 col-3">
+		<img src="image/shoe.jpg" class="card-img-top img h-auto w-auto" alt="image" />
+		<div class="card-body">
+			<p class="fw-bold h5 mb-2">@product.ProductName</p>
+			<p class="h5 mb-2">$20</p>
+		</div>
+		<button class="btn btn-primary" onclick="Navigator('./Privacy')">Add to Cart</button>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public string eHandler { get; set; } = string.Empty;
+	[Parameter]
+	public Product product { get; set; }
+}

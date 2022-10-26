@@ -1,13 +1,121 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
-<h1>hi</h1>
+@using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Models;
 
-<button class="btn btn-primary icon-arrow" onclick="location.href='@(Url.Action("Privacy", "Home"))'">hihi</button>
+@*<h1>hi</h1>*@
 
-@*<base href="~/" />*@
+@*<button class="btn btn-primary icon-arrow" onclick="location.href='@(Url.Action("Privacy", "Home"))'">hihi</button>*@
+
+
 @*<partial name="./Components/btnPrimary" onclick="location.href='@(Url.Action("Privacy", "Home"))'"/>*@
-@*<component type="typeof(BtnPrimary)" render-mode="Static" />*@
+@*<component type="typeof(ProductCard)" render-mode="Static" param-e/>*@
+
+@*This is component*@
+@*@(
+await Html.RenderComponentAsync<ProductCard>(RenderMode.Static, new { eHandler = "Shoes", product = new Product() { ProductName = "Tail" } })
+)*@
+
+@*<div class="row">
+@{
+	var temp = new List<Product>();
+	temp.Add(new Product() { ProductName = "Shoes", ProductUnitPrice = 20, ProductColor = "Black" });
+	temp.Add(new Product() { ProductName = "Shoess", ProductUnitPrice = 30, ProductColor = "Black" });
+	temp.Add(new Product() { ProductName = "Shoesss", ProductUnitPrice = 15, ProductColor = "Black" });
+
+	@foreach (var item in temp)
+	{
+		<div class="card border-0 col-3">
+			<img src="image/shoe.jpg" class="card-img-top img h-auto w-auto" alt="image" />
+			<div class="card-body">
+				<div class="d-flex justify-content-between mb-1">
+					<p class="fw-bold h5">@item.ProductName</p>
+					<p class="fw-bold h5">$@item.ProductUnitPrice</p>
+				</div>
+				<p class="h6 mb-2">@item.ProductColor</p>
+			</div>
+			<button class="btn btn-primary" onclick="location.href='@(Url.Action("Privacy", "Home"))'">Add to Cart</button>
+		</div>
+	}
+}
+</div>*@
+
+<div class="row">
+	<div class="card d-flex flex-row col-6 border-1 border-color p-0">
+		<img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
+		<div class="card-body d-flex flex-column justify-content-between">
+			<div>
+				<div class="d-flex justify-content-between">
+					<p class="h3">Shoes</p>
+					<p class="h6">x 1</p>
+				</div>
+				<div class="d-flex justify-content-between align-items-end mb-1">
+					<p class="h5">Black</p>
+					<p class="h2 text-dark">$40</p>
+				</div>
+			</div>
+			<div class="d-flex justify-content-between align-items-end">
+				<div>
+					<p class="m-0 caption text-primary">$20</p>
+					<div>counter</div>
+				</div>
+				<p class="icon-delete m-0 text-primary" onclick="location.href='@(Url.Action("Privacy", "Home"))'"></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row col-9 border-1 border-app p-0 border">
+	<div class="col-8 p-0">
+		<div class="card d-flex flex-row p-0">
+			<img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
+			<div class="card-body d-flex flex-column justify-content-between">
+				<div>
+					<div class="d-flex justify-content-between">
+						<p class="h3">Shoes</p>
+						<p class="h6">x 1</p>
+					</div>
+					<div class="d-flex justify-content-between align-items-end mt-2 mb-1">
+						<p class="h5">Black</p>
+						<p class="h5 text-dark">$40</p>
+					</div>
+				</div>
+				<div class="">
+					<p class="m-0 h3 text-primary float-end">$20</p>
+				</div>
+			</div>
+		</div>
+		<div class="card d-flex flex-row p-0">
+			<img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
+			<div class="card-body d-flex flex-column justify-content-between">
+				<div>
+					<div class="d-flex justify-content-between">
+						<p class="h3">Shoes</p>
+						<p class="h6">x 1</p>
+					</div>
+					<div class="d-flex justify-content-between align-items-end mt-2 mb-1">
+						<p class="h5">Black</p>
+						<p class="h5 text-dark">$40</p>
+					</div>
+				</div>
+				<div class="">
+					<p class="m-0 h3 text-primary float-end">$20</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col p-0 d-flex flex-column justify-content-between align-items-end p-3">
+		<div class="caption">
+			Deliveriy Expected on 20-12-2022
+		</div>
+		<div class="d-flex align-items-end">
+			<p class="h3">Total</p>
+			<p class="h2 text-dark ms-3">$80</p>
+		</div>
+	</div>
+</div>
+
 @*<button type="button" class="plus-icon">hihihi</button>*@
 
