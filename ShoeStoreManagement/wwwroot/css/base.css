@@ -52,3 +52,14 @@
     width: fit-content;
     height: auto;
 }
+
+/*LABEL*/
+label {
+    font-size: 12px;
+}
+
+
+/*DROPDOWN*/
+.dropdown-menu {
+    min-width: auto;
+}
