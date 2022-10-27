@@ -1,88 +1,85 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 
+<div class="row">
+	<div class="col-7">
+		<canvas id="barChart" class="h-auto"></canvas>
+	</div>
+	<div class="col-5 row gap-4">
+		<div class="row border-dash gap-2 p-3">
+			<div class="col row gap-2">
+				<div class="bg-primary shadow static-panel"></div>
+				<div class="bg-white border border-dark shadow static-panel"></div>
+			</div>
+			<div class="col row gap-2">
+				<div class="bg-primary shadow static-panel"></div>
+				<div class="bg-white border border-dark shadow static-panel"></div>
+			</div>
+		</div>
+		<div class="row border-dash p-3">
+			<div class="d-flex justify-content-between mb-2">
+				<span class="h6">Top Product</span>
+				<span class="h5">Sold</span>
+			</div>
 
-<div class="row" style="background-color:cadetblue">
-    <div class="col-lg-3">
-        <component type="typeof(Filter)" render-mode="Static" />
-    </div>
-    <@*div class="col-7" style="background-color:saddlebrown">
-           <canvas id="barChart" class="h-auto"><   /canvas>
-           </div>*@
-<div class="container col" style="background-color:rebeccapurple">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-wrap">
-                <table class="table myaccordion table-hover" id="accordion">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th class="button">Name</th>
-                            <th class="button">Price</th>
-                            <th class="button">Color</th>
-                            <th class="button">Category</th>
-                            <th class="button">Amount</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                            <th scope="row">1</th>
-                            <td>Balenciaga Triple S</td>
-                            <td>$1000</td>
-                            <td>Black</td>
-                            <td>Dads shoe, Chunky, retro-styled</td>
-                            <td>12</td>
-                                @*                       <td>
-                            <i class="fa" aria-hidden="true"></i>
-                            </td>*@
-                        </tr>
-                            @*<tr>
-                        <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
-                        </td>
-                        </tr>*@
-                        <tr data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsed">
-                            <th scope="row">2</th>
-                            <td>UltraBoost 19</td>
-                            <td>$250</td>
-                            <td>Black</td>
-                            <td>Trainer</td>
-                            <td>12</td>
-                        </tr>
-
-                        <tr data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="collapsed">
-                            <th scope="row">3</th>
-                            <td>Adidas super star</td>
-                            <td>$40</td>
-                            <td>Black,White</td>
-                            <td>Sneaker</td>
-                            <td>12</td>
-                        </tr>
-
-                        <tr data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="collapsed">
-                            <th scope="row">4</th>
-                            <td>NMD_R1 SHOES</td>
-                            <td>$150</td>
-                            <td>Black</td>
-                            <td>Running, Originals</td>
-                            <td>12</td>
-
-                        </tr>
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+			<component type="typeof(TopProductList)" render-mode="Static" />
+		</div>
+	</div>
 </div>
 
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 
+<script type="text/javascript">
+	var barCanvas = document.getElementById("barChart");
 
+	var Physics = {
+		label: 'Physics',
+		data: Physics,
+		backgroundColor: 'rgb(255, 99, 132)',
+		borderWidth: 0,
+		lineTension: 0,
+	};
+	var Chemistry = {
+		label: 'Chemistry',
+		data: Chemistry,
+		backgroundColor: 'rgb(54, 162, 235)',
+		borderWidth: 0,
+	};
+	var Biology = {
+		label: 'Biology',
+		data: Biology,
+		backgroundColor: 'rgb(157, 230, 41)',
+		borderWidth: 0,
+	};
+	var Mathematics = {
+		label: 'Mathematics',
+		data: Mathematics,
+		backgroundColor: 'rgb(41, 224, 230)',
+		borderWidth: 0,
+	};
+	var datasetvalues = {
+		labels: ["John", "Mary", "Asha", "Emily", "Bonnie"],//x-axis label values
+		datasets: [Physics, Chemistry, Biology, Mathematics]//y-axis
+	};
+	var chartOptions = {
+		scales: {
+			xAxes: [{
+				barPercentage: 1,//Percent (0-1) of the available width each bar should
+				categoryPercentage: 0.6,//Percent (0-1) of the available width each category
+			}],
+			yAxes: [{
+				barPercentage: 1,
+				categoryPercentage: 0.6,
+				ticks: {
+					beginAtZero: true
+				}
+			}],
+		}
+	};
+	var barChart = new Chart(barCanvas, {
+		type: 'bar',
+		data: datasetvalues,
+		options: chartOptions
+	});
 
-
-
-
-
-
+</script>
 
