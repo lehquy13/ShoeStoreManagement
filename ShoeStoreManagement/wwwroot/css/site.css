@@ -133,3 +133,7 @@
     flex-grow: 0;
 }
 
+/*STATIC PANEL*/
+.static-panel {
+    height: 100px;
+}
