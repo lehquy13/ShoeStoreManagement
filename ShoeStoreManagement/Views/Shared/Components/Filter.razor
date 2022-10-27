@@ -1,39 +1,31 @@
-﻿<h3>Tab</h3>
-@using ShoeStoreManagement.Models
+﻿@using ShoeStoreManagement.Models
 @using ShoeStoreManagement.Areas.Identity.Data
 @code {
-    [Parameter]
-    public object objectList { get; set; } = null;
+   
 }
 
-
-<div class="rowWrapCustom">
+<div class="col-1">
     <div>
         <ii>Category</ii>
     </div>
-    <div class="tabCustom">
-        <button class="tablinks" onclick="openCity(event, 'London')">Test1</button>
-        <button class="tablinks" onclick="openCity(event, 'London')">Test2</button>
-        <button class="tablinks" onclick="openCity(event, 'London')">Test3</button>
+
+    <div class="tabCustom row-cols-1">
+        <button class="tabCustom" onclick="openCity(event, 'London')">Test1</button>
+        <button class="tabCustom" onclick="openCity(event, 'London')">Test2</button>
+        <button class="tabCustom" onclick="openCity(event, 'London')">Test3</button>
 
     </div>
 
-    <div class="radioLayoutTabCustom">
-        <ii>Category1</ii>
-        <label class="radio">
-            <input type="radio" name="answer">
-            Yes
-        </label>
+    <div>
+        <ii>Price</ii>
+    </div>
 
-        <label class="radio">
-            <input type="radio" name="answer">
-            No
-        </label>
+    <div class="radioLayoutTabCustom row-cols-1">
 
-        <label class="radio">
-            <input type="radio" name="answer">
-            Very Yes
-        </label>
+        <label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
+        <label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
+        <label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
+
     </div>
 
 </div>

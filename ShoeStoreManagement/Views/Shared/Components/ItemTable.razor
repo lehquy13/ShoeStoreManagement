@@ -1,10 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@using ShoeStoreManagement.Models
+@using ShoeStoreManagement.Areas.Identity.Data
+@code {
+   
 }
-
-<input type="text">
 
 <div class="container">
     <div class="row">
@@ -19,7 +17,7 @@
                             <th class="button">Color</th>
                             <th class="button">Category</th>
                             <th class="button">Amount</th>
-
+                            
                         </tr>
                     </thead>
                     <tbody>
@@ -30,14 +28,14 @@
                             <td>Black</td>
                             <td>Dads shoe, Chunky, retro-styled</td>
                             <td>12</td>
-                            @*                       <td>
-                            <i class="fa" aria-hidden="true"></i>
+   @*                       <td>
+                                <i class="fa" aria-hidden="true"></i>
                             </td>*@
                         </tr>
                         @*<tr>
-                        <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
-                        </td>
+                            <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
+                            </td>
                         </tr>*@
                         <tr data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsed">
                             <th scope="row">2</th>
@@ -47,7 +45,7 @@
                             <td>Trainer</td>
                             <td>12</td>
                         </tr>
-
+                       
                         <tr data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="collapsed">
                             <th scope="row">3</th>
                             <td>Adidas super star</td>
@@ -56,7 +54,7 @@
                             <td>Sneaker</td>
                             <td>12</td>
                         </tr>
-
+                        
                         <tr data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="collapsed">
                             <th scope="row">4</th>
                             <td>NMD_R1 SHOES</td>
@@ -66,11 +64,11 @@
                             <td>12</td>
 
                         </tr>
-
+                        
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
-<h1>product</h1>
+
