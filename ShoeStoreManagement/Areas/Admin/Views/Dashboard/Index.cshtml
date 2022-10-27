@@ -1,0 +1,85 @@
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+
+<div class="row">
+	<div class="col-7">
+		<canvas id="barChart" class="h-auto"></canvas>
+	</div>
+	<div class="col-5 row gap-4">
+		<div class="row border-dash gap-2 p-3">
+			<div class="col row gap-2">
+				<div class="bg-primary shadow static-panel"></div>
+				<div class="bg-white border border-dark shadow static-panel"></div>
+			</div>
+			<div class="col row gap-2">
+				<div class="bg-primary shadow static-panel"></div>
+				<div class="bg-white border border-dark shadow static-panel"></div>
+			</div>
+		</div>
+		<div class="row border-dash p-3">
+			<div class="d-flex justify-content-between mb-2">
+				<span class="h6">Top Product</span>
+				<span class="h5">Sold</span>
+			</div>
+
+			<component type="typeof(TopProductList)" render-mode="Static" />
+		</div>
+	</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+
+<script type="text/javascript">
+	var barCanvas = document.getElementById("barChart");
+
+	var Physics = {
+		label: 'Physics',
+		data: Physics,
+		backgroundColor: 'rgb(255, 99, 132)',
+		borderWidth: 0,
+		lineTension: 0,
+	};
+	var Chemistry = {
+		label: 'Chemistry',
+		data: Chemistry,
+		backgroundColor: 'rgb(54, 162, 235)',
+		borderWidth: 0,
+	};
+	var Biology = {
+		label: 'Biology',
+		data: Biology,
+		backgroundColor: 'rgb(157, 230, 41)',
+		borderWidth: 0,
+	};
+	var Mathematics = {
+		label: 'Mathematics',
+		data: Mathematics,
+		backgroundColor: 'rgb(41, 224, 230)',
+		borderWidth: 0,
+	};
+	var datasetvalues = {
+		labels: ["John", "Mary", "Asha", "Emily", "Bonnie"],//x-axis label values
+		datasets: [Physics, Chemistry, Biology, Mathematics]//y-axis
+	};
+	var chartOptions = {
+		scales: {
+			xAxes: [{
+				barPercentage: 1,//Percent (0-1) of the available width each bar should
+				categoryPercentage: 0.6,//Percent (0-1) of the available width each category
+			}],
+			yAxes: [{
+				barPercentage: 1,
+				categoryPercentage: 0.6,
+				ticks: {
+					beginAtZero: true
+				}
+			}],
+		}
+	};
+	var barChart = new Chart(barCanvas, {
+		type: 'bar',
+		data: datasetvalues,
+		options: chartOptions
+	});
+
+</script>
+
