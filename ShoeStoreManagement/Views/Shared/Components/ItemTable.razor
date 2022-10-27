@@ -1,0 +1,74 @@
+﻿@using ShoeStoreManagement.Models
+@using ShoeStoreManagement.Areas.Identity.Data
+@code {
+   
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-wrap">
+                <table class="table myaccordion table-hover" id="accordion">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="button">Name</th>
+                            <th class="button">Price</th>
+                            <th class="button">Color</th>
+                            <th class="button">Category</th>
+                            <th class="button">Amount</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                            <th scope="row">1</th>
+                            <td>Balenciaga Triple S</td>
+                            <td>$1000</td>
+                            <td>Black</td>
+                            <td>Dads shoe, Chunky, retro-styled</td>
+                            <td>12</td>
+   @*                       <td>
+                                <i class="fa" aria-hidden="true"></i>
+                            </td>*@
+                        </tr>
+                        @*<tr>
+                            <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
+                            </td>
+                        </tr>*@
+                        <tr data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsed">
+                            <th scope="row">2</th>
+                            <td>UltraBoost 19</td>
+                            <td>$250</td>
+                            <td>Black</td>
+                            <td>Trainer</td>
+                            <td>12</td>
+                        </tr>
+                       
+                        <tr data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="collapsed">
+                            <th scope="row">3</th>
+                            <td>Adidas super star</td>
+                            <td>$40</td>
+                            <td>Black,White</td>
+                            <td>Sneaker</td>
+                            <td>12</td>
+                        </tr>
+                        
+                        <tr data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="collapsed">
+                            <th scope="row">4</th>
+                            <td>NMD_R1 SHOES</td>
+                            <td>$150</td>
+                            <td>Black</td>
+                            <td>Running, Originals</td>
+                            <td>12</td>
+
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
