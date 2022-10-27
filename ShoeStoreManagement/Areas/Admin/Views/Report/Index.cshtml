@@ -1,5 +1,120 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+
+<div class="row">
+	<div class="col-7 d-flex justify-content-between">
+		<div>
+			<label for="fromDate">From</label>
+			<input id="fromDate" type="date" value="02-02-2022" class="d-block" />
+		</div>
+		<div>
+			<label for="toDate">To</label>
+			<input id="toDate" type="date" value="02-02-2022" class="d-block" />
+		</div>
+		<div class="">
+			<label>By Time</label>
+			<div class="dropdown">
+				<button class="btn btn-for-dropdown dropdown-toggle" style="width:100px" type="button" id="byTime" data-bs-toggle="dropdown" aria-expanded="false">
+				</button>
+				<div class="dropdown-menu" aria-labelledby="byTime">
+					<button class="dropdown-item">Daily</button>
+					<button class="dropdown-item">Monthly</button>
+					<button class="dropdown-item">Yearly</button>
+				</div>
+			</div>
+		</div>
+		<div>
+			<label>By</label>
+			<div class="dropdown">
+				<button class="btn btn-for-dropdown dropdown-toggle" style="width:150px" type="button" id="byType" data-bs-toggle="dropdown" aria-expanded="false">
+					
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="byType">
+					<li><a class="dropdown-item" style="width:150px" href="#">Order</a></li>
+					<li><a class="dropdown-item" style="width:150px" href="#">Profit</a></li>
+					<li><a class="dropdown-item" style="width:150px" href="#">Category</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-5">
+		<button class="btn btn-primary float-end">Print Report</button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-7">
+		<canvas id="barChart" class="h-auto"></canvas>
+		<div></div>
+	</div>
+	<div class="col-5">
+		<div class="row border-dash gap-2 p-3">
+			<div class="col row gap-2">
+				<div class="bg-white shadow border border-dark static-panel"></div>
+				<div class="bg-white border border-dark shadow static-panel"></div>
+			</div>
+			<div class="col row gap-2">
+				<div class="bg-white shadow border border-dark static-panel"></div>
+				<div class="bg-white border border-dark shadow static-panel"></div>
+			</div>
+		</div>
+		<div>
+			<component type="typeof(TopProductList)" render-mode="Static" />
+		</div>
+	</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+
+<script type="text/javascript">
+	var barCanvas = document.getElementById("barChart");
+
+	var Physics = {
+		label: 'Physics',
+		data: Physics,
+		backgroundColor: 'rgb(255, 99, 132)',
+		borderWidth: 0,
+		lineTension: 0,
+	};
+	var Chemistry = {
+		label: 'Chemistry',
+		data: Chemistry,
+		backgroundColor: 'rgb(54, 162, 235)',
+		borderWidth: 0,
+	};
+	var Biology = {
+		label: 'Biology',
+		data: Biology,
+		backgroundColor: 'rgb(157, 230, 41)',
+		borderWidth: 0,
+	};
+	var Mathematics = {
+		label: 'Mathematics',
+		data: Mathematics,
+		backgroundColor: 'rgb(41, 224, 230)',
+		borderWidth: 0,
+	};
+	var datasetvalues = {
+		labels: ["John", "Mary", "Asha", "Emily", "Bonnie"],//x-axis label values
+		datasets: [Physics, Chemistry, Biology, Mathematics]//y-axis
+	};
+	var chartOptions = {
+		scales: {
+			xAxes: [{
+				barPercentage: 1,//Percent (0-1) of the available width each bar should
+				categoryPercentage: 0.6,//Percent (0-1) of the available width each category
+			}],
+			yAxes: [{
+				barPercentage: 1,
+				categoryPercentage: 0.6,
+				ticks: {
+					beginAtZero: true
+				}
+			}],
+		}
+	};
+	var barChart = new Chart(barCanvas, {
+		type: 'bar',
+		data: datasetvalues,
+		options: chartOptions
+	});
+
+</script>
