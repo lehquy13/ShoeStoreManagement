@@ -12,6 +12,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 	{
 		public IActionResult Index()
 		{
+            ViewBag.Home = true;
             return View();
 		}
     }
