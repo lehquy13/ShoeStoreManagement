@@ -52,3 +52,18 @@
     width: fit-content;
     height: auto;
 }
+
+input[type=text] {
+    width: auto;
+    height: 35px;
+    border: 2px solid black;
+    border-radius: 0px;
+}
+
+    input[type=text]:focus, input[type=text]:active, input[type=text]:visited {
+        border: 2px solid black;
+        border-radius: 0px;
+      
+    }
+
+
