@@ -85,6 +85,8 @@
 /* Style the tab */
 .tabCustom {
     margin-inline-start: 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     float: left;
     background-color: white;
     width: 30%;
