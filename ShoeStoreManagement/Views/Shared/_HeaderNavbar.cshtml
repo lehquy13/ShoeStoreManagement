@@ -9,7 +9,22 @@
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1 justify-content-center align-items-center">
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 " asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                <a class="nav-link text-secondary h6 @(ViewBag.Home==true?"active":"")" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+            </li>
+            <li class="nav-item px-3">
+                <a class="nav-link text-secondary h6 @(ViewBag.Product==true?"active":"")" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+            </li>
+            <li class="nav-item px-3">
+                <a class="nav-link text-secondary h6 @(ViewBag.Order==true?"active":"")" asp-area="Admin" asp-controller="Order" asp-action="Index">Order</a>
+            </li>
+            <li class="nav-item px-3">
+                <a class="nav-link text-secondary h6 @(ViewBag.Voucher==true?"active":"")" asp-area="Admin" asp-controller="Voucher" asp-action="Index">Voucher</a>
+            </li>
+            <li class="nav-item px-3">
+                <a class="nav-link text-secondary h6 @(ViewBag.User==true?"active":"")" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
+            </li>
+            <li class="nav-item px-3">
+                <a class="nav-link text-secondary h6 @(ViewBag.Report==true?"active":"")" asp-area="Admin" asp-controller="Report" asp-action="Index">Report</a>
             </li>
         </ul>
     </div>

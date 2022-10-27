@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
-	public class OrderController : Controller
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class OrderController : Controller
 	{
 		public IActionResult Index()
 		{
-			return View();
+            ViewBag.Order = true;
+            return View();
 		}
 	}
 }
