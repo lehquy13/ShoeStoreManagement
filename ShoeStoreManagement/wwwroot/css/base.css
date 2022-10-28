@@ -6,6 +6,18 @@
     width: 65%;
 }
 
+.w-input {
+    width: 250px!important;
+}
+
+.h-80 {
+    height: 80%!important;
+}
+
+.h-90 {
+    height: 90% !important;
+}
+
 /*BORDER*/
 .border-app {
     border-color: rgba(20, 33, 61, 0.25);
