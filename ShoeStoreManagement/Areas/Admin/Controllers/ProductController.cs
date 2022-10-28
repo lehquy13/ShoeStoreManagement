@@ -13,5 +13,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 			ViewBag.Product = true;
 			return View();
 		}
-	}
+
+        public IActionResult Create()
+        {
+            //ViewBag.Product = true;
+            return View();
+        }
+    }
 }

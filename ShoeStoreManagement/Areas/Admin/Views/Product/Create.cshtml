@@ -1,0 +1,78 @@
+﻿<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary icon-plus rounded position-fixed bottom-0" data-toggle="modal" to data-target="#Modal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content w-auto px-3 py-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Add new Product</h5>
+            </div>
+            <div class="modal-body p-0 mt-2" style="width: 550px">
+                <div class="row">
+                    <div class="col-6 d-flex flex-column gap-2">
+                        <div>
+                            <label for="name" class="d-block">Enter Name</label>
+                            <input id="name" class="w-100" type="text" placeholder="name" />
+                        </div>
+                        <div>
+                            <label for="color" class="d-block">Enter Color</label>
+                            <input id="color" class="w-100" type="text" placeholder="black" />
+                        </div>
+                        <div class="flex-grow-1">
+                            <label for="description" class="d-block">Enter Description</label>
+                            <input id="description" class="w-100 h-90" type="text" placeholder="description" />
+                        </div>
+                    </div>
+                    <div class="col-6 d-grid gap-2">
+                        <div>
+                            <label for="category" class="d-block">Enter Category</label>
+                            <div class="dropdown">
+                                <button class="btn btn-for-dropdown dropdown-toggle w-100" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="category">
+                                    <button class="dropdown-item">A</button>
+                                    <button class="dropdown-item">B</button>
+                                    <button class="dropdown-item">C</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="price" class="d-block">Enter Price</label>
+                            <input id="price" class="w-100" type="number" placeholder="20" />
+                        </div>
+                        <div>
+                            <label for="amount" class="d-block">Enter Amount</label>
+                            <input id="amount" class="w-100" type="number" placeholder="20" />
+                        </div>
+                        <div>
+                            <label for="voucher" class="d-block">Enter Voucher</label>
+                            <div class="dropdown">
+                                <button class="btn btn-for-dropdown dropdown-toggle w-100" type="button" id="voucher" data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="voucher">
+                                    <button class="dropdown-item">HelloNew</button>
+                                    <button class="dropdown-item">NNN</button>
+                                    <button class="dropdown-item">IamAG</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-start mt-3 gx-1">
+                    <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
+                    <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
+                    <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
+                    <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

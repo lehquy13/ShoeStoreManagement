@@ -6,7 +6,7 @@ using ShoeStoreManagement.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 //builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
