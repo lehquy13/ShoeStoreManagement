@@ -4,12 +4,23 @@
 @{
 }
 @using ShoeStoreManagement.Views.Shared.Components;
-<div class="row" >
-    <div class="col-3" style="background-color:cyan; border-block-end:dashed">
+<style>
+    .borderCustom{
+        border-right: dashed;
+        border-top: dashed;
+    }
+
+    .borderCustom1 {
+        border-top: dashed;
+    }
+
+</style>
+<div class="row " >
+    <div class="col-2 borderCustom" >
         <component type="typeof(Filter)" render-mode="Static" />
     </div>
 
-    <div class="container col">
+    <div class="container col-10 borderCustom1">
         <div class="row">
             <div class="col-md-12">
                 <div class="table-wrap">
