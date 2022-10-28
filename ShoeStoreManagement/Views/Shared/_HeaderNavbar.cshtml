@@ -9,22 +9,22 @@
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1 justify-content-center align-items-center">
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Home==true?"active":"")" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
+                <a class="nav-link text-secondary @(ViewBag.Home==true?"active":"")" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">Dashboard</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Product==true?"active":"")" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
+                <a class="nav-link text-secondary @(ViewBag.Product==true?"active":"")" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Order==true?"active":"")" asp-area="Admin" asp-controller="Order" asp-action="Index">Order</a>
+                <a class="nav-link text-secondary @(ViewBag.Order==true?"active":"")" asp-area="Admin" asp-controller="Order" asp-action="Index">Order</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Voucher==true?"active":"")" asp-area="Admin" asp-controller="Voucher" asp-action="Index">Voucher</a>
+                <a class="nav-link text-secondary @(ViewBag.Voucher==true?"active":"")" asp-area="Admin" asp-controller="Voucher" asp-action="Index">Voucher</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.User==true?"active":"")" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
+                <a class="nav-link text-secondary @(ViewBag.User==true?"active":"")" asp-area="Admin" asp-controller="User" asp-action="Index">User</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Report==true?"active":"")" asp-area="Admin" asp-controller="Report" asp-action="Index">Report</a>
+                <a class="nav-link text-secondary @(ViewBag.Report==true?"active":"")" asp-area="Admin" asp-controller="Report" asp-action="Index">Report</a>
             </li>
         </ul>
     </div>
@@ -34,16 +34,16 @@ else if (SignInManager.IsSignedIn(User))
     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
         <ul class="navbar-nav flex-grow-1 justify-content-center align-items-center">
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Home==true?"active":"")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                <a class="nav-link text-secondary @(ViewBag.Home==true?"active":"")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.WishList==true?"active":"")" asp-area="" asp-controller="Home" asp-action="WishList">WishList</a>
+                <a class="nav-link text-secondary @(ViewBag.WishList==true?"active":"")" asp-area="" asp-controller="Home" asp-action="WishList">WishList</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Orders==true?"active":"")" asp-area="" asp-controller="DetailProduct" asp-action="Index">Orders</a>
+                <a class="nav-link text-secondary @(ViewBag.Orders==true?"active":"")" asp-area="" asp-controller="DetailProduct" asp-action="Index">Orders</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary h6 @(ViewBag.Text==true?"active":"")" asp-area="" asp-controller="" asp-action="">...</a>
+                <a class="nav-link text-secondary @(ViewBag.Text==true?"active":"")" asp-area="" asp-controller="" asp-action="">...</a>
             </li>
             @*<partial name="_AdminMenuPartial" />*@
         </ul>
