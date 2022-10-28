@@ -85,6 +85,8 @@
 /* Style the tab */
 .tabCustom {
     margin-inline-start: 15px;
+    margin-bottom: 20px;
+    margin-top: 20px;
     float: left;
     background-color: white;
     width: 30%;
@@ -102,7 +104,7 @@
         align-items: flex-start;
         padding-top: 12px;
         padding-left: 12px;
-        width: 200px;
+        width: 170px;
         height: 45px;
     }
 
@@ -127,11 +129,7 @@
     gap: 16px;
     width: 127px;
     height: 132px;
-    /* Inside auto layout */
 
-    flex: none;
-    order: 1;
-    flex-grow: 0;
 }
 
     .radioLayoutTabCustom label {
@@ -143,11 +141,7 @@
         align-items: center;
         padding-top: 12px;
         gap: 16px;
-        width: 200px;
-        height: 25px;
-        /* Inside auto layout */
+        width: max-content;
+        height: auto;
 
-        flex: none;
-        order: 0;
-        flex-grow: 0;
     }
