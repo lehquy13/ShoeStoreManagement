@@ -58,11 +58,18 @@
 .btn:active {
     background-color: #E59512;
     border: none;
+    text-decoration: none;
 }
 
 .btn-icon {
     width: fit-content;
     height: auto;
+}
+
+.btn-active-none-style.btn:active, .btn-active-none-style.btn:focus {
+    border:none;
+    box-shadow: none;
+    background-color: inherit;
 }
 
 input {

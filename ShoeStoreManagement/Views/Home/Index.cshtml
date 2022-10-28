@@ -1,17 +1,43 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 @using ShoeStoreManagement.Views.Shared.Components;
 
 <div class="row">
-    <div class="col-3">
-        <component type="typeof(Filter)" render-mode="Static" />
-    </div>
-    <div class="col-9 row">
-        @for(var i = 0; i < 5; i++) {
-            <component type="typeof(ProductCard)" render-mode="Static" />
-        }
-    </div>
+	<div class="col-3">
+		<div class="col">
+			<div class="row">
+				<ii class="row-1 h6">Category</ii>
+
+				<div class="tabCustom row-cols-6">
+					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+
+				</div>
+
+			</div>
+			<div class="row mt-3">
+				<ii class="row-1 h6">Price</ii>
+
+				<div class="radioLayoutTabCustom row-cols-6">
+
+					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
+					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
+					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-9 row">
+		@for (var i = 0; i < 5; i++)
+		{
+			<component type="typeof(ProductCard)" render-mode="Static" />
+		}
+	</div>
 </div>
 
 
