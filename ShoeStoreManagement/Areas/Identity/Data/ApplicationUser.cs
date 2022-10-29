@@ -11,6 +11,7 @@ namespace ShoeStoreManagement.Areas.Identity.Data;
 // Add profile data for application users by adding properties to the ApplicationUser class
 public class ApplicationUser : IdentityUser
 {
+    // Add property for user
     public Cart Cart { get; set; }
 }
 

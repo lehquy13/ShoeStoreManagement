@@ -174,3 +174,8 @@
     border-bottom: dotted;
     border-bottom: 1px solid rgba(20, 33, 61, 0.1);
 }
+
+/*Form*/
+.form-floating {
+    margin-top: 20px;
+}
