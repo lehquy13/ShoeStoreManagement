@@ -1,0 +1,60 @@
+﻿<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary rounded position-fixed bottom-0" data-toggle="modal" to data-target="#Modal">
+    Change new Address
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content w-auto px-3 py-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel">Add new Address</h5>
+            </div>
+            <div class="modal-body p-0 mt-2" style="width: 550px">
+                <div class="row">
+                    <div class="col-6 d-flex flex-column gap-2">
+                        <div>
+                            <label for="province" class="d-block">Enter Province</label>
+                            <button class="btn btn-for-dropdown dropdown-toggle w-100" type="button" id="role" data-bs-toggle="dropdown" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="role">
+                                <button class="dropdown-item">A</button>
+                                <button class="dropdown-item">B</button>
+                                <button class="dropdown-item">C</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="district" class="d-block">Enter District</label>
+                            <button class="btn btn-for-dropdown dropdown-toggle w-100" type="button" id="role" data-bs-toggle="dropdown" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="role">
+                                <button class="dropdown-item">A</button>
+                                <button class="dropdown-item">B</button>
+                                <button class="dropdown-item">C</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="hamlet" class="d-block">Enter Hamlet</label>
+                            <button class="btn btn-for-dropdown dropdown-toggle w-100" type="button" id="role" data-bs-toggle="dropdown" aria-expanded="false">
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="role">
+                                <button class="dropdown-item">A</button>
+                                <button class="dropdown-item">B</button>
+                                <button class="dropdown-item">C</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="street" class="d-block">Enter Street</label>
+                            <input id="street" class="w-100" type="text" placeholder="text" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+                <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+

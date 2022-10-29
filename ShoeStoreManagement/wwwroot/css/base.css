@@ -99,3 +99,55 @@ label {
 .dropdown-menu {
     min-width: auto;
 }
+
+/*PAGINATION*/
+.pagination {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.pagination-itemlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.page-item {
+    color: #fff;
+    display: flex;
+}
+
+/*COUNTER*/
+.counter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    width: 188px;
+    height: 49px;
+    background-color: #E5E5E5;
+    margin-top: 10px;
+}
+
+.btn-counter {
+    border: none;
+    color: white;
+    width: 58px;
+    height: 49px;
+}
+
+.counter-text {
+    border: none;
+    color: black;
+    width: 22px;
+    height: 49px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 49px;
+}
