@@ -99,3 +99,7 @@ label {
 .dropdown-menu {
     min-width: auto;
 }
+
+.row {
+    margin-right:0;
+}

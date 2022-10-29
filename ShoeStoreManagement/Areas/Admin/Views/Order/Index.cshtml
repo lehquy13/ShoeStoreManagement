@@ -3,9 +3,20 @@
 
 </style>
 <div class="row borderCustom">
-    <div class="col-2 borderCustom1 ">
-        <component type="typeof(Tab)" render-mode="Static" />
-    </div>
+    <div class="col-2 borderCustom1">
+            <div class="row">
+                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
+
+                <div class="tabCustom row-cols-6">
+                    <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+
+                </div>
+            </div>
+    </div> @*used to col-3 vs col-10*@
 
     <div class="container col-10">
         <div class="row">
