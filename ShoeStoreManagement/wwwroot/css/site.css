@@ -80,15 +80,17 @@
 
 
 
-
+.margin-for-tab {
+    margin-top: 20px;
+}
 /* Style the tab */
 .tabCustom {
     margin-inline-start: 15px;
-    margin-bottom: 20px;
-    margin-top: 20px;
+    margin-bottom: 15px;
+    margin-top: 15px;
     float: left;
     background-color: white;
-    width: 30%;
+    width: 170px;
     height: auto;
 }
 
@@ -102,21 +104,23 @@
         flex-direction: column;
         align-items: flex-start;
         padding-top: 12px;
-        padding-left: 12px;
+        padding-left: 0px;
         width: 170px;
         height: 45px;
+        color: rgba(0, 0, 0, 0.6);
     }
 
         .tabCustom button:focus, button:active, button:visited .active {
             text-decoration: underline;
             color: black;
             font-weight: 700;
-            background-color: whitesmoke;
+            /*background-color: whitesmoke;*/
         }
 
         .tabCustom button:hover, .active {
             color: black;
-            background-color: whitesmoke;
+            font-weight:600;
+            /*background-color: whitesmoke;*/
         }
 
 
@@ -144,3 +148,16 @@
         height: auto;
 
     }
+
+.borderCustom {
+    border-top: 1px solid rgba(20, 33, 61, 0.1);
+}
+
+.borderCustom1 {
+    border-right: 1px solid rgba(20, 33, 61, 0.1);
+}
+
+.borderCustom2 {
+    border-bottom: dotted;
+    border-bottom: 1px solid rgba(20, 33, 61, 0.1);
+}
