@@ -1,1 +1,58 @@
-﻿<partial name="Create.cshtml"></partial> 
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+@*CUSTOMER*@
+<div class="row borderCustom">
+    <div class="col-2 borderCustom1">
+            <div class="row">
+                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
+
+                <div class="tabCustom row-cols-6">
+                    <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Customer</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Staff</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Admin</button>
+
+                </div>
+            </div>
+    </div> @*used to col-3 vs col-10*@
+
+    <div class="container col-10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap">
+                    <table class="table myaccordion table-hover" id="accordion">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Orders</th>
+                                <th>Start Date</th>
+                                <th>Roll</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                <th scope="row">1</th>
+                                <td>Hoang Le</td>
+                                <td>Hoang L@email.com</td>
+                                <td>12</td>
+                                <td>Today</td>
+                                <td>waiter</td>
+                                <td>
+                                    <p class="icon-plus m-0" ></p>
+                                </td>
+                            </tr>
+                            @*<tr>
+                            <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
+                            </td>
+                            </tr>*@
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

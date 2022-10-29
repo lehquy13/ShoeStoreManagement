@@ -10,7 +10,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 	{
 		public IActionResult Index()
 		{
-            ViewBag.Order = true;
+            //ViewBag.Order = true;
             return View();
 		}
 	}

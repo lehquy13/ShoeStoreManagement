@@ -5,27 +5,53 @@
 }
 @using ShoeStoreManagement.Views.Shared.Components;
 <style>
-    .borderCustom{
-        border-right: dashed;
-        border-top: dashed;
-    }
+   
 
-    .borderCustom1 {
-        border-top: dashed;
+    table,
+    thead {
+        border-bottom: dotted;
+        border-bottom: 1px solid rgba(20, 33, 61, 0.1);
     }
 
 </style>
-<div class="row " >
-    <div class="col-2 borderCustom" >
-        <component type="typeof(Filter)" render-mode="Static" />
-    </div>
+<div class="row">
+    
+    <div class="col-2 borderCustom1">
+		<div class="col">
+			<div class="row">
+				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-    <div class="container col-10 borderCustom1">
+				<div class="tabCustom row-cols-6">
+					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+
+				</div>
+
+			</div>
+
+			<div class="row mt-3">
+				<ii class="row-1 h6">Price</ii>
+
+				<div class="radioLayoutTabCustom row-cols-6">
+
+					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
+					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
+					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
+
+				</div>
+			</div>
+		</div>
+	</div> @*used to col-3 vs col-10*@
+
+    <div class="container col-10">
         <div class="row">
             <div class="col-md-12">
                 <div class="table-wrap">
                     <table class="table myaccordion table-hover" id="accordion">
-                        <thead>
+                        <thead  >
                             <tr>
                                 <th>#</th>
                                 <th class="button">Name</th>

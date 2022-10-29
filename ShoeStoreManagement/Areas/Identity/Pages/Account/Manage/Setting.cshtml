@@ -1,0 +1,80 @@
+﻿@page
+@model SettingModel
+@{
+    ViewData["Title"] = "Setting";
+    ViewData["ActivePage"] = ManageNavPages.Setting;
+}
+
+<h3 >@ViewData["Title"]</h3>
+
+<div class="col">
+    <div class="row-4 mt-5">
+        <ii class="h6 mt-3 ">Notication</ii>
+
+        <div class="row mt-2 ">
+            <strong class="col h5" > New customer added </strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+        <div class="row mt-3 ">
+            <strong class="col h5">Update customer</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+        <div class= "row mt-3 ">
+            <strong class="col h5" >Voucher expired</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+        <div class=" row mt-3 ">
+            <strong class="col h5">Out of stock</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+        
+    </div>
+
+    <div class="row-4 mt-5">
+        <ii class="h6 mt-3">Sound</ii>
+
+        <div class="row mt-2 ">
+            <strong class="col h5">Turn off all notifications</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+        <div class="row mt-3 ">
+            <strong class="col h5">Update state of customer</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+        <div class=" row mt-3 ">
+            <strong class="col h5">New customer added</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+    </div>
+
+    <div class="row-4 mt-5">
+        <ii class="h6 mt-3">Email notication</ii>
+
+        <div class="row mt-2">
+            <strong class="col h5">Turn off all notifications</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+        <div class="row mt-3">
+            <strong class="col h5">Update state of customer</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+        <div class=" row mt-3">
+            <strong class="col h5">New customer added</strong>
+            <p class="col-1 fa icon-plus" type="submit"></p>
+        </div>
+
+    </div>
+   
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
