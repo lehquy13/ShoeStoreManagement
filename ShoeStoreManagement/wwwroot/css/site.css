@@ -175,7 +175,72 @@
     border-bottom: 1px solid rgba(20, 33, 61, 0.1);
 }
 
+.borderCustom3 {
+    padding: 10px;
+    border-top: 1px solid rgba(20, 33, 61, 0.1);
+    border-right: 1px solid rgba(20, 33, 61, 0.1);
+    border-left: 1px solid rgba(20, 33, 61, 0.1);
+    border-bottom: 1px solid rgba(20, 33, 61, 0.1);
+}
+
 /*Form*/
 .form-floating {
     margin-top: 20px;
+}
+
+/*PAGINATION*/
+.pagination {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.pagination-itemlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.page-item {
+    color: #fff;
+    display: flex;
+}
+
+/*COUNTER*/
+.counter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px;
+    gap: 16px;
+    width: 188px;
+    height: 49px;
+    background-color: #E5E5E5;
+    margin-top: 10px;
+}
+
+.btn-counter {
+    border: none;
+    color: white;
+    width: 58px;
+    height: 49px;
+}
+
+.counter-text {
+    border: none;
+    color: black;
+    width: 22px;
+    height: 49px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 49px;
+}
+
+.label-setting {
+    font-weight: bold;
+    font-size: 14px;
 }

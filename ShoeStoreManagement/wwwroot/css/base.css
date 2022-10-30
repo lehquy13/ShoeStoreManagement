@@ -2,6 +2,10 @@
     width: 30%;
 }
 
+.w-60 {
+    width: 60%;
+}
+
 .w-65 {
     width: 65%;
 }
@@ -17,6 +21,11 @@
 .h-90 {
     height: 90% !important;
 }
+
+.ml-5{
+    margin-left: 5px;
+}
+
 
 /*BORDER*/
 .border-app {
@@ -98,4 +107,12 @@ label {
 /*DROPDOWN*/
 .dropdown-menu {
     min-width: auto;
+}
+
+.row {
+    margin-right: 0;
+}
+
+.padding-cart {
+    padding: 0px 80px 0px 80px;
 }
