@@ -1,1 +1,40 @@
-﻿
+﻿@{
+	ViewData["Title"] = "Order Page";
+}
+@using ShoeStoreManagement.Views.Shared.Components;
+
+<div class="row ">
+	<div class="col-3 borderCustom1">
+		<div class="col">
+			<div class="row">
+				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+
+				<div class="tabCustom row-cols-6">
+					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Waiting Confirm</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Delivering</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Completed</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Canceled</button>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="col-5 row borderCustom">
+		@for (var i = 0; i < 2; i++)
+		{
+			<component type="typeof(OrderItemCard)" render-mode="Static" />
+		}
+	</div>
+	
+	<div class="col-4 row borderCustom">
+		<component type="typeof(OrderCard)" render-mode="Static" />
+	</div>
+</div>
+
+
+
+<p>pagination</p>
+

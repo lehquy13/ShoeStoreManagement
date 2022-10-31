@@ -1,0 +1,121 @@
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary icon-plus rounded position-fixed bottom-0" data-toggle="modal" to data-target="#Modal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content w-auto px-3 py-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel" style="margin-left:auto;margin-right:auto">Add a new Voucher</h5>
+            </div>
+            <div class="modal-body p-0 mt-2" style="width: 800px; height: 400px">
+                <div class="row">
+                    <div class="col-sm d-flex flex-column gap-2">
+                        <div>
+                            <div>
+                                <label for="condition" class="d-block label-setting">Enter Condition</label>
+                                <div class="dropdown mt-2">
+                                    <button class="btn btn-for-dropdown dropdown-toggle w-100" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                    <div class="dropdown-menu" aria-labelledby="category">
+                                        <button class="dropdown-item">A</button>
+                                        <button class="dropdown-item">B</button>
+                                        <button class="dropdown-item">C</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <label for="start-date" class="d-block label-setting">Enter Start Date</label>
+                                <input id="start-date" class="w-100 mt-2" type="text" placeholder="start-date" />
+                            </div>
+                            <div class="mt-2">
+                                <label for="start-date" class="d-block label-setting">Enter Product Category Can Apply</label>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label ml-5" for="flexCheckDefault">
+                                        All
+                                    </label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label ml-5" for="flexCheckDefault">
+                                        Basic
+                                    </label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label ml-5" for="flexCheckDefault">
+                                        Retro
+                                    </label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                    <label class="form-check-label ml-5" for="flexCheckDefault">
+                                        Sweet
+                                    </label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                                    <label class="form-check-label ml-5" for="flexCheckChecked">
+                                        Street
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm d-flex flex-column">
+                        <label for="value" class="d-block label-setting">Enter Value</label>
+
+                        <div class="d-flex flex-row">
+                            <div class="dropdown w-100 mt-2" >
+                                <button class="btn btn-for-dropdown dropdown-toggle w-75" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                <div class="dropdown-menu" aria-labelledby="category">
+                                    <button class="dropdown-item">A</button>
+                                    <button class="dropdown-item">B</button>
+                                    <button class="dropdown-item">C</button>
+                                </div>
+                                <button type="button" class="btn btn-primary w-auto">Add new</button>
+                            </div>
+                        </div>  
+
+                        <div class="mt-2">
+                            <label for="value" class="d-block label-setting">Enter Expired Type</label>
+                            <button class="btn btn-for-dropdown dropdown-toggle w-100 mt-2" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                        </div>
+
+                        <div class="mt-2">
+                            <label for="expired-value" class="d-block label-setting">Enter Expired Value</label>
+                            <input id="expired-value" class="w-100 mt-2" type="text" placeholder="expired-value" />
+                        </div>
+
+                        <div class="mt-2">
+                            <label for="expired-value" class="d-block label-setting">Enter Expired Value</label>
+                            <div class="d-flex flex-row">
+                                <div class="dropdown w-100 mt-2">
+                                    <button class="btn btn-for-dropdown dropdown-toggle w-60" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                    <div class="dropdown-menu" aria-labelledby="category">
+                                        <button class="dropdown-item">A</button>
+                                        <button class="dropdown-item">B</button>
+                                        <button class="dropdown-item">C</button>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary w-auto">Auto - Generate</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+                <div>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

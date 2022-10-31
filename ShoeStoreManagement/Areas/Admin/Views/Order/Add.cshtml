@@ -1,0 +1,72 @@
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary icon-plus rounded position-fixed bottom-0" data-toggle="modal" to data-target="#Modal">
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content w-auto px-3 py-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel" style="margin-left:auto;margin-right:auto">Add a new Order</h5>
+            </div>
+            <div class="modal-body p-0 mt-2" style="width: 800px; height: 400px">
+                <div class="row">
+                    <div class="col-5 d-flex flex-column gap-2">
+                        <div class="d-flex flex-row">
+                            <h5 style="font-weight:bold; font-size:16px">Customer</h5>
+                            <button type="button" class="btn btn-primary " style="width:180px; margin-left:auto">Choose Customer -></button>
+                        </div>
+                        <div>
+                            <div>
+                                <label for="name" class="d-block label-setting">Enter Name</label>
+                                <input id="name" class="w-100 mt-1" type="text" placeholder="name" />
+                            </div>
+                            <div>
+                                <label for="address" class="d-block label-setting">Address</label>
+                                <input id="address" class="w-100 mt-1" type="text" placeholder="address" />
+                            </div>
+                            <div>
+                                <label for="phone" class="d-block label-setting m5">Phone</label>
+                                <input id="phone" class="w-100 mt-1" type="text" placeholder="phone" />
+                            </div>
+                            <div>
+                                <label for="email" class="d-block label-setting m5">Email</label>
+                                <input id="email" class="w-100 mt-1" type="email" placeholder="email" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-7 d-flex flex-column gap-2">
+                        <div class="d-flex flex-row">
+                            <h5 style="font-weight:bold; font-size:16px">Product</h5>
+                            <button type="button" class="btn btn-primary " style="width:120px; margin-left:auto">Add Items -></button>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <h5>Amounts</h5>
+                            <h5>3</h5>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h4 style="font-weight:bold">Total</h4>
+                            <h4 style="font-weight:bold">$60</h4>
+                        </div>
+
+                        <component type="typeof(CartItemCard)" render-mode="Static" />
+                        <component type="typeof(CartItemCard)" render-mode="Static" />
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+                <div>
+                    <button type="button" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
