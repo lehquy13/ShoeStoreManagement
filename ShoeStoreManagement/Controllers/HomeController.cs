@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Models;
 using System.Diagnostics;

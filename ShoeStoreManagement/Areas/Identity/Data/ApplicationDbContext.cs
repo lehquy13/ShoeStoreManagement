@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ShoeStoreManagement.Areas.Identity.Data;
-using ShoeStoreManagement.Models;
+using ShoeStoreManagement.Core.Models;
 
 namespace ShoeStoreManagement.Data;
 

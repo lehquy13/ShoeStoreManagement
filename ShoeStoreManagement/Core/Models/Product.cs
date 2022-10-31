@@ -1,15 +1,13 @@
-﻿
-
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShoeStoreManagement.Models
+namespace ShoeStoreManagement.Core.Models
 {
     public class Product
     {
         string productId = Guid.NewGuid().ToString();
-        string productName = String.Empty;
-        string productCategoryId = String.Empty;
+        string productName = string.Empty;
+        string productCategoryId = string.Empty;
         int productUnitPrice = 0;
         float productDiscount = 0;
 

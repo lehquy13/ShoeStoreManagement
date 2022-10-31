@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ShoeStoreManagement.Models
+namespace ShoeStoreManagement.Core.Models
 {
     public class ProductCategory
     {
         string productCategoryId = Guid.NewGuid().ToString();
-        string productCategoryName = String.Empty;
+        string productCategoryName = string.Empty;
 
         [Key]
         public string ProductCategoryId
         {
             get { return productCategoryId; }
-            set {  }
+            set { }
         }
         public string ProductCategoryName
         {

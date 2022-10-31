@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShoeStoreManagement.Models
+namespace ShoeStoreManagement.Core.Models
 {
     public class CartDetail
     {
-        string cartDetailId = String.Empty;
-        string cartId = String.Empty;
-        string productId = String.Empty;
+        string cartDetailId = string.Empty;
+        string cartId = string.Empty;
+        string productId = string.Empty;
         int cartDetailAmount = 0;
         int cartDetailTotalSum = 0;
         Product product = new Product();
@@ -16,7 +16,7 @@ namespace ShoeStoreManagement.Models
         public string CartDetailId
         {
             get { return cartDetailId; }
-            set {  }
+            set { }
         }
 
         [Required]

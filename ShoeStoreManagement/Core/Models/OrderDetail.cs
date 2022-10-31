@@ -2,13 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ShoeStoreManagement.Models
+namespace ShoeStoreManagement.Core.Models
 {
     public class OrderDetail
     {
         string orderDetailId = Guid.NewGuid().ToString();
-        string orderId = String.Empty;
-        string productId = String.Empty;
+        string orderId = string.Empty;
+        string productId = string.Empty;
         int payment = 0;
 
         [Key]
@@ -39,6 +39,6 @@ namespace ShoeStoreManagement.Models
             get { return payment; }
             set { payment = value; }
         }
-        
+
     }
 }
