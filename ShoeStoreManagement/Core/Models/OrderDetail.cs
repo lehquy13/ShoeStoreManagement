@@ -9,6 +9,8 @@ namespace ShoeStoreManagement.Core.Models
         string orderDetailId = Guid.NewGuid().ToString();
         string orderId = string.Empty;
         string productId = string.Empty;
+        Product? product;
+        int amount = 0;
         int payment = 0;
 
         [Key]
@@ -33,12 +35,24 @@ namespace ShoeStoreManagement.Core.Models
             get { return productId; }
             set { productId = value; }
         }
+        public Product? Product
+        {
+            get { return product; }
+            set { product = value; }
+        }
+        public int Amount
+        {
+            get { return amount; }
+            set { amount = value; }
+        }
 
         public int Payment
         {
             get { return payment; }
             set { payment = value; }
         }
+
+
 
     }
 }

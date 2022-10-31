@@ -2,12 +2,44 @@
 {
     public class Supplier
     {
-        public string? _id { get; private set; }
-        public string _name { get; set; } = string.Empty;
-        public string _address { get; set; } = string.Empty;
-        public string _products { get; set; } = string.Empty; // Type could change depends on how UI displays the suppliers
-        public string _phoneNumber { get; set; } = string.Empty;
-        public string _email { get; set; } = string.Empty;
-        public string _note { get; set; } = string.Empty;
+        string supplierid = Guid.NewGuid().ToString();
+        string name = string.Empty;
+        Address? address;
+        string phoneNumber = string.Empty;
+        string email = string.Empty;
+        string note = string.Empty;
+
+        public string Supplierid
+        {
+            get { return supplierid; }
+            set { }
+        }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+        public Address? Address
+        {
+            get { return address; }
+            set { address = value; }
+        }
+        public string PhoneNumber
+        {
+            get { return phoneNumber; }
+            set { phoneNumber = value; }
+        }
+        public string Email
+        {
+            get { return email; }
+            set { email = value; }
+        }
+        public string Note
+        {
+            get { return note; }
+            set { note = value; }
+        }
+
+
     }
 }

@@ -17,7 +17,7 @@ namespace ShoeStoreManagement.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -224,7 +224,42 @@ namespace ShoeStoreManagement.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Cart", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Address", b =>
+                {
+                    b.Property<string>("AddressId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddressDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Village")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
                 {
                     b.Property<string>("CartId")
                         .HasColumnType("nvarchar(450)");
@@ -241,15 +276,15 @@ namespace ShoeStoreManagement.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.CartDetail", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
                 {
                     b.Property<string>("CartDetailId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CartDetailAmount")
+                    b.Property<int>("Amount")
                         .HasColumnType("int");
 
                     b.Property<int>("CartDetailTotalSum")
@@ -269,13 +304,19 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartDetails", (string)null);
+                    b.ToTable("CartDetails");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Order", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Order", b =>
                 {
                     b.Property<string>("OrderId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DeliverryMethods")
+                        .HasColumnType("int");
+
+                    b.Property<long>("DeliveryCharge")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -291,6 +332,9 @@ namespace ShoeStoreManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -299,13 +343,16 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.OrderDetail", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.OrderDetail", b =>
                 {
                     b.Property<string>("OrderDetailId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<string>("OrderId")
                         .IsRequired()
@@ -316,16 +363,18 @@ namespace ShoeStoreManagement.Migrations
 
                     b.Property<string>("ProductId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderDetailId");
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Product", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Product", b =>
                 {
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
@@ -346,10 +395,10 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.ProductCategory", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.ProductCategory", b =>
                 {
                     b.Property<string>("ProductCategoryId")
                         .HasColumnType("nvarchar(450)");
@@ -360,31 +409,38 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("ProductCategoryId");
 
-                    b.ToTable("ProductCategories", (string)null);
+                    b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Shipment", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Supplier", b =>
                 {
-                    b.Property<string>("ShipmentId")
+                    b.Property<string>("Supplierid")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("OrderId")
+                    b.Property<string>("AddressId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("ShipmentDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ShipmentPrice")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShipmentState")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ShipmentId");
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("Shipments", (string)null);
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Supplierid");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -438,26 +494,33 @@ namespace ShoeStoreManagement.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Cart", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Address", b =>
+                {
+                    b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", null)
+                        .WithMany("addresses")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
                 {
                     b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", "User")
                         .WithOne("Cart")
-                        .HasForeignKey("ShoeStoreManagement.Models.Cart", "UserId")
+                        .HasForeignKey("ShoeStoreManagement.Core.Models.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.CartDetail", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
                 {
-                    b.HasOne("ShoeStoreManagement.Models.Cart", null)
+                    b.HasOne("ShoeStoreManagement.Core.Models.Cart", null)
                         .WithMany("CartDetails")
                         .HasForeignKey("CartId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ShoeStoreManagement.Models.Product", "Product")
+                    b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -466,7 +529,7 @@ namespace ShoeStoreManagement.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Order", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Order", b =>
                 {
                     b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", "User")
                         .WithMany()
@@ -477,27 +540,45 @@ namespace ShoeStoreManagement.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.OrderDetail", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.OrderDetail", b =>
                 {
-                    b.HasOne("ShoeStoreManagement.Models.Order", null)
+                    b.HasOne("ShoeStoreManagement.Core.Models.Order", null)
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Supplier", b =>
+                {
+                    b.HasOne("ShoeStoreManagement.Core.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", b =>
                 {
-                    b.Navigation("Cart")
-                        .IsRequired();
+                    b.Navigation("Cart");
+
+                    b.Navigation("addresses");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Cart", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
                 {
                     b.Navigation("CartDetails");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Models.Order", b =>
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Order", b =>
                 {
                     b.Navigation("OrderDetails");
                 });

@@ -8,9 +8,9 @@ namespace ShoeStoreManagement.Core.Models
         string cartDetailId = string.Empty;
         string cartId = string.Empty;
         string productId = string.Empty;
-        int cartDetailAmount = 0;
-        int cartDetailTotalSum = 0;
-        Product product = new Product();
+        Product? product;
+        int amount = 0;
+        int totalSum = 0;
 
         [Key]
         public string CartDetailId
@@ -35,21 +35,21 @@ namespace ShoeStoreManagement.Core.Models
             set { productId = value; }
         }
 
-        public Product Product
+        public Product? Product
         {
             get { return product; }
             set { product = value; }
         }
 
-        public int CartDetailAmount
+        public int Amount
         {
-            get { return cartDetailAmount; }
-            set { cartDetailAmount = value; }
+            get { return amount; }
+            set { amount = value; }
         }
         public int CartDetailTotalSum
         {
-            get { return cartDetailTotalSum; }
-            set { cartDetailTotalSum = value; }
+            get { return totalSum; }
+            set { totalSum = value; }
         }
     }
 }

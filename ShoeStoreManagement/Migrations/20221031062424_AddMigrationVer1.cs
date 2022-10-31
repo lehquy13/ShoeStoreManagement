@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ShoeStoreManagement.Migrations
 {
-    public partial class createDBSchema : Migration
+    public partial class AddMigrationVer1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -49,6 +49,33 @@ namespace ShoeStoreManagement.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    ProductCategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductCategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => x.ProductCategoryId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductCategoryId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductUnitPrice = table.Column<int>(type: "int", nullable: false),
+                    ProductDiscount = table.Column<float>(type: "real", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -67,6 +94,28 @@ namespace ShoeStoreManagement.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    AddressId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AddressDetail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Village = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                    table.ForeignKey(
+                        name: "FK_Addresses_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -154,6 +203,78 @@ namespace ShoeStoreManagement.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Cart",
+                columns: table => new
+                {
+                    CartId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CartTotalPrice = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cart", x => x.CartId);
+                    table.ForeignKey(
+                        name: "FK_Cart_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Supplierid = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AddressId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Note = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Supplierid);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "AddressId");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CartDetail",
+                columns: table => new
+                {
+                    CartDetailId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CartId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Amount = table.Column<int>(type: "int", nullable: false),
+                    CartDetailTotalSum = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CartDetail", x => x.CartDetailId);
+                    table.ForeignKey(
+                        name: "FK_CartDetail_Cart_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Cart",
+                        principalColumn: "CartId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CartDetail_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_ApplicationUserId",
+                table: "Addresses",
+                column: "ApplicationUserId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +313,27 @@ namespace ShoeStoreManagement.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Cart_UserId",
+                table: "Cart",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartDetail_CartId",
+                table: "CartDetail",
+                column: "CartId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CartDetail_ProductId",
+                table: "CartDetail",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Suppliers_AddressId",
+                table: "Suppliers",
+                column: "AddressId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,7 +354,25 @@ namespace ShoeStoreManagement.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CartDetail");
+
+            migrationBuilder.DropTable(
+                name: "ProductCategories");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Cart");
+
+            migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

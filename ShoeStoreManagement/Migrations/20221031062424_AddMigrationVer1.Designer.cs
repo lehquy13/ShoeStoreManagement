@@ -12,14 +12,14 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221007013503_createDBSchema")]
-    partial class createDBSchema
+    [Migration("20221031062424_AddMigrationVer1")]
+    partial class AddMigrationVer1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -226,6 +226,158 @@ namespace ShoeStoreManagement.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Address", b =>
+                {
+                    b.Property<string>("AddressId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddressDetail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Village")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AddressId");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
+                {
+                    b.Property<string>("CartId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CartTotalPrice")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CartId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Cart");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
+                {
+                    b.Property<string>("CartDetailId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CartDetailTotalSum")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CartId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("CartDetailId");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("CartDetail");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Product", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductCategoryId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float>("ProductDiscount")
+                        .HasColumnType("real");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductUnitPrice")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.ProductCategory", b =>
+                {
+                    b.Property<string>("ProductCategoryId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ProductCategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProductCategoryId");
+
+                    b.ToTable("ProductCategories");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Supplier", b =>
+                {
+                    b.Property<string>("Supplierid")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AddressId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Supplierid");
+
+                    b.HasIndex("AddressId");
+
+                    b.ToTable("Suppliers");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -275,6 +427,62 @@ namespace ShoeStoreManagement.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Address", b =>
+                {
+                    b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", null)
+                        .WithMany("addresses")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
+                {
+                    b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", "User")
+                        .WithOne("Cart")
+                        .HasForeignKey("ShoeStoreManagement.Core.Models.Cart", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
+                {
+                    b.HasOne("ShoeStoreManagement.Core.Models.Cart", null)
+                        .WithMany("CartDetails")
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Supplier", b =>
+                {
+                    b.HasOne("ShoeStoreManagement.Core.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", b =>
+                {
+                    b.Navigation("Cart");
+
+                    b.Navigation("addresses");
+                });
+
+            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
+                {
+                    b.Navigation("CartDetails");
                 });
 #pragma warning restore 612, 618
         }

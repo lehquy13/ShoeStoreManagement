@@ -89,4 +89,3 @@ public class Order
         set { orderNote = value; }
     }
 }
-}

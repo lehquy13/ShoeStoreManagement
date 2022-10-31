@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using ShoeStoreManagement.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using ShoeStoreManagement.Core.Models;
 
 namespace ShoeStoreManagement.Areas.Identity.Data;
 
@@ -12,6 +7,9 @@ namespace ShoeStoreManagement.Areas.Identity.Data;
 public class ApplicationUser : IdentityUser
 {
     // Add property for user
-    public Cart Cart { get; set; }
+    
+    public Cart? Cart { get; set; }
+
+    public List<Address> addresses { get; set; } = new List<Address>();
 }
 
