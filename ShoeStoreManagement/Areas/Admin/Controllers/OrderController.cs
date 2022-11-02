@@ -7,11 +7,23 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class OrderController : Controller
-	{
-		public IActionResult Index()
-		{
+    {
+        public IActionResult Index()
+        {
             //ViewBag.Order = true;
             return View();
-		}
-	}
+        }
+
+        public IActionResult Create()
+        {
+            //ViewBag.Order = true;
+            return View();
+        }
+
+        public IActionResult Edit()
+        {
+            //ViewBag.Order = true;
+            return View();
+        }
+    }
 }
