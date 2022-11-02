@@ -38,11 +38,14 @@ namespace ShoeStoreWebAPI.Controllers
             this._applicationDbContext.SaveChanges();
         }
 
-        //[HttpPut(Name = "PutOneCategory")] Becareful with this method, it wont work well for our logic
-        //public void UpdateCategory(string id,ProductCategory productCategory)
-        //{
-        //    _applicationDbContext.ProductCategories.Update(productCategory);
-        //}
+        [HttpPut(Name = "PutOneCategory")] //Becareful with this method, it wont work well for our logic
+        public void UpdateCategory(string id)
+        {
+            var obj = _applicationDbContext.Products.Find(id);
+            //obj.name = "";
+            if (obj != null)
+                _applicationDbContext.Products.Update(obj);
+        }
 
         [HttpDelete(Name = "PostOneProduct")]
         public void RemoveAProduct(string id)
