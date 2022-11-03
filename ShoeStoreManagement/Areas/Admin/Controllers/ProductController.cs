@@ -39,12 +39,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             for (int i = 0; i < products.Count; i++)
             {
                 products[i].SetCategory(productCategories);
-                List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllAsync(products[i].ProductId) as List<SizeDetail>;
+                List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllByIdAsync(products[i].ProductId).Result;
+                int totalNumberShoeOfThatSize = 0;
                 foreach (var obj in sizeList)
                 {
-                    products[i].Sizes.Add(obj.);
-
+                    products[i].Sizes.Add(obj.Size.ToString());
+                    totalNumberShoeOfThatSize += obj.Amount;
                 }
+                products[i].Amount = totalNumberShoeOfThatSize;
             }
         }
 

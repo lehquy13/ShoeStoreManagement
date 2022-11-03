@@ -18,7 +18,7 @@ namespace ShoeStoreManagement.Controllers
             _db = db;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
             ViewBag.Home = true;
 

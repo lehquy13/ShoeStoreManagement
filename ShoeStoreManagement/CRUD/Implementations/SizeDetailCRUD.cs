@@ -19,6 +19,13 @@ namespace ShoeStoreManagement.CRUD.Implementations
         {
             return await _applicationDBContext.SizeDetails.ToListAsync();
         }
+        public async Task<List<SizeDetail>> GetAllByIdAsync(string id)
+        {
+
+            return await _applicationDBContext.SizeDetails
+                .Include(b => b.ProductId == id)
+                .ToListAsync<SizeDetail>();
+        }
 
         public async Task<SizeDetail?> GetByIdAsync(string id)
         {
@@ -45,5 +52,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                 _applicationDBContext.SizeDetails.Remove(deteleSizeDetail);
             _applicationDBContext.SaveChanges();
         }
+
+        
     }
 }
