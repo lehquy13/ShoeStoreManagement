@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeStoreManagement.Data;
 
@@ -11,9 +12,10 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221102162148_AddMigrationVer2")]
+    partial class AddMigrationVer2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -379,14 +381,6 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductCategory")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProductCategoryId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -418,26 +412,6 @@ namespace ShoeStoreManagement.Migrations
                     b.HasKey("ProductCategoryId");
 
                     b.ToTable("ProductCategories");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.SizeDetail", b =>
-                {
-                    b.Property<string>("SizeDetailId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
-                    b.HasKey("SizeDetailId");
-
-                    b.ToTable("SizeDetails");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Supplier", b =>

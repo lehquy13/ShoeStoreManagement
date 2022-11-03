@@ -2,12 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Areas.Identity.Data;
+using ShoeStoreManagement.CRUD.Implementations;
+using ShoeStoreManagement.CRUD.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddServerSideBlazor();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-//builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -15,12 +17,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddScoped<IProductCRUD, ProductCRUD>();
 builder.Services.AddScoped<IProductCategoryCRUD, ProductCategoryCRUD>();
 builder.Services.AddScoped<ISizeDetailCRUD, SizeDetailCRUD>();
-builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
-builder.Services.AddScoped<ICartCRUD, CartCRUD>();
-builder.Services.AddScoped<ICartDetailCRUD, CartDetailCRUD>();
-builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
-builder.Services.AddScoped<IOrderDetailCRUD, OrderDetailCRUD>();
-builder.Services.AddScoped<ISupplierCRUD, SupplierCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
@@ -47,6 +43,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapBlazorHub();
     endpoints.MapControllerRoute(
         name: "Admin",
         pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
@@ -55,9 +52,6 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
     app.MapRazorPages();
-    //app.MapBlazorHub();
 });
-
-
 
 app.Run();
