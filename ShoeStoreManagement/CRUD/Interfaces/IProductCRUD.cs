@@ -11,8 +11,8 @@ namespace ShoeStoreManagement.CRUD.Interfaces
     {
         public Task<List<Product>> GetAllAsync();
         public Task<Product?> GetByIdAsync(string id);
-        public Task CreateAsync(Product productCategory);
+        public Task CreateAsync(Product product);
         public void Update(Product updateProduct);
-        public void RemoveAProduct(Product deteleProduct);
+        public void Remove(Product deteleProduct);
     }
 }

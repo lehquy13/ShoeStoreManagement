@@ -26,9 +26,9 @@ namespace ShoeStoreManagement.CRUD.Implementations
             return await _applicationDBContext.Products.FindAsync(id);
         }
 
-        public async Task CreateAsync(Product productCategory)
+        public async Task CreateAsync(Product product)
         {
-            await _applicationDBContext.Products.AddAsync(productCategory);
+            await _applicationDBContext.Products.AddAsync(product);
             _applicationDBContext.SaveChanges();
         }
 
@@ -40,7 +40,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
             _applicationDBContext.SaveChanges();
         }
 
-        public void RemoveAProduct(Product deteleProduct)
+        public void Remove(Product deteleProduct)
         {
             if (deteleProduct != null)
                 _applicationDBContext.Products.Remove(deteleProduct);

@@ -13,7 +13,12 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//add DI for CRUD
 builder.Services.AddScoped<IProductCRUD, ProductCRUD>();
+builder.Services.AddScoped<IProductCategoryCRUD, ProductCategoryCRUD>();
+
+
+
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
