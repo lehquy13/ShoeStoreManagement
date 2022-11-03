@@ -1,8 +1,9 @@
 ﻿@{
 	ViewData["Title"] = "Home Page";
+	List<Product> products = ViewData["products"] as List<Product> ?? throw new ArgumentException();
 }
 @using ShoeStoreManagement.Views.Shared.Components;
-
+@using ShoeStoreManagement.Core.Models;
 <div class="row ">
 	<div class="col-3 borderCustom1">
 		<div class="col">
@@ -34,7 +35,7 @@
 		</div>
 	</div>
 	<div class="col-9 row">
-		@for (var i = 0; i < 5; i++)
+		@foreach (var i in products)
 		{
 			<component type="typeof(ProductCard)" render-mode="Static" />
 		}
