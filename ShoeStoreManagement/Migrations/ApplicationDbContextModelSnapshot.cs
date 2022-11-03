@@ -379,6 +379,10 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProductCategoryId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
