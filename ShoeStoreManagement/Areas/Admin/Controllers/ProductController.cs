@@ -38,13 +38,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             products = _productCRUD.GetAllAsync().Result;
             for (int i = 0; i < products.Count; i++)
             {
-                products[i].SetCategory(productCategories);
-                List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllAsync(products[i].ProductId) as List<SizeDetail>;
-                foreach (var obj in sizeList)
-                {
-                    products[i].Sizes.Add(obj.);
-
-                }
+                //products[i].SetCategory(productCategories);
+                //List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllAsync(products[i].ProductId) as List<SizeDetail>;
+                
             }
         }
 
