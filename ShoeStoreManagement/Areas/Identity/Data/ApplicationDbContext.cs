@@ -26,7 +26,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<Product> Products { get; set; } = null!;
     public virtual DbSet<Address> Addresses { get; set; } = null!;
 
-
+    public virtual DbSet<SizeDetail> SizeDetails { get; set; } = null!;
     /// <summary>
     /// Migration ver2
     /// </summary>
