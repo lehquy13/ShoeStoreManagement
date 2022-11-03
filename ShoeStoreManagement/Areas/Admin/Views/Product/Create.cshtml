@@ -55,10 +55,8 @@
                     </div>
                 </div>
                 <div class="row d-flex justify-content-start mt-3 gx-1">
-                    <input type="image" class="img h-auto col-2" title="image" />
-                    <input type="image" class="img h-auto col-2" title="image"/>
-                    <input type="image" class="img h-auto col-2" title="image" />
-                    <input type="image" class="img h-auto col-2" title="image" />
+                    @*<input type="file" class="img h-auto col-2" title="image" id="inputGroupFile" />
+                    <img src="//placehold.it/140?text=IMAGE" class="img h-auto col-2" id="preview" />*@
                     @*<img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
                     <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
                     <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />*@
@@ -71,5 +69,27 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+
+        // input plugin
+        bsCustomFileInput.init();
+
+        // get file and preview image
+        $("#inputGroupFile").on('change', function () {
+            var input = $(this)[0];
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#preview').attr('src', e.target.result).fadeIn('slow');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        })
+
+    })
+
+</script>
 
 
