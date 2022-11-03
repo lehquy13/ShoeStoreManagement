@@ -1,7 +1,16 @@
-﻿@using ShoeStoreManagement.Models
+﻿@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web;
 
 <div class="counter">
     <button class="btn-counter" type="button" style="background-color:#14213D"> - </button>
-    <div class="counter-text">1</div>
-    <button class="btn-counter" type="button" style="background-color:#14213D"> + </button>
+    <div class="counter-text">@count</div>
+    <button class="btn-counter" type="button" @onclick="@(()=>increament())" style="background-color:#14213D"> + </button>
 </div>
+
+@code {
+    private int count = 1;
+
+	private void increament() {
+		count++;
+	}
+}

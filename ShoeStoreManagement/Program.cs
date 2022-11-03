@@ -6,8 +6,8 @@ using ShoeStoreManagement.Areas.Identity.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddServerSideBlazor();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-//builder.Services.AddServerSideBlazor();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -36,6 +36,7 @@ app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapBlazorHub();
     endpoints.MapControllerRoute(
         name: "Admin",
         pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}"
@@ -44,9 +45,6 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
     app.MapRazorPages();
-    //app.MapBlazorHub();
 });
-
-
 
 app.Run();
