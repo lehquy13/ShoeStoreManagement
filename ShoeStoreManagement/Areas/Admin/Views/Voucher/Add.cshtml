@@ -15,20 +15,18 @@
                 <div class="row">
                     <div class="col-sm d-flex flex-column gap-2">
                         <div>
-                            <div>
-                                <label for="condition" class="d-block label-setting">Enter Condition</label>
-                                <div class="dropdown mt-2">
-                                    <button class="btn btn-for-dropdown dropdown-toggle w-100" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                    <div class="dropdown-menu" aria-labelledby="category">
-                                        <button class="dropdown-item">A</button>
-                                        <button class="dropdown-item">B</button>
-                                        <button class="dropdown-item">C</button>
-                                    </div>
-                                </div>
+                            <div class="form-floating">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                    <option selected>Open this select menu</option>
+                                    <option value="1">One</option>
+                                    <option value="2">Two</option>
+                                    <option value="3">Three</option>
+                                </select>
+                                <label for="floatingSelect">Enter Condition</label>
                             </div>
-                            <div class="mt-2">
-                                <label for="start-date" class="d-block label-setting">Enter Start Date</label>
-                                <input id="start-date" class="w-100 mt-2" type="text" placeholder="start-date" />
+                            <div class="form-floating">
+                                <input type="date" class="form-control" id="floatingInput" placeholder="02-12-2022">
+                                <label for="floatingInput">Enter Start Date</label>
                             </div>
                             <div class="mt-2">
                                 <label for="start-date" class="d-block label-setting">Enter Product Category Can Apply</label>
@@ -69,41 +67,27 @@
                     <div class="col-sm d-flex flex-column">
                         <label for="value" class="d-block label-setting">Enter Value</label>
 
-                        <div class="d-flex flex-row">
-                            <div class="dropdown w-100 mt-2" >
-                                <button class="btn btn-for-dropdown dropdown-toggle w-75" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                <div class="dropdown-menu" aria-labelledby="category">
-                                    <button class="dropdown-item">A</button>
-                                    <button class="dropdown-item">B</button>
-                                    <button class="dropdown-item">C</button>
-                                </div>
-                                <button type="button" class="btn btn-primary w-auto">Add new</button>
-                            </div>
-                        </div>  
-
-                        <div class="mt-2">
-                            <label for="value" class="d-block label-setting">Enter Expired Type</label>
-                            <button class="btn btn-for-dropdown dropdown-toggle w-100 mt-2" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                        <div class="form-floating">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <label for="floatingSelect">Enter Value</label>
                         </div>
-
-                        <div class="mt-2">
-                            <label for="expired-value" class="d-block label-setting">Enter Expired Value</label>
-                            <input id="expired-value" class="w-100 mt-2" type="text" placeholder="expired-value" />
+                        <div class="form-floating">
+                            <input type="date" class="form-control" id="floatingInput" placeholder="02-12-2022">
+                            <label for="floatingInput">Enter Expired Type</label>
                         </div>
-
-                        <div class="mt-2">
-                            <label for="expired-value" class="d-block label-setting">Enter Expired Value</label>
-                            <div class="d-flex flex-row">
-                                <div class="dropdown w-100 mt-2">
-                                    <button class="btn btn-for-dropdown dropdown-toggle w-60" type="button" id="category" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                    <div class="dropdown-menu" aria-labelledby="category">
-                                        <button class="dropdown-item">A</button>
-                                        <button class="dropdown-item">B</button>
-                                        <button class="dropdown-item">C</button>
-                                    </div>
-                                    <button type="button" class="btn btn-secondary w-auto">Auto - Generate</button>
-                                </div>
-                            </div>
+                        <div class="form-floating">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                <option selected>Open this select menu</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <label for="floatingSelect">Enter Expired Value</label>
                         </div>
                     </div>
                 </div>

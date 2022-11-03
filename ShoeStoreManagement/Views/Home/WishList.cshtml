@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "WishList Page";
+	ViewData["Title"] = "WishList Page";
 }
 
 @using ShoeStoreManagement.Views.Shared.Components;
@@ -7,25 +7,26 @@
 @model List<Product>;
 
 <div class="row">
-    <div class="col-3">
-        <div class="row">
-            <ii class="row-1 h6">Category</ii>
+	<div class="col-3">
+		<div class="row">
+			<ii class="row-1 h6">Category</ii>
 
-            <div class="tabCustom row-cols-6">
-                <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
-            </div>
+			<div class="tabCustom row-cols-6">
+				<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+				<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
+				<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
+				<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
+				<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+			</div>
 
-        </div>
-    </div>
-    <div class="col-9 row">
-        @foreach(var item in Model) {
-            <component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item/>
-        }
-    </div>
+		</div>
+	</div>
+	<div class="col-9 row">
+		@*@foreach (var item in Model)
+		{
+			<component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item />
+		}*@
+	</div>
 </div>
 
 <p>pagination</p>

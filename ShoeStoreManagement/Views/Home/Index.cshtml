@@ -1,6 +1,6 @@
 ﻿@{
 	ViewData["Title"] = "Home Page";
-	List<Product> products = ViewData["products"] as List<Product> ?? throw new ArgumentException();
+	List<Product>? products = ViewData["products"] as List<Product> ?? null;
 }
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
@@ -37,9 +37,12 @@
 		</div>
 	</div>
 	<div class="col-9 row">
-		@foreach(var item in Model)
+		@if (products != null)
 		{
-			<component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item/>
+			@foreach (var item in Model)
+			{
+				<component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item />
+			}
 		}
 	</div>
 </div>

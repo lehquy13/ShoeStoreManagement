@@ -10,27 +10,17 @@ namespace ShoeStoreManagement.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly ApplicationDbContext _db;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _db = db;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public async Task<IActionResult> Index()
         {
             ViewBag.Home = true;
 
-            List<Product> products = await _db.Products.ToListAsync();
-
-
-            if (products == null)
-            {
-                return NotFound();
-            }
-
-            return View(products);
+            return View();
         }
 
         public IActionResult Privacy()
@@ -42,15 +32,7 @@ namespace ShoeStoreManagement.Controllers
         {
             ViewBag.WishList = true;
 
-            List<Product> products = await _db.Products.ToListAsync();
-
-
-            if (products == null)
-            {
-                return NotFound();
-            }
-
-            return View(products);
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

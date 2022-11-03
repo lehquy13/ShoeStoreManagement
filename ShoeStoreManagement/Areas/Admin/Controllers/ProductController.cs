@@ -57,5 +57,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             //ViewBag.Product = true;
             return View();
         }
+
+        public IActionResult Edit()
+        {
+            //ViewBag.Product = true;
+            return View();
+        }
     }
 }
