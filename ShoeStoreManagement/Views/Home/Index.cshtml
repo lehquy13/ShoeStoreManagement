@@ -4,6 +4,8 @@
 }
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
+@model List<Product>;
+
 <div class="row ">
 	<div class="col-3 borderCustom1">
 		<div class="col">
@@ -35,9 +37,9 @@
 		</div>
 	</div>
 	<div class="col-9 row">
-		@foreach (var i in products)
+		@foreach(var item in Model)
 		{
-			<component type="typeof(ProductCard)" render-mode="Static" />
+			<component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item/>
 		}
 	</div>
 </div>

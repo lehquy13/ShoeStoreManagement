@@ -2,6 +2,8 @@
 	ViewData["Title"] = "Order Page";
 }
 @using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Core.Models;
+@model List<Order>
 
 <div class="row ">
 	<div class="col-3 borderCustom1">
@@ -22,15 +24,10 @@
 		</div>
 	</div>
 
-	<div class="col-5 row borderCustom">
-		@for (var i = 0; i < 2; i++)
-		{
-			<component type="typeof(OrderItemCard)" render-mode="Static" />
+	<div class="col-9 row borderCustom">
+		@foreach(var item in Model) {
+			<component type="typeof(OrderCard)" render-mode="Static" param-order=@item />
 		}
-	</div>
-	
-	<div class="col-4 row borderCustom">
-		<component type="typeof(OrderCard)" render-mode="Static" />
 	</div>
 </div>
 

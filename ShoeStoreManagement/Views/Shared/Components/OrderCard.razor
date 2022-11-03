@@ -1,6 +1,14 @@
-﻿<div class="row col-9 border-1 border-app p-0 border">
+﻿@using ShoeStoreManagement.Core.Models
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web;
+
+<div class="row col-9 border-1 border-app p-0">
     <div class="col-8 p-0">
-        
+        @foreach (var item in order.OrderDetails)
+        {
+            @*<component type="typeof(OrderItemCard)" render-mode="Static" param-orderDetail='new OrderDetail() {Amount = 2, Payment = 40, Product = new Product(){ ProductName = "hihi", ProductUnitPrice = 20 }}' />*@
+            <component type="typeof(OrderItemCard)" render-mode="ServerPrerendered" param-orderDetail=@item />
+        }
     </div>
     <div class="col p-0 d-flex flex-column justify-content-between align-items-end p-3">
         <div class="caption">
@@ -8,11 +16,12 @@
         </div>
         <div class="d-flex align-items-end">
             <p class="h3">Total</p>
-            <p class="h2 text-dark ms-3">$80</p>
+            <p class="h2 text-dark ms-3">$@order.OrderTotalPayment</p>
         </div>
     </div>
 </div>
 
 @code {
-
+    [Parameter]
+    public Order order { get; set; } = null!;
 }
