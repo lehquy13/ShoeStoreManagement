@@ -23,7 +23,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
         {
 
             return await _applicationDBContext.SizeDetails
-                .Include(b => b.ProductId == id)
+                .Where(b => b.ProductId == id)
                 .ToListAsync<SizeDetail>();
         }
 

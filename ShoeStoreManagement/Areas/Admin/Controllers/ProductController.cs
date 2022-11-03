@@ -19,7 +19,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
         private List<ProductCategory>? productCategories;
-        private List<SizeDetail>? sizeDetails;
+        
         private List<Product>? products;
         public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD
             ,IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD)
@@ -34,7 +34,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private void Init()
         {
             productCategories = _productCategoryCRUD.GetAllAsync().Result;
-            //sizeDetails = _productCRUD.SizeDetails.ToList<SizeDetail>();
             products = _productCRUD.GetAllAsync().Result;
             for (int i = 0; i < products.Count; i++)
             {

@@ -35,7 +35,7 @@ namespace ShoeStoreManagement.Core.Models
         public string ProductCategoryId
         {
             get { return productCategoryId; }
-            private set { productCategoryId = value; }
+            set { productCategoryId = value; }
         }
         public string ProductCategory
         {
