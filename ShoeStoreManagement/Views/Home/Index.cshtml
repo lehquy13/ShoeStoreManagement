@@ -1,5 +1,6 @@
 ﻿@{
 	ViewData["Title"] = "Home Page";
+	List<Product> products = ViewData["products"] as List<Product> ?? throw new ArgumentException();
 }
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;

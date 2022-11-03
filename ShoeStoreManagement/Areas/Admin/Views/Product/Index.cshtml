@@ -1,9 +1,12 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-}
 @using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Core.Models;
+@{
+    List<Product> products = ViewData["products"] as List<Product> ?? throw new ArgumentException();
+    List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? throw new ArgumentException();
+}
 <style>
    
 
@@ -63,49 +66,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                <th scope="row">1</th>
-                                <td>Balenciaga Triple S</td>
-                                <td>$1000</td>
-                                <td>Black</td>
-                                <td>Dads shoe, Chunky, retro-styled</td>
-                                <td>12</td>
-                                @*                       <td>
+                            
+                            @for(var i = 0; i < products.Count; i++){
+                                <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                    <th scope="row">i++</th>
+                                    <td>@products[i].ProductName</td>
+                                    <td>@products[i].ProductUnitPrice</td>
+                                    <td>@products[i].Color</td>
+                                    <td>@products[i].ProductCategory</td>
+                                    <td>@products[i].ProductDiscount</td>
+                                    @*                       <td>
                                 <i class="fa" aria-hidden="true"></i>
                                 </td>*@
-                            </tr>
-                            @*<tr>
-                            <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
-                            </td>
-                            </tr>*@
-                            <tr data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="collapsed">
-                                <th scope="row">2</th>
-                                <td>UltraBoost 19</td>
-                                <td>$250</td>
-                                <td>Black</td>
-                                <td>Trainer</td>
-                                <td>12</td>
-                            </tr>
+                                </tr>
 
-                            <tr data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="collapsed">
-                                <th scope="row">3</th>
-                                <td>Adidas super star</td>
-                                <td>$40</td>
-                                <td>Black,White</td>
-                                <td>Sneaker</td>
-                                <td>12</td>
-                            </tr>
-
-                            <tr data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" class="collapsed">
-                                <th scope="row">4</th>
-                                <td>NMD_R1 SHOES</td>
-                                <td>$150</td>
-                                <td>Black</td>
-                                <td>Running, Originals</td>
-                                <td>12</td>
-
-                            </tr>
+                            }
+                            
 
                         </tbody>
                     </table>
