@@ -16,15 +16,18 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     {
         private readonly ILogger<ProductController> _logger;
         private readonly IProductCRUD _productCRUD;
+        private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
         private List<ProductCategory>? productCategories;
         private List<SizeDetail>? sizeDetails;
         private List<Product>? products;
-        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD,IProductCategoryCRUD productCategoryCRUD)
+        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD
+            ,IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD)
         {
             _logger = logger;
             _productCRUD = productCRUD;
             _productCategoryCRUD = productCategoryCRUD;
+            _sizeDetailCRUD = sizeDetailCRUD;
             Init();
         }
 
@@ -36,7 +39,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             for (int i = 0; i < products.Count; i++)
             {
                 products[i].SetCategory(productCategories);
-                List<SizeDetail> sizeList = _productCRUD.SizeDetails.Where(products[i].ProductId) as List<SizeDetail>;
+                List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllAsync(products[i].ProductId) as List<SizeDetail>;
                 foreach (var obj in sizeList)
                 {
                     products[i].Sizes.Add(obj.);
