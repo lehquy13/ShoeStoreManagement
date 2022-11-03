@@ -32,17 +32,19 @@
                     <label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
                     <label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-9 row">
-        @if (products != null)
-            foreach (var item in Model)
-            {
-                <component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item />
-            }
-    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-9 row">
+		@if (products != null)
+		{
+			@foreach (var item in Model)
+			{
+				<component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item />
+			}
+		}
+	</div>
 </div>
 
 

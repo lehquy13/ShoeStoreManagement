@@ -37,6 +37,7 @@ namespace ShoeStoreManagement.Core.Models
             get { return productCategoryId; }
             set { productCategoryId = value; }
         }
+        [NotMapped]
         public string ProductCategory
         {
             get { return productCategory; }
