@@ -4,7 +4,8 @@
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @{
-    List<Product> products = ViewData["products"] as List<Product> ?? throw new ArgumentException();
+    List<Product> products = ViewData["products"] as List<Product> ?? new List<Product>();
+    List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? throw new ArgumentException();
 }
 <style>
    
@@ -68,12 +69,13 @@
                             
                             @for(var i = 0; i < products.Count; i++){
                                 <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                    <th scope="row">i++</th>
+                                    
+                                    <th scope="row">@i</th>
                                     <td>@products[i].ProductName</td>
                                     <td>@products[i].ProductUnitPrice</td>
-                                    <td>Black</td>
-                                    <td>@products[i].ProductCategoryId</td>
-                                    <td>@products[i].ProductDiscount</td>
+                                    <td>@products[i].Color</td>
+                                    <td>@products[i].ProductCategory</td>
+                                    <td>@products[i].Amount</td>
                                     @*                       <td>
                                 <i class="fa" aria-hidden="true"></i>
                                 </td>*@
