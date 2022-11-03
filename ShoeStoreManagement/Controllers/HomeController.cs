@@ -18,9 +18,9 @@ namespace ShoeStoreManagement.Controllers
             _generalDBContext = generalDBContext;
         }
 
-        public async Task<IActionResult> IndexAsync()
+        public IActionResult Index()
         {
-            List<Product> products = await _generalDBContext.Products.ToListAsync();
+            List<Product> products =  _generalDBContext.Products.ToList();
             ViewData["products"] = products;
             ViewBag.Home = true;
             return View();
