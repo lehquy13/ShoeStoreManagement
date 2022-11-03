@@ -11,6 +11,17 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//add DI for CRUD
+builder.Services.AddScoped<IProductCRUD, ProductCRUD>();
+builder.Services.AddScoped<IProductCategoryCRUD, ProductCategoryCRUD>();
+builder.Services.AddScoped<ISizeDetailCRUD, SizeDetailCRUD>();
+builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
+builder.Services.AddScoped<ICartCRUD, CartCRUD>();
+builder.Services.AddScoped<ICartDetailCRUD, CartDetailCRUD>();
+builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
+builder.Services.AddScoped<IOrderDetailCRUD, OrderDetailCRUD>();
+builder.Services.AddScoped<ISupplierCRUD, SupplierCRUD>();
+
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
