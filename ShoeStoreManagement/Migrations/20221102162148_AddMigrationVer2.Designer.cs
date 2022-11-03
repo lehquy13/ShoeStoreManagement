@@ -12,7 +12,7 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221031063416_AddMigrationVer2")]
+    [Migration("20221102162148_AddMigrationVer2")]
     partial class AddMigrationVer2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
