@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ShoeStoreManagement.Areas.Admin.Controllers;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Data;
@@ -15,36 +16,35 @@ namespace ShoeStoreManagement.CRUD
             
         }
 
-        public List<Product> GetAllAsync()
+        public async Task<List<Product>> GetAllAsync()
         {
-            return _applicationDbContext.Products.ToList<Product>();
+            return  await _applicationDBContext.Products.ToListAsync<Product>();
         }
 
-        public Product? GetOneAsync(string id)
+        public async Task<Product?> GetByIdAsync(string id)
         {
-            return _applicationDbContext.Products.Find(id);
+            return await _applicationDBContext.Products.FindAsync(id);
         }
 
-        public void CreateACategory(Product productCategory)
+        public async Task CreateAsync(Product productCategory)
         {
-            _applicationDbContext.Products.Add(productCategory);
-            this._applicationDbContext.SaveChanges();
+            await _applicationDBContext.Products.AddAsync(productCategory);
+            this._applicationDBContext.SaveChanges();
         }
 
-        public void UpdateCategory(string id)
+        public void Update(Product updateProduct)
         {
-            var obj = _applicationDbContext.Products.Find(id);
-            //obj.name = "";
-            if (obj != null)
-                _applicationDbContext.Products.Update(obj);
+            
+            if (updateProduct != null)
+                _applicationDBContext.Products.Update(updateProduct);
+            this._applicationDBContext.SaveChanges();
         }
 
-        public void RemoveAProduct(string id)
+        public void RemoveAProduct(Product deteleProduct)
         {
-            var obj = _applicationDbContext.Products.Find(id);
-            if (obj != null)
-                _applicationDbContext.Products.Remove(obj);
-            this._applicationDbContext.SaveChanges();
+            if (deteleProduct != null)
+                _applicationDBContext.Products.Remove(deteleProduct);
+            this._applicationDBContext.SaveChanges();
         }
     }
 }
