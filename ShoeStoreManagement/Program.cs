@@ -16,7 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 //add DI for CRUD
 builder.Services.AddScoped<IProductCRUD, ProductCRUD>();
 builder.Services.AddScoped<IProductCategoryCRUD, ProductCategoryCRUD>();
-
+builder.Services.AddScoped<ISizeDetailCRUD, SizeDetailCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)

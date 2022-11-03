@@ -11,10 +11,12 @@ namespace ShoeStoreManagement.Core.Models
         string productName = string.Empty;
         string productCategoryId = string.Empty;
         string productCategory = string.Empty;
+       
         int productUnitPrice = 0;
         float productDiscount = 0;
         string color = string.Empty;
         List<string> sizes = new List<string>();
+        int amount = 0;
 
         [Key]
         public string ProductId
@@ -33,7 +35,7 @@ namespace ShoeStoreManagement.Core.Models
         public string ProductCategoryId
         {
             get { return productCategoryId; }
-            private set { productCategoryId = value; }
+            set { productCategoryId = value; }
         }
         public string ProductCategory
         {
@@ -63,6 +65,12 @@ namespace ShoeStoreManagement.Core.Models
             set { sizes = value; }
         }
 
+        [NotMapped]
+        public int Amount
+        {
+            get { return amount; }
+            set { amount = value; }
+        }
         public bool SetCategory(List<ProductCategory> strings)
         {
             foreach (var obj in strings)

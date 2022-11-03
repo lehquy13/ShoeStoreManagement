@@ -19,7 +19,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
         private List<ProductCategory>? productCategories;
-        private List<SizeDetail>? sizeDetails;
+        
         private List<Product>? products;
         public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD
             ,IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD)
@@ -34,13 +34,18 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private void Init()
         {
             productCategories = _productCategoryCRUD.GetAllAsync().Result;
-            //sizeDetails = _productCRUD.SizeDetails.ToList<SizeDetail>();
             products = _productCRUD.GetAllAsync().Result;
             for (int i = 0; i < products.Count; i++)
             {
-                //products[i].SetCategory(productCategories);
-                //List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllAsync(products[i].ProductId) as List<SizeDetail>;
-                
+                products[i].SetCategory(productCategories);
+                List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllByIdAsync(products[i].ProductId).Result;
+                int totalNumberShoeOfThatSize = 0;
+                foreach (var obj in sizeList)
+                {
+                    products[i].Sizes.Add(obj.Size.ToString());
+                    totalNumberShoeOfThatSize += obj.Amount;
+                }
+                products[i].Amount = totalNumberShoeOfThatSize;
             }
         }
 

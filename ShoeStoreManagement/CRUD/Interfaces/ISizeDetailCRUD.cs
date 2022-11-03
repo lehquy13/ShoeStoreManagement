@@ -10,6 +10,7 @@ namespace ShoeStoreManagement.CRUD.Interfaces
     public interface ISizeDetailCRUD
     {
         public Task<List<SizeDetail>> GetAllAsync();
+        public Task<List<SizeDetail>> GetAllByIdAsync(string id);
         public Task<SizeDetail?> GetByIdAsync(string id);
         public Task CreateAsync(SizeDetail sizeDetail);
         public void Update(SizeDetail updateSizeDetail);
