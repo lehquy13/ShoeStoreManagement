@@ -8,7 +8,7 @@
     List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? throw new ArgumentException();
 }
 <style>
-   
+
 
     table,
     thead {
@@ -18,43 +18,43 @@
 
 </style>
 <div class="row">
-    
+
     <div class="col-2 borderCustom1">
-		<div class="col">
-			<div class="row">
-				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+        <div class="col">
+            <div class="row">
+                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-				<div class="tabCustom row-cols-6">
-					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+                <div class="tabCustom row-cols-6">
+                    <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
 
-				</div>
+                </div>
 
-			</div>
+            </div>
 
-			<div class="row mt-3">
-				<ii class="row-1 h6">Price</ii>
+            <div class="row mt-3">
+                <ii class="row-1 h6">Price</ii>
 
-				<div class="radioLayoutTabCustom row-cols-6">
+                <div class="radioLayoutTabCustom row-cols-6">
 
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
+                    <label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
+                    <label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
+                    <label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
 
-				</div>
-			</div>
-		</div>
-	</div> @*used to col-3 vs col-10*@
+                </div>
+            </div>
+        </div>
+    </div> @*used to col-3 vs col-10*@
 
     <div class="container col-10">
         <div class="row">
             <div class="col-md-12">
                 <div class="table-wrap">
                     <table class="table myaccordion table-hover" id="accordion">
-                        <thead  >
+                        <thead>
                             <tr>
                                 <th>#</th>
                                 <th class="button">Name</th>
@@ -62,27 +62,30 @@
                                 <th class="button">Color</th>
                                 <th class="button">Category</th>
                                 <th class="button">Amount</th>
+                                <th class="button"></th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            
-                            @for(var i = 0; i < products.Count; i++){
+
+                            @for (var i = 0; i < products.Count; i++)
+                            {
                                 <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                    
+
                                     <th scope="row">@i</th>
                                     <td>@products[i].ProductName</td>
                                     <td>@products[i].ProductUnitPrice</td>
                                     <td>@products[i].Color</td>
                                     <td>@products[i].ProductCategory</td>
                                     <td>@products[i].Amount</td>
-                                    @*                       <td>
-                                <i class="fa" aria-hidden="true"></i>
-                                </td>*@
+                                    <td>
+                                        <partial name="Edit.cshtml" />
+
+                                    </td>
                                 </tr>
 
                             }
-                            
+
 
                         </tbody>
                     </table>
