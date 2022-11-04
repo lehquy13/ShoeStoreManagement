@@ -47,6 +47,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
                 products[i].Amount = totalNumberShoeOfThatSize;
             }
+           
         }
 
         public IActionResult Index()
@@ -66,6 +67,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public IActionResult Edit()
         {
             //ViewBag.Product = true;
+            ViewData["productCategories"] = productCategories;
+            ViewData["products"] = products;
             return View();
         }
     }
