@@ -116,3 +116,7 @@ label {
 .padding-cart {
     padding: 0px 80px 0px 80px;
 }
+
+.modal-backdrop {
+    background-color: #00000040
+}
