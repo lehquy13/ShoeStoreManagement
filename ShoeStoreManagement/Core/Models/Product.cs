@@ -22,7 +22,7 @@ namespace ShoeStoreManagement.Core.Models
         public string ProductId
         {
             get { return productId; }
-            private set { }
+            set  { productId = value; }
         }
         public string ProductName
         {

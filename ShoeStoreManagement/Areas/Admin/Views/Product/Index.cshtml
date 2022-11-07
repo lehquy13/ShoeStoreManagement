@@ -65,30 +65,45 @@
                         </thead>
                         <tbody>
                             @if (products != null)
-                                for (var i = 0; i < products.Count; i++)
+                            {
+                                var a = 0;
+                                foreach (var i in products)
                                 {
+                                    a++;
                                     <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
-                                        <th scope="row">@i</th>
-                                        <td>@products[i].ProductName</td>
-                                        <td>@products[i].ProductUnitPrice</td>
-                                        <td>@products[i].Color</td>
-                                        <td>@products[i].ProductCategory</td>
-                                        <td>@products[i].Amount</td>
+                                        <th scope="row">@a</th>
+                                        <td>@i.ProductName</td>
+                                        <td>@i.ProductUnitPrice</td>
+                                        <td>@i.Color</td>
+                                        <td>@i.ProductCategory</td>
+                                        <td>@i.Amount</td>
                                         <td>
-                                            @await Html.PartialAsync("Edit.cshtml",
-                                    products[i]
-                                    //,
-                                    //new ViewDataDictionary(ViewData)
-                                    //{
-                                    //    { "productCategories", productCategories }
-                                    //}
-                                    )
-                                            @*<partial name="Edit.cshtml" view-data="products[i]"/>*@
+                                            @*<a href="@Url.Action("Edit","Product",new {id = @i.ProductId})" data-toggle="modal" to data-target="#Modal" class="fas fa-edit"></a>*@
+                                            <a href="@Url.Action("Edit","Product",new {id = @i.ProductId})"  class="fas fa-edit"></a>
+
+                                            @*<a data-toggle="ajax-modal" to data-target="#Modal" href="@Url.Action($"Edit/{@i.ProductId}")" class=" fas fa-edit"></a>*@
+
+                                            @*<a asp-action="Edit" asp-controller="Product" asp-route-id=@i.ProductId class="fas fa-edit"> </a>*@
+
+
+                                            @*<a asp-controller="Product" asp-action="Edit" asp-route-id=@i.ProductId class="fas fa-edit">
+
+                                    </a>*@
+
+                                            @*<a href="@Url.Action($"Edit/{@i.ProductId}")" class=" fas fa-edit" data-toggle="modal" to data-target="#Modal" >
+                                    data-url="@Url.Action($"Edit/{i.ProductId}")" class=" fas fa-edit"
+                                    </a>*@
+
+
+
                                         </td>
                                     </tr>
 
                                 }
+                            }
+
+
 
 
                         </tbody>

@@ -6,11 +6,10 @@
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
     List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
 }
-<a class=" fas fa-edit" data-toggle="modal" to data-target="#Modal">
-</a>
-<div class="modal fade" id="Modal" role="dialog" tabindex="-1">
+
+<div class="modal-backdrop" id="Modal" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content w-auto px-3 py-3">
+        <form method="post" action="Admin/Product/Edit" class="modal-content w-auto px-3 py-3">
             <div class="modal-header">
                 <h5 class="modal-title" id="ModalLabel">Edit Product</h5>
             </div>
@@ -18,7 +17,11 @@
                 <div class="row">
                     <div class="col-6 d-flex flex-column gap-2">
                         <div class="form-floating">
-                            <input type="text" class="form-control" id="floatingInput" placeholder="Annanas A" asp-for="ProductName">
+                            <input type="text" class="form-control" placeholder="Annanas A" contenteditable="false" asp-for="ProductId">
+                            <label for="floatingInput">Id</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" class="form-control"  placeholder="Annanas A" asp-for="ProductName">
                             <label for="floatingInput">Enter Name</label>
                         </div>
                         <div class="form-floating">
@@ -32,10 +35,21 @@
                     </div>
                     <div class="col-6 d-grid gap-2">
                         <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="ProductCategoryId">
                                 @if(productCategories!=null){
+                                    int a = 1;
+                                    <option value="@Model.ProductCategoryId" selected="selected">
+                                        @Model.ProductCategory
+                                    </option>
                                     foreach(var obj in productCategories){
-                                        <option value="1">@obj.ProductCategoryName</option>
+                                        if(obj.ProductCategoryId != Model.ProductCategoryId)
+                                        {
+                                            a++;
+                                            <option value="@obj.ProductCategoryId">
+                                            @obj.ProductCategoryName
+                                            </option>
+
+                                       }
                                     }
                                 }
                                
@@ -70,10 +84,10 @@
             </div>
             <div class="modal-footer d-flex justify-content-between">
                 <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-                <button type="button" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" >Submit</button>
                 <button type="button" class="btn btn-secondary">Delete</button>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 

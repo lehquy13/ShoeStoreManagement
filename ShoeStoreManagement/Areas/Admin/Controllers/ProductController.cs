@@ -19,10 +19,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
         private List<ProductCategory>? productCategories;
-        
+
         private List<Product>? products;
         public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD
-            ,IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD)
+            , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD)
         {
             _logger = logger;
             _productCRUD = productCRUD;
@@ -47,7 +47,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
                 products[i].Amount = totalNumberShoeOfThatSize;
             }
-           
+
         }
 
         public IActionResult Index()
@@ -64,12 +64,32 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult Edit()
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string? id)
         {
-            //ViewBag.Product = true;
+            if (id == null || id == "")
+            {
+                return NotFound();
+            }
+            var obj = await _productCRUD.GetByIdAsync(id);
             ViewData["productCategories"] = productCategories;
-            ViewData["products"] = products;
-            return View();
+
+            return View(obj);
+        }
+
+        
+        [HttpPost]
+        public IActionResult Edit(Product obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _productCRUD.Update(obj);
+                
+  
+                return RedirectToAction("Index");
+            }
+            return View(obj);
         }
     }
 }
