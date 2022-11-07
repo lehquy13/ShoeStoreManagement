@@ -35,5 +35,8 @@ namespace ShoeStoreManagement.Core.Models
             get { return amount; }
             set { amount = value; }
         }
+
+        [NotMapped]
+        public bool IsChecked { get; set; } = false;
     }
 }
