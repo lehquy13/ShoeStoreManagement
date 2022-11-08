@@ -24,12 +24,14 @@ namespace ShoeStoreManagement.Core.Models
             set { productId = value; }
         }
 
+        [Range(35,45)]
         public int Size
         {
             get { return size; }
             set { size = value; }
         }
 
+        [Range(0, 99999)]
         public int Amount
         {
             get { return amount; }

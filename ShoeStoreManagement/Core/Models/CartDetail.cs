@@ -41,11 +41,14 @@ namespace ShoeStoreManagement.Core.Models
             set { product = value; }
         }
 
+        [Range(0, 99999)]
         public int Amount
         {
             get { return amount; }
             set { amount = value; }
         }
+
+        [Range(0, 99999)]
         public int CartDetailTotalSum
         {
             get { return totalSum; }

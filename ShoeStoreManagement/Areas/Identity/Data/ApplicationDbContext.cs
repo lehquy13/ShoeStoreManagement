@@ -37,4 +37,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
     public virtual DbSet<Order> Orders { get; set; } = null!;
     public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
+
+    public virtual DbSet<Voucher> Vouchers { get; set; } = null!;
 }

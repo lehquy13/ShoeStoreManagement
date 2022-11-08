@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeStoreManagement.Data;
 
@@ -11,9 +12,10 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221108030641_AddVoucherToDb")]
+    partial class AddVoucherToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,7 +258,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
@@ -276,7 +278,7 @@ namespace ShoeStoreManagement.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
@@ -304,7 +306,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartDetails", (string)null);
+                    b.ToTable("CartDetails");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Order", b =>
@@ -343,7 +345,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.OrderDetail", b =>
@@ -371,7 +373,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Product", b =>
@@ -403,7 +405,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.ProductCategory", b =>
@@ -417,7 +419,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("ProductCategoryId");
 
-                    b.ToTable("ProductCategories", (string)null);
+                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.SizeDetail", b =>
@@ -437,7 +439,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("SizeDetailId");
 
-                    b.ToTable("SizeDetails", (string)null);
+                    b.ToTable("SizeDetails");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Supplier", b =>
@@ -468,7 +470,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Suppliers", (string)null);
+                    b.ToTable("Suppliers");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Voucher", b =>
@@ -508,7 +510,7 @@ namespace ShoeStoreManagement.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vouchers", (string)null);
+                    b.ToTable("Vouchers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

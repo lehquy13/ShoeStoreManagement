@@ -17,6 +17,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 builder.Services.AddScoped<IProductCRUD, ProductCRUD>();
 builder.Services.AddScoped<IProductCategoryCRUD, ProductCategoryCRUD>();
 builder.Services.AddScoped<ISizeDetailCRUD, SizeDetailCRUD>();
+builder.Services.AddScoped<IApplicationUserCRUD, ApplicationUserCRUD>();
+builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
+builder.Services.AddScoped<ICartCRUD, CartCRUD>();
+builder.Services.AddScoped<IVoucherCRUD, VoucherCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)

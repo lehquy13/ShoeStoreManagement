@@ -1,4 +1,6 @@
-﻿namespace ShoeStoreManagement.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ShoeStoreManagement.Core.Models
 {
     public class Supplier
     {
@@ -24,16 +26,21 @@
             get { return address; }
             set { address = value; }
         }
+
+        [Phone]
         public string PhoneNumber
         {
             get { return phoneNumber; }
             set { phoneNumber = value; }
         }
+
+        [EmailAddress]
         public string Email
         {
             get { return email; }
             set { email = value; }
         }
+
         public string Note
         {
             get { return note; }

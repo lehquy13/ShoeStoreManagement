@@ -39,6 +39,7 @@ public class Cart
         set { cartDetails = value; }
     }
 
+    [Range(0, 99999)]
     public int CartTotalPrice
     {
         get { return cartTotalPrice; }

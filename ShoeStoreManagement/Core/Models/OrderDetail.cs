@@ -40,12 +40,15 @@ namespace ShoeStoreManagement.Core.Models
             get { return product; }
             set { product = value; }
         }
+
+        [Range(0, 99999)]
         public int Amount
         {
             get { return amount; }
             set { amount = value; }
         }
 
+        [Range(0, 99999)]
         public int Payment
         {
             get { return payment; }
