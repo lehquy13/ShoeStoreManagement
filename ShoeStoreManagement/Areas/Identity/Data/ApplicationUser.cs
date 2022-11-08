@@ -12,7 +12,7 @@ public class ApplicationUser : IdentityUser
     [NotMapped]
     public string singleAddress = string.Empty;
     [NotMapped]
-    public string selectedRole = string.Empty;
+    public string selectedRole { get; set; } = string.Empty;
     public Cart? Cart { get; set; }
 
     public List<Address> addresses { get; set; } = new List<Address>();
