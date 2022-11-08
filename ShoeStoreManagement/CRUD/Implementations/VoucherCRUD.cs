@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
@@ -23,7 +24,9 @@ namespace ShoeStoreManagement.CRUD.Implementations
 
 		public async Task<List<Voucher>> GetAllAsync()
 		{
-            return await _applicationDBContext.Vouchers.ToListAsync();
+            List<Voucher> vouchers = await _applicationDBContext.Vouchers.ToListAsync();
+
+            return vouchers;
         }
 
 		public async Task<Voucher?> GetByIdAsync(string id)

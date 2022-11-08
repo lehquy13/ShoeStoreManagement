@@ -22,15 +22,20 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private List<ApplicationUser>? applicationUsers;
         private List<string>? applicationuserRoles;
         private readonly RoleManager<IdentityRole> _rolemanager;
-        private List<string>? roles;
+        private List<string>? roles ;
+        private readonly IAddressCRUD _addressCRUD;
+        private readonly ICartCRUD _cartCRUD;
 
-
-        public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager, RoleManager<IdentityRole> roleManager)
+        public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager, 
+            RoleManager<IdentityRole> roleManager, IAddressCRUD addressCRUD, ICartCRUD cartCRUD)
         {
             _logger = logger;
             _applicationuserCRUD = applicationuserCRUD;
             _usermanager = usermanager;
             _rolemanager = roleManager;
+            _addressCRUD = addressCRUD;
+            _cartCRUD = cartCRUD;
+
             Init();
         }
         private void Init()
@@ -40,7 +45,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             foreach (ApplicationUser i in applicationUsers) {
                 var role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
 
-                if (role is not null) {
+                if (role != null) {
                     applicationuserRoles.Add(role);
                 }
             }
@@ -67,6 +72,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
+                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
                 _applicationuserCRUD.CreateAsync(obj);
 
                 return RedirectToAction("Index");

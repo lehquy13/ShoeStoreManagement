@@ -45,6 +45,8 @@ namespace ShoeStoreManagement.Core.Models
             get { return productCategory; }
             set { productCategory = value; }
         }
+
+        [Range(0, 99999)]
         public int ProductUnitPrice
         {
             get { return productUnitPrice; }

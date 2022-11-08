@@ -1,8 +1,10 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.Enums;
 
 @{
 	List<Voucher> vouchers = ViewData["vouchers"] as List<Voucher> ?? new List<Voucher>();
+
 }
 
 
@@ -44,15 +46,17 @@
 							@foreach (var i in vouchers)
 							{
 								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-									<th scope="row">@index++</th>
+									<th scope="row">@{
+											index++; 
+										} @index</th>
 									<td>@i.Code</td>
 									<td>@i.ConditionType</td>
 									<td>@i.Value</td>
-									<td>@i.CreateDate</td>
+									<td>@i.CreatedDate</td>
 									<td>@i.ExpiredValue</td>
 									<th>@i.State</th>
 									<td>
-										<partial name="Edit.cshtml" />
+										@*<partial name="Edit.cshtml" />*@
 									</td>
 								</tr>
 							}
@@ -70,4 +74,10 @@
 	</div>
 </div>
 
-<partial name="Add.cshtml"></partial>
+@{
+	Voucher voucher = new Voucher() {
+
+	};
+}
+
+<partial name="Create.cshtml" view-data="ViewData" model="voucher"></partial>

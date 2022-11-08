@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShoeStoreManagement.Core.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoeStoreManagement.Areas.Identity.Data;
 
@@ -7,9 +8,11 @@ namespace ShoeStoreManagement.Areas.Identity.Data;
 public class ApplicationUser : IdentityUser
 {
     // Add property for user
-    
+    DateTime createdDate = DateTime.Now;
+    [NotMapped]
+    public string singleAddress = string.Empty;
     public Cart? Cart { get; set; }
 
     public List<Address> addresses { get; set; } = new List<Address>();
+    public DateTime CreatedDate { get => createdDate; set => createdDate = value; }
 }
-

@@ -3,8 +3,6 @@
 
 @{
 	List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? new List<ProductCategory>();
-	//List<SizeDetail> listSizes = ViewData["listSize"] as List<SizeDetail> ?? new List<SizeDetail>();
-	//List<SelectListItem> list = ViewData["test"] as List<SelectListItem> ?? new List<SelectListItem>();
 	Model.Sizes = new List<SizeDetail>() {
 		new SizeDetail() {Size = 35, Amount = 0},
 		new SizeDetail() {Size = 36, Amount = 0},
@@ -63,7 +61,7 @@
 									<input type="number" asp-for="Amount" class="form-control" id="floatingInput" placeholder="1">
 									<label for="floatingInput">Enter Amount</label>
 								</div>
-								<div class="form-floating">
+								@*<div class="form-floating">
 									<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
 										<option selected>--</option>
 										<option value="1">One</option>
@@ -71,7 +69,7 @@
 										<option value="3">Three</option>
 									</select>
 									<label for="floatingSelect">Voucher</label>
-								</div>
+								</div>*@
 							</div>
 						</div>
 						<div class="row">

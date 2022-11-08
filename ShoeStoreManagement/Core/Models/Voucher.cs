@@ -13,7 +13,8 @@ namespace ShoeStoreManagement.Core.Models
         public string Code { get; set; } = string.Empty;
 
         [Required]
-        public DateTime CreateDate { get; set; } = DateTime.Now;
+        [DisplayFormat(DataFormatString = "{0:DD-MM-YYYY}")]
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
         public ExpireType ExpiredType { get; set; } = ExpireType.Amount;
 
@@ -25,6 +26,7 @@ namespace ShoeStoreManagement.Core.Models
 
         public ValueType ValueType { get; set; } = ValueType.Percent;
 
+        [Range(0, 200)]
         public int Value { get; set; } = 0;
 
         public VoucherStatus State { get; set; } = VoucherStatus.Using;

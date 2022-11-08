@@ -52,6 +52,7 @@ public class Order
         set { orderDetails = value; }
     }
 
+    [DisplayFormat(DataFormatString = "{0:DD-MM-YYYY}")]
     public DateTime OrderDate
     {
         get { return orderDate; }
@@ -73,6 +74,8 @@ public class Order
         get { return deliveryMethod; }
         set { deliveryMethod = value; }
     }
+
+    [Range(0, 99999)]
     public long DeliveryCharge
     {
         get { return deliveryCharge; }
