@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeStoreManagement.Controllers;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
+using System.Drawing;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -41,7 +42,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 int totalNumberShoeOfThatSize = 0;
                 foreach (var obj in sizeList)
                 {
-                    products[i].Sizes.Add(obj);
+                    obj.IsChecked = true;
+                    //products[i].Sizes.Add(obj);
+                    products[i].SizeHashtable.Add(obj.Size, obj.Amount);
+
                     totalNumberShoeOfThatSize += obj.Amount;
                 }
                 products[i].Amount = totalNumberShoeOfThatSize;
@@ -73,6 +77,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
             var obj = await _productCRUD.GetByIdAsync(id);
             ViewData["productCategories"] = productCategories;
+            return View(obj);
+        }
 
         [HttpPost]
         public IActionResult Create(Product obj)
@@ -93,22 +99,65 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(obj);
         }
 
-        public IActionResult Edit()
-            return View(obj);
-        }
 
-        
+
         [HttpPost]
         public IActionResult Edit(Product obj)
         {
             if (ModelState.IsValid)
             {
+                //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
+
+                for (var i = 35; i <= 44; i++)
+                {
+                    var tempDetail = _sizeDetailCRUD.GetProductSizeAsync(obj.ProductId, i).Result;
+                    int amount = Int32.Parse(obj.TestSizeAmount[i - 35]);
+                    var newDetail = new SizeDetail() { Amount = amount, Size = i, ProductId = obj.ProductId };
+
+                    if (tempDetail != null)
+                    {
+                        if (amount > 0 && amount != tempDetail.Amount)
+                        {
+                            _sizeDetailCRUD.Update(newDetail);
+
+                        }
+                        else if (amount == 0 || !obj.TestSize.Contains(i.ToString()))
+                        {
+                            _sizeDetailCRUD.Remove(newDetail);
+                        }
+
+                    }
+                    else
+                    {
+                        if (amount > 0)
+                            _sizeDetailCRUD.CreateAsync(new SizeDetail()
+                            {
+                                Size = i,
+                                Amount = amount,
+                                ProductId = obj.ProductId
+                            });
+                    }
+
+
+                }
                 _productCRUD.Update(obj);
-                
-  
+
+
                 return RedirectToAction("Index");
             }
             return View(obj);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var obj = await _productCRUD.GetByIdAsync(id);
+            if(obj != null)
+            {
+               _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
+                _productCRUD.Remove(obj);
+            }
+            return RedirectToAction("Index");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Core.Mapping;
@@ -12,7 +13,7 @@ namespace ShoeStoreManagement.Core.Models
         string productName = string.Empty;
         string productCategoryId = string.Empty;
         string productCategory = string.Empty;
-        string description = string.Empty;
+        string description = "";
 
         int productUnitPrice = 0;
         float productDiscount = 0;
@@ -70,10 +71,13 @@ namespace ShoeStoreManagement.Core.Models
         }
 
         [NotMapped]
-        public List<string> TestSize { get; set; }
+        public List<string> TestSize { get; set; } = new List<string>();
 
         [NotMapped]
-        public List<string> TestSizeAmount { get; set; }
+        public List<string> TestSizeAmount { get; set; } = new List<string>();
+
+        [NotMapped]
+        public Dictionary<int,int> SizeHashtable { get; set; } = new Dictionary<int, int>();
 
         [NotMapped]
         public int Amount

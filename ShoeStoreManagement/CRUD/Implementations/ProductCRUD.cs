@@ -46,6 +46,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                 result.ProductCategory = updateProduct.ProductCategory;
                 result.ProductCategoryId = updateProduct.ProductCategoryId;
                 result.Color = updateProduct.Color;
+                result.Description = updateProduct.Description;
                 
                 _applicationDBContext.SaveChanges();
             }
