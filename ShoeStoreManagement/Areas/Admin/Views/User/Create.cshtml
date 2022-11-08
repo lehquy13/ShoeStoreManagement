@@ -48,13 +48,17 @@
 								<input type="tel" asp-for="PhoneNumber" class="form-control" id="floatingInput" placeholder="094xxxxx73">
 								<label for="floatingInput">Email Phone</label>
 							</div>
+
 							<div class="form-floating">
-								@*Kiet's note: I cannot see the property Birthday or anything relative to it in the parent/child classes*@
+								<input type="tel" asp-for="SingleAddress" class="form-control" id="floatingInput" placeholder="address...">
+								<label for="floatingInput">Email Address</label>
+							</div>
+							@*
+							<div class="form-floating">
 								<input type="date" class="form-control" id="floatingInput" placeholder="02-02-2002">
 								<label for="floatingInput">Email Birthday</label>
 							</div>
 							<div class="form-floating">
-								@*Kiet's note: I cannot see the property Voucher or anything relative to it in the parent/child classes*@
 								<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
 									<option selected>Open this select menu</option>
 									<option value="1">One</option>
@@ -62,7 +66,7 @@
 									<option value="3">Three</option>
 								</select>
 								<label for="floatingSelect">Voucher</label>
-							</div>
+							</div>*@
 						</div>
 					</div>
 					<div class="row d-flex justify-content-start mt-3 gx-1">

@@ -23,14 +23,19 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private List<string>? applicationuserRoles;
         private readonly RoleManager<IdentityRole> _rolemanager;
         private List<string>? roles;
+        private readonly IAddressCRUD _addressCRUD;
+        private readonly ICartCRUD _cartCRUD;
 
-
-        public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager, RoleManager<IdentityRole> roleManager)
+        public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager, 
+            RoleManager<IdentityRole> roleManager, IAddressCRUD addressCRUD, ICartCRUD cartCRUD)
         {
             _logger = logger;
             _applicationuserCRUD = applicationuserCRUD;
             _usermanager = usermanager;
             _rolemanager = roleManager;
+            _addressCRUD = addressCRUD;
+            _cartCRUD = cartCRUD;
+
             Init();
         }
         private void Init()
@@ -67,6 +72,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
+                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
                 _applicationuserCRUD.CreateAsync(obj);
 
                 return RedirectToAction("Index");
