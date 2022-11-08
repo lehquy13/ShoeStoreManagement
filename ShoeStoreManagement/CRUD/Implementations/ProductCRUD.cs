@@ -13,7 +13,6 @@ namespace ShoeStoreManagement.CRUD.Implementations
         public ProductCRUD(ApplicationDbContext applicationDBContext)
         {
             _applicationDBContext = applicationDBContext;
-
         }
 
         public async Task<List<Product>> GetAllAsync()

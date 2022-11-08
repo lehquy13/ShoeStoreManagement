@@ -21,6 +21,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     /// Migration ver1
     /// </summary>
     /// 
+    public virtual DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
     public virtual DbSet<Supplier> Suppliers { get; set; } = null!;
     public virtual DbSet<ProductCategory> ProductCategories { get; set; } = null!;
     public virtual DbSet<Product> Products { get; set; } = null!;

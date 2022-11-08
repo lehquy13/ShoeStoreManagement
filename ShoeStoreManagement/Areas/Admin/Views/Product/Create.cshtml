@@ -1,76 +1,120 @@
-﻿<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary icon-plus rounded position-fixed bottom-0" data-toggle="modal" to data-target="#Modal">
+﻿@using ShoeStoreManagement.Core.Models;
+@model Product;
+
+@{
+	List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? new List<ProductCategory>();
+	//List<SizeDetail> listSizes = ViewData["listSize"] as List<SizeDetail> ?? new List<SizeDetail>();
+	//List<SelectListItem> list = ViewData["test"] as List<SelectListItem> ?? new List<SelectListItem>();
+	Model.Sizes = new List<SizeDetail>() {
+		new SizeDetail() {Size = 35, Amount = 0},
+		new SizeDetail() {Size = 36, Amount = 0},
+		new SizeDetail() {Size = 37, Amount = 0},
+		new SizeDetail() {Size = 38, Amount = 0},
+		new SizeDetail() {Size = 39, Amount = 0},
+		new SizeDetail() {Size = 40, Amount = 0},
+		new SizeDetail() {Size = 41, Amount = 0},
+		new SizeDetail() {Size = 42, Amount = 0},
+		new SizeDetail() {Size = 43, Amount = 0},
+		new SizeDetail() {Size = 44, Amount = 0},
+	};
+}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary icon-plus rounded position-fixed bottom-0" data-toggle="modal" to data-target="#CModal">
 </button>
 
 <!-- Modal -->
-<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content w-auto px-3 py-3">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Add new Product</h5>
-            </div>
-            <div class="modal-body p-0 mt-2" style="width: 550px">
-                <div class="row">
-                    <div class="col-6 d-flex flex-column gap-2">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="floatingInput" placeholder="Annanas A">
-                            <label for="floatingInput">Enter Name</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="floatingInput" placeholder="Black">
-                            <label for="floatingInput">Enter Color</label>
-                        </div>
-                        <div class="form-floating">
-                            <textarea class="form-control w-90" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-                            <label for="floatingTextarea">Enter Descripiton</label>
-                        </div>
-                    </div>
-                    <div class="col-6 d-grid gap-2">
-                        <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                            <label for="floatingSelect">Category</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="floatingInput" placeholder="$20">
-                            <label for="floatingInput">Enter Price</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="floatingInput" placeholder="1">
-                            <label for="floatingInput">Enter Amount</label>
-                        </div>
-                        <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                            <label for="floatingSelect">Voucher</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row d-flex justify-content-start mt-3 gx-1">
-                    @*<input type="file" class="img h-auto col-2" title="image" id="inputGroupFile" />
-                    <img src="//placehold.it/140?text=IMAGE" class="img h-auto col-2" id="preview" />*@
-                    @*<img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
-                    <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
-                    <img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />*@
-                </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-                <button type="button" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </div>
+<div class="modal fade" id="CModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+		<form method="post" action="Admin/Product/Create" class="modal-content w-auto px-3 py-3">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ModalLabel">Add new Product</h5>
+			</div>
+			<div class="modal-body p-0 mt-2" style="width: 850px">
+				<div class="row">
+					<div class="col-8" style="height:fit-content">
+						<div class="row">
+							<div class="col d-flex flex-column gap-2">
+								<div class="form-floating">
+									<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
+									<label for="floatingInput">Enter Name</label>
+								</div>
+								<div class="form-floating">
+									<input type="text" asp-for="Color" class="form-control" id="floatingInput" placeholder="Black">
+									<label for="floatingInput">Enter Color</label>
+								</div>
+								<div class="form-floating flex-grow-1">
+									<textarea class="form-control h-100" asp-for="Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+									<label for="floatingTextarea">Enter Descripiton</label>
+								</div>
+							</div>
+							<div class="col d-grid gap-2">
+								<div class="form-floating">
+									<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
+										<option selected>--</option>
+									</select>
+									<label for="selectCategory">Category</label>
+								</div>
+								<div class="form-floating">
+									<input type="number" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
+									<label for="floatingInput">Enter Price</label>
+								</div>
+								<div class="form-floating">
+									<input type="number" asp-for="Amount" class="form-control" id="floatingInput" placeholder="1">
+									<label for="floatingInput">Enter Amount</label>
+								</div>
+								<div class="form-floating">
+									<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+										<option selected>--</option>
+										<option value="1">One</option>
+										<option value="2">Two</option>
+										<option value="3">Three</option>
+									</select>
+									<label for="floatingSelect">Voucher</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<img src="image/shoe.jpg" class="img h-auto col-4" alt="image" />
+						</div>
+					</div>
+					<div class="col-4">
+						<div class="form-group">
+							@foreach (var i in Model.Sizes)
+							{
+								<div class="form-check mt-2">
+									<input class="form-check-input" type="checkbox" value="@i.Size" name="TestSize" id="checkbox_@i.Size" checked="@i.IsChecked" />
+									<label class="form-check-label ml-5 d-flex align-items-center" for="@i.Size">
+										@i.Size
+										<input type="number" value="@i.Amount" name="TestSizeAmount" id="input_@i.Amount" class="form-control ms-2" />
+									</label>
+								</div>
+							}
+						</div>
+
+					</div>
+				</div>
+				<div class="row mt-2">
+				</div>
+				<div class="row d-flex justify-content-start mt-3 gx-1">
+
+					@*<input type="file" class="img h-auto col-2" title="image" id="inputGroupFile" />
+					<img src="//placehold.it/140?text=IMAGE" class="img h-auto col-2" id="preview" />*@
+					@*<img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
+					<img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />
+					<img src="image/shoe.jpg" class="img h-auto col-2" alt="image" />*@
+
+				</div>
+			</div>
+			<div class="modal-footer d-flex justify-content-between">
+				<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		</form>
+	</div>
 </div>
 
-<script>
+@*<script>
     $(document).ready(function () {
 
         // input plugin
@@ -90,6 +134,4 @@
 
     })
 
-</script>
-
-
+</script>*@

@@ -15,5 +15,5 @@ namespace ShoeStoreManagement.CRUD.Interfaces
         public Task CreateAsync(SizeDetail sizeDetail);
         public void Update(SizeDetail updateSizeDetail);
         public void Remove(SizeDetail deteleSizeDetail);
-    }
+	}
 }

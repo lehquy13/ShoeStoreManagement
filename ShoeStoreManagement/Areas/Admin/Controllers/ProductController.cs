@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeStoreManagement.Controllers;
 using ShoeStoreManagement.Core.Models;
-using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
-using ShoeStoreManagement.Data;
-using System.Data;
-using System.Linq;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -19,6 +16,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
         private List<ProductCategory>? productCategories;
+        private List<SizeDetail>? sizes;
+        private IList<SelectListItem>? test;
 
         private List<Product>? products;
         public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD
@@ -42,7 +41,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 int totalNumberShoeOfThatSize = 0;
                 foreach (var obj in sizeList)
                 {
-                    products[i].Sizes.Add(obj.Size.ToString());
+                    products[i].Sizes.Add(obj);
                     totalNumberShoeOfThatSize += obj.Amount;
                 }
                 products[i].Amount = totalNumberShoeOfThatSize;
@@ -55,12 +54,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewBag.Product = true;
             ViewData["productCategories"] = productCategories;
             ViewData["products"] = products;
+            ViewData["test"] = test;
             return View();
         }
 
         public IActionResult Create()
         {
-            //ViewBag.Product = true;
             return View();
         }
 
@@ -75,6 +74,26 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             var obj = await _productCRUD.GetByIdAsync(id);
             ViewData["productCategories"] = productCategories;
 
+        [HttpPost]
+        public IActionResult Create(Product obj)
+        {
+            if (ModelState.IsValid)
+            {
+                var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
+
+                for (var i = 0; i < obj.TestSize.Count; i++)
+                {
+                    _sizeDetailCRUD.CreateAsync(new SizeDetail() { Size = int.Parse(obj.TestSize[i]), Amount = int.Parse(temp[i]), ProductId = obj.ProductId });
+                }
+
+                _productCRUD.CreateAsync(obj);
+                TempData["success"] = "Category is Created Successfully!!";
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
+
+        public IActionResult Edit()
             return View(obj);
         }
 

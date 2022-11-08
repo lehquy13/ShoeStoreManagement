@@ -1,4 +1,10 @@
-﻿<!-- Modal -->
+﻿<!-- Modal -->@using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Core.Models;
+@model Product
+@{
+    List<Product>? products = ViewData["products"] as List<Product> ?? null;
+    List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
+}
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @model Product

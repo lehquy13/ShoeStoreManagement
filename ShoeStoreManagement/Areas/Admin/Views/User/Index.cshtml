@@ -1,5 +1,12 @@
-﻿@using ShoeStoreManagement.Views.Shared.Components;
-@*CUSTOMER*@
+﻿@*CUSTOMER*@
+@using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Areas.Identity.Data
+@{
+  List<ApplicationUser> users = ViewData["applicationUser"] as List<ApplicationUser> ?? new List<ApplicationUser>();
+  List<string> roles = ViewData["userRoles"] as List<string> ?? new List<string>();
+}
+
 <div class="row borderCustom">
     <div class="col-2 borderCustom1">
             <div class="row">
@@ -32,6 +39,19 @@
                             </tr>
                         </thead>
                         <tbody>
+                          @for(var i = 0; i < users.Count; i++){
+                                <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                    
+                                    <th scope="row">@i</th>
+                                    <td>@users[i].UserName</td>
+                                    <td>@users[i].Email</td>
+                                    <td>@users[i].Email</td>
+                                    <td>@users[i].Email</td>
+                                    <td>@users[i].Email</td>
+                                    @*                       <td>
+                                <i class="fa" aria-hidden="true"></i>
+                                </td>*@
+                                </tr>}
                             <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
                                 <th scope="row">1</th>
                                 <td>Hoang Le</td>

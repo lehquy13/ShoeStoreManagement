@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Core.Mapping;
@@ -11,11 +12,12 @@ namespace ShoeStoreManagement.Core.Models
         string productName = string.Empty;
         string productCategoryId = string.Empty;
         string productCategory = string.Empty;
-       
+        string description = string.Empty;
+
         int productUnitPrice = 0;
         float productDiscount = 0;
         string color = string.Empty;
-        List<string> sizes = new List<string>();
+        List<SizeDetail> sizes = new List<SizeDetail>() { };
         int amount = 0;
 
         [Key]
@@ -53,18 +55,25 @@ namespace ShoeStoreManagement.Core.Models
             get { return productDiscount; }
             set { productDiscount = value; }
         }
-       
+
         public string Color
         {
             get { return color; }
             set { color = value; }
         }
+
         [NotMapped]
-        public List<string> Sizes
+        public List<SizeDetail> Sizes
         {
             get { return sizes; }
             set { sizes = value; }
         }
+
+        [NotMapped]
+        public List<string> TestSize { get; set; }
+
+        [NotMapped]
+        public List<string> TestSizeAmount { get; set; }
 
         [NotMapped]
         public int Amount
@@ -76,13 +85,19 @@ namespace ShoeStoreManagement.Core.Models
         {
             foreach (var obj in strings)
             {
-                if(this.ProductCategoryId == obj.ProductCategoryId)
+                if (this.ProductCategoryId == obj.ProductCategoryId)
                 {
                     this.ProductCategory = obj.ProductCategoryName;
                     return true;
                 }
             }
             return false;
+        }
+
+        public string Description
+        {
+            get { return description; }
+            set { description = value; }
         }
 
     }
