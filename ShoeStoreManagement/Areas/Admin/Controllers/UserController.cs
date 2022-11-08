@@ -22,7 +22,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private List<ApplicationUser>? applicationUsers;
         private List<string>? applicationuserRoles;
         private readonly RoleManager<IdentityRole> _rolemanager;
-        private List<string>? roles;
+        private List<string>? roles ;
         private readonly IAddressCRUD _addressCRUD;
         private readonly ICartCRUD _cartCRUD;
 
@@ -45,7 +45,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             foreach (ApplicationUser i in applicationUsers) {
                 var role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
 
-                if (role is not null) {
+                if (role != null) {
                     applicationuserRoles.Add(role);
                 }
             }
@@ -73,7 +73,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
-                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
+                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
                 _applicationuserCRUD.CreateAsync(obj);
 
                 return RedirectToAction("Index");
