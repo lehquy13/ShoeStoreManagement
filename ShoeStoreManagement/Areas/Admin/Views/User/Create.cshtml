@@ -3,7 +3,7 @@
 @model ApplicationUser;
 
 @{
-	List<string> allRoles = ViewData["allRoles"] as List<string> ?? new List<string>();
+	List<IdentityRole> allRoles = ViewData["allRoles"] as List<IdentityRole> ?? new List<IdentityRole>();
 }
 
 <!-- Button trigger modal -->
@@ -13,7 +13,7 @@
 <!-- Modal -->
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
-		<form method="post" action="Admin/Product/Create" class="modal-content w-auto px-3 py-3">
+		<form method="post" action="Admin/User/Create" class="modal-content w-auto px-3 py-3">
 			<div class="modal-content w-auto px-3 py-3">
 				<div class="modal-header">
 					<h5 class="modal-title" id="ModalLabel">Add new User</h5>
@@ -23,11 +23,11 @@
 						<div class="col-6 d-flex flex-column gap-2">
 							<div class="form-floating">
 								<input type="text" asp-for="UserName" class="form-control" id="floatingInput" placeholder="name">
-								<label for="floatingInput">Email Name</label>
+								<label for="floatingInput">Name</label>
 							</div>
 							<div class="form-floating">
 								<input type="email" asp-for="Email" class="form-control" id="floatingInput" placeholder="abc@gm.uit.edu.vn">
-								<label for="floatingInput">Email Email</label>
+								<label for="floatingInput">Email</label>
 							</div>
 							<div class="flex-grow-1">
 								@*<img src="image/shoe.jpg" class="img h-auto w-65" alt="image" />*@
@@ -36,22 +36,18 @@
 						</div>
 						<div class="col-6 d-grid gap-2">
 							<div class="form-floating">
-								<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-									<option selected>Open this select menu</option>
-									@foreach (string i in allRoles) {
-										<option value="i">i</option>
-									}
+								<select class="form-select" asp-for="selectedRole" asp-items="@(new SelectList(allRoles, "Name", "Name"))" id="floatingSelect" aria-label="Floating label select example">
 								</select>
-								<label for="floatingSelect">Enter Role</label>
+								<label for="floatingSelect">Role</label>
 							</div>
 							<div class="form-floating">
 								<input type="tel" asp-for="PhoneNumber" class="form-control" id="floatingInput" placeholder="094xxxxx73">
-								<label for="floatingInput">Email Phone</label>
+								<label for="floatingInput">Phone</label>
 							</div>
 
 							<div class="form-floating">
 								<input type="tel" asp-for="singleAddress" class="form-control" id="floatingInput" placeholder="address...">
-								<label for="floatingInput">Email Address</label>
+								<label for="floatingInput">Address</label>
 							</div>
 							@*
 							<div class="form-floating">
@@ -74,7 +70,7 @@
 				</div>
 				<div class="modal-footer d-flex justify-content-between">
 					<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-					<button type="button" class="btn btn-primary">Submit</button>
+					<button type="submit" class="btn btn-primary">Submit</button>
 				</div>
 			</div>
 		</form>

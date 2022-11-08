@@ -11,6 +11,8 @@ public class ApplicationUser : IdentityUser
     DateTime createdDate = DateTime.Now;
     [NotMapped]
     public string singleAddress = string.Empty;
+    [NotMapped]
+    public string selectedRole = string.Empty;
     public Cart? Cart { get; set; }
 
     public List<Address> addresses { get; set; } = new List<Address>();

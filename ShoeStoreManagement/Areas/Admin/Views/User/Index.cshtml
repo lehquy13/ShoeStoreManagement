@@ -39,15 +39,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                          @for(var i = 0; i < users.Count; i++){
+                          @for(var i = 1; i <= users.Count; i++){
                                 <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
                                     
                                     <th scope="row">@i</th>
-                                    <td>@users[i].UserName</td>
-                                    <td>@users[i].Email</td>
-                                    <td>@users[i].Email</td>
-                                    <td>@users[i].CreatedDate</td>
-                                    <td>@roles[i]</td>
+                                    <td>@users[i-1].UserName</td>
+                                    <td>@users[i-1].Email</td>
+                                    <td>@users[i-1].Email</td>
+                                    <td>@users[i-1].CreatedDate</td>
+                                    <td>@users[i-1].selectedRole</td>
                                     @*                       <td>
                                 <i class="fa" aria-hidden="true"></i>
                                 </td>*@
