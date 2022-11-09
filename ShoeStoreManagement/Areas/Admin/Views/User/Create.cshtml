@@ -36,7 +36,7 @@
 						</div>
 						<div class="col-6 d-grid gap-2">
 							<div class="form-floating">
-								<select class="form-select" asp-for="selectedRole" asp-items="@(new SelectList(allRoles))" id="floatingSelect" aria-label="Floating label select example">
+								<select class="form-select" asp-for="selectedRole" asp-items="@(new SelectList(allRoles, "Name", "Name"))" id="floatingSelect" aria-label="Floating label select example">
 									<option selected>--</option>
 								</select>
 								<label for="floatingSelect">Role</label>

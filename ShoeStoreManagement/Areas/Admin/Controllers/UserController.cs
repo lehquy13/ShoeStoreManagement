@@ -9,6 +9,7 @@ using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
 using System.Data;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -45,8 +46,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             roles = new List<IdentityRole>();
 
             foreach (ApplicationUser i in applicationUsers) {
-                //string role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
-                string role = "a";
+                string role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
+                //string role = "a";
                 if (!string.IsNullOrEmpty(role)) {
                     applicationuserRoles.Add(role);
                 }
@@ -69,14 +70,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             // Haven't done with user creating conditions
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && obj.selectedRole != string.Empty)
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
                 _applicationuserCRUD.CreateAsync(obj);
-                
-                _usermanager.AddToRoleAsync(obj, obj.selectedRole);
-                
+
+                _usermanager.AddToRoleAsync(obj, obj.selectedRole).Wait();
                 return RedirectToAction("Index");
             }
             return View(obj);
