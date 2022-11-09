@@ -9,6 +9,7 @@ using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
 using System.Data;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -22,7 +23,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private List<ApplicationUser>? applicationUsers;
         private List<string>? applicationuserRoles;
         private readonly RoleManager<IdentityRole> _rolemanager;
-        private List<string>? roles ;
+        private List<IdentityRole>? roles ;
         private readonly IAddressCRUD _addressCRUD;
         private readonly ICartCRUD _cartCRUD;
 
@@ -41,20 +42,18 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private void Init()
         {
             applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+            applicationuserRoles = new List<string>();
+            roles = new List<IdentityRole>();
 
             foreach (ApplicationUser i in applicationUsers) {
-                var role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
-
-                if (role != null) {
+                string role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
+                //string role = "a";
+                if (!string.IsNullOrEmpty(role)) {
                     applicationuserRoles.Add(role);
                 }
             }
-            
-            var roleList = _rolemanager.Roles.ToList();
-            foreach (IdentityRole i in roleList)
-            {
-                roles.Add(i.Name);
-            }
+
+            roles = _rolemanager.Roles.ToList();
         }
 
         public IActionResult Index()
@@ -66,16 +65,18 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult Create(ApplicationUser obj)
         {
             // Haven't done with user creating conditions
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && obj.selectedRole != string.Empty)
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
                 _applicationuserCRUD.CreateAsync(obj);
 
+                _usermanager.AddToRoleAsync(obj, obj.selectedRole).Wait();
                 return RedirectToAction("Index");
             }
             return View(obj);

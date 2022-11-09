@@ -10,7 +10,9 @@ public class ApplicationUser : IdentityUser
     // Add property for user
     DateTime createdDate = DateTime.Now;
     [NotMapped]
-    public string singleAddress = string.Empty;
+    public string singleAddress { get; set; } = string.Empty;
+    [NotMapped]
+    public string selectedRole { get; set; } = string.Empty;
     public Cart? Cart { get; set; }
 
     public List<Address> addresses { get; set; } = new List<Address>();
