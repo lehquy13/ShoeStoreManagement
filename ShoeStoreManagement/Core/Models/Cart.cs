@@ -33,13 +33,15 @@ public class Cart
         set { user = value; }
     }
 
+    [NotMapped]
     public List<CartDetail> CartDetails
     {
         get { return cartDetails; }
         set { cartDetails = value; }
     }
 
-    [Range(0, 99999)]
+    [Range(1, 99999)]
+    [DataType(DataType.Currency)]
     public int CartTotalPrice
     {
         get { return cartTotalPrice; }

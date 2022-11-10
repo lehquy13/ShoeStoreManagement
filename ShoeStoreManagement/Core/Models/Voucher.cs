@@ -16,19 +16,25 @@ namespace ShoeStoreManagement.Core.Models
         [DisplayFormat(DataFormatString = "{0:DD-MM-YYYY}")]
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
+        [Required]
         public ExpireType ExpiredType { get; set; } = ExpireType.Amount;
 
+        [Required]
         public string ExpiredValue { get; set; } = string.Empty;
 
+        [Required]
         public ConditionType ConditionType { get; set; } = ConditionType.MinPrice;
 
+        [Required]
         public string ConditionValue { get; set; } = string.Empty;
 
+        [Required]
         public ValueType ValueType { get; set; } = ValueType.Percent;
 
-        [Range(0, 200)]
+        [Range(1, 200)]
         public int Value { get; set; } = 0;
 
+        [Required]
         public VoucherStatus State { get; set; } = VoucherStatus.Using;
     }
 }

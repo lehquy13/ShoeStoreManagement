@@ -13,6 +13,8 @@ namespace ShoeStoreManagement.Core.Models
             get { return productCategoryId; }
             set { }
         }
+
+        [Required]
         public string ProductCategoryName
         {
             get { return productCategoryName; }

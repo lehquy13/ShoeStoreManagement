@@ -70,13 +70,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             // Haven't done with user creating conditions
 
-            if (ModelState.IsValid && obj.selectedRole != string.Empty)
+            if (ModelState.IsValid && obj.Role != string.Empty)
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
-                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
+                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
                 _applicationuserCRUD.CreateAsync(obj);
 
-                _usermanager.AddToRoleAsync(obj, obj.selectedRole).Wait();
+                _usermanager.AddToRoleAsync(obj, obj.Role).Wait();
                 return RedirectToAction("Index");
             }
             return View(obj);

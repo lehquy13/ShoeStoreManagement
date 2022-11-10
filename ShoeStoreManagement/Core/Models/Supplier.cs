@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ShoeStoreManagement.Core.Models
 {
@@ -11,16 +12,21 @@ namespace ShoeStoreManagement.Core.Models
         string email = string.Empty;
         string note = string.Empty;
 
-        public string Supplierid
+        [Key]
+        public string SupplierId
         {
             get { return supplierid; }
             set { }
         }
+
+        [Required]
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
+
+        [NotMapped]
         public Address? Address
         {
             get { return address; }
@@ -35,6 +41,7 @@ namespace ShoeStoreManagement.Core.Models
         }
 
         [EmailAddress]
+        [Required]
         public string Email
         {
             get { return email; }

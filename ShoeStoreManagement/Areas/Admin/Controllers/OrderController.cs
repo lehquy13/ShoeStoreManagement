@@ -53,14 +53,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
-                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
-                _applicationuserCRUD.CreateAsync(obj);
+                //_cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
+                //_addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
+                //_applicationuserCRUD.CreateAsync(obj);
 
-                _usermanager.AddToRoleAsync(obj, obj.selectedRole).Wait();
-                return RedirectToAction("Index");
+                //_usermanager.AddToRoleAsync(obj, obj.selectedRole).Wait();
+                //return RedirectToAction("Index");
             }
-            return View(obj);
+            return View();
         }
 
         public IActionResult Edit()
