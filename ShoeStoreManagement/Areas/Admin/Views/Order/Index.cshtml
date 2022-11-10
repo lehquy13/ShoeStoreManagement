@@ -1,4 +1,9 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Core.Models;
+
+@{
+  List<Order> orders = ViewData["orders"] as List<Order> ?? new List<Order>();
+}
 <style>
 
 </style>
@@ -37,17 +42,21 @@
                         </thead>
                         <tbody>
                             <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                <th scope="row">1</th>
-                                <td>11</td>
-                                <td>Hoang Le</td>
-                                <td>$100</td>
-                                <td>12</td>
+                                @for (var i = 1; i <= orders.Count; i++)
+                                {
+                                <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
-                                <td>Today</td>
-                                <td>waiting</td>
-                                <td>
-                                    <p class="icon-plus m-0" ></p>
-                                </td>
+                                  <th scope="row">@i</th>
+                                  <td>@orders[i-1].User.Email</td>
+                                  <td>@orders[i-1].OrderTotalPayment</td>
+                                  <td>@orders[i-1].OrderTotalPayment</td>
+                                  <td>@orders[i-1].OrderDate</td>
+                                  <td>@orders[i-1].Status.ToString()</td>
+                                    @*                       <td>
+                                <i class="fa" aria-hidden="true"></i>
+                                </td>*@
+                                </tr>
+                                }
                             </tr>
                             @*<tr>
                             <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
