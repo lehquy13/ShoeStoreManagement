@@ -29,7 +29,7 @@
 							<label for="floatingInput">Id</label>
 						</div>
 						<div class="form-floating">
-							<input type="text" class="form-control" hidden id="floatingInput" placeholder="" asp-for="@Model.addresses">
+							<input type="text" class="form-control" hidden id="floatingInput" placeholder="" asp-for="@Model.Addresses">
 							<label for="floatingInput">Id</label>
 						</div>
 						<div class="flex-grow-1">
@@ -39,16 +39,16 @@
 					</div>
 					<div class="col-6 d-grid gap-2">
 						<div class="form-floating">
-							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="@Model.selectedRole">
+							<select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="@Model.Role">
 								@if (roles != null)
 								{
 									int a = 1;
-									<option value="@Model.selectedRole" selected="selected">
-										@Model.selectedRole
+									<option value="@Model.Role" selected="selected">
+										@Model.Role
 									</option>
 									foreach (var obj in roles)
 									{
-										if (obj != Model.selectedRole)
+										if (obj != Model.Role)
 										{
 											a++;
 											<option value="@obj">

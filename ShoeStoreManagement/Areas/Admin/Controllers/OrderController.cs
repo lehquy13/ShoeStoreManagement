@@ -57,7 +57,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 //_addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
                 //_applicationuserCRUD.CreateAsync(obj);
 
-                //_usermanager.AddToRoleAsync(obj, obj.selectedRole).Wait();
+                //_usermanager.AddToRoleAsync(obj, obj.Role).Wait();
                 //return RedirectToAction("Index");
             }
             return View();

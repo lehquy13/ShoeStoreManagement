@@ -2,8 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Areas.Identity.Data;
-//using ShoeStoreManagement.CRUD.Implementations;
-//using ShoeStoreManagement.CRUD.Interfaces;
+using ShoeStoreManagement.CRUD.Implementations;
+using ShoeStoreManagement.CRUD.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +14,14 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 //add DI for CRUD
-//builder.Services.AddScoped<IProductCRUD, ProductCRUD>();
-//builder.Services.AddScoped<IProductCategoryCRUD, ProductCategoryCRUD>();
-//builder.Services.AddScoped<ISizeDetailCRUD, SizeDetailCRUD>();
-//builder.Services.AddScoped<IApplicationUserCRUD, ApplicationUserCRUD>();
-//builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
-//builder.Services.AddScoped<ICartCRUD, CartCRUD>();
-//builder.Services.AddScoped<IVoucherCRUD, VoucherCRUD>();
+builder.Services.AddScoped<IProductCRUD, ProductCRUD>();
+builder.Services.AddScoped<IProductCategoryCRUD, ProductCategoryCRUD>();
+builder.Services.AddScoped<ISizeDetailCRUD, SizeDetailCRUD>();
+builder.Services.AddScoped<IApplicationUserCRUD, ApplicationUserCRUD>();
+builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
+builder.Services.AddScoped<ICartCRUD, CartCRUD>();
+builder.Services.AddScoped<IVoucherCRUD, VoucherCRUD>();
+builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)

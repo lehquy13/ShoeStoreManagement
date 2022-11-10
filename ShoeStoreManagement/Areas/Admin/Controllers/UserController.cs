@@ -98,7 +98,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 {
                     return NotFound();
                 }
-                obj.selectedRole = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
+                obj.Role = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
                 ViewData["userRoles"] = roles;
                 return View(obj);
             }
@@ -157,8 +157,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             var obj = await _applicationuserCRUD.GetByIdAsync(id);
             if (obj != null) // xu ly admin se k xoa acc 
             {
-                obj.selectedRole = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
-                if (obj.selectedRole != "Admin")
+                obj.Role = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
+                if (obj.Role != "Admin")
                 {
                     _addressCRUD.DeleteAllAdressByIdAsync(obj.Id);
                     _applicationuserCRUD.Remove(obj);
