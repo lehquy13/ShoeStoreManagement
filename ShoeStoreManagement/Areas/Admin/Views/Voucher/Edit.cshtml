@@ -1,0 +1,95 @@
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.Enums;
+@using ValueType = ShoeStoreManagement.Core.Enums.ValueType;
+
+@model Voucher
+
+@{
+    List<ConditionType> conditionTypes = ViewData["conditionTypes"] as List<ConditionType> ?? new List<ConditionType>() { };
+    List<ValueType> valueTypes = ViewData["valueTypes"] as List<ValueType> ?? new List<ValueType>() { };
+    List<ExpireType> expiredTypes = ViewData["expiredTypes"] as List<ExpireType> ?? new List<ExpireType>() { };
+}
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal-backdrop" id="Modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <form method="post" action="Admin/Voucher/Edit" class="modal-content w-auto px-3 py-3">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel" style="margin-left:auto;margin-right:auto">Edit voucher</h5>
+            </div>
+            <div class="modal-body p-0 mt-2" style="width: 800px; height: 400px">
+                <div class="row">
+                    <div class="col-sm d-flex flex-column gap-2">
+                        <div>
+                            <div class="form-floating">
+                                <input type="text" asp-for="Id" class="form-control" hidden id="floatingInput" placeholder="">
+                                <label for="floatingInput">Id Value</label>
+                            </div>
+                            <div class="form-floating">
+                                <select class="form-select" asp-for="ConditionType" asp-items="@(new SelectList(conditionTypes))" id="floatingSelect" aria-label="Floating label select example">
+                                    <option selected>--</option>
+                                </select>
+                                <label for="floatingSelect">Enter Condition</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="number" asp-for="ConditionValue" class="form-control" id="floatingInput" placeholder="$50">
+                                <label for="floatingInput">Enter Condition Value</label>
+                            </div>
+                            <div class="form-floating">
+                                <input type="date" asp-for="CreatedDate" class="form-control" id="floatingInput" placeholder="02-12-2022">
+                                <label for="floatingInput">Enter Start Date</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm d-flex flex-column">
+                        <div class="form-floating">
+
+                            <select class="form-select" asp-for="ValueType"  id="floatingSelect" aria-label="Floating label select example">
+                                <option selected>@Model.ValueType</option>
+                            </select>
+                            <label for="floatingSelect">Value Type</label>
+                        </div>
+
+                        <div class="form-floating">
+                            <input type="number" asp-for="Value" class="form-control" id="floatingInput" placeholder="5">
+                            <label for="floatingInput">Enter Value</label>
+                        </div>
+                        <div class="form-floating">
+
+                            <select class="form-select" asp-for="ExpiredType" id="floatingSelect" aria-label="Floating label select example">
+                                <option selected>@Model.ExpiredType</option>
+                            </select>
+                            <label for="floatingSelect">Enter Expired Type</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" asp-for="ExpiredValue" class="form-control" id="floatingInput" placeholder="">
+                            <label for="floatingInput">Enter Expired Value</label>
+                        </div>
+                        <div class="d-flex form-floating">
+                            <input type="text" asp-for="Code" readonly placeholder="hehe" id="voucherCode" class="form-control flex-fill" />
+                            <label for="floatingInput">Enter Code</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-between">
+                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+                <div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary" asp-action="Delete" asp-controller="Voucher"
+                            asp-route-id=@Model.Id>
+                        Delete
+                    </button>
+                </div>
+                
+                    
+                
+            </div>
+        </form>
+    </div>
+</div>

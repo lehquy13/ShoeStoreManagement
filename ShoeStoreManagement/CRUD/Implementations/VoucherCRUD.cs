@@ -43,9 +43,21 @@ namespace ShoeStoreManagement.CRUD.Implementations
 
 		public void Update(Voucher updateVoucher)
 		{
-            if (updateVoucher != null)
-                _applicationDBContext.Vouchers.Update(updateVoucher);
-            _applicationDBContext.SaveChanges();
+            if(updateVoucher != null)
+            {
+                var obj = _applicationDBContext.Vouchers.FindAsync(updateVoucher.Id).Result;
+                if (obj != null)
+                {
+                    obj.ExpiredValue = updateVoucher.ExpiredValue;
+                    obj.State = updateVoucher.State;
+                    obj.ConditionValue = updateVoucher.ConditionValue;
+                    obj.Value = updateVoucher.Value;
+                    obj.ValueType = updateVoucher.ValueType;
+                    _applicationDBContext.SaveChanges();
+
+                }
+            }
+            
         }
 	}
 }
