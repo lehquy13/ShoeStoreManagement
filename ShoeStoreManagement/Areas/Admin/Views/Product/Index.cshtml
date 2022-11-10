@@ -125,3 +125,9 @@
 @*<partial name="Create.cshtml" view-data="ViewData" model="new Product() {Sizes = new List<SizeDetail>() {new SizeDetail() {Size = 35, Amount = 1}, new SizeDetail() {Size = 36, Amount = 1}}}"></partial>*@
 
 <partial name="Create.cshtml" view-data="ViewData" model="metmoi"/>
+
+@section Scripts {
+	@{
+		<partial name="./_ValidationScriptsPartial"></partial>
+	}
+	}

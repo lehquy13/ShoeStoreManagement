@@ -80,8 +80,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(obj);
         }
 
-        [HttpPost]
         [ValidateAntiForgeryToken]
+        [HttpPost]
         public IActionResult Create(Product obj)
         {
             if (obj != null)
@@ -116,7 +116,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(Product obj)
         {
@@ -174,6 +174,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(obj);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
