@@ -9,7 +9,7 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.CRUD.Implementations
 {
     public class ApplicationUserCRUD : IApplicationUserCRUD
-  {
+    {
         private readonly ApplicationDbContext _applicationDBContext;
         public ApplicationUserCRUD(ApplicationDbContext applicationDBContext)
         {
@@ -34,10 +34,17 @@ namespace ShoeStoreManagement.CRUD.Implementations
 
         public void Update(ApplicationUser updateApplicationUser)
         {
+            if (updateApplicationUser == null) { return; }
+            var obj = _applicationDBContext.ApplicationUsers.FindAsync(updateApplicationUser.Id).Result;
+            if (obj != null)
+            {
+                obj.UserName = updateApplicationUser.UserName;
+                obj.PhoneNumber = updateApplicationUser.PhoneNumber;
+                obj.Email = updateApplicationUser.Email;
+                // more and more
+                _applicationDBContext.SaveChanges();
 
-            if (updateApplicationUser != null)
-                _applicationDBContext.ApplicationUsers.Update(updateApplicationUser);
-            _applicationDBContext.SaveChanges();
+            }
         }
 
         public void Remove(ApplicationUser deleteApplicationUser)
@@ -46,5 +53,5 @@ namespace ShoeStoreManagement.CRUD.Implementations
                 _applicationDBContext.ApplicationUsers.Remove(deleteApplicationUser);
             _applicationDBContext.SaveChanges();
         }
-  }
+    }
 }

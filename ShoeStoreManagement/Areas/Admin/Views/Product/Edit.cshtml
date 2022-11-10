@@ -125,10 +125,12 @@
             <div class="modal-footer d-flex justify-content-between">
                 <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                
-                    <button type="submit" class="btn btn-secondary" asp-action="Delete" asp-controller="Product" 
-                    asp-route-id=@Model.ProductId>Delete</button>
-                
+
+                <button type="submit" class="btn btn-secondary" asp-action="Delete" asp-controller="Product"
+                        asp-route-id=@Model.ProductId>
+                    Delete
+                </button>
+
 
             </div>
         </form>

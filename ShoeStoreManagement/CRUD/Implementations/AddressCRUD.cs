@@ -21,6 +21,13 @@ namespace ShoeStoreManagement.CRUD.Implementations
             _applicationDBContext.SaveChanges();
         }
 
+        public void DeleteAllAdressByIdAsync(string id)
+        {
+            var obj = _applicationDBContext.Addresses.Where(b => b.UserId == id).ToArray<Address>();
+            _applicationDBContext.Addresses.RemoveRange(obj);
+
+        }
+
         public async Task<List<Address>> GetAllAsync(string userId)
         {
             return await _applicationDBContext.Addresses.Where(x => x.UserId == userId).ToListAsync();
