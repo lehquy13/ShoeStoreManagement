@@ -76,7 +76,7 @@
                                         <td>@i.ProductName</td>
                                         <td>@i.ProductUnitPrice</td>
                                         <td>@i.Color</td>
-                                        <td>@i.ProductCategory</td>
+                                        <td>@i.ProductCategory.ProductCategoryName</td>
                                         <td>@i.Amount</td>
                                         <td>
                                             @*<a href="@Url.Action("Edit","Product",new {id = @i.ProductId})" data-toggle="modal" to data-target="#Modal" class="fas fa-edit"></a>*@

@@ -42,8 +42,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                 result.ProductName = updateProduct.ProductName;
                 result.ProductUnitPrice = updateProduct.ProductUnitPrice;
                 result.Amount = updateProduct.Amount;
-                result.ProductDiscount = updateProduct.ProductDiscount;
-                result.ProductCategory = updateProduct.ProductCategory;
+                //result.ProductCategory = updateProduct.ProductCategory;
                 result.ProductCategoryId = updateProduct.ProductCategoryId;
                 result.Color = updateProduct.Color;
                 result.Description = updateProduct.Description;
