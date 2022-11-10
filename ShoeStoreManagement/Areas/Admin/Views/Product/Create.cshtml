@@ -54,11 +54,11 @@
 									<label for="selectCategory">Category</label>
 								</div>
 								<div class="form-floating">
-									<input type="number" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
+									<input type="text" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
 									<label for="floatingInput">Enter Price</label>
 								</div>
 								<div class="form-floating">
-									<input type="number" asp-for="Amount" class="form-control" id="floatingInput" placeholder="1" readonly>
+									<input type="number" asp-for="Amount" class="form-control" id="floatingInput" placeholder="1">
 									<label for="floatingInput">Enter Amount</label>
 								</div>
 								@*<div class="form-floating">
@@ -112,24 +112,3 @@
 	</div>
 </div>
 
-@*<script>
-    $(document).ready(function () {
-
-        // input plugin
-        bsCustomFileInput.init();
-
-        // get file and preview image
-        $("#inputGroupFile").on('change', function () {
-            var input = $(this)[0];
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                reader.onload = function (e) {
-                    $('#preview').attr('src', e.target.result).fadeIn('slow');
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        })
-
-    })
-
-</script>*@

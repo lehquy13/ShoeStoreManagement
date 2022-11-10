@@ -213,7 +213,6 @@ namespace ShoeStoreManagement.Migrations
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductCategoryId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProductUnitPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductDiscount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Color = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Amount = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
