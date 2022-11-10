@@ -1,7 +1,7 @@
-﻿using ShoeStoreManagement.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
-using System.Data.Entity;
 
 namespace ShoeStoreManagement.CRUD.Implementations
 {
