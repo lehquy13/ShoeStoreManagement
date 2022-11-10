@@ -10,6 +10,8 @@ using ShoeStoreManagement.Data;
 using System.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
+using ShoeStoreManagement.Views.Shared.Components;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -23,11 +25,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private List<ApplicationUser>? applicationUsers;
         private List<string>? applicationuserRoles;
         private readonly RoleManager<IdentityRole> _rolemanager;
-        private List<IdentityRole>? roles ;
+        private List<IdentityRole>? roles;
         private readonly IAddressCRUD _addressCRUD;
         private readonly ICartCRUD _cartCRUD;
 
-        public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager, 
+        public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager,
             RoleManager<IdentityRole> roleManager, IAddressCRUD addressCRUD, ICartCRUD cartCRUD)
         {
             _logger = logger;
@@ -41,25 +43,50 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
         private void Init()
         {
+            // Get All Users
             applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+
+            // Get User's Role
             applicationuserRoles = new List<string>();
             roles = new List<IdentityRole>();
 
-            foreach (ApplicationUser i in applicationUsers) {
-                string role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
-                //string role = "a";
-                if (!string.IsNullOrEmpty(role)) {
-                    applicationuserRoles.Add(role);
-                }
-            }
 
+            // Get All Roles
             roles = _rolemanager.Roles.ToList();
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string filter)
         {
             ViewBag.ApplicationUser = true;
-            ViewData["applicationUser"] = applicationUsers;
+
+            if (string.IsNullOrEmpty(filter))
+                filter = "All";
+
+            List<ApplicationUser> users = new List<ApplicationUser>();
+
+            foreach (ApplicationUser i in applicationUsers)
+            {
+                string role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
+                //string role = "a";
+                if (!string.IsNullOrEmpty(role))
+                {
+                    if (!filter.Equals("All"))
+                    {
+                        if (role.Equals(filter))
+                        {
+                            users.Add(i);
+                            applicationuserRoles.Add(role);
+                        }
+                    }
+                    else
+                    {
+                        users.Add(i);
+                        applicationuserRoles.Add(role);
+                    }
+                }
+            }
+
+            ViewData["applicationUser"] = users;
             ViewData["userRoles"] = applicationuserRoles;
             ViewData["allRoles"] = roles;
             return View();
