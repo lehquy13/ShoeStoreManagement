@@ -49,10 +49,26 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
+        public IActionResult Create()
+        {
+            if (ModelState.IsValid)
+            {
+                //_cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
+                //_addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
+                //_applicationuserCRUD.CreateAsync(obj);
+
+                //_usermanager.AddToRoleAsync(obj, obj.Role).Wait();
+                //return RedirectToAction("Index");
+            }
+            return View();
+        }
+
         public IActionResult Edit()
         {
             //ViewBag.Order = true;
             return View();
         }
+      
+
     }
 }

@@ -19,6 +19,8 @@ namespace ShoeStoreManagement.Core.Models
             get { return addressId; }
             set { }
         }
+
+        [Required]
         public string AddressDetail
         {
             get { return addressDetail; }
@@ -33,17 +35,23 @@ namespace ShoeStoreManagement.Core.Models
             get { return userId; }
             set { userId = value; }
         }
+
+        [Required]
         public string Village
         {
             get { return village; }
             set { village = value; }
         }
+
+        [Required]
         public string District
         {
             get { return district; }
             set { district = value; }
         }
-         public string City
+
+        [Required]
+        public string City
         {
             get { return city; }
             set { city = value; }

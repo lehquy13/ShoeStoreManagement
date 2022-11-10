@@ -9,5 +9,6 @@ namespace ShoeStoreManagement.CRUD.Interfaces
         public Task CreateAsync(Address address);
         public void Update(Address updateAddress);
         public void Remove(Address deteleAddress);
+        public void DeleteAllAdressByIdAsync(string id);
     }
 }

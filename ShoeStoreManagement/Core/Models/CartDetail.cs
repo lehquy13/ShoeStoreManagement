@@ -27,6 +27,8 @@ namespace ShoeStoreManagement.Core.Models
             set { cartId = value; }
         }
 
+        public Cart? Cart { get; set; }
+
         [Required]
         [ForeignKey("Product")]
         public string ProductId
@@ -49,6 +51,7 @@ namespace ShoeStoreManagement.Core.Models
         }
 
         [Range(0, 99999)]
+        [DataType(DataType.Currency)]
         public int CartDetailTotalSum
         {
             get { return totalSum; }

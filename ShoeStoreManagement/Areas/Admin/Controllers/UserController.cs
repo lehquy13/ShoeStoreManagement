@@ -92,26 +92,105 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
+        
         [HttpPost]
         public IActionResult Create(ApplicationUser obj)
         {
             // Haven't done with user creating conditions
 
-            if (ModelState.IsValid && obj.selectedRole != string.Empty)
+            if (ModelState.IsValid && obj.Role != string.Empty)
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
-                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.singleAddress, UserId = obj.Id });
+                _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
                 _applicationuserCRUD.CreateAsync(obj);
 
-                _usermanager.AddToRoleAsync(obj, obj.selectedRole).Wait();
+                _usermanager.AddToRoleAsync(obj, obj.Role).Wait();
                 return RedirectToAction("Index");
             }
             return View(obj);
         }
 
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(string id)
         {
-            return View();
+            if (id == null || id == "")
+            {
+                return NotFound();
+            }
+            else
+            {
+                var obj = await _applicationuserCRUD.GetByIdAsync(id);
+                if (obj == null)
+                {
+                    return NotFound();
+                }
+                obj.Role = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
+                ViewData["userRoles"] = roles;
+                return View(obj);
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(ApplicationUser obj)
+        {
+            if (ModelState.IsValid)
+            {
+                //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
+
+                //need to update adress
+
+                //for (var i = 35; i <= 44; i++)
+                //{
+                //    var tempDetail = _sizeDetailCRUD.GetProductSizeAsync(obj.ProductId, i).Result;
+                //    int amount = Int32.Parse(obj.TestSizeAmount[i - 35]);
+                //    var newDetail = new SizeDetail() { Amount = amount, Size = i, ProductId = obj.ProductId };
+
+                //    if (tempDetail != null)
+                //    {
+                //        if (amount > 0 && amount != tempDetail.Amount)
+                //        {
+                //            _sizeDetailCRUD.Update(newDetail);
+
+                //        }
+                //        else if (amount == 0 || !obj.TestSize.Contains(i.ToString()))
+                //        {
+                //            _sizeDetailCRUD.Remove(newDetail);
+                //        }
+
+                //    }
+                //    else
+                //    {
+                //        if (amount > 0)
+                //            _sizeDetailCRUD.CreateAsync(new SizeDetail()
+                //            {
+                //                Size = i,
+                //                Amount = amount,
+                //                ProductId = obj.ProductId
+                //            });
+                //    }
+
+
+                //}
+                _applicationuserCRUD.Update(obj);
+
+
+                return RedirectToAction("Index");
+            }
+            return View(obj);
+        }
+        public async Task<IActionResult> Delete(string id)
+        {
+            var obj = await _applicationuserCRUD.GetByIdAsync(id);
+            if (obj != null) // xu ly admin se k xoa acc 
+            {
+                obj.Role = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
+                if (obj.Role != "Admin")
+                {
+                    _addressCRUD.DeleteAllAdressByIdAsync(obj.Id);
+                    _applicationuserCRUD.Remove(obj);
+                }
+
+            }
+            return RedirectToAction("Index");
         }
     }
 }

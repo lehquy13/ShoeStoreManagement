@@ -21,7 +21,7 @@ namespace ShoeStoreManagement.Migrations
 
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine("INSERT INTO AspNetUsers(Id, UserName, NormalizedUserName,Email,EmailConfirmed,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnabled,AccessFailedCount,NormalizedEmail,PasswordHash,SecurityStamp)");
+            sb.AppendLine("INSERT INTO AspNetUsers(Id, UserName, NormalizedUserName,Email,EmailConfirmed,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnabled,AccessFailedCount,NormalizedEmail,PasswordHash,SecurityStamp,CreatedDate,Birthday)");
             sb.AppendLine("VALUES(");
             sb.AppendLine($"'{ADMIN_USER_GUID}'");
             sb.AppendLine(",'admin@gmail.com'");
@@ -35,6 +35,8 @@ namespace ShoeStoreManagement.Migrations
             sb.AppendLine(",'ADMIN@GMAIL.COM'");
             sb.AppendLine($", '{passwordHash}'");
             sb.AppendLine(", ''");
+            sb.AppendLine(", '01/01/2022'");
+            sb.AppendLine(", '01/01/2002'");
             sb.AppendLine(")");
 
             migrationBuilder.Sql(sb.ToString());

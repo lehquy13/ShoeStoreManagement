@@ -45,7 +45,7 @@ public class Order
         set { user = value; }
     }
 
-
+    [NotMapped]
     public List<OrderDetail> OrderDetails
     {
         get { return orderDetails; }
@@ -58,17 +58,22 @@ public class Order
         get { return orderDate; }
         set { orderDate = value; }
     }
+
+    [DataType(DataType.Currency)]
     public int OrderTotalPayment
     {
         get { return orderTotalPayment; }
         set { orderTotalPayment = value; }
     }
 
+    [Required]
     public Status Status
     {
         get { return status; }
         set { status = value; }
     }
+
+    [Required]
     public DeliveryMethods DeliverryMethods
     {
         get { return deliveryMethod; }
@@ -76,16 +81,22 @@ public class Order
     }
 
     [Range(0, 99999)]
+    [DataType(DataType.Currency)]
     public long DeliveryCharge
     {
         get { return deliveryCharge; }
         set { deliveryCharge = value; }
     }
+
+    [ForeignKey("Id")]
     public string OrderVoucherId
     {
         get { return orderVoucherId; }
         set { orderVoucherId = value; }
     }
+
+    public Voucher OrderVoucher { get; set; } = new Voucher();
+
     public string OrderNote
     {
         get { return orderNote; }

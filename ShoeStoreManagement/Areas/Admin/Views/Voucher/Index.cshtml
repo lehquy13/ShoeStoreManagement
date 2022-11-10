@@ -56,7 +56,7 @@
 									<td>@i.ExpiredValue</td>
 									<th>@i.State</th>
 									<td>
-										@*<partial name="Edit.cshtml" />*@
+										<a href="@Url.Action("Edit","Voucher",new {id = @i.Id})"  class="fas fa-edit"></a>
 									</td>
 								</tr>
 							}

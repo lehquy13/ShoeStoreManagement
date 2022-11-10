@@ -80,31 +80,57 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(obj);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Create(Product obj)
         {
-            if (ModelState.IsValid)
+            if (obj != null)
             {
-                var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
-
-                for (var i = 0; i < obj.TestSize.Count; i++)
+                if (obj.ProductCategoryId == null)
                 {
-                    _sizeDetailCRUD.CreateAsync(new SizeDetail() { Size = int.Parse(obj.TestSize[i]), Amount = int.Parse(temp[i]), ProductId = obj.ProductId });
+                    return NotFound(obj.ProductCategoryId);
                 }
+                else
+                {
+                    obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;//note
 
-                _productCRUD.CreateAsync(obj);
-                TempData["success"] = "Category is Created Successfully!!";
-                return RedirectToAction("Index");
+                }
+                ModelState.Clear();
+                if (TryValidateModel(obj))
+                {
+                    var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
+
+                    for (var i = 0; i < obj.TestSize.Count; i++)
+                    {
+                        _sizeDetailCRUD.CreateAsync(new SizeDetail() { Size = int.Parse(obj.TestSize[i]), Amount = int.Parse(temp[i]), ProductId = obj.ProductId });
+                    }
+
+                    _productCRUD.CreateAsync(obj);
+                    TempData["success"] = "Category is Created Successfully!!";
+                    return RedirectToAction("Index");
+                }
+                return View(obj);
             }
-            return View(obj);
+
+            return NotFound();
         }
 
 
-
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public IActionResult Edit(Product obj)
         {
-            if (ModelState.IsValid)
+            if (obj.ProductCategoryId == null)
+            {
+                return NotFound(obj.ProductCategoryId);
+            }
+            else
+            {
+                obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;//note
+
+            }
+            ModelState.Clear();
+            if (TryValidateModel(obj))
             {
                 //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
 
@@ -148,13 +174,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(obj);
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var obj = await _productCRUD.GetByIdAsync(id);
-            if(obj != null)
+            if (obj != null)
             {
-               _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
+                _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
                 _productCRUD.Remove(obj);
             }
             return RedirectToAction("Index");

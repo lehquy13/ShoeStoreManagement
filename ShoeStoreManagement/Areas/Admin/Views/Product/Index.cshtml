@@ -76,7 +76,7 @@
                                         <td>@i.ProductName</td>
                                         <td>@i.ProductUnitPrice</td>
                                         <td>@i.Color</td>
-                                        <td>@i.ProductCategory</td>
+                                        <td>@i.ProductCategory.ProductCategoryName</td>
                                         <td>@i.Amount</td>
                                         <td>
                                             @*<a href="@Url.Action("Edit","Product",new {id = @i.ProductId})" data-toggle="modal" to data-target="#Modal" class="fas fa-edit"></a>*@
@@ -125,3 +125,9 @@
 @*<partial name="Create.cshtml" view-data="ViewData" model="new Product() {Sizes = new List<SizeDetail>() {new SizeDetail() {Size = 35, Amount = 1}, new SizeDetail() {Size = 36, Amount = 1}}}"></partial>*@
 
 <partial name="Create.cshtml" view-data="ViewData" model="metmoi"/>
+
+@section Scripts {
+	@{
+		<partial name="./_ValidationScriptsPartial"></partial>
+	}
+	}

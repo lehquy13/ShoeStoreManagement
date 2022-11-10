@@ -30,12 +30,13 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Orders</th>
-                                <th>Start Date</th>
-                                <th>Roll</th>
-                                <th></th>
+                                <th class="button">Name</th>
+                                <th class="button">Email</th>
+                                <th class="button">Phone</th>
+                                <th class="button">Orders</th>
+                                <th class="button">Start Date</th>
+                                <th class="button">Role</th>
+                                <th class="button"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,9 +46,15 @@
                                     <th scope="row">@i</th>
                                     <td>@users[i-1].UserName</td>
                                     <td>@users[i-1].Email</td>
-                                    <td>@users[i-1].Email</td>
+                                    <td>@users[i-1].PhoneNumber</td>
+                                    <td>numbers of Orders</td>
                                     <td>@users[i-1].CreatedDate</td>
                                     <td>@roles[i-1]</td>
+                                    <td>
+                                        <a href="@Url.Action("Edit","User",new {id = @users[i-1].Id})" class="fas fa-edit"></a>
+                                    </td>
+                                    
+
                                     @*                       <td>
                                 <i class="fa" aria-hidden="true"></i>
                                 </td>*@

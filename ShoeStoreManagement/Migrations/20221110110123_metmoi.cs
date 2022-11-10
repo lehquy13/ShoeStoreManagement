@@ -4,23 +4,23 @@
 
 namespace ShoeStoreManagement.Migrations
 {
-    public partial class ver5 : Migration
+    public partial class metmoi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ProductCategory",
+                name: "ProductDiscount",
                 table: "Products");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "ProductCategory",
+            migrationBuilder.AddColumn<decimal>(
+                name: "ProductDiscount",
                 table: "Products",
-                type: "nvarchar(max)",
+                type: "decimal(18,2)",
                 nullable: false,
-                defaultValue: "");
+                defaultValue: 0m);
         }
     }
 }

@@ -28,6 +28,8 @@ namespace ShoeStoreManagement.Core.Models
             set { orderId = value; }
         }
 
+        public Order? Order { get; set; }
+
         [Required]
         [ForeignKey("Product")]
         public string ProductId
@@ -41,7 +43,7 @@ namespace ShoeStoreManagement.Core.Models
             set { product = value; }
         }
 
-        [Range(0, 99999)]
+        [Range(1, 99999)]
         public int Amount
         {
             get { return amount; }
@@ -49,6 +51,7 @@ namespace ShoeStoreManagement.Core.Models
         }
 
         [Range(0, 99999)]
+        [DataType(DataType.Currency)]
         public int Payment
         {
             get { return payment; }

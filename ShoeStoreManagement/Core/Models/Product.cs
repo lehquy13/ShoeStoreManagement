@@ -12,11 +12,10 @@ namespace ShoeStoreManagement.Core.Models
         string productId = Guid.NewGuid().ToString();
         string productName = string.Empty;
         string productCategoryId = string.Empty;
-        string productCategory = string.Empty;
+        ProductCategory? productCategory;
         string description = "";
 
-        int productUnitPrice = 0;
-        float productDiscount = 0;
+        float productUnitPrice = 0;
         string color = string.Empty;
         List<SizeDetail> sizes = new List<SizeDetail>() { };
         int amount = 0;
@@ -27,6 +26,7 @@ namespace ShoeStoreManagement.Core.Models
             get { return productId; }
             set  { productId = value; }
         }
+
         public string ProductName
         {
             get { return productName; }
@@ -34,30 +34,36 @@ namespace ShoeStoreManagement.Core.Models
         }
 
         [Required]
-        [ForeignKey("ProductCategory")]
+        [ForeignKey("ProductCategoryId")]
         public string ProductCategoryId
         {
             get { return productCategoryId; }
             set { productCategoryId = value; }
         }
-        [NotMapped]
-        public string ProductCategory
+
+        public ProductCategory ProductCategory
         {
             get { return productCategory; }
             set { productCategory = value; }
         }
 
-        [Range(0, 99999)]
-        public int ProductUnitPrice
+        [Range(1, 99999)]
+        [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
+        public float ProductUnitPrice
         {
             get { return productUnitPrice; }
             set { productUnitPrice = value; }
         }
-        public float ProductDiscount
-        {
-            get { return productDiscount; }
-            set { productDiscount = value; }
-        }
+
+        //[Range(0, 99999)]
+        //[DataType(DataType.Currency)]
+        //[Column(TypeName = "decimal(18,2)")]
+        //public float ProductDiscount
+        //{
+        //    get { return productDiscount; }
+        //    set { productDiscount = value; }
+        //}
 
         public string Color
         {
@@ -81,7 +87,7 @@ namespace ShoeStoreManagement.Core.Models
         [NotMapped]
         public Dictionary<int,int> SizeHashtable { get; set; } = new Dictionary<int, int>();
 
-        [NotMapped]
+        [Range(1, 99999)]
         public int Amount
         {
             get { return amount; }
@@ -93,7 +99,7 @@ namespace ShoeStoreManagement.Core.Models
             {
                 if (this.ProductCategoryId == obj.ProductCategoryId)
                 {
-                    this.ProductCategory = obj.ProductCategoryName;
+                    this.ProductCategory = obj;
                     return true;
                 }
             }

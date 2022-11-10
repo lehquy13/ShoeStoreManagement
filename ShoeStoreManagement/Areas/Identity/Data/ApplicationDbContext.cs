@@ -28,10 +28,11 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<Address> Addresses { get; set; } = null!;
 
     public virtual DbSet<SizeDetail> SizeDetails { get; set; } = null!;
-    /// <summary>
-    /// Migration ver2
-    /// </summary>
-    /// 
+
+    ///// <summary>
+    ///// Migration ver2
+    ///// </summary>
+    ///// 
     public virtual DbSet<Cart> Carts { get; set; } = null!;
     public virtual DbSet<CartDetail> CartDetails { get; set; } = null!;
 
