@@ -55,14 +55,13 @@
                                     </option>
                                     foreach (var obj in productCategories)
                                     {
-                                        if (obj.ProductCategoryId != Model.ProductCategoryId)
-                                        {
+                                        
                                             a++;
                                             <option value="@obj.ProductCategoryId">
                                                 @obj.ProductCategoryName
                                             </option>
 
-                                        }
+                                        
                                     }
                                 }
 

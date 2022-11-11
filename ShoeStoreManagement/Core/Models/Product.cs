@@ -111,6 +111,5 @@ namespace ShoeStoreManagement.Core.Models
             get { return description; }
             set { description = value; }
         }
-
     }
 }
