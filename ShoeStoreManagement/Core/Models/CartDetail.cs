@@ -27,8 +27,6 @@ namespace ShoeStoreManagement.Core.Models
             set { cartId = value; }
         }
 
-        public Cart? Cart { get; set; }
-
         [Required]
         [ForeignKey("Product")]
         public string ProductId

@@ -21,9 +21,9 @@ namespace ShoeStoreManagement.CRUD.Implementations
             _applicationDBContext.SaveChanges();
         }
 
-        public async Task<List<Cart>> GetAllAsync(string userId)
+        public async Task<Cart> GetAsync(string userId)
         {
-            return await _applicationDBContext.Carts.Where(o => o.UserId == userId).ToListAsync();
+            return await _applicationDBContext.Carts.Where(o => o.UserId == userId).FirstAsync();
         }
 
         public async Task<Cart?> GetByIdAsync(string id)
