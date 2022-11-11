@@ -10,6 +10,8 @@ using ShoeStoreManagement.Data;
 using System.Data;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
+using ShoeStoreManagement.Views.Shared.Components;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -41,9 +43,26 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
         private void Init()
         {
+            // Get All Users
             applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+
+            // Get User's Role
             applicationuserRoles = new List<string>();
             roles = new List<IdentityRole>();
+
+
+            // Get All Roles
+            roles = _rolemanager.Roles.ToList();
+        }
+
+        public IActionResult Index(string filter)
+        {
+            ViewBag.ApplicationUser = true;
+
+            if (string.IsNullOrEmpty(filter))
+                filter = "All";
+
+            List<ApplicationUser> users = new List<ApplicationUser>();
 
             foreach (ApplicationUser i in applicationUsers)
             {
@@ -51,17 +70,23 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 //string role = "a";
                 if (!string.IsNullOrEmpty(role))
                 {
-                    applicationuserRoles.Add(role);
+                    if (!filter.Equals("All"))
+                    {
+                        if (role.Equals(filter))
+                        {
+                            users.Add(i);
+                            applicationuserRoles.Add(role);
+                        }
+                    }
+                    else
+                    {
+                        users.Add(i);
+                        applicationuserRoles.Add(role);
+                    }
                 }
             }
 
-            roles = _rolemanager.Roles.ToList();
-        }
-
-        public IActionResult Index()
-        {
-            ViewBag.ApplicationUser = true;
-            ViewData["applicationUser"] = applicationUsers;
+            ViewData["applicationUser"] = users;
             ViewData["userRoles"] = applicationuserRoles;
             ViewData["allRoles"] = roles;
             return View();
