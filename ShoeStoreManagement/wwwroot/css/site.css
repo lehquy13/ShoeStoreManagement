@@ -244,3 +244,17 @@
     font-weight: bold;
     font-size: 14px;
 }
+
+.hidden-button {
+  background-color: transparent;
+  border: none;
+  padding: 0px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+}
+
+.hidden-button:active {
+  background-color: transparent;
+  height: inherit;
+  width: inherit;
+  padding: 0px 0px 0px 0px;
+}
