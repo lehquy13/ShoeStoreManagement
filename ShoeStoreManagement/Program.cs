@@ -4,6 +4,7 @@ using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
+using Microsoft.AspNetCore.Components.Routing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,7 @@ builder.Services.AddScoped<ISizeDetailCRUD, SizeDetailCRUD>();
 builder.Services.AddScoped<IApplicationUserCRUD, ApplicationUserCRUD>();
 builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
 builder.Services.AddScoped<ICartCRUD, CartCRUD>();
+builder.Services.AddScoped<ICartDetailCRUD, CartDetailCRUD>();
 builder.Services.AddScoped<IVoucherCRUD, VoucherCRUD>();
 builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
 builder.Services.AddScoped<IOrderDetailCRUD, OrderDetailCRUD>();
@@ -60,6 +62,8 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
     app.MapRazorPages();
+    //app.MapBlazorHub();
+    //app.MapFallbackToController("WishList", "Home");
 });
 
 app.Run();

@@ -1,35 +1,50 @@
-﻿<div class="row">
+﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Views.Shared.Components;
+@model Product
+
+@{
+	int test = 0;
+
+	void OK(int count) {
+		test = count;
+	}
+
+}
+
+<div class="row">
 	<div class="col-4">
 		<img src="/image/shoe.jpg" class="w-100" />
 
 	</div>
 	<div class="col-5 d-flex flex-column justify-content-between">
 		<div class="d-flex flex-column gap-4">
-			<p class="h2">Shoes</p>
+			<p class="h2">@Model.ProductName</p>
 			<div>
 				<span class="h6">Color</span>
-				<p class="h5 mt-1">Black</p>
+				<p class="h5 mt-1">@Model.Color</p>
 			</div>
 			<div>
+				<h3>@test</h3>
 				<span class="h6">Amount</span>
-				<p class="m-0 mt-1">Counter</p>
+				<component type="typeof(Counter)" render-mode="ServerPrerendered" param-max=@Model.Amount />
+				@{
+					
+				}
 				<div class="d-flex">
 					<span class="caption">Remain - </span>
-					<span class="button text-primary">200</span>
+					<span class="button text-primary">@Model.Amount</span>
 				</div>
 			</div>
 		</div>
 
 		<div class="d-flex flex-column gap-2 col-7">
-			<button class="btn btn-secondary icon-cart">Add to Cart</button>
-			<button class="btn btn-primary icon-arrow">Buy Now</button>
+			<button class="btn btn-secondary icon-cart" onclick="location.href = '@(Url.Action("AddToCart", "DetailProduct"))'">Add to Cart</button>
+			<button class="btn btn-primary icon-arrow" onclick="location.href = '@(Url.Action("Index", "Cart"))'">Buy Now</button>
 		</div>
 	</div>
 	<div class="col">
 		<span class="h6">Description</span>
-		<p class="caption mt-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-			sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-			Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+		<p class="caption mt-1">@Model.Description
 		</p>
 	</div>
 </div>
