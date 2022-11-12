@@ -12,6 +12,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
+        public string radio1 { set; get; }
         private readonly ILogger<ProductController> _logger;
         private readonly IProductCRUD _productCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
@@ -53,13 +54,55 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Index()
+        //[HttpPost]
+        public IActionResult Index(string categoryRadio, string priceRadio)
         {
+            List<Product> productFilter = new List<Product>();
+            float minvalue = -1, maxvalue = -1;
+
+            if (products.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(priceRadio))
+                {
+                    string[] strsplt = priceRadio.Split('-', 2, StringSplitOptions.None);
+                    minvalue = float.Parse(strsplt[0]);
+                    maxvalue = float.Parse(strsplt[1]);
+                }
+            }
+
+            foreach (Product i in products)
+            {
+                if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio) || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+                    productFilter.Add(i);
+            }
+
             ViewBag.Product = true;
             ViewData["productCategories"] = productCategories;
-            ViewData["products"] = products;
+            ViewData["products"] = productFilter;
             ViewData["test"] = test;
             return View();
+        }
+
+        private bool minCheck(float value, float price)
+        {
+            if (value == -1)
+                return true;
+
+            if (price >= value)
+                return true;
+            else 
+                return false;
+        }
+
+        private bool maxCheck(float value, float price)
+        {
+            if (value == -1)
+                return true;
+
+            if (price < value)
+                return true;
+            else
+                return false;
         }
 
         public IActionResult Create()
@@ -163,8 +206,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                                 ProductId = obj.ProductId
                             });
                     }
-
-
                 }
                 _productCRUD.Update(obj);
 
