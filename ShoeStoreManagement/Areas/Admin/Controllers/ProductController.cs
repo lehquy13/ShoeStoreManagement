@@ -54,7 +54,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
-        [HttpPost]
+        //[HttpPost]
         public IActionResult Index(string categoryRadio, string priceRadio)
         {
             List<Product> productFilter = new List<Product>();
@@ -206,8 +206,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                                 ProductId = obj.ProductId
                             });
                     }
-
-
                 }
                 _productCRUD.Update(obj);
 
