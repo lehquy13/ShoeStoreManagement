@@ -11,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddServerSideBlazor();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
+builder.Services.AddControllersWithViews().AddJsonOptions(opt => opt.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
+
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 //add DI for CRUD
@@ -22,6 +24,7 @@ builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
 builder.Services.AddScoped<ICartCRUD, CartCRUD>();
 builder.Services.AddScoped<IVoucherCRUD, VoucherCRUD>();
 builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
+builder.Services.AddScoped<IOrderDetailCRUD, OrderDetailCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)

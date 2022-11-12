@@ -28,8 +28,6 @@ namespace ShoeStoreManagement.Core.Models
             set { orderId = value; }
         }
 
-        public Order? Order { get; set; }
-
         [Required]
         [ForeignKey("Product")]
         public string ProductId

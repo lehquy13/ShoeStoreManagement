@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShoeStoreManagement.Core.Models;
+using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Models;
 using System.Diagnostics;
@@ -9,18 +10,20 @@ namespace ShoeStoreManagement.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IProductCRUD _productCRUD;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IProductCRUD productCRUD)
         {
-            _logger = logger;
+            _productCRUD = productCRUD;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             ViewBag.Home = true;
 
-            return View();
+            List<Product> list = _productCRUD.GetAllAsync().Result;
+
+            return View(list);
         }
 
         public IActionResult Privacy()
@@ -28,11 +31,13 @@ namespace ShoeStoreManagement.Controllers
             return View();
         }
 
-        public async Task<IActionResult> WishList()
+        public IActionResult WishList()
         {
             ViewBag.WishList = true;
 
-            return View();
+            List<Product> list = _productCRUD.GetAllAsync().Result;
+
+            return View(list);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

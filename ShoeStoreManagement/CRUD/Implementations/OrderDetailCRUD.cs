@@ -2,7 +2,6 @@
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
-using System.Data.Entity;
 
 namespace ShoeStoreManagement.CRUD.Implementations
 {
@@ -23,7 +22,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
 
         public async Task<List<OrderDetail>> GetAllAsync(string orderId)
         {
-            return await _applicationDBContext.OrderDetails.Where(x => x.OrderId == orderId).ToListAsync(); 
+            return await _applicationDBContext.OrderDetails.Where(x => x.OrderId == orderId).ToListAsync();
         }
 
         public async Task<OrderDetail?> GetByIdAsync(string id)

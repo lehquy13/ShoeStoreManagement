@@ -1,31 +1,35 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Core.Models;
-using System.Data.Entity;
+using ShoeStoreManagement.CRUD.Interfaces;
+using System.Security.Claims;
 
 namespace ShoeStoreManagement.Controllers
 {
     public class OrderController : Controller
     {
-        //private readonly ILogger<HomeController> _logger;
+        private readonly IOrderCRUD _orderCRUD;
+        private readonly IOrderDetailCRUD _orderDetailCRUD;
 
-        public OrderController(ApplicationDbContext db)
+        public OrderController(IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD)
         {
-            
+            _orderCRUD = orderCRUD;
+            _orderDetailCRUD = orderDetailCRUD;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             ViewBag.Order = true;
 
-            //List<Order> orders = await _db.Orders.ToListAsync();
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            //if(orders == null)
-            //{
-            //    return NotFound();
-            //}
+            List<Order> orders = _orderCRUD.GetAllAsync(userId).Result;
 
-            return View();
+            foreach (var order in orders)
+            {
+                order.OrderDetails = _orderDetailCRUD.GetAllAsync(order.OrderId).Result;
+            }
+
+            return View(orders);
         }
 
         public IActionResult MakeAnOrder()

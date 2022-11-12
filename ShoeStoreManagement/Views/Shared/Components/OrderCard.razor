@@ -6,8 +6,9 @@
     <div class="col-8 p-0">
         @foreach (var item in order.OrderDetails)
         {
+            <OrderItemCard orderDetail=@item />
             @*<component type="typeof(OrderItemCard)" render-mode="Static" param-orderDetail='new OrderDetail() {Amount = 2, Payment = 40, Product = new Product(){ ProductName = "hihi", ProductUnitPrice = 20 }}' />*@
-            <component type="typeof(OrderItemCard)" render-mode="ServerPrerendered" param-orderDetail=@item />
+            @*<component type="typeof(OrderItemCard)" render-mode="ServerPrerendered" param-orderDetail=@item />*@
         }
     </div>
     <div class="col p-0 d-flex flex-column justify-content-between align-items-end p-3">
