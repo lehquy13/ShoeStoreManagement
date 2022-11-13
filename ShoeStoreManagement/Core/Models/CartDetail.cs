@@ -5,12 +5,12 @@ namespace ShoeStoreManagement.Core.Models
 {
     public class CartDetail
     {
-        string cartDetailId = string.Empty;
+        string cartDetailId = Guid.NewGuid().ToString();
         string cartId = string.Empty;
         string productId = string.Empty;
         Product? product;
         int amount = 0;
-        int totalSum = 0;
+        float totalSum = 0;
 
         [Key]
         public string CartDetailId
@@ -41,7 +41,7 @@ namespace ShoeStoreManagement.Core.Models
             set { product = value; }
         }
 
-        [Range(0, 99999)]
+        [Range(1, 99999)]
         public int Amount
         {
             get { return amount; }
@@ -50,7 +50,8 @@ namespace ShoeStoreManagement.Core.Models
 
         [Range(0, 99999)]
         [DataType(DataType.Currency)]
-        public int CartDetailTotalSum
+        [Column(TypeName = "decimal(18,2)")]
+        public float CartDetailTotalSum
         {
             get { return totalSum; }
             set { totalSum = value; }

@@ -42,6 +42,7 @@ namespace ShoeStoreManagement.Core.Models
         }
 
         [Range(1, 99999)]
+        [Column(TypeName = "decimal(18,2)")]
         public int Amount
         {
             get { return amount; }
@@ -50,6 +51,7 @@ namespace ShoeStoreManagement.Core.Models
 
         [Range(0, 99999)]
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
         public int Payment
         {
             get { return payment; }

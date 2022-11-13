@@ -24,7 +24,7 @@
             <h5 class="fw-bold mt-3">Total price</h5>
             <h5 class="fw-bold mt-3">$@Model.CartTotalPrice</h5>
         </div>
-        <button class="btn btn-primary mt-5 w-100" onclick="location.href = '@(Url.Action("MakeAnOrder", "Order"))'">Make an order</button>
+        <button class="btn btn-primary mt-5 w-100" onclick="location.href = '@(Url.Action("MakeAnOrder", "Order"))'" disabled=@(Model.CartDetails.Count == 0) ?? "">Make an order</button>
     </section>
 </div>
 
