@@ -2,137 +2,132 @@
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @using System.Collections;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
 @model Product
 @{
-    List<Product>? products = ViewData["products"] as List<Product> ?? null;
-    List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
+	List<Product>? products = ViewData["products"] as List<Product> ?? null;
+	List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
 
-    for (int i = 35; i <= 44; i++)
-    {
-        if (!Model.SizeHashtable.ContainsKey(i))
-        {
-            Model.SizeHashtable.Add(i, 0);
-        }
+	for (int i = 35; i <= 44; i++)
+	{
+		if (!Model.SizeHashtable.ContainsKey(i))
+		{
+			Model.SizeHashtable.Add(i, 0);
+		}
 
-    }
+	}
 }
 
 <div class="modal-backdrop" id="Modal" role="dialog" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <form method="post" action="Admin/Product/Edit" class="modal-content w-auto px-3 py-3">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel">Edit Product</h5>
-            </div>
-            <div class="modal-body p-0 mt-2" style="width: 850px">
-
-                <div class="row">
-                    <div class="col-4 d-flex flex-column gap-2">
-                        <div class="form-floating" hidden="hidden">
-                            <input type="text" class="form-control" placeholder="Annanas A" contenteditable="false" asp-for="ProductId">
-                            <label for="floatingInput">Id</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="text" class="form-control" placeholder="Annanas A" asp-for="ProductName">
-                            <label for="floatingInput">Enter Name</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="floatingInput" placeholder="Black" asp-for="Color">
-                            <label for="floatingInput">Enter Color</label>
-                        </div>
-                        <div class="form-floating">
-                            <textarea class="form-control w-90" placeholder="Leave a comment here" id="floatingTextarea" asp-for="Description">nothing</textarea>
-                            <label for="floatingTextarea">Enter Descripiton</label>
-                        </div>
-                    </div>
-                    <div class="col-4 d-flex flex-column gap-2">
-                        <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="ProductCategoryId">
-                                @if (productCategories != null)
-                                {
-                                    int a = 1;
-                                    <option value="@Model.ProductCategoryId" selected="selected">
-                                        @Model.ProductCategory
-                                    </option>
-                                    foreach (var obj in productCategories)
-                                    {
-                                        
-                                            a++;
-                                            <option value="@obj.ProductCategoryId">
-                                                @obj.ProductCategoryName
-                                            </option>
-
-                                        
-                                    }
-                                }
-
-                            </select>
-                            <label for="floatingSelect">Category</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="floatingInput" placeholder="$20" asp-for="ProductUnitPrice" step="any">
-                            <label for="floatingInput">Enter Price</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="floatingInput" placeholder="1" readonly asp-for="Amount">
-                            <label for="floatingInput">Enter Amount</label>
-                        </div>
-                        <div class="form-floating">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                            <label for="floatingSelect">Voucher</label>
-                        </div>
-
-                    </div>
-                    <div class="col-4 d-grid gap-2">
-                        <div class="col">
-                            <div class="form-group">
-                                @for (int i = 35; i <= 44; i++)
-                                {
-                                    var obj = Model.SizeHashtable[i];
-                                    <div class="form-check mt-2">
-                                        @if (obj > 0)
-                                        {
-                                            <input class="form-check-input" type="checkbox" value="@i" name="TestSize" id="checkbox_@i" checked />
-                                        }
-                                        else
-                                        {
-                                            <input class="form-check-input" type="checkbox" value="@i" name="TestSize" id="checkbox_@i" />
-                                        }
-                                        <label class="form-check-label d-flex align-items-center">
-                                            @i
-                                            <input type="number" value="@Model.SizeHashtable[i]" name="TestSizeAmount" id="input_@Model.SizeHashtable[i]" class="form-control ms-2" />
-                                        </label>
-                                    </div>
-                                }
-
+	<div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+		<form method="post" action="Admin/Product/Edit" class="modal-content w-auto px-3 py-3">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ModalLabel">Edit Product</h5>
+			</div>
+			<div class="modal-body p-0 mt-2" style="width: 850px">
+				<div class="row">
+					<div class="col-8" style="height:fit-content">
+						<div class="row">
+							<div class="col d-flex flex-column gap-2">
+								<div class="form-floating">
+									<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
+									<label for="floatingInput">Enter Name</label>
+									<span asp-validation-for="ProductName" class="text-danger"></span>
+								</div>
+								<div class="form-floating">
+									<input type="text" asp-for="Color" class="form-control" id="floatingInput" placeholder="Black">
+									<label for="floatingInput">Enter Color</label>
+									<span asp-validation-for="Color" class="text-danger"></span>
+								</div>
+								<div class="form-floating flex-grow-1">
+									<textarea class="form-control h-100" asp-for="Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+									<label for="floatingTextarea">Enter Descripiton</label>
+									<span asp-validation-for="Description" class="text-danger"></span>
+								</div>
+							</div>
+							<div class="col d-grid gap-2">
+								<div class="form-floating">
+									<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
+									</select>
+									<label for="selectCategory">Category</label>
+									<span asp-validation-for="ProductCategoryId" class="text-danger"></span>
+								</div>
+								<div class="form-floating">
+									<input type="text" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
+									<label for="floatingInput">Enter Price</label>
+									<span asp-validation-for="ProductUnitPrice" class="text-danger"></span>
+								</div>
+								<div class="form-floating">
+									<input type="number" asp-for="Amount" class="form-control" id="floatingInput" placeholder="1">
+									<label for="floatingInput">Enter Amount</label>
+									<span asp-validation-for="Amount" class="text-danger"></span>
+								</div>
+								@*<div class="form-floating">
+								<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+								<option selected>--</option>
+								<option value="1">One</option>
+								<option value="2">Two</option>
+								<option value="3">Three</option>
+								</select>
+								<label for="floatingSelect">Voucher</label>
+								</div>*@
+							</div>
+						</div>
+						<div class="row">
+							<img src="image/shoe.jpg" class="img h-auto col-4" alt="image" />
+						</div>
+					</div>
+					<div class="col-4">
+						<div class="form-group">
+							@for (int i = 35; i <= 44; i++)
+							{
+								var obj = Model.SizeHashtable[i];
+								<div class="form-check mt-2">
+									@if (obj > 0)
+									{
+										<input class="form-check-input" type="checkbox" value="@i" name="TestSize" id="checkbox_@i" checked />
+									}
+									else
+									{
+										<input class="form-check-input" type="checkbox" value="@i" name="TestSize" id="checkbox_@i" />
+									}
+									<label class="form-check-label d-flex align-items-center">
+										@i
+										<input type="number" value="@Model.SizeHashtable[i]" name="TestSizeAmount" id="input_@Model.SizeHashtable[i]" class="form-control ms-2" />
+									</label>
+								</div>
+							}
+						</div>
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="row d-flex justify-content-start mt-3 gx-1">
-                    <input type="image" class="img h-auto col-2" title="image" />
-                    <input type="image" class="img h-auto col-2" title="image" />
-                    <input type="image" class="img h-auto col-2" title="image" />
-                    <input type="image" class="img h-auto col-2" title="image" />
-                </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-                <button type="submit" class="btn btn-primary">Submit</button>
+					</div>
+				</div>
+				<div class="row mt-2">
+				</div>
+				<div class="row d-flex justify-content-start mt-3 gx-1">
+				</div>
+			</div>
+			<div class="modal-footer d-flex justify-content-between">
+				<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+				<div>
+					<button type="submit" class="btn btn-primary">Submit</button>
 
-                <button type="submit" class="btn btn-secondary" asp-action="Delete" asp-controller="Product"
-                        asp-route-id=@Model.ProductId>
-                    Delete
-                </button>
-
-
-            </div>
-        </form>
-    </div>
+					<button type="submit" class="btn btn-secondary" asp-action="Delete" asp-controller="Product"
+							asp-route-id=@Model.ProductId>
+						Delete
+					</button>
+				</div>
+			</div>
+			@Html.AntiForgeryToken()
+		</form>
+	</div>
 </div>
+
+@section Scripts {
+	@{
+		<partial name="./_ValidationScriptsPartial"></partial>
+	}
+	}
 

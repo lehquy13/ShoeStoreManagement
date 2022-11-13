@@ -11,14 +11,14 @@
     <div class="col-2 borderCustom1">
             <div class="row">
                 <ii class="row-1 h6 mb-2 mt-4">Category</ii>
-
-                <div class="tabCustom row-cols-6">
-                    <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-                    <button class="tabCustom" onclick="openCity(event, 'London')">Customer</button>
-                    <button class="tabCustom" onclick="openCity(event, 'London')">Staff</button>
-                    <button class="tabCustom" onclick="openCity(event, 'London')">Admin</button>
-
+                <form method="post">
+                  <div class="tabCustom row-cols-6">
+                    <button class="tabCustom" asp-action="Index" asp-route-filter="All">All</button>
+                    <button class="tabCustom" asp-action="Index" asp-route-filter="Admin">Admin</button>
+                    <button class="tabCustom" asp-action="Index" asp-route-filter="Staff">Staff</button>
+                    <button class="tabCustom" asp-action="Index" asp-route-filter="Customer">Customer</button>
                 </div>
+                </form>
             </div>
     </div> @*used to col-3 vs col-10*@
 
