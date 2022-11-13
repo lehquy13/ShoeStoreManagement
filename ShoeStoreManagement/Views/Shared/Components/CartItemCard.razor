@@ -1,4 +1,8 @@
 ﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.CRUD.Interfaces;
+@using Microsoft.AspNetCore.Components.Web;
+
+@inject NavigationManager UriHelper
 
 <div class="row">
     <div class="card d-flex flex-row col border-1 border-color p-0">
@@ -17,15 +21,37 @@
             <div class="d-flex justify-content-between align-items-end">
                 <div>
                     <p class="m-0 caption text-primary">$@cartItem.Product.ProductUnitPrice</p>
-                    <Counter />
+                    <Counter count="@cartItem.Amount" max=@cartItem.Product.Amount OnGetAmount="OK" />
                 </div>
-                <p class="icon-delete m-0 text-primary" onclick=""></p>
+                <a class="icon-delete btn-icon m-0 text-primary" @onclick="DeleteCartItem"></a>
             </div>
         </div>
     </div>
 </div>
 
-@code {
+@code { 
+    [Parameter]
+    public string cartItemId { get; set; } = null!;
+
     [Parameter]
     public CartDetail cartItem { get; set; } = null!;
+
+    protected void OK(int count)
+    {
+        cartItem.Amount = count;
+        cartItem.CartDetailTotalSum = (int)cartItem.Product.ProductUnitPrice * count;
+        StateHasChanged();
+
+        UpdateState(count, cartItem.CartDetailTotalSum);
+    }
+
+    void UpdateState(int count, int sum)
+    {
+        UriHelper.NavigateTo("Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
+    }
+
+    void DeleteCartItem()
+    {
+        UriHelper.NavigateTo("Cart/Delete/" + cartItemId, true);
+    }
 }

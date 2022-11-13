@@ -26,7 +26,7 @@
 
 	<div class="col-9 row borderCustom">
 		@foreach(var item in Model) {
-			<component type="typeof(OrderCard)" render-mode="ServerPrerendered" param-order=@item />
+			<component type="typeof(OrderCard)" accesskey="item" render-mode="ServerPrerendered" param-order=@item />
 		}
 	</div>
 </div>

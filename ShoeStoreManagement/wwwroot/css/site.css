@@ -191,7 +191,6 @@
 /*PAGINATION*/
 .pagination {
     display: flex;
-    height: 20vh;
     align-items: center;
     justify-content: center;
     flex-direction: column;

@@ -7,8 +7,11 @@
 
 <div class="row justify-content-sm-between">
     <section class="col-8 col-sm-7">
-        @foreach(var item in Model.CartDetails) {
-            <component type="typeof(CartItemCard)" render-mode="ServerPrerendered" param-cartItem=@item />
+        @if (Model.CartDetails.Count > 0) {
+            @foreach (var item in Model.CartDetails)
+            {
+                <component type="typeof(CartItemCard)" render-mode="ServerPrerendered" param-cartItem=@item param-cartItemId=@item.CartDetailId />
+            }
         }
     </section>
 
@@ -21,10 +24,7 @@
             <h5 class="fw-bold mt-3">Total price</h5>
             <h5 class="fw-bold mt-3">$@Model.CartTotalPrice</h5>
         </div>
-        <a asp-controller="Order" asp-action="Index" class="btn btn-primary w-65 mt-5">
-            Make an order
-        </a>
-        @*<button class="btn btn-primary w-100 mt-5">buy now</button>*@
+        <button class="btn btn-primary mt-5 w-100" onclick="location.href = '@(Url.Action("MakeAnOrder", "Order"))'">Make an order</button>
     </section>
 </div>
 
