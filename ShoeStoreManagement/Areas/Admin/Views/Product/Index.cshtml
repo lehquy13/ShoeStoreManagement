@@ -1,11 +1,31 @@
-﻿@using ShoeStoreManagement.Views.Shared.Components;
+﻿@using ShoeStoreManagement.Areas.Admin.Controllers
+@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
+@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Web;
 @model ShoeStoreManagement.Core.Models.Product
 
 @{
-    List<Product>? products = ViewData["products"] as List<Product> ?? null;
-    List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
+	List<Product>? products = ViewData["products"] as List<Product> ?? null;
+	List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
+	List<string> filters = ViewData["filters"] as List<string> ?? null;
 }
+
+@functions {
+	[BindProperty(SupportsGet = true)]
+	public int PageNumber
+	{
+		get { return pageNumber; }
+		set
+		{
+			pageNumber = value;
+			controller.Index("", "");
+		}
+	} 
+	private int pageNumber;
+	public static ProductController controller;
+}
+
 <style>
 
 
@@ -28,6 +48,9 @@
 						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio"/>All</label>
 						@foreach (ProductCategory i in productCategories) {
 							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio"/>@i.ProductCategoryName</label>
+						}
+						@for(int i = 0; i <= pageNumber; i++){
+							<label>@pageNumber</label>
 						}
 					
 					@*<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
@@ -121,7 +144,8 @@
                 </div>
             </div>
         </div>
-			<component type="typeof(Pagination)" render-mode="Static" />
+			<component type="typeof(Pagination)" render-mode="ServerPrerendered" param-products=@ViewData["products"]/>
+			<component type="typeof(Counter)" render-mode="ServerPrerendered"/>
     </div>
 </div>
 </form>

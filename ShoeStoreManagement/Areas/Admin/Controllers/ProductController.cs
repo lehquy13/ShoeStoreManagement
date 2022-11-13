@@ -12,7 +12,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
-        public string radio1 { set; get; }
         private readonly ILogger<ProductController> _logger;
         private readonly IProductCRUD _productCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
@@ -58,6 +57,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public IActionResult Index(string categoryRadio, string priceRadio)
         {
             List<Product> productFilter = new List<Product>();
+            List<string> filters = new List<string>();
+            filters.Add(categoryRadio);
+            filters.Add(priceRadio);
+
             float minvalue = -1, maxvalue = -1;
 
             if (products.Count > 0)
@@ -79,6 +82,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewBag.Product = true;
             ViewData["productCategories"] = productCategories;
             ViewData["products"] = productFilter;
+            ViewData["filters"] = filters;
             ViewData["test"] = test;
             return View();
         }
