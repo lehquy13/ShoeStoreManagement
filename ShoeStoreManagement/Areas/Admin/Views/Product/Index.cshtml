@@ -1,5 +1,7 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
+@model ShoeStoreManagement.Core.Models.Product
+
 @{
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
     List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
@@ -14,6 +16,7 @@
 	}
 
 </style>
+<form action="Admin/Product/Index">
 <div class="row">
 
 	<div class="col-2 borderCustom1">
@@ -21,28 +24,35 @@
 			<div class="row">
 				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-				<div class="tabCustom row-cols-6">
-					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+				<div class="radioLayoutTabCustom row-cols-6">
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio"/>All</label>
+						@foreach (ProductCategory i in productCategories) {
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio"/>@i.ProductCategoryName</label>
+						}
+					
+					@*<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button*@
 
 				</div>
 
 			</div>
-
+			
 			<div class="row mt-3">
 				<ii class="row-1 h6">Price</ii>
 
 				<div class="radioLayoutTabCustom row-cols-6">
-
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
-
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" />All</label>
+					<label class="radioLayoutTabCustom"> <input type="radio" value="0-10" name="priceRadio" />0-10</label>
+					<label class="radioLayoutTabCustom"> <input type="radio" value="10-100" name="priceRadio" />10-100</label>
+					<label class="radioLayoutTabCustom"> <input type="radio" value="100-1000" name="priceRadio" />100-1000</label>
 				</div>
 			</div>
+			
+				<input class="btn-primary" type="submit" />
+			
 		</div>
 	</div> @*used to col-3 vs col-10*@
 
@@ -111,9 +121,10 @@
                 </div>
             </div>
         </div>
+			<component type="typeof(Pagination)" render-mode="Static" />
     </div>
 </div>
-
+</form>
 @{
 	Product metmoi = new Product()
 			{

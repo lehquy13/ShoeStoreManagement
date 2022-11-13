@@ -2,15 +2,36 @@
 @using Microsoft.AspNetCore.Components.Web;
 
 <div class="counter">
-    <button class="btn-counter" type="button" style="background-color:#14213D"> - </button>
-    <div class="counter-text">@count</div>
-    <button class="btn-counter" type="button" @onclick="@(()=>increament())" style="background-color:#14213D"> + </button>
+	<button class="btn-counter" type="button" @onclick="Decreament" style="background-color:#14213D"> - </button>
+	<div class="counter-text">@count</div>
+	<button class="btn-counter" type="button" @onclick="Increament" style="background-color:#14213D"> + </button>
 </div>
 
 @code {
-    private int count = 1;
+	[Parameter]
+	public int count { get; set; } = 1;
 
-	private void increament() {
-		count++;
+	[Parameter]
+	public int max { get; set; } = 1;
+
+	[Parameter]
+	public EventCallback<int> OnGetAmount { get; set; }
+
+	protected async Task Increament()
+	{
+		if (count < max) {
+			count++;
+		}
+
+		await OnGetAmount.InvokeAsync(count);
+	}
+
+	protected async void Decreament()
+	{
+		if (count > 1) {
+			count--;
+		}
+
+		await OnGetAmount.InvokeAsync(count);
 	}
 }

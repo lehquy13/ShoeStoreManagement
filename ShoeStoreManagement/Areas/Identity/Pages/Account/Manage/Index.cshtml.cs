@@ -4,12 +4,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShoeStoreManagement.Areas.Identity.Data;
+using ShoeStoreManagement.Data;
 
 namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
 {
@@ -17,13 +19,16 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+            SignInManager<ApplicationUser> signInManager,
+            ApplicationDbContext applicationDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = applicationDbContext;
         }
 
         /// <summary>
@@ -59,18 +64,28 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [DataType(DataType.DateTime)]
+            [Display(Name = "Birthday")]
+            public DateTime Birthday { get; set; }
+
+            [Display(Name = "Name")]
+            public string Name { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            var birthday = user.Birthday;
 
             Username = userName;
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                Birthday = birthday,
+                Name = userName,
             };
         }
 
@@ -109,6 +124,17 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
                     StatusMessage = "Unexpected error when trying to set phone number.";
                     return RedirectToPage();
                 }
+            }
+
+            var birthday = user.Birthday;
+            if (Input.Birthday != birthday)
+            {
+                user.Birthday = Input.Birthday;
+                _context.ApplicationUsers.Update(user);
+                _context.SaveChanges();
+                
+                StatusMessage = "Unexpected error when trying to set birthday.";
+                return RedirectToPage();
             }
 
             await _signInManager.RefreshSignInAsync(user);
