@@ -64,7 +64,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            return View(new Product());
         }
 
 

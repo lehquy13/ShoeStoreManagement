@@ -2,7 +2,6 @@
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
-using System.Data.Entity;
 
 namespace ShoeStoreManagement.CRUD.Implementations
 {

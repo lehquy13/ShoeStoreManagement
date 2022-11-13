@@ -22,6 +22,7 @@ builder.Services.AddScoped<IAddressCRUD, AddressCRUD>();
 builder.Services.AddScoped<ICartCRUD, CartCRUD>();
 builder.Services.AddScoped<IVoucherCRUD, VoucherCRUD>();
 builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
+builder.Services.AddScoped<IOrderDetailCRUD, OrderDetailCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)

@@ -1,0 +1,141 @@
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+<!-- Button trigger modal -->
+@using ShoeStoreManagement.Core.Models
+@using ShoeStoreManagement.Core.ViewModels
+@using ShoeStoreManagement.Areas.Identity.Data
+@model CustomerDialogVM
+
+@{
+    ApplicationUser? user = ViewData["pickedUser"] as ApplicationUser ?? new ApplicationUser();
+    //List<Product>? items = ViewData["pickedItems"] as List<Product> ?? new List<Product>();
+}
+
+<div class="row">
+    <p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
+</div>
+<form class="row p-0 mt-2" method="post" action="Admin/Order/ConfirmOrder">
+    <div class="row">
+        <h5 class="modal-title" id="ModalLabel">CHOOSE User</h5>
+    </div>
+
+    <div class="col-8 d-flex flex-column gap-2">
+        <div class="d-flex flex-row">
+
+            <div class="modal-body p-0 mt-2" style="width: 850px">
+                <div class="container col-10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-wrap">
+                                <table class="table myaccordion table-hover" id="accordion">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th class="button">Name</th>
+                                            <th class="button">Email</th>
+                                            <th class="button">Phone</th>
+                                            <th class="button">Start Date</th>
+                                            <th class="button"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (var i = 1; i <= @Model.customers.Count; i++)
+                                        {
+                                            <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+
+                                                <th scope="row"> @i </th>
+                                                <td> @Model.customers[i-1].UserName </td>
+                                                <td> @Model.customers[i-1].Email </td>
+                                                <td> @Model.customers[i-1].PhoneNumber </td>
+                                                <td> @Model.customers[i-1].CreatedDate </td>
+                                                <td>
+                                                    <input type="radio" class="fa-solid fa-check" value="@Model.customers[i-1].Id" name="pickCustomerId">
+                                                </td>
+
+                                            </tr>
+                                        }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-4 d-flex flex-column gap-2">
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" hidden placeholder="Nguyen Van A" asp-for="pickCustomers.Id">
+            <label for="floatingInput">Enter Name</label>
+        </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Nguyen Van A" value="pickCustomers.">
+            <label for="floatingInput">Enter Name</label>
+        </div>
+        @if (Model.pickCustomers != null)
+        {
+            <div class="form-floating">
+                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" >
+
+                    @foreach (var i in Model.pickCustomers.Addresses)
+                    {
+
+                        <option value="@i.UserId">
+                            @i.AddressDetail
+                        </option>
+                    }
+
+                </select>
+                <label for="floatingSelect">Category</label>
+            </div>
+
+
+        }
+        else
+        {
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Thu Duc, Tp.Ho Chi Minh">
+                <label for="floatingInput">Enter Address</label>
+            </div>
+        }
+
+        <div class="form-floating">
+            <input type="tel" class="form-control" id="floatingInput" placeholder="0947xxx73" asp-for="pickCustomers.PhoneNumber">
+            <label for="floatingInput">Enter Phone</label>
+        </div>
+        <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" asp-for="pickCustomers.Email">
+            <label for="floatingInput">Enter Email</label>
+        </div>
+    </div>
+
+    <@*div class="col-6 d-flex flex-column gap-2">
+           <div class="row ms-1">
+           @foreach (var item in items)
+           {
+           <component type="typeof(CartItemCard)" render-mode="Static" param-product=@item />
+           }
+           </div>
+           <div class="d-flex justify-content-between mt-3">
+           <h5>Amounts</h5>
+           <h5>3</h5>
+           </div>
+           <div class="d-flex justify-content-between">
+           <h4 style="font-weight:bold">Total</h4>
+           <h4 style="font-weight:bold">$60</h4>
+           </div>
+           </div>*@
+   
+
+    <div>
+        <button type="submit" class="btn btn-primary" style="width:180px;">YEs care ab me my mah!</button>
+    </div>
+
+
+
+</form>
+
+

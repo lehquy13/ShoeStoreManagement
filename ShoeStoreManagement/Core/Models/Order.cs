@@ -15,7 +15,7 @@ public class Order
     DateTime orderDate = DateTime.Now;
     List<OrderDetail> orderDetails = new List<OrderDetail>();
 
-    int orderTotalPayment = 0;
+    float orderTotalPayment = 0;
     string orderVoucherId = string.Empty;
     Status status = Status.sampleStatus;
     DeliveryMethods deliveryMethod = DeliveryMethods.sampleMethod;
@@ -61,7 +61,7 @@ public class Order
     }
 
     [DataType(DataType.Currency)]
-    public int OrderTotalPayment
+    public float OrderTotalPayment
     {
         get { return orderTotalPayment; }
         set { orderTotalPayment = value; }
