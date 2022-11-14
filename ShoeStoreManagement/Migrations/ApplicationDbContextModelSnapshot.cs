@@ -362,8 +362,8 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("OrderDetailId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
 
                     b.Property<string>("OrderId")
                         .IsRequired()
