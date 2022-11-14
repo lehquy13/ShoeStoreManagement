@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
+using ShoeStoreManagement.Core.ViewModels;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;
 
@@ -14,6 +15,7 @@ namespace ShoeStoreManagement.Controllers
         private readonly IVoucherCRUD _voucherCRUD;
         private readonly ICartCRUD _cartCRUD;
         private readonly ICartDetailCRUD _cartDetailCRUD;
+        private static OrderVM _orderVM = new OrderVM();
 
         public OrderController(IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD)
         {
@@ -46,8 +48,6 @@ namespace ShoeStoreManagement.Controllers
             return View(orders);
         }
 
-        private static Order order = new Order() { };
-
         // get id of cart
         [HttpGet]
         public IActionResult MakeAnOrder()
@@ -78,27 +78,27 @@ namespace ShoeStoreManagement.Controllers
                 return NotFound();
             }
 
-            order.OrderDetails.Clear();
+            _orderVM.currOrder.OrderDetails.Clear();
 
             foreach(var item in list)
             {
                 orderDetail = new OrderDetail() {
                     Amount = item.Amount,
-                    OrderId = order.OrderId,
+                    OrderId = _orderVM.currOrder.OrderId,
                     Payment = (int)item.CartDetailTotalSum,
                     ProductId = item.ProductId,
                 };
 
-                order.OrderDetails.Add(orderDetail);
+                _orderVM.currOrder.OrderDetails.Add(orderDetail);
             }
 
-            return View(order);
+            return View(_orderVM.currOrder);
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View(order);
+            return View(_orderVM.currOrder);
         }
 
         [HttpPost]
@@ -115,9 +115,9 @@ namespace ShoeStoreManagement.Controllers
 
             _orderCRUD.CreateAsync(order);
             
-            if (order.OrderDetails.Count > 0)
+            if (_orderVM.currOrder.OrderDetails.Count > 0)
             {
-                foreach (var item in order.OrderDetails)
+                foreach (var item in _orderVM.currOrder.OrderDetails)
                 {
                     _orderDetailCRUD.CreateAsync(item);
                 }

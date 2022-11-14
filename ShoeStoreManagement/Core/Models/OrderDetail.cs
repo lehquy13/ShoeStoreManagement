@@ -42,7 +42,6 @@ namespace ShoeStoreManagement.Core.Models
         }
 
         [Range(1, 99999)]
-        [Column(TypeName = "decimal(18,2)")]
         public int Amount
         {
             get { return amount; }
