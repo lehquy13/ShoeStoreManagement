@@ -9,7 +9,7 @@ public class Cart
     List<CartDetail> cartDetails = new List<CartDetail>();
     string userId = string.Empty;
     ApplicationUser? user = null;
-    int cartTotalPrice = 0;
+    float cartTotalPrice = 0;
 
 
     [Key]
@@ -42,7 +42,8 @@ public class Cart
 
     [Range(1, 99999)]
     [DataType(DataType.Currency)]
-    public int CartTotalPrice
+    [Column(TypeName = "decimal(18,2)")]
+    public float CartTotalPrice
     {
         get { return cartTotalPrice; }
         set { cartTotalPrice = value; }

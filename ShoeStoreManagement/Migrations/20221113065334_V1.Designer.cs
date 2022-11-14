@@ -12,8 +12,8 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221110093452_Migration-v1")]
-    partial class Migrationv1
+    [Migration("20221113065334_V1")]
+    partial class V1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -286,9 +286,6 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("ProductCategoryId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("ProductDiscount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()

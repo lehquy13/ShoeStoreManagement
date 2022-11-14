@@ -3,6 +3,7 @@ using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ShoeStoreManagement.Core.Models;
 
@@ -83,6 +84,7 @@ public class Order
 
     [Range(0, 99999)]
     [DataType(DataType.Currency)]
+    [Column(TypeName = "decimal(18,2)")]
     public long DeliveryCharge
     {
         get { return deliveryCharge; }
@@ -90,6 +92,7 @@ public class Order
     }
 
     [ForeignKey("Id")]
+    [AllowNull]
     public string OrderVoucherId
     {
         get { return orderVoucherId; }
@@ -98,6 +101,7 @@ public class Order
 
     public Voucher OrderVoucher { get; set; } = new Voucher();
 
+    [AllowNull]
     public string OrderNote
     {
         get { return orderNote; }

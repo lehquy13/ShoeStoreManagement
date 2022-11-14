@@ -4,6 +4,7 @@ using System.Collections;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.Core.Mapping;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ShoeStoreManagement.Core.Models
 {
@@ -108,6 +109,7 @@ namespace ShoeStoreManagement.Core.Models
             return false;
         }
 
+        [AllowNull]
         public string Description
         {
             get { return description; }

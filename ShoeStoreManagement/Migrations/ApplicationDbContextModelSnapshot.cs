@@ -270,8 +270,8 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("CartId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CartTotalPrice")
-                        .HasColumnType("int");
+                    b.Property<decimal>("CartTotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -297,15 +297,13 @@ namespace ShoeStoreManagement.Migrations
 
                     b.Property<string>("CartId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CartDetailId");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
 
@@ -320,8 +318,8 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<int>("DeliverryMethods")
                         .HasColumnType("int");
 
-                    b.Property<long>("DeliveryCharge")
-                        .HasColumnType("bigint");
+                    b.Property<decimal>("DeliveryCharge")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -358,12 +356,12 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("OrderDetailId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("OrderId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Payment")
                         .HasColumnType("real");
@@ -373,8 +371,6 @@ namespace ShoeStoreManagement.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderDetailId");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -586,19 +582,11 @@ namespace ShoeStoreManagement.Migrations
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
                 {
-                    b.HasOne("ShoeStoreManagement.Core.Models.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("Product");
                 });
@@ -624,19 +612,11 @@ namespace ShoeStoreManagement.Migrations
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.OrderDetail", b =>
                 {
-                    b.HasOne("ShoeStoreManagement.Core.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });
