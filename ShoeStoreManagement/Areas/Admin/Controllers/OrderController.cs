@@ -23,6 +23,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _usermanager;
         private readonly IAddressCRUD _addressCRUD;
         private readonly IProductCRUD _productCRUD;
+        private readonly ISizeDetailCRUD _sizeDetailCRUD;
 
         static private OrderVM _orderVM = new OrderVM();
         CustomerDialogVM _customerDialogVM = new CustomerDialogVM();
@@ -31,7 +32,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public OrderController(ILogger<OrderController> logger, IOrderCRUD orderCRUD,
             IApplicationUserCRUD applicationUser, RoleManager<IdentityRole> roleManager,
              UserManager<ApplicationUser> usermanager, IAddressCRUD addressCRUD, IProductCRUD productCRUD,
-             IOrderDetailCRUD orderDetailCRUD)
+             IOrderDetailCRUD orderDetailCRUD, ISizeDetailCRUD sizeDetailCRUD)
         {
             _logger = logger;
             _orderCRUD = orderCRUD;
@@ -42,6 +43,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _addressCRUD = addressCRUD;
             _productCRUD = productCRUD;
             _orderDetailCRUD = orderDetailCRUD;
+            _sizeDetailCRUD = sizeDetailCRUD;
         }
 
         private void Init()
@@ -111,13 +113,23 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             foreach (string i in orderVM.pickingQuantity)
                 if (i != "0")
                     _orderVM.pickingQuantity.Add(i);
-            _orderVM.pickingSize = orderVM.pickingSize;
+            foreach (string i in orderVM.pickingSize)
+                if (i != "--")
+                    _orderVM.pickingSize.Add(i);
+            //_orderVM.pickingSize = orderVM.pickingSize;
             _orderVM.products.Clear();
 
 
             foreach (var item in _orderVM.pickitems)
             {
-                _orderVM.products.Add(_productCRUD.GetByIdAsync(item).Result);
+                if (item == null)
+                {
+                    continue;
+                }
+                var product = _productCRUD.GetByIdAsync(item).Result;
+                product.Sizes = _sizeDetailCRUD.GetAllByIdAsync(product.ProductId).Result;
+                //check size avaiables before adding
+                _orderVM.products.Add(product);
             }
             _customerDialogVM.customers = _orderVM.customers;
             return View(_customerDialogVM);

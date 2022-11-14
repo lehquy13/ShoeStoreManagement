@@ -6,13 +6,14 @@
 @model OrderVM
 @{
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
+    List<int> ints = new List<int>() { 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44 };
 }
 <form method="post" action="Admin/Order/PickCustomer">
 
     <div class="row">
         <p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
     </div>
-    
+
     <div class="row">
         <div class="col p-0 mt-2">
             <div class="col d-flex flex-column gap-2">
@@ -30,6 +31,7 @@
                                                 <th class="button">Name</th>
                                                 <th class="button">Price</th>
                                                 <th class="button">Color</th>
+                                                <th class="button">Size</th>
                                                 <th class="button">Amount</th>
                                                 <th class="button">
                                                     Quantity
@@ -46,11 +48,41 @@
                                                         <td>@Model.products[i-1].ProductName</td>
                                                         <td>@Model.products[i-1].ProductUnitPrice</td>
                                                         <td>@Model.products[i-1].Color</td>
+
+
+                                                        <td>
+                                                           @* <div class="form-floating">
+                                                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="pickingSize" asp-items="@(new SelectList(ints))">
+
+                                                                    
+
+                                                                </select>
+                                                            </div>*@
+                                                            <div class="">
+                                                                <select asp-items="@(new SelectList(ints))" style="height:40px;" asp-for="pickingSize">
+                                                                    <option selected>
+                                                                        --
+                                                                    </option>
+                                                                    @*@for (var count = 33; count < 45; count++)
+                                                                    {
+
+                                                                        <option value="@count" >
+                                                                            @count
+                                                                        </option>
+                                                                    }*@
+
+                                                                </select>
+                                                            </div>
+                                                        </td>
+
+
+
+
                                                         <td>@Model.products[i-1].Amount</td>
                                                         <td>
                                                             <div class="form-check mt-2">
                                                                 <input class="form-check-input" type="checkbox"
-                                                               value="@Model.products[i-1].ProductId" name="pickitems" id="checkbox_@Model.products[i-1].ProductId" 
+                                                               value="@Model.products[i-1].ProductId" name="pickitems" id="checkbox_@Model.products[i-1].ProductId"
                                                                checked="@Model.products[i-1].isChecked" />
 
                                                                 <label class="form-check-label ml-5 d-flex align-items-center">
@@ -89,7 +121,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <div class="row-10 md-flex justify-content-between " style=" margin-bottom:0; ">
 
