@@ -26,6 +26,7 @@ public class Order
     //---------------------------------
     [NotMapped]
     public string DeliveryAddress { get; set; } = string.Empty;
+
     [Key]
     public string OrderId
     {
