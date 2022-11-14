@@ -24,8 +24,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly IAddressCRUD _addressCRUD;
         private readonly IProductCRUD _productCRUD;
 
-
-        static private readonly OrderVM _orderVM = new OrderVM();
+        static private OrderVM _orderVM = new OrderVM();
         CustomerDialogVM _customerDialogVM = new CustomerDialogVM();
 
 
@@ -51,13 +50,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             var obj = _applicationuserCRUD.GetAllAsync().Result;
 
             _orderVM.customers.Clear();
+            _orderVM.allOrders.Clear();
 
             foreach (ApplicationUser i in obj)
             {
 
                 foreach (Order o in _orderCRUD.GetAllAsync(i.Id).Result)
                 {
-                    _orderVM.orders.Add(o);
+                    _orderVM.allOrders.Add(o);
                 }
 
                 i.Role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
@@ -71,7 +71,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Order = true;
-            
+
             var orderList = await _orderCRUD.GetAllOrderAsync();
             foreach (var item in orderList)
             {
@@ -97,6 +97,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> PickItem()
         {
+            _orderVM.pickingQuantity.Clear();
             ViewData["customer"] = _orderVM.customers;
             var obj = await _productCRUD.GetAllAsync();
             ViewData["products"] = obj;
@@ -143,45 +144,40 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
             return RedirectToAction("Index");
         }
-        //k xai
+        
         [HttpPost]
         public async Task<IActionResult> Index(OrderVM orderVM)
         {
 
-            if (orderVM == null)
+            if (orderVM == null || orderVM.isOnProcessing != true)
             {
                 return RedirectToAction("Index");
             }
+            await _orderCRUD.CreateAsync(_orderVM.currOrder);
 
-            var order = new Order();
-            order.UserId = _orderVM.customers[0].Id;
-            order.Status = Core.Enums.Status.sampleStatus;
-            await _orderCRUD.CreateAsync(order);
-
+            foreach (var s in _orderVM.currOrder.OrderDetails)
+            {
+                await _orderDetailCRUD.CreateAsync(s);
+            }
             foreach (var s in _orderVM.products)
             {
-                var it = new OrderDetail()
-                {
-                    OrderId = order.OrderId,
-                    Amount = _orderVM.totalAmount,
-                    Payment = _orderVM.totalPayment,
-                    ProductId = s.ProductId
-                };
-
-                await _orderDetailCRUD.CreateAsync(it);
                 _productCRUD.Update(s);
             }
 
+
+
             var orderList = await _orderCRUD.GetAllOrderAsync();
-            foreach(var item in orderList)
+            foreach (var item in orderList)
             {
                 item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
-                foreach(var itemDetail in item.OrderDetails)
+                foreach (var itemDetail in item.OrderDetails)
                 {
                     item.OrderTotalPayment += itemDetail.Payment;
                 }
             }
             ViewData["orders"] = orderList;
+
+            _orderVM = new OrderVM();
 
             return View();
 
@@ -189,7 +185,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrder(CustomerDialogVM id)
+        public IActionResult ConfirmOrderAsync(CustomerDialogVM id)
         {
             Console.WriteLine("me here");
             if (id.pickCustomerId == null)
@@ -197,17 +193,24 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            _orderVM.customers[0].Addresses = _addressCRUD.GetAllAsync(_orderVM.customers[0].Id).Result;
             var obj = _applicationuserCRUD.GetByIdAsync(id.pickCustomerId).Result;
             _orderVM.customers.Clear();
             _orderVM.customers.Add(obj);
+            _orderVM.customers[0].Addresses = _addressCRUD.GetAllAsync(_orderVM.customers[0].Id).Result;
+
             _orderVM.totalPayment = _orderVM.totalAmount = 0;
+
+            _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
+            _orderVM.currOrder.Status = Core.Enums.Status.sampleStatus;
+            
 
             for (var i = 0; i < _orderVM.products.Count; i++)
             {
+                //calculate totalprice
                 var m = Int32.Parse(_orderVM.pickingQuantity[i]);
                 _orderVM.totalPayment += _orderVM.products[i].ProductUnitPrice * m;//sai nhas
                 _orderVM.totalAmount += m;//van sai nha
+                //reduce product
                 if (m > _orderVM.products[i].Amount)
                 {
                     return NoContent();// nay can validation
@@ -216,11 +219,25 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 {
                     _orderVM.products[i].Amount -= m;
                 }
+                //create detail
+
+
+                var it = new OrderDetail()
+                {
+                    OrderId = _orderVM.currOrder.OrderId,
+                    Amount = m,
+                    Payment = _orderVM.products[i].ProductUnitPrice * m,
+                    ProductId = _orderVM.products[i].ProductId
+                };
+
+                _orderVM.currOrder.OrderDetails.Add(it);
+
+
             }
 
             return View(_orderVM);
         }
 
-        
+
     }
 }

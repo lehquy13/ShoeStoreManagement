@@ -15,7 +15,7 @@ public class OrderVM
     public List<ApplicationUser>? customers { get; set; } = new List<ApplicationUser>();
     public ApplicationUser pickCustomers { get; set; } = new ApplicationUser();
 
-    public List<Order>? orders { get; set; } = new List<Order>();
+    public Order currOrder { get; set; } = new Order();
 
 
     public List<string> pickingQuantity { get; set; } = new List<string>();
@@ -24,5 +24,7 @@ public class OrderVM
 
     public int totalAmount { get; set; } = 0;
     public float totalPayment { get; set; } = 0;
+    public List<Order> allOrders { get; set; } = new List<Order>();
 
+    public bool isOnProcessing { get; set; } = false;
 }

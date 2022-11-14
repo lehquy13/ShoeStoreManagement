@@ -47,18 +47,19 @@
                                 <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
                                     <th scope="row">@i</th>
-                                    <td>@orders[i-1].OrderId</td>
+                                    <td>@orders[i-1].OrderId.Substring(0,5)</td>
                                     <td>@orders[i-1].User.UserName</td>
-                                    <td>@orders[i-1].OrderTotalPayment</td>
+                                    <td>$@orders[i-1].OrderTotalPayment</td>
                                     <td>@orders[i-1].OrderDetails.Count</td>
-                                    <td>@orders[i-1].OrderDate.ToString("dd MMM yyy HH:mm:ss")</td>
+                                    <td>@orders[i-1].OrderDate.ToString("dd MMM y HH:mm")</td>
                                     <td>@orders[i-1].Status.ToString()</td>
                                         @*                       <td>
                                 <i class="fa" aria-hidden="true"></i>
                                 </td>*@
                                 </tr>
+                                
+                                
                                 }
-                            </tr>
                             @*<tr>
                             <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
