@@ -201,7 +201,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _orderVM.totalPayment = _orderVM.totalAmount = 0;
 
             _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
-            _orderVM.currOrder.Status = Core.Enums.Status.sampleStatus;
+            _orderVM.currOrder.Status = Core.Enums.Status.Waiting;
             
 
             for (var i = 0; i < _orderVM.products.Count; i++)
