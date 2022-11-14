@@ -83,6 +83,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewData["productCategories"] = productCategories;
             ViewData["products"] = productFilter;
             ViewData["filters"] = filters;
+
             ViewData["test"] = test;
             return View();
         }

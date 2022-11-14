@@ -1,34 +1,19 @@
-﻿@using ShoeStoreManagement.Areas.Admin.Controllers
+﻿@model ShoeStoreManagement.Core.Models.Product
+
+@using ShoeStoreManagement.Areas.Admin.Controllers
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
-@using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
-@model ShoeStoreManagement.Core.Models.Product
 
 @{
 	List<Product>? products = ViewData["products"] as List<Product> ?? null;
+	List<string> productsName = ViewData["productsName"] as List<string> ?? null;
 	List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
 	List<string> filters = ViewData["filters"] as List<string> ?? null;
 }
 
-@functions {
-	[BindProperty(SupportsGet = true)]
-	public int PageNumber
-	{
-		get { return pageNumber; }
-		set
-		{
-			pageNumber = value;
-			controller.Index("", "");
-		}
-	} 
-	private int pageNumber;
-	public static ProductController controller;
-}
-
 <style>
-
-
 	table,
 	thead {
 		border-bottom: dotted;
@@ -49,10 +34,6 @@
 						@foreach (ProductCategory i in productCategories) {
 							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio"/>@i.ProductCategoryName</label>
 						}
-						@for(int i = 0; i <= pageNumber; i++){
-							<label>@pageNumber</label>
-						}
-					
 					@*<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
@@ -74,8 +55,7 @@
 				</div>
 			</div>
 			
-				<input class="btn-primary" type="submit" />
-			
+				<input class="btn-primary" type="submit"/>			
 		</div>
 	</div> @*used to col-3 vs col-10*@
 
@@ -144,8 +124,7 @@
                 </div>
             </div>
         </div>
-			<component type="typeof(Pagination)" render-mode="ServerPrerendered" param-products=@ViewData["products"]/>
-			<component type="typeof(Counter)" render-mode="ServerPrerendered"/>
+
     </div>
 </div>
 </form>
@@ -161,8 +140,10 @@
 
 <partial name="Create.cshtml" view-data="ViewData" model="metmoi"/>
 
+
+
 @section Scripts {
 	@{
-		<partial name="./_ValidationScriptsPartial"></partial>
+			<partial name="./_ValidationScriptsPartial"></partial>
 	}
 	}

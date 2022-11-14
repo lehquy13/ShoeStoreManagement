@@ -4,13 +4,34 @@
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Web;
 
+@inject NavigationManager UriHelper
+<nav class="container">
+  <ul class="pagination" style="display:flex; flex-direction:row">
+    <li class="page-item"><a class="page-link">Previous</a></li>
+
+    @for (int i = 1; i <= @countPage(); i++)
+    {
+      <li class="page-item"><button class="page-link" type="button" @onclick="()=>setPage()">@i</button></li>
+    }
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+  <div>@pageNumber</div>
+</nav>
 
 @code {
   [Parameter]
-  public List<Product> products { get; set; } = new List<Product>();
+  public List<string> products { get; set; } = new List<string>();
 
+  [Parameter]
+  public int pageNumber { get; set; } = 1;
 
-  public int pageNumber = 1;
+  [Parameter]
+  public EventCallback<int> OnGetPageNumber { get; set; }
+
+  void setPage()
+  {
+    pageNumber++;
+  }
 
   int countPage()
   {
@@ -18,7 +39,7 @@
     int numberPages = 0;
     int numberProducts = 0;
 
-    foreach (Product i in products)
+    foreach (string i in products)
     {
       numberProducts++;
     }
@@ -30,23 +51,4 @@
 
     return numberPages;
   }
-
-  private void setPage()
-  {
-    pageNumber ++;
-  }
 }
-
-<nav class="container">
-    <ul class="pagination" style="display:flex; flex-direction:row">
-        <li class="page-item"><a class="page-link">Previous</a></li>
-
-    @for (int i = 1; i <= @countPage(); i++)
-      {
-      <li class="page-item"><button class="page-link" type="button" @onclick="()=>setPage()">@pageNumber</button></li>
-      }
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
-    <div>@pageNumber</div>
-</nav>
-
