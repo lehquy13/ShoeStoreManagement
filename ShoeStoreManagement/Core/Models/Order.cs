@@ -20,7 +20,7 @@ public class Order
     string orderVoucherId = string.Empty;
     Status status = Status.Waiting;
     DeliveryMethods deliveryMethod = DeliveryMethods.Normal;
-    long deliveryCharge = 0;
+    float deliveryCharge = 0;
 
     string orderNote = string.Empty;
     //---------------------------------
@@ -88,7 +88,7 @@ public class Order
     [Range(0, 99999)]
     [DataType(DataType.Currency)]
     [Column(TypeName = "decimal(18,2)")]
-    public long DeliveryCharge
+    public float DeliveryCharge
     {
         get { return deliveryCharge; }
         set { deliveryCharge = value; }
