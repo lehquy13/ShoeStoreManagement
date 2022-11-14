@@ -3,6 +3,7 @@ using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Areas.Identity.Data;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ShoeStoreManagement.Core.Models;
 
@@ -15,14 +16,16 @@ public class Order
     DateTime orderDate = DateTime.Now;
     List<OrderDetail> orderDetails = new List<OrderDetail>();
 
-    int orderTotalPayment = 0;
+    float orderTotalPayment = 0;
     string orderVoucherId = string.Empty;
-    Status status = Status.sampleStatus;
-    DeliveryMethods deliveryMethod = DeliveryMethods.sampleMethod;
-    long deliveryCharge = 0;
+    Status status = Status.Waiting;
+    DeliveryMethods deliveryMethod = DeliveryMethods.Normal;
+    float deliveryCharge = 0;
 
     string orderNote = string.Empty;
     //---------------------------------
+    [NotMapped]
+    public string DeliveryAddress { get; set; } = string.Empty;
 
     [Key]
     public string OrderId
@@ -59,8 +62,10 @@ public class Order
         set { orderDate = value; }
     }
 
+    [Range(0, 99999)]
     [DataType(DataType.Currency)]
-    public int OrderTotalPayment
+    [Column(TypeName = "decimal(18,2)")]
+    public float OrderTotalPayment
     {
         get { return orderTotalPayment; }
         set { orderTotalPayment = value; }
@@ -82,13 +87,18 @@ public class Order
 
     [Range(0, 99999)]
     [DataType(DataType.Currency)]
-    public long DeliveryCharge
+    [Column(TypeName = "decimal(18,2)")]
+    public float DeliveryCharge
     {
         get { return deliveryCharge; }
         set { deliveryCharge = value; }
     }
 
+    [Required]
+    public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.Cash;
+
     [ForeignKey("Id")]
+    [AllowNull]
     public string OrderVoucherId
     {
         get { return orderVoucherId; }
@@ -97,6 +107,7 @@ public class Order
 
     public Voucher OrderVoucher { get; set; } = new Voucher();
 
+    [AllowNull]
     public string OrderNote
     {
         get { return orderNote; }

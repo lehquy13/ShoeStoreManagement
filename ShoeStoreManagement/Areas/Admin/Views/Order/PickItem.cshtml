@@ -1,0 +1,102 @@
+﻿@using ShoeStoreManagement.Views.Shared.Components;
+<!-- Button trigger modal -->
+@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Areas.Identity.Data;
+@using ShoeStoreManagement.Core.ViewModels;
+@model OrderVM
+@{
+    List<Product>? products = ViewData["products"] as List<Product> ?? null;
+}
+<form method="post" action="Admin/Order/PickCustomer">
+
+    <div class="row">
+        <p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
+    </div>
+    
+    <div class="row">
+        <div class="col p-0 mt-2">
+            <div class="col d-flex flex-column gap-2">
+                <div class="d-flex flex-row">
+                    @*<partial name="ProductDialog.cshtml" view-data="ViewData" model="Model" />*@
+                    <div class="container col-10">
+                        <div class="row">
+                            <input name="customers" hidden value="@Model.customers" />
+                            <div class="col-md-12">
+                                <div class="table-wrap">
+                                    <table class="table myaccordion table-hover" id="accordion">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th class="button">Name</th>
+                                                <th class="button">Price</th>
+                                                <th class="button">Color</th>
+                                                <th class="button">Amount</th>
+                                                <th class="button">
+                                                    Quantity
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.products != null)
+                                                @for (var i = 1; i <= Model.products.Count; i++)
+                                                {
+                                                    <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+
+                                                        <th scope="row">@i</th>
+                                                        <td>@Model.products[i-1].ProductName</td>
+                                                        <td>@Model.products[i-1].ProductUnitPrice</td>
+                                                        <td>@Model.products[i-1].Color</td>
+                                                        <td>@Model.products[i-1].Amount</td>
+                                                        <td>
+                                                            <div class="form-check mt-2">
+                                                                <input class="form-check-input" type="checkbox"
+                                                               value="@Model.products[i-1].ProductId" name="pickitems" id="checkbox_@Model.products[i-1].ProductId" 
+                                                               checked="@Model.products[i-1].isChecked" />
+
+                                                                <label class="form-check-label ml-5 d-flex align-items-center">
+                                                                    <input type="number" name="pickingQuantity" value="0" id="input_@Model.products[i-1].ProductId" class="form-control ms-2" />
+                                                                </label>
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                @*<div class="row ms-1">
+                @if (Model.pickitems != null)
+                @foreach (var item in Model.pickitems)
+                {
+                <component type="typeof(CartItemCard)" render-mode="Static" param-product=@item />
+                }
+                </div>*@
+
+                @*  <div class="d-flex justify-content-between mt-3">
+                <h5>Amounts</h5>
+                <h5>3</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                <h4 style="font-weight:bold">Total</h4>
+                <h4 style="font-weight:bold">$60</h4>
+                </div>*@
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="row-10 md-flex justify-content-between " style=" margin-bottom:0; ">
+
+        <button type="submit" class="btn btn-primary" style="width:180px;">Press meeeeeee</button>
+        @*<button type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("PickCustomer", "Order"))'" style="width:180px;">Submit</button>*@
+
+    </div>
+</form>
+
+

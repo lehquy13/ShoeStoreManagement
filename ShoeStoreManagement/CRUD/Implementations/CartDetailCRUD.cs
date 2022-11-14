@@ -25,6 +25,11 @@ namespace ShoeStoreManagement.CRUD.Implementations
             return await _applicationDBContext.CartDetails.Where(x => x.CartId == cartId).ToListAsync();
         }
 
+        public async Task<List<CartDetail>> GetAllCheckedAsync(string cartId)
+        {
+            return await _applicationDBContext.CartDetails.Where(x =>  x.CartId == cartId && x.IsChecked == true ).ToListAsync();
+        }
+
         public async Task<CartDetail?> GetByIdAsync(string id)
         {
             return await _applicationDBContext.CartDetails.FindAsync(id);

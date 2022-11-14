@@ -23,4 +23,7 @@ public class ApplicationUser : IdentityUser
     public DateTime Birthday { get; set; }
 
     public List<Address> Addresses { get; set; } = new List<Address>();
+
+    //[NotMapped]
+    //public bool? isCheck { get; set; } = false;
 }

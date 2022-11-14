@@ -12,8 +12,8 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221110094801_Migration-v2")]
-    partial class Migrationv2
+    [Migration("20221114052025_Fix-V3")]
+    partial class FixV3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -272,8 +272,8 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("CartId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CartTotalPrice")
-                        .HasColumnType("int");
+                    b.Property<decimal>("CartTotalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -294,20 +294,21 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int>("CartDetailTotalSum")
-                        .HasColumnType("int");
+                    b.Property<decimal>("CartDetailTotalSum")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("CartId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsChecked")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CartDetailId");
-
-                    b.HasIndex("CartId");
 
                     b.HasIndex("ProductId");
 
@@ -322,8 +323,8 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<int>("DeliverryMethods")
                         .HasColumnType("int");
 
-                    b.Property<long>("DeliveryCharge")
-                        .HasColumnType("bigint");
+                    b.Property<decimal>("DeliveryCharge")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
@@ -332,12 +333,15 @@ namespace ShoeStoreManagement.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OrderTotalPayment")
-                        .HasColumnType("int");
+                    b.Property<decimal>("OrderTotalPayment")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("OrderVoucherId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -365,18 +369,16 @@ namespace ShoeStoreManagement.Migrations
 
                     b.Property<string>("OrderId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Payment")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Payment")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("OrderDetailId");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -402,9 +404,6 @@ namespace ShoeStoreManagement.Migrations
                     b.Property<string>("ProductCategoryId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("ProductDiscount")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -591,19 +590,11 @@ namespace ShoeStoreManagement.Migrations
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
                 {
-                    b.HasOne("ShoeStoreManagement.Core.Models.Cart", "Cart")
-                        .WithMany()
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Cart");
 
                     b.Navigation("Product");
                 });
@@ -629,19 +620,11 @@ namespace ShoeStoreManagement.Migrations
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.OrderDetail", b =>
                 {
-                    b.HasOne("ShoeStoreManagement.Core.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Order");
 
                     b.Navigation("Product");
                 });

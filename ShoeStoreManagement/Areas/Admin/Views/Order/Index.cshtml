@@ -2,25 +2,25 @@
 @using ShoeStoreManagement.Core.Models;
 
 @{
-  List<Order> orders = ViewData["orders"] as List<Order> ?? new List<Order>();
+    List<Order> orders = ViewData["orders"] as List<Order> ?? new List<Order>();
 }
 <style>
 
 </style>
 <div class="row borderCustom">
     <div class="col-2 borderCustom1">
-            <div class="row">
-                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
+        <div class="row">
+            <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-                <div class="tabCustom row-cols-6">
-                    <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-                    <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-                    <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-                    <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-                    <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+            <div class="tabCustom row-cols-6">
+                <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+                <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
+                <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
+                <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
+                <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
 
-                </div>
             </div>
+        </div>
     </div> @*used to col-3 vs col-10*@
 
     <div class="container col-10">
@@ -46,28 +46,30 @@
                                 {
                                 <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
-                                  <th scope="row">@i</th>
-                                  <td>@orders[i-1].User.Email</td>
-                                  <td>@orders[i-1].OrderTotalPayment</td>
-                                  <td>@orders[i-1].OrderTotalPayment</td>
-                                  <td>@orders[i-1].OrderDate</td>
-                                  <td>@orders[i-1].Status.ToString()</td>
-                                    @*                       <td>
+                                    <th scope="row">@i</th>
+                                    <td>@orders[i-1].OrderId.Substring(0,5)</td>
+                                    <td>@orders[i-1].User.UserName</td>
+                                    <td>$@orders[i-1].OrderTotalPayment</td>
+                                    <td>@orders[i-1].OrderDetails.Count</td>
+                                    <td>@orders[i-1].OrderDate.ToString("dd MMM y HH:mm")</td>
+                                    <td>@orders[i-1].Status.ToString()</td>
+                                        @*                       <td>
                                 <i class="fa" aria-hidden="true"></i>
                                 </td>*@
                                 </tr>
+                                
+                                
                                 }
-                            </tr>
                             @*<tr>
                             <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
                             </td>
                             </tr>*@
                         </tbody>
-                    </table>    
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<button class="btn btn-primary icon-plus rounded position-fixed bottom-0" onclick="location.href = '@(Url.Action("Create", "Order"))'"></button>
+<button class="btn btn-primary icon-plus rounded position-fixed bottom-0" onclick="location.href = '@(Url.Action("PickItem", "Order"))'"></button>

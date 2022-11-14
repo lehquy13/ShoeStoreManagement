@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoeStoreManagement.Data;
 
@@ -11,9 +12,10 @@ using ShoeStoreManagement.Data;
 namespace ShoeStoreManagement.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221113065334_V1")]
+    partial class V1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -265,124 +267,6 @@ namespace ShoeStoreManagement.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
-                {
-                    b.Property<string>("CartId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("CartTotalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CartId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
-                {
-                    b.Property<string>("CartDetailId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("CartDetailTotalSum")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CartId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsChecked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("CartDetailId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartDetails");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Order", b =>
-                {
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("DeliverryMethods")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("DeliveryCharge")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderNote")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("OrderTotalPayment")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("OrderVoucherId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("PaymentMethod")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("OrderId");
-
-                    b.HasIndex("OrderVoucherId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.OrderDetail", b =>
-                {
-                    b.Property<string>("OrderDetailId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("OrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Payment")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("OrderDetailId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderDetails");
-                });
-
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Product", b =>
                 {
                     b.Property<string>("ProductId")
@@ -431,26 +315,6 @@ namespace ShoeStoreManagement.Migrations
                     b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.SizeDetail", b =>
-                {
-                    b.Property<string>("SizeDetailId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
-                    b.HasKey("SizeDetailId");
-
-                    b.ToTable("SizeDetails");
-                });
-
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Supplier", b =>
                 {
                     b.Property<string>("SupplierId")
@@ -475,46 +339,6 @@ namespace ShoeStoreManagement.Migrations
                     b.HasKey("SupplierId");
 
                     b.ToTable("Suppliers");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Voucher", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ConditionType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConditionValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ExpiredType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ExpiredValue")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ValueType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Vouchers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -573,58 +397,6 @@ namespace ShoeStoreManagement.Migrations
                     b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", null)
                         .WithMany("Addresses")
                         .HasForeignKey("ApplicationUserId");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Cart", b =>
-                {
-                    b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.CartDetail", b =>
-                {
-                    b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.Order", b =>
-                {
-                    b.HasOne("ShoeStoreManagement.Core.Models.Voucher", "OrderVoucher")
-                        .WithMany()
-                        .HasForeignKey("OrderVoucherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ShoeStoreManagement.Areas.Identity.Data.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderVoucher");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ShoeStoreManagement.Core.Models.OrderDetail", b =>
-                {
-                    b.HasOne("ShoeStoreManagement.Core.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ShoeStoreManagement.Core.Models.Product", b =>

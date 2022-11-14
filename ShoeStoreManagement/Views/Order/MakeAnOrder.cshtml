@@ -1,35 +1,41 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
+@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.Enums;
 
-<div class="row d-flex justify-content-between">
+@model Order
+
+@{
+	List<Voucher> vouchers = ViewData["vouchers"] as List<Voucher> ?? new List<Voucher>();
+	List<DeliveryMethods> deliveryMethods = ViewData["deliveryMethods"] as List<DeliveryMethods> ?? new List<DeliveryMethods>();
+	List<PaymentMethod> paymentMethods = ViewData["paymentMethods"] as List<PaymentMethod> ?? new List<PaymentMethod>();
+}
+
+<form method="get" action="Order/Create" class="row d-flex justify-content-between">
 	<div class="col-7">
-		<component type="typeof(OrderItemCard)" render-mode="Static" />
-		<component type="typeof(OrderItemCard)" render-mode="Static" />
+
+		@if (Model.OrderDetails.Count > 0)
+		{
+			@foreach (var item in Model.OrderDetails)
+			{
+				<component type="typeof(OrderItemCard)" render-mode="ServerPrerendered" param-orderDetail=@item param-orderDetailId=@item.OrderDetailId />
+			}
+		}
 
 		<div class="d-flex flex-column mt-5">
 			<span class="h6 mb-1">Payment Method</span>
-			<div>
-				<input class="form-check-input" type="radio" name="selectedPM" value="cash" id="cash" checked />
-				<label class="form-check-label" for="cash">cash</label>
-			</div>
-			<div>
-				<input class="form-check-input" type="radio" name="selectedPM" value="atm" id="atm" />
-				<label class="form-check-label" for="atm">atm</label>
-			</div>
-			<div>
-				<input class="form-check-input" type="radio" name="selectedPM" value="visa" id="visa" />
-				<label class="form-check-label" for="visa">visa</label>
+			<div class="form-floating">
+				<select class="form-select" asp-for="PaymentMethod" asp-items="@(new SelectList(paymentMethods))" id="selectPM" aria-label="Floating label select example">
+				</select>
+				<span asp-validation-for="PaymentMethod" class="text-danger"></span>
 			</div>
 		</div>
 
 		<div class="d-flex flex-column mt-5">
 			<span class="h6 mb-1">Delivery Method</span>
-			<div>
-				<input class="form-check-input" type="radio" name="selectedDM" value="fast" id="fast" checked />
-				<label class="form-check-label" for="fast">fast (2h today)</label>
-			</div>
-			<div>
-				<input class="form-check-input" type="radio" name="selectedDM" value="normal" id="normal" />
-				<label class="form-check-label" for="normal">normal (3-4 days)</label>
+			<div class="form-floating">
+				<select class="form-select" asp-for="DeliverryMethods" asp-items="@(new SelectList(deliveryMethods))" id="selectPM" aria-label="Floating label select example">
+				</select>
+				<span asp-validation-for="DeliverryMethods" class="text-danger"></span>
 			</div>
 		</div>
 	</div>
@@ -38,7 +44,11 @@
 			<div class="d-flex flex-column">
 				<span class="h6 mb-2">Voucher</span>
 				<div class="d-flex">
-					<input type="text" id="voucherCode" class="input flex-fill" />
+					<div class="form-floating flex-fill">
+						<input type="text" asp-for="OrderVoucherId" class="form-control" id="floatingInput" placeholder="Annanas A">
+						<label for="floatingInput">Enter Name</label>
+						<span asp-validation-for="OrderVoucherId" class="text-danger"></span>
+					</div>
 					<button class="btn btn-primary icon-search">Check</button>
 				</div>
 			</div>
@@ -59,21 +69,21 @@
 			</div>
 			<div class="d-flex justify-content-between text-dark mt-2">
 				<span class="h6">Price</span>
-				<span class="h6">$80</span>
+				<span class="h6">$@Model.OrderTotalPayment</span>
 			</div>
 			<div class="d-flex justify-content-between mt-2">
 				<span class="caption">Delivery Fee</span>
-				<span class="caption">$5</span>
+				<span class="caption">$@Model.DeliveryCharge</span>
 			</div>
 			<div class="d-flex justify-content-between caption text-primary mt-2">
 				<span>Voucher</span>
-				<span>-$5</span>
+				<span>-$@Model.OrderVoucher.Value</span>
 			</div>
 			<div class="d-flex justify-content-between h2 text-dark mt-2">
 				<span>Total</span>
-				<span>$80</span>
+				<span>$@Model.OrderTotalPayment</span>
 			</div>
-			<button class="btn btn-primary icon-arrow w-100 mt-3">Next</button>
+			<button type="submit" class="btn btn-primary icon-arrow w-100 mt-3">Next</button>
 		</div>
 	</div>
-</div>
+</form>

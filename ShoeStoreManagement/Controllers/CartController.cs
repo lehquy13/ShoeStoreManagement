@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;
-using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace ShoeStoreManagement.Controllers
 {
@@ -24,9 +23,9 @@ namespace ShoeStoreManagement.Controllers
 
         public IActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            Cart? cart = (_cartCRUD.GetAsync(userId).Result != null) ? _cartCRUD.GetAsync(userId).Result : new Cart();
+            Cart? cart = _cartCRUD.GetAsync(userId).Result;
 
             if (cart != null)
             {
@@ -40,7 +39,46 @@ namespace ShoeStoreManagement.Controllers
                 return View(cart);
             }
 
-            return NotFound();
+            return View(new Cart());
+        }
+
+        [HttpGet("Cart/Create/{id}")]
+        public IActionResult Create(string? id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Cart? cart = _cartCRUD.GetAsync(userId).Result;
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (cart == null)
+            {
+                cart = new Cart();
+                cart.UserId = userId;
+                _cartCRUD.CreateAsync(cart);
+            }
+
+            Product? product = _productCRUD.GetByIdAsync(id).Result;
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var cartDetail = new CartDetail()
+            {
+                CartId = cart.CartId,
+                ProductId = id,
+                Amount = 1,
+                CartDetailTotalSum = product.ProductUnitPrice,
+            };
+
+            _cartDetailCRUD.CreateAsync(cartDetail);
+
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet("Cart/Edit/{id}/{amount}/{sum}")]
@@ -66,6 +104,20 @@ namespace ShoeStoreManagement.Controllers
             if (cartDetail == null) { return NotFound(); }
 
             _cartDetailCRUD.Remove(cartDetail);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet("Cart/UpdateChecked/{id}/{isChecked}")]
+        public IActionResult UpdateChecked(string id, bool isChecked)
+        {
+            CartDetail? cartDetail = _cartDetailCRUD.GetByIdAsync(id).Result;
+
+            if (cartDetail == null) { return NotFound(); }
+
+            cartDetail.IsChecked = isChecked;
+
+            _cartDetailCRUD.Update(cartDetail);
 
             return RedirectToAction("Index");
         }
