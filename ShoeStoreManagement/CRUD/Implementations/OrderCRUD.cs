@@ -25,6 +25,10 @@ namespace ShoeStoreManagement.CRUD.Implementations
         {
             return await _applicationDBContext.Orders.Where(o => o.UserId == userId).ToListAsync();
         }
+        public async Task<List<Order>> GetAllOrderAsync()
+        {
+            return await _applicationDBContext.Orders.ToListAsync();
+        }
 
         public async Task<Order?> GetByIdAsync(string id)
         {

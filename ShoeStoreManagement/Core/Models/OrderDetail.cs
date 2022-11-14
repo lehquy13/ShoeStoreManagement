@@ -11,7 +11,7 @@ namespace ShoeStoreManagement.Core.Models
         string productId = string.Empty;
         Product? product;
         int amount = 0;
-        int payment = 0;
+        float payment = 0;
 
         [Key]
         public string OrderDetailId
@@ -52,7 +52,7 @@ namespace ShoeStoreManagement.Core.Models
         [Range(0, 99999)]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public int Payment
+        public float Payment
         {
             get { return payment; }
             set { payment = value; }

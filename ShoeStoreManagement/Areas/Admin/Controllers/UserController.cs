@@ -2,16 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using ShoeStoreManagement.Areas.Identity.Data;
-using ShoeStoreManagement.Controllers;
 using ShoeStoreManagement.Core.Models;
-using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
-using ShoeStoreManagement.Data;
-using System.Data;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
-using ShoeStoreManagement.Views.Shared.Components;
+
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {

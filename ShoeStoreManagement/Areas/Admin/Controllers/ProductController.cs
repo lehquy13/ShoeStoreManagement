@@ -107,7 +107,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         public IActionResult Create()
         {
-            return View();
+            return View(new Product());
         }
 
 
@@ -129,13 +129,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             if (obj != null)
             {
-                if (obj.ProductCategoryId == null)
+                if (obj.ProductCategoryId != null)
                 {
-                    return NotFound(obj.ProductCategoryId);
+                    obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;//note
                 }
                 else
                 {
-                    obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;//note
+                    return NotFound(obj.ProductCategoryId);
 
                 }
                 ModelState.Clear();

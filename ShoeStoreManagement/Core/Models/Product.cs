@@ -25,7 +25,7 @@ namespace ShoeStoreManagement.Core.Models
         public string ProductId
         {
             get { return productId; }
-            set  { productId = value; }
+            set { productId = value; }
         }
 
         public string ProductName
@@ -86,7 +86,9 @@ namespace ShoeStoreManagement.Core.Models
         public List<string> TestSizeAmount { get; set; } = new List<string>();
 
         [NotMapped]
-        public Dictionary<int,int> SizeHashtable { get; set; } = new Dictionary<int, int>();
+        public bool? isChecked { get; set; } = false;
+        [NotMapped]
+        public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();
 
         [Range(1, 99999)]
         public int Amount
@@ -113,6 +115,5 @@ namespace ShoeStoreManagement.Core.Models
             get { return description; }
             set { description = value; }
         }
-
     }
 }
