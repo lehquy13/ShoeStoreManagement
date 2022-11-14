@@ -3,7 +3,8 @@
 
 @inject NavigationManager UriHelper
 
-<div class="row">
+<div class="form-check mt-2">
+    <input type="checkbox" class="form-check-input" checked=@cartItem.IsChecked @onchange="UpdateChecked"/>
     <div class="card d-flex flex-row col border-1 border-color p-0">
         <img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
         <div class="card-body d-flex flex-column justify-content-between">
@@ -28,7 +29,7 @@
     </div>
 </div>
 
-@code { 
+@code {
     [Parameter]
     public string cartItemId { get; set; } = null!;
 
@@ -52,5 +53,16 @@
     void DeleteCartItem()
     {
         UriHelper.NavigateTo("Cart/Delete/" + cartItemId, true);
+    }
+
+    void UpdateChecked()
+    {
+        if(!cartItem.IsChecked) {
+            cartItem.IsChecked = true;
+        }
+        else {
+            cartItem.IsChecked = false;
+        }
+        UriHelper.NavigateTo("Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
     }
 }

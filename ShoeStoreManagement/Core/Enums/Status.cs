@@ -2,7 +2,10 @@
 
 public enum Status
 {
-    sampleStatus = 0
+    Waiting = 0,
+    Delivering = 1,
+    Finish = 2,
+    Canceled = 3,
 }
 
 public enum VoucherStatus

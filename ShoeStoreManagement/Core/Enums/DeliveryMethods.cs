@@ -2,5 +2,6 @@
 
 public enum DeliveryMethods
 {
-    sampleMethod = 0
+    Normal = 0,
+    Fast = 1,
 }

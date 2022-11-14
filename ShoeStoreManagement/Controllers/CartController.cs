@@ -107,5 +107,19 @@ namespace ShoeStoreManagement.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpGet("Cart/UpdateChecked/{id}/{isChecked}")]
+        public IActionResult UpdateChecked(string id, bool isChecked)
+        {
+            CartDetail? cartDetail = _cartDetailCRUD.GetByIdAsync(id).Result;
+
+            if (cartDetail == null) { return NotFound(); }
+
+            cartDetail.IsChecked = isChecked;
+
+            _cartDetailCRUD.Update(cartDetail);
+
+            return RedirectToAction("Index");
+        }
     }
 }

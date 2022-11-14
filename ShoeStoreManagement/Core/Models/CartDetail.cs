@@ -56,5 +56,8 @@ namespace ShoeStoreManagement.Core.Models
             get { return totalSum; }
             set { totalSum = value; }
         }
+
+        [Required]
+        public bool IsChecked { get; set; } = false;
     }
 }
