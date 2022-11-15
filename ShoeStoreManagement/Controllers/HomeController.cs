@@ -40,6 +40,12 @@ namespace ShoeStoreManagement.Controllers
             return View(list);
         }
 
+        [HttpGet("Home/AddToWishList/{id}")]
+        public IActionResult AddToWishList(string id)
+        {
+            return RedirectToAction("Index");
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
