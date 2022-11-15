@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Controllers;
 using ShoeStoreManagement.Core.Models;
+using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Drawing;
+using System.Security.Claims;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -12,9 +16,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
-        public string radio1 { set; get; }
         private readonly ILogger<ProductController> _logger;
         private readonly IProductCRUD _productCRUD;
+        private readonly ICartCRUD _cartCRUD;
+        private readonly ICartDetailCRUD _cartDetailCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
         private List<ProductCategory>? productCategories;
@@ -22,13 +27,20 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private IList<SelectListItem>? test;
 
         private List<Product>? products;
-        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD
-            , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD)
+        private readonly UserManager<ApplicationUser> _usermanager;
+        private ApplicationUser _currentUser;
+        private Cart _userCart;
+
+        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
+            , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD)
         {
             _logger = logger;
             _productCRUD = productCRUD;
             _productCategoryCRUD = productCategoryCRUD;
             _sizeDetailCRUD = sizeDetailCRUD;
+            _cartCRUD = cartCRUD;
+            _cartDetailCRUD = cartDetailCRUD;
+
             Init();
         }
 
@@ -54,10 +66,67 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult AddToCart(string id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Cart? cart = _cartCRUD.GetAsync(userId).Result;
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (cart == null)
+            {
+                cart = new Cart();
+                cart.UserId = userId;
+                _cartCRUD.CreateAsync(cart);
+            }
+
+            Product? product = _productCRUD.GetByIdAsync(id).Result;
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(id, cart.CartId).Result;
+
+            if (cartDetail != null)
+            {
+                if (cartDetail.Amount < product.Amount)
+                {
+                    cartDetail.Amount++;
+                    cartDetail.CartDetailTotalSum += cartDetail.Amount * product.ProductUnitPrice;
+                    _cartDetailCRUD.Update(cartDetail);
+                }
+            }
+            else
+            {
+                cartDetail = new CartDetail()
+                {
+                    CartId = cart.CartId,
+                    ProductId = id,
+                    Amount = 1,
+                    CartDetailTotalSum = product.ProductUnitPrice,
+                };
+
+                _cartDetailCRUD.CreateAsync(cartDetail);
+            }
+
+            return View();
+        }
+
         //[HttpPost]
-        public IActionResult Index(string categoryRadio, string priceRadio)
+        public IActionResult Index(string categoryRadio, string priceRadio, int page = 1)
         {
             List<Product> productFilter = new List<Product>();
+            List<string> filters = new List<string>();
+            filters.Add(categoryRadio);
+            filters.Add(priceRadio);
+
             float minvalue = -1, maxvalue = -1;
 
             if (products.Count > 0)
@@ -79,6 +148,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewBag.Product = true;
             ViewData["productCategories"] = productCategories;
             ViewData["products"] = productFilter;
+            ViewData["filters"] = filters;
+            ViewData["page"] = page;
             ViewData["test"] = test;
             return View();
         }
@@ -90,7 +161,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             if (price >= value)
                 return true;
-            else 
+            else
                 return false;
         }
 
