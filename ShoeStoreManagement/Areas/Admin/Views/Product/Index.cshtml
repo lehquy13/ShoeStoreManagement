@@ -95,7 +95,8 @@
 				</div>
 			</div>
 			
-				<input class="btn-primary" type="submit"/>			
+				<input class="btn-primary" type="submit"/>
+    </form>
 		</div>
 	</div> @*used to col-3 vs col-10*@
 
@@ -137,7 +138,7 @@
                                                 <a href="@Url.Action("Edit","Product",new {id = @products[i].ProductId})" class="fas fa-edit"></a>
                                             </td>
                                             <td>
-                                              <form action="Admin/Product/AddToCart">
+                                              <form action="Admin/Product/ToCart">
                                                  <button id="SaveSelectedUsers" type="submit" value="@products[i].ProductId" name="id" class="btn btn-primary" style="height: 20px"></button>
                                               </form>
                                             </td>
@@ -150,6 +151,7 @@
                 </div>
             </div>
         </div>
+      <form action="Admin/Product/Index">
       <nav class="container">
         <ul class="pagination" style="display:flex; flex-direction:row">
           @if (nProducts != 0)
@@ -174,9 +176,10 @@
           }
         </ul>
       </nav>
+      </form>
     </div>
 </div>
-</form>
+
 @{
     Product metmoi = new Product()
     {

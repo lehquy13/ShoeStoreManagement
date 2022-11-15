@@ -66,8 +66,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult AddToCart(string id)
+        public IActionResult ToCart(string id)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -99,7 +98,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 if (cartDetail.Amount < product.Amount)
                 {
                     cartDetail.Amount++;
-                    cartDetail.CartDetailTotalSum += cartDetail.Amount * product.ProductUnitPrice;
+                    cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
                     _cartDetailCRUD.Update(cartDetail);
                 }
             }
@@ -116,7 +115,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _cartDetailCRUD.CreateAsync(cartDetail);
             }
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         //[HttpPost]
