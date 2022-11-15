@@ -33,11 +33,11 @@
 //    })
 //})
 
-$(document).ready(function () {
+$(function () {
     // GET BY ID
-    $("#btn-get").on("click", function () {
-        //var formData = new FormData();
-        var id = $(this).attr("CCModal");
+    $(".btn-get").on("click", function () {
+        var formData = new FormData();
+        var id = $(this).attr("ModalId");
         var url = '@Url.Action("Edit", "Product")' + '/' + id;
         $.ajax({
             type: 'GET',

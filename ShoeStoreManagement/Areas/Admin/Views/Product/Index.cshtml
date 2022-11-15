@@ -1,7 +1,7 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @model ShoeStoreManagement.Core.Models.Product
-
+@*ProductINDEX*@
 @{
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
     List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
@@ -90,7 +90,7 @@
                                                 <a href="@Url.Action("Edit","Product",new {id = @i.ProductId})" class="fas fa-edit"></a>
                                             </td>
                                             <td>
-                                                <partial name="AddToCart.cshtml" view-data="ViewData" model="i" />
+                                                <button id="SaveSelectedUsers" type="button" class="btn btn-primary"></button>
 
                                             </td>
                                         </tr>
@@ -122,8 +122,10 @@
 
 <partial name="Create.cshtml" view-data="ViewData" model="metmoi" />
 
+<script src="~/js/site1.js" asp-append-version="true"></script>
 @section Scripts {
     @{
-        <partial name="./_ValidationScriptsPartial"></partial>
+                <partial name="./_ValidationScriptsPartial"></partial>
+
     }
 	}
