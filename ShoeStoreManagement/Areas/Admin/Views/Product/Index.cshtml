@@ -1,7 +1,7 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @model ShoeStoreManagement.Core.Models.Product
-
+@*ProductINDEX*@
 @{
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
     List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
@@ -9,136 +9,123 @@
 <style>
 
 
-	table,
-	thead {
-		border-bottom: dotted;
-		border-bottom: 1px solid rgba(20, 33, 61, 0.1);
-	}
+    table,
+    thead {
+        border-bottom: dotted;
+        border-bottom: 1px solid rgba(20, 33, 61, 0.1);
+    }
 
 </style>
+
 <form action="Admin/Product/Index">
-<div class="row">
+    <div class="row">
 
-	<div class="col-2 borderCustom1">
-		<div class="col">
-			<div class="row">
-				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+        <div class="col-2 borderCustom1">
+            <div class="col">
+                <div class="row">
+                    <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-				<div class="radioLayoutTabCustom row-cols-6">
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio"/>All</label>
-						@foreach (ProductCategory i in productCategories) {
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio"/>@i.ProductCategoryName</label>
-						}
-					
-					@*<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button*@
+                    <div class="radioLayoutTabCustom row-cols-6">
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+                        @foreach (ProductCategory i in productCategories)
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
+                        }
 
-				</div>
+                    </div>
 
-			</div>
-			
-			<div class="row mt-3">
-				<ii class="row-1 h6">Price</ii>
+                </div>
 
-				<div class="radioLayoutTabCustom row-cols-6">
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" />All</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" value="0-10" name="priceRadio" />0-10</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" value="10-100" name="priceRadio" />10-100</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" value="100-1000" name="priceRadio" />100-1000</label>
-				</div>
-			</div>
-			
-				<input class="btn-primary" type="submit" />
-			
-		</div>
-	</div> @*used to col-3 vs col-10*@
+                <div class="row mt-3">
+                    <ii class="row-1 h6">Price</ii>
 
-	<div class="container col-10">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="table-wrap">
-					<table class="table myaccordion table-hover" id="accordion">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th class="button">Name</th>
-								<th class="button">Price</th>
-								<th class="button">Color</th>
-								<th class="button">Category</th>
-								<th class="button">Amount</th>
-								<th class="button"></th>
+                    <div class="radioLayoutTabCustom row-cols-6">
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" />All</label>
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="0-10" name="priceRadio" />0-10</label>
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="10-100" name="priceRadio" />10-100</label>
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="100-1000" name="priceRadio" />100-1000</label>
+                    </div>
+                </div>
 
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (products != null)
-                            {
-                                var a = 0;
-                                foreach (var i in products)
+                <input class="btn-primary" type="submit" />
+
+            </div>
+        </div> @*used to col-3 vs col-10*@
+
+        <div class="container col-10">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-wrap">
+                        <table class="table myaccordion table-hover" id="accordion">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="button">Name</th>
+                                    <th class="button">Price</th>
+                                    <th class="button">Color</th>
+                                    <th class="button">Category</th>
+                                    <th class="button">Amount</th>
+                                    <th class="button">Edit</th>
+                                    <th class="button">Add to cart</th>
+
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (products != null)
                                 {
-                                    a++;
-                                    <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                    var a = 0;
+                                    foreach (var i in products)
+                                    {
+                                        a++;
+                                        <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
-                                        <th scope="row">@a</th>
-                                        <td>@i.ProductName</td>
-                                        <td>@i.ProductUnitPrice</td>
-                                        <td>@i.Color</td>
-                                        <td>@i.ProductCategory.ProductCategoryName</td>
-                                        <td>@i.Amount</td>
-                                        <td>
-                                            @*<a href="@Url.Action("Edit","Product",new {id = @i.ProductId})" data-toggle="modal" to data-target="#Modal" class="fas fa-edit"></a>*@
-                                            <a href="@Url.Action("Edit","Product",new {id = @i.ProductId})"  class="fas fa-edit"></a>
+                                            <th scope="row">@a</th>
+                                            <td>@i.ProductName</td>
+                                            <td>@i.ProductUnitPrice</td>
+                                            <td>@i.Color</td>
+                                            <td>@i.ProductCategory.ProductCategoryName</td>
+                                            <td>@i.Amount</td>
+                                            <td>
+                                                <a href="@Url.Action("Edit","Product",new {id = @i.ProductId})" class="fas fa-edit"></a>
+                                            </td>
+                                            <td>
+                                                <button id="SaveSelectedUsers" type="button" class="btn btn-primary"></button>
 
-                                            @*<a data-toggle="ajax-modal" to data-target="#Modal" href="@Url.Action($"Edit/{@i.ProductId}")" class=" fas fa-edit"></a>*@
+                                            </td>
+                                        </tr>
 
-                                            @*<a asp-action="Edit" asp-controller="Product" asp-route-id=@i.ProductId class="fas fa-edit"> </a>*@
-
-
-                                            @*<a asp-controller="Product" asp-action="Edit" asp-route-id=@i.ProductId class="fas fa-edit">
-
-                                    </a>*@
-
-                                            @*<a href="@Url.Action($"Edit/{@i.ProductId}")" class=" fas fa-edit" data-toggle="modal" to data-target="#Modal" >
-                                    data-url="@Url.Action($"Edit/{i.ProductId}")" class=" fas fa-edit"
-                                    </a>*@
-
-
-
-                                        </td>
-                                    </tr>
-
+                                    }
                                 }
-                            }
 
 
 
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+            <component type="typeof(Pagination)" render-mode="Static" />
         </div>
-			<component type="typeof(Pagination)" render-mode="Static" />
     </div>
-</div>
 </form>
 @{
-	Product metmoi = new Product()
-			{
-			};
+    Product metmoi = new Product()
+    {
+    };
 
 
 }
 
 @*<partial name="Create.cshtml" view-data="ViewData" model="new Product() {Sizes = new List<SizeDetail>() {new SizeDetail() {Size = 35, Amount = 1}, new SizeDetail() {Size = 36, Amount = 1}}}"></partial>*@
 
-<partial name="Create.cshtml" view-data="ViewData" model="metmoi"/>
+<partial name="Create.cshtml" view-data="ViewData" model="metmoi" />
 
+<script src="~/js/site1.js" asp-append-version="true"></script>
 @section Scripts {
-	@{
-		<partial name="./_ValidationScriptsPartial"></partial>
-	}
+    @{
+                <partial name="./_ValidationScriptsPartial"></partial>
+
+    }
 	}
