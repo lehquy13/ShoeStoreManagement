@@ -137,8 +137,9 @@
                                                 <a href="@Url.Action("Edit","Product",new {id = @products[i].ProductId})" class="fas fa-edit"></a>
                                             </td>
                                             <td>
-                                                <button id="SaveSelectedUsers" type="button" class="btn btn-primary" style="height: 10px"></button>
-
+                                              <form action="Admin/Product/AddToCart">
+                                                 <button id="SaveSelectedUsers" type="submit" value="@products[i].ProductId" name="id" class="btn btn-primary" style="height: 20px"></button>
+                                              </form>
                                             </td>
                                         </tr>
 
