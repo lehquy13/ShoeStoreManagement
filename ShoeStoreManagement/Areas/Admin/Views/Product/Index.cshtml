@@ -8,9 +8,9 @@
 
 @{
 	List<Product>? products = ViewData["products"] as List<Product> ?? null;
-	List<string> productsName = ViewData["productsName"] as List<string> ?? null;
 	List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
 	List<string> filters = ViewData["filters"] as List<string> ?? null;
+	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
 }
 
 <style>
@@ -30,9 +30,17 @@
 				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
 				<div class="radioLayoutTabCustom row-cols-6">
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio"/>All</label>
+						@if (string.IsNullOrEmpty(filters[0])){
+							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio"/>All</label>
+						}
 						@foreach (ProductCategory i in productCategories) {
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio"/>@i.ProductCategoryName</label>
+							if (i.ProductCategoryName.Equals(filters[0]))
+							{
+								<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked/>@i.ProductCategoryName</label>
+							}
+							else {
+								<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio"/>@i.ProductCategoryName</label>
+							}
 						}
 					@*<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
@@ -48,10 +56,18 @@
 				<ii class="row-1 h6">Price</ii>
 
 				<div class="radioLayoutTabCustom row-cols-6">
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" />All</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" value="0-10" name="priceRadio" />0-10</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" value="10-100" name="priceRadio" />10-100</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" value="100-1000" name="priceRadio" />100-1000</label>
+					@foreach(string i in priceFilters){
+						if (i.Equals(filters[1]))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
+						}
+						else if (string.IsNullOrEmpty(i)){
+							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+						}
+						else {
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+						}
+					}
 				</div>
 			</div>
 			
@@ -144,6 +160,6 @@
 
 @section Scripts {
 	@{
-			<partial name="./_ValidationScriptsPartial"></partial>
+				<partial name="./_ValidationScriptsPartial"></partial>
 	}
 	}
