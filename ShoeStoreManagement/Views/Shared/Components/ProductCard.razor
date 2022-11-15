@@ -10,7 +10,7 @@
 		<p class="fw-bold h5 mb-2">@product.ProductName</p>
 		<p class="h5 mb-2">@product.ProductUnitPrice</p>
 	</div>
-	<button class="btn btn-primary" type="button" @onclick="AddToCart">Add to Cart</button>
+	<button class="btn btn-primary" type="button" @onclick="AddToWishList">Add to WishList</button>
 </div>
 
 @code {
@@ -22,8 +22,8 @@
 
 	}
 
-	void AddToCart() {
-		UriHelper.NavigateTo("Cart/Create/" + product.ProductId, true);
+	void AddToWishList() {
+		UriHelper.NavigateTo("Home/AddToWishList/" + product.ProductId, true);
 	}
 
 	void NavigateToDetail()
