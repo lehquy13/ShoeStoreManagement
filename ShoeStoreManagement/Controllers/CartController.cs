@@ -68,15 +68,30 @@ namespace ShoeStoreManagement.Controllers
                 return NotFound();
             }
 
-            var cartDetail = new CartDetail()
-            {
-                CartId = cart.CartId,
-                ProductId = id,
-                Amount = 1,
-                CartDetailTotalSum = product.ProductUnitPrice,
-            };
+            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(id, cart.CartId).Result;
 
-            _cartDetailCRUD.CreateAsync(cartDetail);
+            if (cartDetail != null)
+            {
+                if (cartDetail.Amount < product.Amount)
+                {
+                    cartDetail.Amount++;
+                    cartDetail.CartDetailTotalSum += cartDetail.Amount * product.ProductUnitPrice;
+                    _cartDetailCRUD.Update(cartDetail);
+                }
+            }
+
+            else
+            {
+                cartDetail = new CartDetail()
+                {
+                    CartId = cart.CartId,
+                    ProductId = id,
+                    Amount = 1,
+                    CartDetailTotalSum = product.ProductUnitPrice,
+                };
+
+                _cartDetailCRUD.CreateAsync(cartDetail);
+            }
 
             return RedirectToAction("Index", "Home");
         }

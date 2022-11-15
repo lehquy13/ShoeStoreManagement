@@ -55,7 +55,6 @@ namespace ShoeStoreManagement.Controllers
             List<Voucher>? vouchers = _voucherCRUD.GetAllAsync().Result;
 
             ViewData["vouchers"] = vouchers;
-            ViewData["paymentMethods"] = Enum.GetValues(typeof(PaymentMethod)).Cast<PaymentMethod>().ToList();
             ViewData["deliveryMethods"] = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
 
 
@@ -78,6 +77,7 @@ namespace ShoeStoreManagement.Controllers
                 return NotFound();
             }
 
+            _orderVM.currOrder.UserId = userId;
             _orderVM.currOrder.OrderDetails.Clear();
 
             foreach(var item in list)
@@ -90,36 +90,60 @@ namespace ShoeStoreManagement.Controllers
                 };
 
                 _orderVM.currOrder.OrderDetails.Add(orderDetail);
+                _orderVM.currOrder.OrderTotalPayment += (int)item.CartDetailTotalSum;
             }
 
-            return View(_orderVM.currOrder);
-        }
-
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View(_orderVM.currOrder);
+            return View(_orderVM);
         }
 
         [HttpPost]
-        public IActionResult Create(Order? order)
+        public IActionResult ConfirmOrder(OrderVM orderVm)
         {
-            if(order == null)
+            ViewData["paymentMethods"] = Enum.GetValues(typeof(PaymentMethod)).Cast<PaymentMethod>().ToList();
+
+            _orderVM.currOrder.DeliverryMethods = orderVm.currOrder.DeliverryMethods;
+
+            if (orderVm.currOrder.DeliverryMethods == DeliveryMethods.Fast)
+            {
+                _orderVM.currOrder.DeliveryCharge = 5;
+            }
+            _orderVM.currOrder.OrderTotalPrice = _orderVM.currOrder.OrderTotalPayment + _orderVM.currOrder.DeliveryCharge;
+
+            return View(_orderVM);
+        }
+
+        [HttpPost]
+        public IActionResult Create(OrderVM? orderVM)
+        {
+            if(orderVM.currOrder == null)
             {
                 return NotFound();
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            _orderVM.currOrder.PaymentMethod = orderVM.currOrder.PaymentMethod;
 
-            order.UserId = userId;
+            _orderCRUD.CreateAsync(_orderVM.currOrder);
 
-            _orderCRUD.CreateAsync(order);
-            
-            if (_orderVM.currOrder.OrderDetails.Count > 0)
+            Cart? cart = _cartCRUD.GetAsync(_orderVM.currOrder.UserId).Result;
+
+            if (cart == null)
             {
-                foreach (var item in _orderVM.currOrder.OrderDetails)
+                return NotFound();
+            }
+
+            foreach(var item in _orderVM.currOrder.OrderDetails)
+            {
+                _orderDetailCRUD.CreateAsync(item);
+
+                Product? product = _productCRUD.GetByIdAsync(item.ProductId).Result;
+                CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId).Result;
+
+                product.Amount -= item.Amount;
+
+                if ( cartDetail != null )
                 {
-                    _orderDetailCRUD.CreateAsync(item);
+                    _productCRUD.Update(product);
+                    _cartDetailCRUD.Remove(cartDetail);
                 }
             }
 

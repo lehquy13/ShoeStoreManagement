@@ -54,7 +54,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         //[HttpPost]
-        public IActionResult Index(string categoryRadio, string priceRadio)
+        public IActionResult Index(string categoryRadio, string priceRadio, int page = 1)
         {
             List<Product> productFilter = new List<Product>();
             List<string> filters = new List<string>();
@@ -83,7 +83,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewData["productCategories"] = productCategories;
             ViewData["products"] = productFilter;
             ViewData["filters"] = filters;
-
+            ViewData["page"] = page;
             ViewData["test"] = test;
             return View();
         }
