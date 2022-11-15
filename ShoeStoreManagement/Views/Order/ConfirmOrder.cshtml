@@ -1,0 +1,80 @@
+﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.Enums;
+@using ShoeStoreManagement.Core.ViewModels;
+@using ShoeStoreManagement.Views.Shared.Components;
+
+@model OrderVM
+
+@{
+	List<PaymentMethod> paymentMethods = ViewData["paymentMethods"] as List<PaymentMethod> ?? new List<PaymentMethod>();
+}
+
+<form method="post" action="Order/Create" class="row d-flex justify-content-between">
+	<div class="col-7">
+
+		@if (Model.currOrder.OrderDetails.Count > 0)
+		{
+			@foreach (var item in Model.currOrder.OrderDetails)
+			{
+				<component type="typeof(OrderItemCard)" render-mode="ServerPrerendered" param-orderDetail=@item param-orderDetailId=@item.OrderDetailId />
+			}
+		}
+
+		<div class="d-flex flex-column mt-5">
+			<span class="h6 mb-1">Payment Method</span>
+			<div class="form-floating">
+				<select class="form-select" asp-for="currOrder.PaymentMethod" asp-items="@(new SelectList(paymentMethods))" id="selectPM" aria-label="Floating label select example">
+				</select>
+				<span asp-validation-for="currOrder.PaymentMethod" class="text-danger"></span>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-4 d-flex flex-column justify-content-between">
+		<div>
+			<div class="d-flex flex-column">
+				<span class="h6 mb-2">Voucher</span>
+				<div class="d-flex">
+					<div class="form-floating flex-fill">
+						<input type="text" asp-for="currOrder.OrderVoucher.Code" class="form-control" id="floatingInput" placeholder="Annanas A">
+						<label for="floatingInput">Enter Voucher Code</label>
+						<span asp-validation-for="currOrder.OrderVoucher.Code" class="text-danger"></span>
+					</div>
+					<button class="btn btn-primary icon-search">Check</button>
+				</div>
+			</div>
+			<div class="d-flex flex-column mt-5">
+				<span class="h6 mb-2">Address</span>
+				<div class="mb-3">
+					<input class="form-check-input" type="radio" name="selectedAddress" value="vn" id="vn" checked />
+					<label class="form-check-label" for="vn">Viet Nam</label>
+				</div>
+				<button class="btn btn-secondary icon-plus w-50">Add new</button>
+			</div>
+		</div>
+
+		<div class="">
+			<div class="d-flex justify-content-between">
+				<span class="caption">Items Amount</span>
+				<span class="caption">@Model.totalAmount</span>
+			</div>
+			<div class="d-flex justify-content-between text-dark mt-2">
+				<span class="h6">Price</span>
+				<span class="h6">$@Model.currOrder.OrderTotalPayment</span>
+			</div>
+			<div class="d-flex justify-content-between mt-2">
+				<span class="caption">Delivery Fee</span>
+				<span class="caption">$@Model.currOrder.DeliveryCharge</span>
+			</div>
+			<div class="d-flex justify-content-between caption text-primary mt-2">
+				<span>Voucher</span>
+				<span>-$@Model.currOrder.OrderVoucher.Value</span>
+			</div>
+			<div class="d-flex justify-content-between h2 text-dark mt-2">
+				<span>Total</span>
+				<span>$@Model.currOrder.OrderTotalPrice</span>
+			</div>
+			<button type="submit" class="btn btn-primary icon-arrow w-100 mt-3">Next</button>
+		</div>
+	</div>
+</form>

@@ -1,57 +1,36 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @using ShoeStoreManagement.Core.Enums;
+@using ShoeStoreManagement.Core.ViewModels;
 
-@model Order
+@model OrderVM
 
 @{
-	List<Voucher> vouchers = ViewData["vouchers"] as List<Voucher> ?? new List<Voucher>();
 	List<DeliveryMethods> deliveryMethods = ViewData["deliveryMethods"] as List<DeliveryMethods> ?? new List<DeliveryMethods>();
-	List<PaymentMethod> paymentMethods = ViewData["paymentMethods"] as List<PaymentMethod> ?? new List<PaymentMethod>();
 }
 
-<form method="get" action="Order/Create" class="row d-flex justify-content-between">
+<form method="post" action="Order/ConfirmOrder" class="row d-flex justify-content-between">
 	<div class="col-7">
 
-		@if (Model.OrderDetails.Count > 0)
+		@if (Model.currOrder.OrderDetails.Count > 0)
 		{
-			@foreach (var item in Model.OrderDetails)
+			@foreach (var item in Model.currOrder.OrderDetails)
 			{
 				<component type="typeof(OrderItemCard)" render-mode="ServerPrerendered" param-orderDetail=@item param-orderDetailId=@item.OrderDetailId />
 			}
 		}
 
 		<div class="d-flex flex-column mt-5">
-			<span class="h6 mb-1">Payment Method</span>
-			<div class="form-floating">
-				<select class="form-select" asp-for="PaymentMethod" asp-items="@(new SelectList(paymentMethods))" id="selectPM" aria-label="Floating label select example">
-				</select>
-				<span asp-validation-for="PaymentMethod" class="text-danger"></span>
-			</div>
-		</div>
-
-		<div class="d-flex flex-column mt-5">
 			<span class="h6 mb-1">Delivery Method</span>
 			<div class="form-floating">
-				<select class="form-select" asp-for="DeliverryMethods" asp-items="@(new SelectList(deliveryMethods))" id="selectPM" aria-label="Floating label select example">
+				<select class="form-select" asp-for="currOrder.DeliverryMethods" asp-items="@(new SelectList(deliveryMethods))" id="selectPM" aria-label="Floating label select example">
 				</select>
-				<span asp-validation-for="DeliverryMethods" class="text-danger"></span>
+				<span asp-validation-for="currOrder.DeliverryMethods" class="text-danger"></span>
 			</div>
 		</div>
 	</div>
 	<div class="col-4 d-flex flex-column justify-content-between">
 		<div>
-			<div class="d-flex flex-column">
-				<span class="h6 mb-2">Voucher</span>
-				<div class="d-flex">
-					<div class="form-floating flex-fill">
-						<input type="text" asp-for="OrderVoucherId" class="form-control" id="floatingInput" placeholder="Annanas A">
-						<label for="floatingInput">Enter Name</label>
-						<span asp-validation-for="OrderVoucherId" class="text-danger"></span>
-					</div>
-					<button class="btn btn-primary icon-search">Check</button>
-				</div>
-			</div>
 			<div class="d-flex flex-column mt-5">
 				<span class="h6 mb-2">Address</span>
 				<div class="mb-3">
@@ -65,23 +44,15 @@
 		<div class="">
 			<div class="d-flex justify-content-between">
 				<span class="caption">Items Amount</span>
-				<span class="caption">4</span>
+				<span class="caption">@Model.totalAmount</span>
 			</div>
 			<div class="d-flex justify-content-between text-dark mt-2">
 				<span class="h6">Price</span>
-				<span class="h6">$@Model.OrderTotalPayment</span>
-			</div>
-			<div class="d-flex justify-content-between mt-2">
-				<span class="caption">Delivery Fee</span>
-				<span class="caption">$@Model.DeliveryCharge</span>
-			</div>
-			<div class="d-flex justify-content-between caption text-primary mt-2">
-				<span>Voucher</span>
-				<span>-$@Model.OrderVoucher.Value</span>
+				<span class="h6">$@Model.currOrder.OrderTotalPayment</span>
 			</div>
 			<div class="d-flex justify-content-between h2 text-dark mt-2">
 				<span>Total</span>
-				<span>$@Model.OrderTotalPayment</span>
+				<span>$@Model.currOrder.OrderTotalPayment</span>
 			</div>
 			<button type="submit" class="btn btn-primary icon-arrow w-100 mt-3">Next</button>
 		</div>
