@@ -66,6 +66,58 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
+        public IActionResult ToCart(string id)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Cart? cart = _cartCRUD.GetAsync(userId).Result;
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (cart == null)
+            {
+                cart = new Cart();
+                cart.UserId = userId;
+                _cartCRUD.CreateAsync(cart);
+            }
+
+            Product? product = _productCRUD.GetByIdAsync(id).Result;
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(id, cart.CartId).Result;
+
+            if (cartDetail != null)
+            {
+                if (cartDetail.Amount < product.Amount)
+                {
+                    cartDetail.Amount++;
+                    cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
+                    _cartDetailCRUD.Update(cartDetail);
+                }
+            }
+            else
+            {
+                cartDetail = new CartDetail()
+                {
+                    CartId = cart.CartId,
+                    ProductId = id,
+                    Amount = 1,
+                    CartDetailTotalSum = product.ProductUnitPrice,
+                };
+
+                _cartDetailCRUD.CreateAsync(cartDetail);
+            }
+
+            return RedirectToAction("Index");
+        }
+
         //[HttpPost]
         public IActionResult Index(string categoryRadio, string priceRadio, int page = 1)
         {

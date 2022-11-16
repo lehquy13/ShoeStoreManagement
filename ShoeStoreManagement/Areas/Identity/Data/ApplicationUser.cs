@@ -14,7 +14,7 @@ public class ApplicationUser : IdentityUser
     public string SingleAddress { get; set; } = string.Empty;
 
     [NotMapped]
-    public string Role { get; set; } = string.Empty;
+    public string Role { get; set; } = "Customer";
 
     [NotMapped]
     public Cart? Cart { get; set; }
