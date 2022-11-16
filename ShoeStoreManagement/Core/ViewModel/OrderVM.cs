@@ -15,7 +15,7 @@ public class OrderVM
     public List<ApplicationUser>? customers { get; set; } = new List<ApplicationUser>();
     public ApplicationUser pickCustomers { get; set; } = new ApplicationUser();
 
-    public Order currOrder { get; set; } = new Order();
+    public Order? currOrder { get; set; } = null;
 
 
     public List<string> pickingQuantity { get; set; } = new List<string>();

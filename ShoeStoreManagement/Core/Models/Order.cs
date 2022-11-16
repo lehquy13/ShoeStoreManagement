@@ -97,7 +97,6 @@ public class Order
     [Required]
     public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.Cash;
 
-    [ForeignKey("Id")]
     [AllowNull]
     public string OrderVoucherId
     {
@@ -105,7 +104,8 @@ public class Order
         set { orderVoucherId = value; }
     }
 
-    public Voucher OrderVoucher { get; set; } = new Voucher();
+    [NotMapped]
+    public Voucher? OrderVoucher { get; set; } = null;
 
     [AllowNull]
     public string OrderNote
