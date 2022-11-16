@@ -43,153 +43,159 @@
 </style>
 
 <div class="row">
-    <form method="post" action="Admin/Product/Index">
-        <div class="col-2 borderCustom1">
-            <div class="col">
-                <div class="row">
-                    <ii class="row-1 h6 mb-2 mt-4">Category</ii>
+    <form method="post" action="Admin/Product/Index" class="col-2 borderCustom1">
+        <div class="col">
+            <div class="row">
+                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-                    <div class="radioLayoutTabCustom row-cols-6">
-                        @if (string.IsNullOrEmpty(filters[0]))
+                <div class="radioLayoutTabCustom row-cols-6">
+                    @if (string.IsNullOrEmpty(filters[0]))
+                    {
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+                    }
+                    @if (!string.IsNullOrEmpty(filters[0]))
+                    {
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+                    }
+                    @foreach (ProductCategory i in productCategories)
+                    {
+                        if (i.ProductCategoryName.Equals(filters[0]))
                         {
-                            <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
                         }
-                        @if (!string.IsNullOrEmpty(filters[0]))
+                        else
                         {
-                            <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
                         }
-                        @foreach (ProductCategory i in productCategories)
-                        {
-                            if (i.ProductCategoryName.Equals(filters[0]))
-                            {
-                                <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
-                            }
-                            else
-                            {
-                                <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
-                            }
-                        }
-                        @*<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-                        <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-                        <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-                        <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-                        <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button*@
-
-                    </div>
+                    }
+                    @*<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
+                    <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button*@
 
                 </div>
 
-                <div class="row mt-3">
-                    <ii class="row-1 h6">Price</ii>
+            </div>
 
-                    <div class="radioLayoutTabCustom row-cols-6">
-                        @foreach (string i in priceFilters)
+            <div class="row mt-3">
+                <ii class="row-1 h6">Price</ii>
+
+                <div class="radioLayoutTabCustom row-cols-6">
+                    @foreach (string i in priceFilters)
+                    {
+                        if (i.Equals(filters[1]))
                         {
-                            if (i.Equals(filters[1]))
-                            {
-                                <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
-                            }
-                            else if (string.IsNullOrEmpty(i))
-                            {
-                                <label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
-                            }
-                            else
-                            {
-                                <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
-                            }
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
                         }
-                    </div>
+                        else if (string.IsNullOrEmpty(i))
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+                        }
+                        else
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+                        }
+                    }
                 </div>
+            </div>
 
-                <input class="btn-primary" type="submit" />
-            </div> @*used to col-3 vs col-10*@
-        </div>
+            <input class="btn-primary" type="submit" />
+        </div> @*used to col-3 vs col-10*@
     </form>
 
-</div>
-
-
-<div class="container col-10">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="table-wrap">
-                <table class="table myaccordion table-hover" id="accordion">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th class="button">Name</th>
-                            <th class="button">Price</th>
-                            <th class="button">Color</th>
-                            <th class="button">Category</th>
-                            <th class="button">Amount</th>
-                            <th class="button">Edit</th>
-                            <th class="button">Add to cart</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (products != null)
-                        {
-                            var a = nProducts * 10;
-                            for (int i = (nProducts) * 10; i < products.Count; i++)
+    <div class="container col-10">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap">
+                    <table class="table myaccordion table-hover" id="accordion">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th class="button">Name</th>
+                                <th class="button">Price</th>
+                                <th class="button">Color</th>
+                                <th class="button">Category</th>
+                                <th class="button">Amount</th>
+                                <th class="button">Edit</th>
+                                <th class="button">Add to cart</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (products != null)
                             {
-                                a++;
-                                if (a == (nProducts + 1) * 10 + 1) break;
+                                var a = nProducts * 10;
+                                for (int i = (nProducts) * 10; i < products.Count; i++)
+                                {
+                                    a++;
+                                    if (a == (nProducts + 1) * 10 + 1) break;
 
-                                <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                    <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
-                                    <th scope="row">@a</th>
-                                    <td>@products[i].ProductName</td>
-                                    <td>@products[i].ProductUnitPrice</td>
-                                    <td>@products[i].Color</td>
-                                    <td>@products[i].ProductCategory.ProductCategoryName</td>
-                                    <td>@products[i].Amount</td>
-                                    <td>
-                                        <a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Im not here','@products[i].ProductId')" class="btn btn-outline-info">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    </td>
-                                    <td>
-                                        <form action="Admin/Product/ToCart">
-                                            <button id="SaveSelectedUsers" type="submit" value="@products[i].ProductId" name="id" class="btn btn-primary" style="height: 20px"></button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                        <th scope="row">@a</th>
+                                        <td>@products[i].ProductName</td>
+                                        <td>@products[i].ProductUnitPrice</td>
+                                        <td>@products[i].Color</td>
+                                        <td>@products[i].ProductCategory.ProductCategoryName</td>
+                                        <td>@products[i].Amount</td>
+                                        <td>
+                                            <a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Im not here','@products[i].ProductId')" class="btn btn-outline-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <form action="Admin/Product/ToCart">
+                                                <button id="SaveSelectedUsers" type="submit" value="@products[i].ProductId" name="id" class="btn btn-primary" style="height: 20px"></button>
+                                            </form>
+                                        </td>
+                                    </tr>
 
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
+        <form method="post" action="Admin/Index">
+            <nav class="container">
+                <ul class="pagination" style="display:flex; flex-direction:row">
+                    @if (nProducts != 0)
+                    {
+                        if (nProducts > 1) nProducts -= 1;
+                        <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+                    }
+                    @for (int i = 1; i <= @countPage(); i++)
+                    {
+                        if (i == nProducts + 1)
+                        {
+                            <li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
+                        }
+                    }
+                    @if (nProducts + 1 != @countPage())
+                    {
+                        nProducts += 2;
+                        <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+                    }
+                </ul>
+            </nav>
+        </form>
     </div>
-    <form method="post" action="Admin/Index">
-        <nav class="container">
-            <ul class="pagination" style="display:flex; flex-direction:row">
-                @if (nProducts != 0)
-                {
-                    if (nProducts > 1) nProducts -= 1;
-                    <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
-                }
-                @for (int i = 1; i <= @countPage(); i++)
-                {
-                    if (i == nProducts + 1)
-                    {
-                        <li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-                    }
-                    else
-                    {
-                        <li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
-                    }
-                }
-                @if (nProducts + 1 != @countPage())
-                {
-                    nProducts += 2;
-                    <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-                }
-            </ul>
-        </nav>
-    </form>
 </div>
+
+@{
+    Product metmoi = new Product()
+    {
+
+    };
+}
+
+<partial name="Create.cshtml" view-data="ViewData" model="metmoi"></partial>
 
 @{
     <partial name="./_ValidationScriptsPartial"></partial>
