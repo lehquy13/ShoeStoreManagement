@@ -2,36 +2,26 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-//$(document).ready(function () {
-//    $('#load-du-lieu').click(function (e) {
-//        e.preventDefault();
-//        $.ajax({
-//            url: 'vidu2.php',
-//            type: 'GET',
-//            dataType: 'html',
-//            data: {
-//                a: "content abc",
-//                b: "content bcd"
-//            }
-//        }).done(function (ketqua) {
-//            $('#noidung').html(ketqua);
-//        });
+function showContent(url, title, id) {
 
-//    });
-//});
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: { id: id },
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+        }
+    })
+}
 
-//$(function () {
-//    var PlaceHolderElement = $('PlaceHolderHere');
-//    $('button[data-toggle="ajax-modal"]').click(function (event) {
-//        var url = $(this).data('url');
-//        var decodeUrl = decodeURIComponent(url);
-//        $.get(decodeUrl).done(function (data) {
-//            PlaceHolderElement.html(data);
-//            PlaceHolderElement.find('.modal').modal('show');
-//        }
+function caiHamKhac() {
+    alert($("#peMePls").val());
+    $("#peMePls").html(199);
 
-//    })
-//})
+}
+
 
 $(document).ready(function () {
     // GET BY ID

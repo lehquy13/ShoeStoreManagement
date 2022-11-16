@@ -68,40 +68,17 @@
 
     <div class="col-4 d-flex flex-column gap-2">
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" hidden placeholder="Nguyen Van A" asp-for="pickCustomers.Id">
-            <label for="floatingInput">Enter Name</label>
+            <input type="text" class="form-control" id="floatingInput" hidden placeholder="Nguyen Van A" asp-for="pickCustomerId">
         </div>
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="Nguyen Van A" value="pickCustomers.">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Nguyen Van A" asp-for="pickCustomers.UserName">
             <label for="floatingInput">Enter Name</label>
         </div>
-        @if (Model.pickCustomers != null)
-        {
-            <div class="form-floating">
-                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" >
 
-                    @foreach (var i in Model.pickCustomers.Addresses)
-                    {
-
-                        <option value="@i.UserId">
-                            @i.AddressDetail
-                        </option>
-                    }
-
-                </select>
-                <label for="floatingSelect">Category</label>
-            </div>
-
-
-        }
-        else
-        {
-            <div class="form-floating">
-                <input type="text" class="form-control" id="floatingInput" placeholder="Thu Duc, Tp.Ho Chi Minh">
-                <label for="floatingInput">Enter Address</label>
-            </div>
-        }
-
+        <div class="form-floating">
+            <input type="text" class="form-control" id="floatingInput" placeholder="Thu Duc, Tp.Ho Chi Minh" asp-for="pickCustomers.SingleAddress">
+            <label for="floatingInput">Enter Address</label>
+        </div>
         <div class="form-floating">
             <input type="tel" class="form-control" id="floatingInput" placeholder="0947xxx73" asp-for="pickCustomers.PhoneNumber">
             <label for="floatingInput">Enter Phone</label>
@@ -112,7 +89,7 @@
         </div>
     </div>
 
-    <@*div class="col-6 d-flex flex-column gap-2">
+    @*div class="col-6 d-flex flex-column gap-2">
            <div class="row ms-1">
            @foreach (var item in items)
            {
@@ -130,12 +107,13 @@
            </div>*@
    
 
-    <div>
-        <button type="submit" class="btn btn-primary" style="width:180px;">YEs care ab me my mah!</button>
-    </div>
-
-
-
+    <button type="submit" class="btn btn-primary rounded mt-5" style="width:120px;">Confirm</button>
 </form>
 
+@*<form>
+  <span>
+    <button class="btn btn-primary rounded mt-5 ms-1" style="width:120px;" onclick="location.href = '@(Url.Action("PickItem", "Order"))'">Go Back</button>
+  </span>
+</form>
+*@
 

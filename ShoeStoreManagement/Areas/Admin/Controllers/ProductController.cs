@@ -66,8 +66,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
-        [HttpPost]
-        public IActionResult AddToCart(string id)
+        public IActionResult ToCart(string id)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
@@ -99,7 +98,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 if (cartDetail.Amount < product.Amount)
                 {
                     cartDetail.Amount++;
-                    cartDetail.CartDetailTotalSum += cartDetail.Amount * product.ProductUnitPrice;
+                    cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
                     _cartDetailCRUD.Update(cartDetail);
                 }
             }
@@ -116,7 +115,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _cartDetailCRUD.CreateAsync(cartDetail);
             }
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         //[HttpPost]
@@ -151,7 +150,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewData["filters"] = filters;
             ViewData["page"] = page;
             ViewData["test"] = test;
-            return View();
+            return View(new Product());
         }
 
         private bool minCheck(float value, float price)
@@ -176,14 +175,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return false;
         }
 
-        public IActionResult Create()
-        {
-            return View(new Product());
-        }
+        
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit1(string? id)
         {
             if (id == null || id == "")
             {
@@ -295,6 +291,21 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
                 _productCRUD.Remove(obj);
+            }
+            return RedirectToAction("Index");
+        }
+
+        // Admin/Edit/id
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var obj = await _productCRUD.GetByIdAsync(id);
+            if(obj != null)
+            {
+                obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;
+                ViewData["productCategories"] = productCategories;
+                return PartialView(obj);
+
             }
             return RedirectToAction("Index");
         }

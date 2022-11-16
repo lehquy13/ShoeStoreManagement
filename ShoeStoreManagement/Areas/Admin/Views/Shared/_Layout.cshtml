@@ -1,18 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - ShoeStoreManagement</title>
-	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/color.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/font.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/icons.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/ShoeStoreManagement.styles.css" asp-append-version="true" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ShoeStoreManagement</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/color.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/font.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/icons.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ShoeStoreManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 	<header>
@@ -33,6 +33,9 @@
 				<a class="nav-icon-link" asp-controller="Notification" asp-action="Index">
 					<i class="fa-regular fa-bell nav-icon"></i>
 				</a>
+				<a class="nav-icon-link" asp-area="Admin" asp-controller="Cart" asp-action="Index">
+					<i class="fa-solid fa-cart-shopping nav-icon"></i>
+				</a>
 				<div class="dropdown">
 					<button class="nav-icon-link fa-regular fa-circle-user nav-icon border-0 p-0 m-0" type="button" id="drop" data-bs-toggle="dropdown" aria-expanded="false">
 					</button>
@@ -51,17 +54,35 @@
 		</main>
 	</div>
 
-	@*    <footer class="border-top footer text-muted">
-	<div class="container">
-	&copy; 2022 - ShoeStoreManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-	</div>
-	</footer>*@
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-	<script src="~/js/site.js" asp-append-version="true"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-	<base href="~/" />
-	@await RenderSectionAsync("Scripts", required: false)
+    <div class="modal" tabindex="-1" role="dialog" id="form-modal" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="width:850px">
+                <div class="modal-header" >
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*    <footer class="border-top footer text-muted">
+    <div class="container">
+    &copy; 2022 - ShoeStoreManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+    </footer>*@
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site1.js" asp-append-version="true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <base href="~/" />
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
