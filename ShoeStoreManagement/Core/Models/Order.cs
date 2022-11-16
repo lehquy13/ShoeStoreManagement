@@ -113,4 +113,10 @@ public class Order
         get { return orderNote; }
         set { orderNote = value; }
     }
+
+    //[Range(0, 99999)]
+    //[DataType(DataType.Currency)]
+    //[Column(TypeName = "decimal(18,2)")]
+    [NotMapped]
+    public float OrderTotalPrice { get; set; } = 0;
 }

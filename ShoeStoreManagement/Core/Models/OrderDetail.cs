@@ -48,6 +48,9 @@ namespace ShoeStoreManagement.Core.Models
             set { amount = value; }
         }
 
+        [Range(35, 45)]
+        public int Size { get; set; } = 0;
+
         [Range(0, 99999)]
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
@@ -56,8 +59,6 @@ namespace ShoeStoreManagement.Core.Models
             get { return payment; }
             set { payment = value; }
         }
-
-
 
     }
 }

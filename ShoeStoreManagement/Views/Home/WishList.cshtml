@@ -4,7 +4,7 @@
 
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
-@model List<Product>;
+@model WishList;
 
 <div class="row">
 	<div class="col-3">
@@ -22,9 +22,12 @@
 		</div>
 	</div>
 	<div class="col-9 row">
-		@foreach (var item in Model)
+		@if (Model != null && Model.WishListDetails.Count > 0)
 		{
-			<component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item />
+			@foreach (var item in Model.WishListDetails)
+			{
+				<component type="typeof(ProductCard)" render-mode="ServerPrerendered" param-product=@item.Product param-isLiked=true />
+			}
 		}
 	</div>
 </div>

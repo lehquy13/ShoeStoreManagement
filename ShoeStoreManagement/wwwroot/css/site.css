@@ -196,11 +196,10 @@
     flex-direction: column;
 }
 
-.pagination-itemlist {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
+#pagination-item {
+    margin: 0px 0px 0px 0px;
+    width:auto;
+    height: inherit;
 }
 
 .page-item {

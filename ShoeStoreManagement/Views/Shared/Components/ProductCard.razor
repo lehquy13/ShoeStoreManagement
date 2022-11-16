@@ -10,20 +10,32 @@
 		<p class="fw-bold h5 mb-2">@product.ProductName</p>
 		<p class="h5 mb-2">@product.ProductUnitPrice</p>
 	</div>
-	<button class="btn btn-primary" type="button" @onclick="AddToCart">Add to Cart</button>
+	@if(!isLiked) {
+		<button class="btn btn-primary" type="button" @onclick="AddToWishList">Add to WishList</button>
+	}else {
+		<button class="btn btn-secondary" type="button" @onclick="RemoveFromWishList">Remove from WishList</button>
+	}
 </div>
 
 @code {
 	[Parameter]
 	public Product product { get; set; } = null!;
 
+	[Parameter]
+	public bool isLiked { get; set; } = false;
+
 	protected override void OnInitialized()
 	{
 
 	}
 
-	void AddToCart() {
-		UriHelper.NavigateTo("Cart/Create/" + product.ProductId, true);
+	void AddToWishList() {
+		UriHelper.NavigateTo("Home/AddToWishList/" + product.ProductId, true);
+	}
+
+	void RemoveFromWishList()
+	{
+		UriHelper.NavigateTo("Home/RemoveFromWishList/" + product.ProductId, true);
 	}
 
 	void NavigateToDetail()

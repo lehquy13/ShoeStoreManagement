@@ -42,44 +42,58 @@ namespace ShoeStoreManagement.Controllers
             return View(new Cart());
         }
 
-        [HttpGet("Cart/Create/{id}")]
-        public IActionResult Create(string? id)
-        {
-            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //[HttpGet("Cart/Create/{id}")]
+        //public IActionResult Create(string? id)
+        //{
+        //    string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            Cart? cart = _cartCRUD.GetAsync(userId).Result;
+        //    Cart? cart = _cartCRUD.GetAsync(userId).Result;
 
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (cart == null)
-            {
-                cart = new Cart();
-                cart.UserId = userId;
-                _cartCRUD.CreateAsync(cart);
-            }
+        //    if (cart == null)
+        //    {
+        //        cart = new Cart();
+        //        cart.UserId = userId;
+        //        _cartCRUD.CreateAsync(cart);
+        //    }
 
-            Product? product = _productCRUD.GetByIdAsync(id).Result;
+        //    Product? product = _productCRUD.GetByIdAsync(id).Result;
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+        //    if (product == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var cartDetail = new CartDetail()
-            {
-                CartId = cart.CartId,
-                ProductId = id,
-                Amount = 1,
-                CartDetailTotalSum = product.ProductUnitPrice,
-            };
+        //    CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(id, cart.CartId).Result;
 
-            _cartDetailCRUD.CreateAsync(cartDetail);
+        //    if (cartDetail != null)
+        //    {
+        //        if (cartDetail.Amount < product.Amount)
+        //        {
+        //            cartDetail.Amount++;
+        //            cartDetail.CartDetailTotalSum += cartDetail.Amount * product.ProductUnitPrice;
+        //            _cartDetailCRUD.Update(cartDetail);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        cartDetail = new CartDetail()
+        //        {
+        //            CartId = cart.CartId,
+        //            ProductId = id,
+        //            Amount = 1,
+        //            CartDetailTotalSum = product.ProductUnitPrice,
+        //        };
 
-            return RedirectToAction("Index", "Home");
-        }
+        //        _cartDetailCRUD.CreateAsync(cartDetail);
+        //    }
+
+        //    return RedirectToAction("Index", "Home");
+        //}
 
         [HttpGet("Cart/Edit/{id}/{amount}/{sum}")]
         public IActionResult Edit(string id, int amount, int sum)
