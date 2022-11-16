@@ -100,9 +100,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public async Task<IActionResult> PickItem()
         {
             _orderVM.pickingQuantity.Clear();
-            ViewData["customer"] = _orderVM.customers;
+            //ViewData["customer"] = _orderVM.customers;
             var obj = await _productCRUD.GetAllAsync();
-            ViewData["products"] = obj;
+            //ViewData["products"] = obj;
             _orderVM.products = obj;
             return View(_orderVM);
         }
@@ -189,7 +189,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
             ViewData["orders"] = orderList;
 
-            _orderVM = new OrderVM();
+            _orderVM = new OrderVM(); // cần clear lại VM
 
             return View();
 

@@ -54,6 +54,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
+
+
         //[HttpPost]
         public IActionResult Index(string categoryRadio, string priceRadio)
         {
@@ -80,7 +82,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewData["productCategories"] = productCategories;
             ViewData["products"] = productFilter;
             ViewData["test"] = test;
-            return View();
+            return View(new Product());
         }
 
         private bool minCheck(float value, float price)
@@ -105,14 +107,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return false;
         }
 
-        public IActionResult Create()
-        {
-            return View(new Product());
-        }
+        
 
 
         [HttpGet]
-        public async Task<IActionResult> Edit(string? id)
+        public async Task<IActionResult> Edit1(string? id)
         {
             if (id == null || id == "")
             {
@@ -224,6 +223,21 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
                 _productCRUD.Remove(obj);
+            }
+            return RedirectToAction("Index");
+        }
+
+        // Admin/Edit/id
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var obj = await _productCRUD.GetByIdAsync(id);
+            if(obj != null)
+            {
+                obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;
+                ViewData["productCategories"] = productCategories;
+                return PartialView(obj);
+
             }
             return RedirectToAction("Index");
         }
