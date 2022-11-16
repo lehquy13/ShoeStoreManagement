@@ -30,39 +30,62 @@
 </div>
 
 @code {
-    [Parameter]
-    public string cartItemId { get; set; } = null!;
+  [Parameter]
+  public string cartItemId { get; set; } = null!;
 
-    [Parameter]
-    public CartDetail cartItem { get; set; } = null!;
+  [Parameter]
+  public CartDetail cartItem { get; set; } = null!;
 
-    protected void OK(int count)
+  protected void OK(int count)
+  {
+    cartItem.Amount = count;
+    cartItem.CartDetailTotalSum = cartItem.Product.ProductUnitPrice * count;
+    StateHasChanged();
+
+    UpdateState(count, cartItem.CartDetailTotalSum);
+  }
+
+  void UpdateState(int count, float sum)
+  {
+    if (UriHelper.Uri.Contains("Admin"))
     {
-        cartItem.Amount = count;
-        cartItem.CartDetailTotalSum = cartItem.Product.ProductUnitPrice * count;
-        StateHasChanged();
+      UriHelper.NavigateTo("Admin/Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
+    }
+    else
+    {
+      UriHelper.NavigateTo("Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
+    }
+  }
 
-        UpdateState(count, cartItem.CartDetailTotalSum);
+  void DeleteCartItem()
+  {
+    if (UriHelper.Uri.Contains("Admin"))
+    {
+      UriHelper.NavigateTo("Admin/Cart/Delete/" + cartItemId, true);
+    }
+    else
+    {
+      UriHelper.NavigateTo("Cart/Delete/" + cartItemId, true);
+    }
+  }
+
+  void UpdateChecked()
+  {
+    if (!cartItem.IsChecked)
+    {
+      cartItem.IsChecked = true;
+    }
+    else
+    {
+      cartItem.IsChecked = false;
     }
 
-    void UpdateState(int count, float sum)
+    if (UriHelper.Uri.Contains("Admin"))
     {
-        UriHelper.NavigateTo("Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
+      UriHelper.NavigateTo("Admin/Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
     }
-
-    void DeleteCartItem()
-    {
-        UriHelper.NavigateTo("Cart/Delete/" + cartItemId, true);
+    else
+      UriHelper.NavigateTo("Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
     }
-
-    void UpdateChecked()
-    {
-        if(!cartItem.IsChecked) {
-            cartItem.IsChecked = true;
-        }
-        else {
-            cartItem.IsChecked = false;
-        }
-        UriHelper.NavigateTo("Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
-    }
+  }
 }

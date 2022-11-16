@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Areas.Identity.Data;
+using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModels;
 using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
-
+using System.Security.Claims;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -24,7 +25,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly IAddressCRUD _addressCRUD;
         private readonly IProductCRUD _productCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
-
+        private readonly ICartCRUD _cartCRUD;
+        private readonly ICartDetailCRUD _cartDetailCRUD;
+        private readonly IVoucherCRUD _voucherCRUD;
         static private OrderVM _orderVM = new OrderVM();
         CustomerDialogVM _customerDialogVM = new CustomerDialogVM();
 
@@ -32,18 +35,23 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public OrderController(ILogger<OrderController> logger, IOrderCRUD orderCRUD,
             IApplicationUserCRUD applicationUser, RoleManager<IdentityRole> roleManager,
              UserManager<ApplicationUser> usermanager, IAddressCRUD addressCRUD, IProductCRUD productCRUD,
-             IOrderDetailCRUD orderDetailCRUD, ISizeDetailCRUD sizeDetailCRUD)
+             IOrderDetailCRUD orderDetailCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD)
         {
             _logger = logger;
             _orderCRUD = orderCRUD;
             _applicationuserCRUD = applicationUser;
             _roleManager = roleManager;
             _usermanager = usermanager;
-            Init();
+            
             _addressCRUD = addressCRUD;
             _productCRUD = productCRUD;
             _orderDetailCRUD = orderDetailCRUD;
             _sizeDetailCRUD = sizeDetailCRUD;
+            _cartCRUD = cartCRUD;
+            _cartDetailCRUD = cartDetailCRUD;
+            _voucherCRUD = voucherCRUD;
+
+            Init();
         }
 
         private void Init()
@@ -87,6 +95,55 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             return View();
         }
+
+
+        public IActionResult MakeAnOrder()
+        {
+            List<Voucher>? vouchers = _voucherCRUD.GetAllAsync().Result;
+
+            ViewData["vouchers"] = vouchers;
+            ViewData["deliveryMethods"] = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
+
+
+            // create fake order
+            OrderDetail orderDetail = new OrderDetail();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            Cart? cart = _cartCRUD.GetAsync(userId).Result;
+
+            if (cart == null)
+            {
+                return NotFound();
+            }
+
+            var list = _cartDetailCRUD.GetAllCheckedAsync(cart.CartId).Result;
+
+            if (list.Count <= 0)
+            {
+                return NotFound();
+            }
+
+            _orderVM.currOrder.UserId = userId;
+            _orderVM.currOrder.OrderDetails.Clear();
+
+            foreach (var item in list)
+            {
+                orderDetail = new OrderDetail()
+                {
+                    Amount = item.Amount,
+                    OrderId = _orderVM.currOrder.OrderId,
+                    Payment = (int)item.CartDetailTotalSum,
+                    ProductId = item.ProductId,
+                };
+
+                _orderVM.currOrder.OrderDetails.Add(orderDetail);
+                _orderVM.currOrder.OrderTotalPayment += (int)item.CartDetailTotalSum;
+            }
+
+            return View(_orderVM);
+        }
+
         [HttpGet]
         public async Task<IActionResult> ProductDialog()
         {
@@ -107,7 +164,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(_orderVM);
         }
         [HttpPost]
-        public IActionResult PickCustomer(OrderVM orderVM)
+        public IActionResult PickCustomer(OrderVM orderVM = null)
         {
             _orderVM.pickitems = orderVM.pickitems;
             foreach (string i in orderVM.pickingQuantity)
@@ -192,20 +249,31 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _orderVM = new OrderVM();
 
             return View();
-
-
         }
 
         [HttpPost]
         public IActionResult ConfirmOrderAsync(CustomerDialogVM id)
         {
-            Console.WriteLine("me here");
-            if (id.pickCustomerId == null)
+            var obj = _applicationuserCRUD.GetByIdAsync(id.pickCustomerId).Result;
+
+            //Handle if user isn't existed
+            if (obj == null)
             {
-                return RedirectToAction("Index");
+                ApplicationUser newuser = new ApplicationUser();
+                newuser.UserName = id.pickCustomers.UserName;
+                newuser.Email = id.pickCustomers.Email;
+                newuser.SingleAddress = id.pickCustomers.SingleAddress;
+                newuser.PhoneNumber = id.pickCustomers.PhoneNumber;
+
+                _cartCRUD.CreateAsync(new Cart() { UserId = newuser.Id });
+                _addressCRUD.CreateAsync(new Address() { AddressDetail = newuser.SingleAddress, UserId = newuser.Id });
+                _applicationuserCRUD.CreateAsync(newuser).Wait();
+
+                _usermanager.AddToRoleAsync(newuser, "Customer").Wait();
+
+                obj = newuser;
             }
 
-            var obj = _applicationuserCRUD.GetByIdAsync(id.pickCustomerId).Result;
             _orderVM.customers.Clear();
             _orderVM.customers.Add(obj);
             _orderVM.customers[0].Addresses = _addressCRUD.GetAllAsync(_orderVM.customers[0].Id).Result;
@@ -243,13 +311,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 };
 
                 _orderVM.currOrder.OrderDetails.Add(it);
+            }
 
-
+            foreach (CartDetail i in _cartDetailCRUD.GetAllAsync(_cartCRUD.GetAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)).Result.CartId).Result)
+            {
+                _cartDetailCRUD.Remove(i);
             }
 
             return View(_orderVM);
         }
-
-
     }
 }

@@ -1,0 +1,91 @@
+﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.ViewModel;
+@using ShoeStoreManagement.Views.Shared.Components;
+
+@model ProductVM
+
+@{
+	int test = 0;
+
+	var disabled = "disabled";
+
+	void OK(int count)
+	{
+		test = count;
+	}
+
+}
+
+<form class="row" method="post" action="DetailProduct/CreateCartItem">
+	<div class="col-4">
+		<img src="/image/shoe.jpg" class="w-100" />
+
+	</div>
+	<div class="col-5 d-flex flex-column justify-content-between">
+		<div class="d-flex flex-column gap-4">
+			<p class="h2">@Model.Product.ProductName</p>
+			<div>
+				<span class="h6">Color</span>
+				<p class="h5 mt-1">@Model.Product.Color</p>
+			</div>
+			<div>
+				<span class="h6">Amount</span>
+				<div class="form-floating">
+					<input type="number" asp-for="@Model.AmountSelected" class="form-control" id="floatingInput" placeholder="Annanas A">
+					@*<span asp-validation-for="currOrder.OrderVoucher.Code" class="text-danger"></span>*@
+				</div>
+				@*<component type="typeof(Counter)" render-mode="ServerPrerendered" param-max=@Model.Amount />*@
+				<div class="d-flex">
+					<span class="caption">Remain - </span>
+					<span class="button text-primary">@Model.Amount</span>
+				</div>
+			</div>
+			<div>
+				@for (int i = 35; i <= 45; i++)
+				{
+
+					disabled = "disabled";
+
+					foreach (var item in Model.Product.Sizes)
+					{
+						if (item.Size == i)
+						{
+							disabled = "";
+							test = item.Amount;
+						}
+					}
+					<form method="post" action="DetailProduct/LoadAmountOfSize" style="width:42px; height:42px; display:inline-block">
+						<input type="hidden" value="@i" name="size"/>
+						<button class="btn btn-secondary" style="width:42px; height:42px;" @disabled>
+							@i
+						</button>
+					</form>
+				}
+			</div>
+		</div>
+
+		<div class="d-flex flex-column gap-2 col-7">
+			<button type="submit" class="btn btn-secondary icon-cart">Add to Cart</button>
+			<button class="btn btn-primary icon-arrow" onclick="location.href = '@(Url.Action("Index", "Cart"))'">Buy Now</button>
+		</div>
+	</div>
+	<div class="col">
+		<span class="h6">Description</span>
+		<p class="caption mt-1">
+			@Model.Product.Description
+		</p>
+	</div>
+</form>
+<div class="row mt-2">
+	<div class="col-4">
+		@*slide*@
+		<div class="d-flex justify-content-between">
+			<img src="/image/shoe.jpg" class="col-4" />
+			<img src="/image/shoe.jpg" class="col-4" />
+			<img src="/image/shoe.jpg" class="col-4" />
+		</div>
+	</div>
+	<div class="col-5 border-dash p-3">
+		Voucher
+	</div>
+</div>
