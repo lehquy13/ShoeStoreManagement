@@ -27,6 +27,8 @@ builder.Services.AddScoped<ICartDetailCRUD, CartDetailCRUD>();
 builder.Services.AddScoped<IVoucherCRUD, VoucherCRUD>();
 builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
 builder.Services.AddScoped<IOrderDetailCRUD, OrderDetailCRUD>();
+builder.Services.AddScoped<IWishListCRUD, WishListCRUD>();
+builder.Services.AddScoped<IWishListDetailCRUD, WishListDetailCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
