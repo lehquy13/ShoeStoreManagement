@@ -115,5 +115,8 @@ namespace ShoeStoreManagement.Core.Models
             get { return description; }
             set { description = value; }
         }
+
+        [NotMapped]
+        public bool IsLiked { get; set; } = false;
     }
 }

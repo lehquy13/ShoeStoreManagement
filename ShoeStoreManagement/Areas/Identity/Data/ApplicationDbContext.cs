@@ -40,4 +40,13 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<OrderDetail> OrderDetails { get; set; } = null!;
 
     public virtual DbSet<Voucher> Vouchers { get; set; } = null!;
+
+    ///// <summary>
+    ///// Migration ver3
+    ///// </summary>
+    ///// 
+    ///
+    public virtual DbSet<WishList> WishLists { get; set; } = null!;
+    public virtual DbSet<WishListDetail> WishListDetails { get; set; } = null!;
+
 }
