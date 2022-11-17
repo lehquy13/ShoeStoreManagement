@@ -115,7 +115,24 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _cartDetailCRUD.CreateAsync(cartDetail);
             }
 
-            return RedirectToAction("Index");
+            return PartialView();
+        }
+
+        [HttpGet]
+        public IActionResult ChooseSize(string id)
+        {
+            Product? product = _productCRUD.GetByIdAsync(id).Result;
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            List<SizeDetail> sizes = _sizeDetailCRUD.GetAllByIdAsync(id).Result;
+
+            ViewData["chosenProductSizes"] = sizes;
+
+            return PartialView(product);
         }
 
         //[HttpPost]
@@ -174,9 +191,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             else
                 return false;
         }
-
-        
-
 
         [HttpGet]
         public async Task<IActionResult> Edit1(string? id)

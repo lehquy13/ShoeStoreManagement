@@ -2,18 +2,32 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-function showContent(url, title, id) {
+function toCart(url, title, id) {
 
     $.ajax({
         type: "GET",
         url: url,
         data: { id: id },
         success: function (res) {
-            $("#form-modal .modal-body").html(res);
-            $("#form-modal .modal-title").html(title);
-            $("#form-modal").modal('show');
+            $("#size-dialog .modal-body").html(res);
+            $("#size-dialog .modal-title").html(title);
+            $("#size-dialog").modal('show');
         }
     })
+}
+
+function showContent(url, title, id) {
+
+  $.ajax({
+    type: "GET",
+    url: url,
+    data: { id: id },
+    success: function (res) {
+      $("#form-modal .modal-body").html(res);
+      $("#form-modal .modal-title").html(title);
+      $("#form-modal").modal('show');
+    }
+  })
 }
 
 function caiHamKhac() {

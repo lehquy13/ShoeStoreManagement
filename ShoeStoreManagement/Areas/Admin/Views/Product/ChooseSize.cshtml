@@ -1,0 +1,90 @@
+﻿@using ShoeStoreManagement.Core.Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Product;
+
+@{
+	List<SizeDetail> chosenProductSizes = ViewData["chosenProductSizes"] as List<SizeDetail> ?? null;
+
+	List<SizeDetail> sizeList = new List<SizeDetail>() {
+		new SizeDetail() {Size = 35, Amount = 0},
+		new SizeDetail() {Size = 36, Amount = 0},
+		new SizeDetail() {Size = 37, Amount = 0},
+		new SizeDetail() {Size = 38, Amount = 0},
+		new SizeDetail() {Size = 39, Amount = 0},
+		new SizeDetail() {Size = 40, Amount = 0},
+		new SizeDetail() {Size = 41, Amount = 0},
+		new SizeDetail() {Size = 42, Amount = 0},
+		new SizeDetail() {Size = 43, Amount = 0},
+		new SizeDetail() {Size = 44, Amount = 0},
+	};
+
+	//Get the amount of available sizes from chosen product
+	foreach (SizeDetail i in chosenProductSizes)
+	{
+		foreach(SizeDetail y in sizeList) {
+			if (i.Size == y.Size) {
+				y.Amount = i.Amount;
+			}
+		}
+	}
+}
+
+<!-- Modal -->
+<div class="modal fade" id="CModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
+		<form method="post" action="Admin/Product/Create" class="modal-content w-auto px-3 py-3">
+			<div class="modal-header">
+				<h5 class="modal-title" id="ModalLabel">Choose sizes</h5>
+			</div>
+			<div class="modal-body p-0 mt-2" style="width: 500px">
+				<div class="row">
+					<div class="col-6">
+						<div class="form-group">
+							@for(int i = 0; i < 5; i++)
+							{
+								<div class="form-check mt-2">
+									<input class="form-check-input" type="checkbox" value="@sizeList[i].Size" name="TestSize" id="checkbox_@sizeList[i].Size" checked="@sizeList[i].IsChecked" />
+									<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
+										@sizeList[i].Size
+										<input type="number" placeholder="@sizeList[i].Amount" name="TestSizeAmount" id="input_@sizeList[i].Amount" class="form-control ms-2" />
+									</label>
+								</div>
+							}
+						</div>
+					</div>
+
+					<div class="col-6">
+						<div class="form-group">
+							@*@for (int i = 5; i < 10; i++)
+							{
+								<div class="form-check mt-2">
+									<input class="form-check-input" type="checkbox" value="@sizeList[i].Size" name="TestSize" id="checkbox_@sizeList[i].Size" checked="@sizeList[i].IsChecked" />
+									<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
+										@sizeList[i].Size
+										<input type="number" placeholder="@sizeList[i].Amount" name="TestSizeAmount" id="input_@sizeList[i].Amount" class="form-control ms-2" />
+									</label>
+								</div>
+							}*@
+						</div>
+					</div>
+				</div>
+				<div class="row mt-2">
+				</div>
+				<div class="row d-flex justify-content-start mt-3 gx-1">
+
+				</div>
+			</div>
+			<div class="modal-footer d-flex justify-content-between">
+				<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+				<button type="submit" class="btn btn-primary" onclick="location.href = '@(Url.Action("Create", "Product"))'">Submit</button>
+			</div>
+			@Html.AntiForgeryToken()
+		</form>
+	</div>
+</div>
+
+@section Scripts {
+	@{
+			<partial name="./_ValidationScriptsPartial"></partial>
+	}
+	}

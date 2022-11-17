@@ -144,9 +144,9 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <form action="Admin/Product/ToCart">
-                                                <button id="SaveSelectedUsers" type="submit" value="@products[i].ProductId" name="id" class="btn btn-primary" style="height: 20px"></button>
-                                            </form>
+                                            <a onclick="toCart('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@products[i].ProductId')" class="btn btn-outline-info">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
                                         </td>
                                     </tr>
 
