@@ -5,7 +5,6 @@
 @using ShoeStoreManagement.Core.Models;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
-@using System.Web;
 
 @{
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
@@ -188,6 +187,7 @@
         </form>
     </div>
 </div>
+
 @{
     Product metmoi = new Product()
     {

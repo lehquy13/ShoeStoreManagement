@@ -90,7 +90,8 @@ namespace ShoeStoreManagement.Core.Models
         [NotMapped]
         public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();
 
-        [Range(1, 99999)]
+        
+        [Range(0, 99999)]
         public int Amount
         {
             get { return amount; }
