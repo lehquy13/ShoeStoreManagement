@@ -25,15 +25,15 @@
 <!-- Modal -->
 <div class="modal fade" id="CModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
-		<form method="post" action="Admin/Product/Create" class="modal-content w-auto px-3 py-3">
-			<div class="modal-header">
+		<form method="post" action="Admin/Product/Create" class="modal-content w-auto px-3 py-3 border-0">
+			<div class="modal-header border-0">
 				<h5 class="modal-title" id="ModalLabel">Add new Product</h5>
 			</div>
 			<div class="modal-body p-0 mt-2" style="width: 850px">
 				<div class="row">
 					<div class="col-8" style="height:fit-content">
 						<div class="row">
-							<div class="col d-flex flex-column gap-2">
+							<div class="col d-grid gap-2">
 								<div class="form-floating">
 									<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
 									<label for="floatingInput">Enter Name</label>
@@ -45,12 +45,12 @@
 									<span asp-validation-for="Color" class="text-danger"></span>
 								</div>
 								<div class="form-floating flex-grow-1">
-									<textarea class="form-control h-100" asp-for="Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+									<textarea class="form-control" style="height:120px" asp-for="Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
 									<label for="floatingTextarea">Enter Descripiton</label>
 									<span asp-validation-for="Description" class="text-danger"></span>
 								</div>
 							</div>
-							<div class="col d-grid gap-2">
+							<div class="col d-grid gap-2" style="height:fit-content">
 								<div class="form-floating">
 									<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
 									</select>

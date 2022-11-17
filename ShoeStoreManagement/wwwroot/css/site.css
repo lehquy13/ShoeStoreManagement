@@ -109,7 +109,7 @@
         font-size: 14px;
     }
 
-        .tabCustom button:focus, button:active, button:visited {
+        .tabCustom button:focus, .tabCustom button:active, .tabCustom button:visited {
             text-decoration: underline;
             color: black;
             font-weight: 900;

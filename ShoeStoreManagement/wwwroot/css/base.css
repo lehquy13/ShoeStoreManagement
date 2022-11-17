@@ -26,6 +26,9 @@
     margin-left: 5px;
 }
 
+.row {
+    margin-right: 0px;
+}
 
 /*BORDER*/
 .border-app {
@@ -67,6 +70,10 @@
 .btn:active {
     background-color: #E59512;
     border: none;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    height: auto;
+    font-size: 17px;
     text-decoration: none;
 }
 

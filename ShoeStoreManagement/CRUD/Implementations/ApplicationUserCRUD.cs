@@ -41,6 +41,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                 obj.UserName = updateApplicationUser.UserName;
                 obj.PhoneNumber = updateApplicationUser.PhoneNumber;
                 obj.Email = updateApplicationUser.Email;
+                obj.Birthday = updateApplicationUser.Birthday;
                 // more and more
                 _applicationDBContext.SaveChanges();
 

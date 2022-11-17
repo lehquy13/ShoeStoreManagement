@@ -1,18 +1,18 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ShoeStoreManagement</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/color.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/font.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/icons.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ShoeStoreManagement.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - ShoeStoreManagement</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/base.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/color.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/font.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/icons.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/ShoeStoreManagement.styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
@@ -54,37 +54,33 @@
         </main>
     </div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="form-modal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:850px">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+	<div class="modal fade" tabindex="-1" role="dialog" id="form-modal">
+		<div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+			<div class="modal-content border-0 px-3 py-3" style="width:fit-content">
+				<div class="modal-header pt-4 pb-2">
+					<h5 class="modal-title"></h5>
+				</div>
+				<div class="modal-body" style="width: 760px">
+				</div>
+			</div>
+		</div>
+	</div>
 
-                <div class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="modal fade" tabindex="-1" role="dialog" id="size-dialog">
+		<div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+			<div class="modal-content border-0 px-3 py-3" style="width:fit-content">
+				<div class="modal-header pt-4 pb-2">
+					<h5 class="modal-title"></h5>
+					@*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>*@
+				</div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="size-dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content" style="width:500px">
-                <div class="modal-header">
-                    <h5 class="modal-title"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>
+				<div class="modal-body style=" width:500px"">
+				</div>
+			</div>
+		</div>
+	</div>
 
     <div  class="d-flex justify-content-center" style="position: absolute;vertical-align: middle; top: 50%; left: 50%;">
         <div class="spinner-border" role="status" id="loaderbody">

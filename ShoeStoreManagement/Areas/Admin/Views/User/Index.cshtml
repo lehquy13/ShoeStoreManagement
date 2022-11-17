@@ -3,74 +3,78 @@
 @using ShoeStoreManagement.Core.Models;
 @using ShoeStoreManagement.Areas.Identity.Data
 @{
-    List<ApplicationUser> users = ViewData["applicationUser"] as List<ApplicationUser> ?? new List<ApplicationUser>();
-    List<string> roles = ViewData["userRoles"] as List<string> ?? new List<string>();
+	List<ApplicationUser> users = ViewData["applicationUser"] as List<ApplicationUser> ?? new List<ApplicationUser>();
+	List<string> roles = ViewData["userRoles"] as List<string> ?? new List<string>();
 }
 
 <div class="row borderCustom">
-    <div class="col-2 borderCustom1">
-            <div class="row">
-                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
-                <form method="post">
-                  <div class="tabCustom row-cols-6">
-                    <button class="tabCustom" asp-action="Index" asp-route-filter="All">All</button>
-                    <button class="tabCustom" asp-action="Index" asp-route-filter="Admin">Admin</button>
-                    <button class="tabCustom" asp-action="Index" asp-route-filter="Staff">Staff</button>
-                    <button class="tabCustom" asp-action="Index" asp-route-filter="Customer">Customer</button>
-                </div>
-                </form>
-            </div>
-    </div> @*used to col-3 vs col-10*@
+	<div class="col-2 borderCustom1">
+		<div class="row">
+			<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+			<form method="post">
+				<div class="tabCustom row-cols-6">
+					<button class="tabCustom" asp-action="Index" asp-route-filter="All">All</button>
+					<button class="tabCustom" asp-action="Index" asp-route-filter="Admin">Admin</button>
+					<button class="tabCustom" asp-action="Index" asp-route-filter="Staff">Staff</button>
+					<button class="tabCustom" asp-action="Index" asp-route-filter="Customer">Customer</button>
+				</div>
+			</form>
+		</div>
+	</div> @*used to col-3 vs col-10*@
 
-    <div class="container col-10">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="table-wrap">
-                    <table class="table myaccordion table-hover" id="accordion">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th class="button">Name</th>
-                                <th class="button">Email</th>
-                                <th class="button">Phone</th>
-                                <th class="button">Orders</th>
-                                <th class="button">Start Date</th>
-                                <th class="button">Role</th>
-                                <th class="button"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                          @for(var i = 1; i <= users.Count; i++){
-                                <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                    
-                                    <th scope="row">@i</th>
-                                    <td>@users[i-1].UserName</td>
-                                    <td>@users[i-1].Email</td>
-                                    <td>@users[i-1].PhoneNumber</td>
-                                    <td>numbers of Orders</td>
-                                    <td>@users[i-1].CreatedDate</td>
-                                    <td>@roles[i-1]</td>
-                                    <td>
-                                        <a href="@Url.Action("Edit","User",new {id = @users[i-1].Id})" class="fas fa-edit"></a>
-                                    </td>
-                                    
+	<div class="container col-10">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="table-wrap">
+					<table class="table myaccordion table-hover" id="accordion">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th class="button">Name</th>
+								<th class="button">Email</th>
+								<th class="button">Phone</th>
+								<th class="button">Orders</th>
+								<th class="button">Start Date</th>
+								<th class="button">Role</th>
+								<th class="button"></th>
+							</tr>
+						</thead>
+						<tbody>
+							@for (var i = 1; i <= users.Count; i++)
+							{
+								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
-                                    @*                       <td>
-                                <i class="fa" aria-hidden="true"></i>
-                                </td>*@
-                                </tr>}
-                            @*<tr>
-                            <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
-                            </td>
-                            </tr>*@
+									<th scope="row">@i</th>
+									<td>@users[i-1].UserName</td>
+									<td>@users[i-1].Email</td>
+									<td>@users[i-1].PhoneNumber</td>
+									<td>numbers of Orders</td>
+									<td>@users[i-1].CreatedDate</td>
+									<td>@roles[i-1]</td>
+									<td>
+										<a onclick="showContent('@Url.Action("Edit","User",null,Context.Request.Scheme)','Im here','@users[i-1].Id')" class="btn btn-outline-info">
+											<i class="fas fa-edit"></i>
+										</a>
+									</td>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+
+									@*                       <td>
+								<i class="fa" aria-hidden="true"></i>
+								</td>*@
+								</tr>
+							}
+							@*<tr>
+							<td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
+							</td>
+							</tr>*@
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <partial name="Create.cshtml" />
