@@ -102,6 +102,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(obj);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null || id == "")
@@ -117,7 +118,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
                 obj.Role = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
                 ViewData["userRoles"] = roles;
-                return View(obj);
+                return PartialView(obj);
             }
         }
 
@@ -126,44 +127,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
-
-                //need to update adress
-
-                //for (var i = 35; i <= 44; i++)
-                //{
-                //    var tempDetail = _sizeDetailCRUD.GetProductSizeAsync(obj.ProductId, i).Result;
-                //    int amount = Int32.Parse(obj.TestSizeAmount[i - 35]);
-                //    var newDetail = new SizeDetail() { Amount = amount, Size = i, ProductId = obj.ProductId };
-
-                //    if (tempDetail != null)
-                //    {
-                //        if (amount > 0 && amount != tempDetail.Amount)
-                //        {
-                //            _sizeDetailCRUD.Update(newDetail);
-
-                //        }
-                //        else if (amount == 0 || !obj.TestSize.Contains(i.ToString()))
-                //        {
-                //            _sizeDetailCRUD.Remove(newDetail);
-                //        }
-
-                //    }
-                //    else
-                //    {
-                //        if (amount > 0)
-                //            _sizeDetailCRUD.CreateAsync(new SizeDetail()
-                //            {
-                //                Size = i,
-                //                Amount = amount,
-                //                ProductId = obj.ProductId
-                //            });
-                //    }
-
-
-                //}
                 _applicationuserCRUD.Update(obj);
-
 
                 return RedirectToAction("Index");
             }

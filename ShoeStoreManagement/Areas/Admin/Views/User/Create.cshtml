@@ -12,9 +12,9 @@
 
 <!-- Modal -->
 <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<form method="post" action="Admin/User/Create" class="modal-content w-auto px-3 py-3">
-			<div class="modal-content w-auto px-3 py-3">
+	<div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+		<form method="post" action="Admin/User/Create" class="modal-content w-auto px-3 py-3 border-0">
+			<div class="modal-content border-0 w-auto px-3 py-3">
 				<div class="modal-header">
 					<h5 class="modal-title" id="ModalLabel">Add new User</h5>
 				</div>
@@ -37,7 +37,6 @@
 						<div class="col-6 d-grid gap-2">
 							<div class="form-floating">
 								<select class="form-select" asp-for="Role" asp-items="@(new SelectList(allRoles, "Name", "Name"))" id="floatingSelect" aria-label="Floating label select example">
-									<option selected>--</option>
 								</select>
 								<label for="floatingSelect">Role</label>
 							</div>
@@ -45,7 +44,10 @@
 								<input type="tel" asp-for="PhoneNumber" class="form-control" id="floatingInput" placeholder="094xxxxx73">
 								<label for="floatingInput">Phone</label>
 							</div>
-
+							<div class="form-floating">
+								<input type="tel" asp-for="Birthday" class="form-control" id="floatingInput" placeholder="02/02/2002">
+								<label for="floatingInput">Birthday</label>
+							</div>
 							<div class="form-floating">
 								<input type="tel" asp-for="SingleAddress" class="form-control" id="floatingInput" placeholder="address...">
 								<label for="floatingInput">Address</label>
