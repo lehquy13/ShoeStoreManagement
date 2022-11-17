@@ -30,13 +30,11 @@
 }
 
 <!-- Modal -->
-<div class="modal fade" id="CModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
 		<form method="post" action="Admin/Product/Create" class="modal-content w-auto px-3 py-3">
-			<div class="modal-header">
+			<div class="row">
 				<h5 class="modal-title" id="ModalLabel">Choose sizes</h5>
 			</div>
-			<div class="modal-body p-0 mt-2" style="width: 500px">
+			<div class="row p-0 mt-2" style="width: 500px">
 				<div class="row">
 					<div class="col-6">
 						<div class="form-group">
@@ -68,20 +66,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="row mt-2">
-				</div>
-				<div class="row d-flex justify-content-start mt-3 gx-1">
-
-				</div>
+				
+				
 			</div>
-			<div class="modal-footer d-flex justify-content-between">
+			<div class="row d-flex justify-content-between">
 				<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
 				<button type="submit" class="btn btn-primary" onclick="location.href = '@(Url.Action("Create", "Product"))'">Submit</button>
 			</div>
 			@Html.AntiForgeryToken()
 		</form>
-	</div>
-</div>
 
 @section Scripts {
 	@{
