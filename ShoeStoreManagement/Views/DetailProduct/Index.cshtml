@@ -31,7 +31,7 @@
 			<div>
 				<span class="h6">Amount</span>
 				<div class="form-floating">
-					<input type="number" asp-for="@Model.AmountSelected" class="form-control" id="floatingInput" placeholder="Annanas A">
+					<input type="number" asp-for="@Model.AmountSelected" min="1" max="@Model.Amount" class="form-control" id="floatingInput" placeholder="Annanas A">
 					@*<span asp-validation-for="currOrder.OrderVoucher.Code" class="text-danger"></span>*@
 				</div>
 				@*<component type="typeof(Counter)" render-mode="ServerPrerendered" param-max=@Model.Amount />*@
@@ -54,9 +54,16 @@
 							test = item.Amount;
 						}
 					}
+
+					var active = "";
+
+					if (Model.Size == i) {
+						active = "active";
+					}
+
 					<form method="post" action="DetailProduct/LoadAmountOfSize" style="width:42px; height:42px; display:inline-block">
-						<input type="hidden" value="@i" name="size"/>
-						<button class="btn btn-secondary" style="width:42px; height:42px;" @disabled>
+						<input type="hidden" value="@i" name="size" />
+						<button id="hi" class="btn btn-secondary @active" style="width:42px; height:42px;" @disabled>
 							@i
 						</button>
 					</form>

@@ -34,14 +34,14 @@
 		<div>
 			<div class="d-flex flex-column">
 				<span class="h6 mb-2">Voucher</span>
-				<div class="d-flex">
+				@*<div class="d-flex">
 					<div class="form-floating flex-fill">
 						<input type="text" asp-for="currOrder.OrderVoucher.Code" class="form-control" id="floatingInput" placeholder="Annanas A">
 						<label for="floatingInput">Enter Voucher Code</label>
 						<span asp-validation-for="currOrder.OrderVoucher.Code" class="text-danger"></span>
 					</div>
 					<button class="btn btn-primary icon-search">Check</button>
-				</div>
+				</div>*@
 			</div>
 			<div class="d-flex flex-column mt-5">
 				<span class="h6 mb-2">Address</span>
@@ -66,10 +66,10 @@
 				<span class="caption">Delivery Fee</span>
 				<span class="caption">$@Model.currOrder.DeliveryCharge</span>
 			</div>
-			<div class="d-flex justify-content-between caption text-primary mt-2">
+			@*<div class="d-flex justify-content-between caption text-primary mt-2">
 				<span>Voucher</span>
 				<span>-$@Model.currOrder.OrderVoucher.Value</span>
-			</div>
+			</div>*@
 			<div class="d-flex justify-content-between h2 text-dark mt-2">
 				<span>Total</span>
 				<span>$@Model.currOrder.OrderTotalPrice</span>

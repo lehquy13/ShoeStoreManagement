@@ -57,8 +57,8 @@ namespace ShoeStoreManagement.Controllers
             ViewData["vouchers"] = vouchers;
             ViewData["deliveryMethods"] = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
 
-
             // create fake order
+            _orderVM.currOrder = new Order();
             OrderDetail orderDetail = new OrderDetail();
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -78,6 +78,7 @@ namespace ShoeStoreManagement.Controllers
             }
 
             _orderVM.currOrder.UserId = userId;
+            _orderVM.currOrder.OrderVoucherId = "";
             _orderVM.currOrder.OrderDetails.Clear();
 
             foreach(var item in list)
