@@ -12,6 +12,7 @@ namespace ShoeStoreManagement.Migrations
 
         const string ADMIN_USER_GUID = "0bf7bc9c-1804-4212-8220-5722f65994c3";
         const string ADMIN_ROLE_GUID = "9892149b-ebfd-420d-8864-c63b88121dec";
+        const string PASSENGER_ROLE_GUID = "9892149b-ebfd-420d-8864-c63b88121dec1";
 
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,6 +43,8 @@ namespace ShoeStoreManagement.Migrations
             migrationBuilder.Sql(sb.ToString());
 
             migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{ADMIN_ROLE_GUID}','Admin','ADMIN')");
+            migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{ADMIN_USER_GUID}','Customer','CUSTOMER')");
+            migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{PASSENGER_ROLE_GUID}','Passenger','PASSENGER')");
 
             migrationBuilder.Sql($"INSERT INTO AspNetUserRoles (UserId, RoleId) VALUES ('{ADMIN_USER_GUID}','{ADMIN_ROLE_GUID}')");
 
