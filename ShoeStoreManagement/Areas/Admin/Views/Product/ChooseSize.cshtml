@@ -21,8 +21,10 @@
 	//Get the amount of available sizes from chosen product
 	foreach (SizeDetail i in chosenProductSizes)
 	{
-		foreach(SizeDetail y in sizeList) {
-			if (i.Size == y.Size) {
+		foreach (SizeDetail y in sizeList)
+		{
+			if (i.Size == y.Size)
+			{
 				y.Amount = i.Amount;
 			}
 		}
@@ -30,54 +32,76 @@
 }
 
 <!-- Modal -->
-		<form method="post" action="Admin/Product/Create" class="modal-content w-auto px-3 py-3">
-			<div class="row">
-				<h5 class="modal-title" id="ModalLabel">Choose sizes</h5>
-			</div>
-			<div class="row p-0 mt-2" style="width: 500px">
-				<div class="row">
-					<div class="col-6">
-						<div class="form-group">
-							@for(int i = 0; i < 5; i++)
+<form method="post" action="Admin/Product/ToCart" class="modal-content w-auto px-3 py-3">
+	<div class="row">
+		<h5 class="modal-title" id="ModalLabel">Choose sizes</h5>
+	</div>
+	<div class="row p-0 mt-2" style="width: 500px">
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<input asp-for="@Model.ProductId" hidden />
+					@for (int i = 0; i < 5; i++)
+					{
+						<div class="form-check mt-2">
+							@if (sizeList[i].Amount == 0)
 							{
-								<div class="form-check mt-2">
-									<input class="form-check-input" type="checkbox" value="@sizeList[i].Size" name="TestSize" id="checkbox_@sizeList[i].Size" checked="@sizeList[i].IsChecked" />
-									<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
-										@sizeList[i].Size
-										<input type="number" placeholder="@sizeList[i].Amount" name="TestSizeAmount" id="input_@sizeList[i].Amount" class="form-control ms-2" />
-									</label>
-								</div>
+								<input class="form-check-input" type="checkbox" value="@sizeList[i].Size" name="TestSize" id="checkbox_@sizeList[i].Size" disabled="disabled" />
+								<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
+									@sizeList[i].Size
+									<input type="number" placeholder="@sizeList[i].Amount" name="TestSizeAmount" id="input_@sizeList[i].Amount" class="form-control ms-2" disabled />
+								</label>
+							}
+							@if (sizeList[i].Amount != 0)
+							{
+								<input class="form-check-input" type="checkbox" name="TestSize" value="@sizeList[i].Size" />
+								<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
+									@sizeList[i].Size
+									<input type="number" name="TestSizeAmount" placeholder="@sizeList[i].Amount" class="form-control ms-2" />
+								</label>
 							}
 						</div>
-					</div>
-
-					<div class="col-6">
-						<div class="form-group">
-							@*@for (int i = 5; i < 10; i++)
-							{
-								<div class="form-check mt-2">
-									<input class="form-check-input" type="checkbox" value="@sizeList[i].Size" name="TestSize" id="checkbox_@sizeList[i].Size" checked="@sizeList[i].IsChecked" />
-									<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
-										@sizeList[i].Size
-										<input type="number" placeholder="@sizeList[i].Amount" name="TestSizeAmount" id="input_@sizeList[i].Amount" class="form-control ms-2" />
-									</label>
-								</div>
-							}*@
-						</div>
-					</div>
+					}
 				</div>
-				
-				
 			</div>
-			<div class="row d-flex justify-content-between">
-				<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-				<button type="submit" class="btn btn-primary" onclick="location.href = '@(Url.Action("Create", "Product"))'">Submit</button>
+
+			<div class="col-6">
+				<div class="form-group">
+					@for (int i = 5; i < 10; i++)
+					{
+						<div class="form-check mt-2">
+							@if (sizeList[i].Amount == 0)
+							{
+								<input class="form-check-input" type="checkbox" value="@sizeList[i].Size" name="TestSize" id="checkbox_@sizeList[i].Size" disabled="disabled" />
+								<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
+									@sizeList[i].Size
+									<input type="number" placeholder="@sizeList[i].Amount" name="TestSizeAmount" id="input_@sizeList[i].Amount" class="form-control ms-2" disabled />
+								</label>
+							}
+							@if (sizeList[i].Amount != 0)
+							{
+								<input class="form-check-input" type="checkbox" name="TestSize" id="checkbox_@sizeList[i].Size" value="@sizeList[i].Size" />
+								<label class="form-check-label ml-5 d-flex align-items-center" for="@sizeList[i].Size">
+									@sizeList[i].Size
+									<input type="number" name="TestSizeAmount" placeholder="@sizeList[i].Amount" class="form-control ms-2" />
+								</label>
+							}
+						</div>
+					}
+				</div>
 			</div>
-			@Html.AntiForgeryToken()
-		</form>
+		</div>
+	</div>
+
+	<div class="row d-flex justify-content-between">
+		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+	@Html.AntiForgeryToken()
+</form>
 
 @section Scripts {
 	@{
-			<partial name="./_ValidationScriptsPartial"></partial>
+		<partial name="./_ValidationScriptsPartial"></partial>
 	}
 	}

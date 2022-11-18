@@ -70,8 +70,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     _orderVM.allOrders.Add(o);
                 }
 
-                i.Role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
-                if (i.Role == "Customer")
+                var role = _usermanager.GetRolesAsync(i).Result.ToList();
+                if (role != null && role.Count!=0 && role[0] == "Customer")
                 {
                     _orderVM.customers.Add(i);
                 }

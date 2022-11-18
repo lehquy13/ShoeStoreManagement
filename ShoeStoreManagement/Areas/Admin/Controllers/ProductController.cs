@@ -16,6 +16,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class ProductController : Controller
     {
+        private const int minusIndex = 35;
+
         private readonly ILogger<ProductController> _logger;
         private readonly IProductCRUD _productCRUD;
         private readonly ICartCRUD _cartCRUD;
@@ -40,7 +42,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _sizeDetailCRUD = sizeDetailCRUD;
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
-
+            _usermanager = usermanager;
             Init();
         }
 
@@ -66,16 +68,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
-        public IActionResult ToCart(string id)
+        public IActionResult ToCart(Product product)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             Cart? cart = _cartCRUD.GetAsync(userId).Result;
-
-            if (id == null)
-            {
-                return NotFound();
-            }
 
             if (cart == null)
             {
@@ -84,42 +81,67 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _cartCRUD.CreateAsync(cart);
             }
 
-            Product? product = _productCRUD.GetByIdAsync(id).Result;
-
             if (product == null)
             {
                 return NotFound();
             }
 
-            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(id, cart.CartId).Result;
+            List<SizeDetail> sizes = _sizeDetailCRUD.GetAllByIdAsync(product.ProductId).Result;
 
-            if (cartDetail != null)
+            List<string> checkedSize = product.TestSize; // Store checked sizes
+            List<string> checkedSizeAmount = new List<string>(); // Store amount of checked sizes
+
+            foreach(string i in product.TestSizeAmount) // Remove null indexes
             {
-                if (cartDetail.Amount < product.Amount)
+                if (!string.IsNullOrEmpty(i))
+                    checkedSizeAmount.Add(i);
+            }
+
+
+            // Handle changes in size's amount
+            for (int i = 0; i < checkedSize.Count; i++)
+            {
+                SizeDetail sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(product.ProductId, int.Parse(checkedSize[i])).Result;
+
+                if (sizeDetail == null) return NotFound();
+
+                sizeDetail.Amount -= int.Parse(checkedSizeAmount[i]);
+                _sizeDetailCRUD.Update(sizeDetail);
+
+                CartDetail? cartDetail = null;
+
+                foreach (CartDetail cd in _cartDetailCRUD.GetAllAsync(cart.CartId).Result) // Find Cart Detail of Chosen Product with the Size we need
                 {
-                    cartDetail.Amount++;
+                    if (cd.ProductId.Equals(product.ProductId) && cd.Size == sizeDetail.Size)
+                        cartDetail = cd;
+                }
+
+                if (cartDetail != null)
+                {
+                    cartDetail.Amount += int.Parse(checkedSizeAmount[i]);
                     cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
                     _cartDetailCRUD.Update(cartDetail);
                 }
-            }
-            else
-            {
-                cartDetail = new CartDetail()
+                else
                 {
-                    CartId = cart.CartId,
-                    ProductId = id,
-                    Amount = 1,
-                    CartDetailTotalSum = product.ProductUnitPrice,
-                };
+                    CartDetail newCartDetail = new CartDetail()
+                    {
+                        CartId = cart.CartId,
+                        ProductId = product.ProductId,
+                        Amount = int.Parse(checkedSizeAmount[i]),
+                        Size = int.Parse(checkedSize[i]),
+                    };
+                    newCartDetail.CartDetailTotalSum = newCartDetail.Amount * product.ProductUnitPrice;
 
-                _cartDetailCRUD.CreateAsync(cartDetail);
+                    _cartDetailCRUD.CreateAsync(newCartDetail);
+                }
             }
 
-            return PartialView();
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult ChooseSize(string id)
+        public IActionResult ChooseSize(string id) //This is Product's ID 
         {
             Product? product = _productCRUD.GetByIdAsync(id).Result;
 

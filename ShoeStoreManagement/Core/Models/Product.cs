@@ -21,6 +21,12 @@ namespace ShoeStoreManagement.Core.Models
         List<SizeDetail> sizes = new List<SizeDetail>() { };
         int amount = 0;
 
+        [NotMapped]
+        public List<string> CheckedSize { get; set; } = new List<string>();
+
+        [NotMapped]
+        public List<int?> CheckedSizeAmount { get; set; } = new List<int?>(10) { null, null, null, null, null, null, null, null, null, null };
+
         [Key]
         public string ProductId
         {
@@ -90,7 +96,8 @@ namespace ShoeStoreManagement.Core.Models
         [NotMapped]
         public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();
 
-        [Range(1, 99999)]
+        
+        [Range(0, 99999)]
         public int Amount
         {
             get { return amount; }

@@ -59,22 +59,25 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             foreach (ApplicationUser i in applicationUsers)
             {
-                string role = _usermanager.GetRolesAsync(i).Result.ToList()[0];
-                //string role = "a";
-                if (!string.IsNullOrEmpty(role))
+				var role = _usermanager.GetRolesAsync(i).Result.ToList();
+                if (role != null && role.Count != 0 )
                 {
-                    if (!filter.Equals("All"))
+                    //string role = "a";
+                    if (!string.IsNullOrEmpty(role[0]))
                     {
-                        if (role.Equals(filter))
+                        if (!filter.Equals("All"))
+                        {
+                            if (role.Equals(filter))
+                            {
+                                users.Add(i);
+                                applicationuserRoles.Add(role[0]);
+                            }
+                        }
+                        else
                         {
                             users.Add(i);
-                            applicationuserRoles.Add(role);
+                            applicationuserRoles.Add(role[0]);
                         }
-                    }
-                    else
-                    {
-                        users.Add(i);
-                        applicationuserRoles.Add(role);
                     }
                 }
             }

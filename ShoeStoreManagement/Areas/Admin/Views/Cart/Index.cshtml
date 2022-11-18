@@ -27,7 +27,8 @@
 			{
 				amount += item.Amount;
 				price += item.CartDetailTotalSum;
-				<component type="typeof(CartItemCard)" render-mode="ServerPrerendered" param-cartItem=@item param-cartItemId=@item.CartDetailId />
+				<component type="typeof(CartItemCard)" render-mode="ServerPrerendered" param-cartItem=@item param-cartItemId=@item.CartDetailId 
+				 />
 			}
 		}
 	</section>
