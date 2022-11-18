@@ -40,5 +40,8 @@ namespace ShoeStoreManagement.Core.Models
 
         [NotMapped]
         public bool IsChecked { get; set; } = false;
+
+        [NotMapped]
+        public int? SelectedAmount { get; set; } = null;
     }
 }

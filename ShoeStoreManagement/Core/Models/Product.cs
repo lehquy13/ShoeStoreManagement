@@ -21,6 +21,12 @@ namespace ShoeStoreManagement.Core.Models
         List<SizeDetail> sizes = new List<SizeDetail>() { };
         int amount = 0;
 
+        [NotMapped]
+        public List<bool> CheckedSize = new List<bool>(10) { false, false, false, false, false, false, false, false, false, false };
+
+        [NotMapped]
+        public List<int?> CheckedSizeAmount = new List<int?>(10) { null, null, null, null, null, null, null, null, null, null };
+
         [Key]
         public string ProductId
         {
