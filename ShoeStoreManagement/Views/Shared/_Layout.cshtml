@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using ShoeStoreManagement.Areas.Identity.Data
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -28,15 +34,20 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<partial name="_HeaderNavbar" />
-				
+
 			</div>
 			<div class="d-flex gap-3 align-items-center">
-				<a class="nav-icon-link" asp-controller="Notification" asp-action="Index">
-					<i class="fa-regular fa-bell nav-icon"></i>
-				</a>
-				<a class="nav-icon-link" asp-controller="Cart" asp-action="Index">
-					<i class="fa-solid fa-cart-shopping nav-icon"></i>
-				</a>
+
+				@if (SignInManager.IsSignedIn(User))
+				{
+					<a class="nav-icon-link" asp-controller="Notification" asp-action="Index">
+						<i class="fa-regular fa-bell nav-icon"></i>
+					</a>
+					<a class="nav-icon-link" asp-controller="Cart" asp-action="Index">
+						<i class="fa-solid fa-cart-shopping nav-icon"></i>
+					</a>
+				}
+
 				<div class="dropdown">
 					<button class="nav-icon-link fa-regular fa-circle-user nav-icon border-0 p-0 m-0" type="button" id="drop" data-bs-toggle="dropdown" aria-expanded="false">
 					</button>
@@ -49,11 +60,11 @@
 
 	</header>
 	<div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()	
+		<main role="main" class="pb-3">
+			@RenderBody()
 			<base href="~/" />
 			<script src="_framework/blazor.server.js"></script>
-        </main>
+		</main>
 	</div>
 
 	@* <footer class="border-top">
