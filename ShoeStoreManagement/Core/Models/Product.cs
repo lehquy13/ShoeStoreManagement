@@ -22,7 +22,7 @@ namespace ShoeStoreManagement.Core.Models
         int amount = 0;
 
         [NotMapped]
-        public List<bool> CheckedSize = new List<bool>(10) { false, false, false, false, false, false, false, false, false, false };
+        public List<string> CheckedSize { get; set; } = new List<string>(10);
 
         [NotMapped]
         public List<int?> CheckedSizeAmount = new List<int?>(10) { null, null, null, null, null, null, null, null, null, null };
