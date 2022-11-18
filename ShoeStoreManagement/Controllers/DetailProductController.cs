@@ -90,11 +90,24 @@ namespace ShoeStoreManagement.Controllers
 
             if (cartDetail != null)
             {
-                if (cartDetail.Size == productVM.Size && cartDetail.Amount < product.Amount)
+                if (cartDetail.Size == _productVM.Size && cartDetail.Amount < product.Amount)
                 {
                     cartDetail.Amount += productVM.AmountSelected;
-                    cartDetail.CartDetailTotalSum += cartDetail.Amount * product.ProductUnitPrice;
+                    cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
                     _cartDetailCRUD.Update(cartDetail);
+                }
+                else if (cartDetail.Size != _productVM.Size)
+                {
+                    cartDetail = new CartDetail()
+                    {
+                        CartId = cart.CartId,
+                        ProductId = _productVM.ProductId,
+                        Amount = productVM.AmountSelected,
+                        Size = _productVM.Size,
+                        CartDetailTotalSum = product.ProductUnitPrice * productVM.AmountSelected,
+                    };
+
+                    _cartDetailCRUD.CreateAsync(cartDetail);
                 }
             }
             else
@@ -104,12 +117,21 @@ namespace ShoeStoreManagement.Controllers
                     CartId = cart.CartId,
                     ProductId = _productVM.ProductId,
                     Amount = productVM.AmountSelected,
-                    Size = productVM.Size,
-                    CartDetailTotalSum = product.ProductUnitPrice,
+                    Size = _productVM.Size,
+                    CartDetailTotalSum = product.ProductUnitPrice * productVM.AmountSelected,
                 };
 
                 _cartDetailCRUD.CreateAsync(cartDetail);
             }
+
+            if (cartDetail.IsChecked)
+            {
+                cart.CartTotalAmountSelected += productVM.AmountSelected;
+                cart.CartTotalPrice = cartDetail.Amount * product.ProductUnitPrice;
+            }
+
+            cart.CartTotalAmount += productVM.AmountSelected;
+
 
             return Redirect("Index/" + _productVM.ProductId);
         }

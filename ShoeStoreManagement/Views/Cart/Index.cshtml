@@ -8,40 +8,30 @@
 @{
 	var disabled = "disabled";
 
-	foreach(var i in Model.CartDetails ) {
-		if (i.IsChecked == true) {
+	List<string> ids = new List<string>();
+
+	foreach (var i in Model.CartDetails)
+	{
+		ids.Add(i.CartDetailId);
+
+		if (i.IsChecked == true)
+		{
 			disabled = "";
+
 			break;
 		}
 	}
-
-	var amount = 0;
-	float price = 0;
 }
 
 <div class="row justify-content-sm-between">
-	<section class="col-8 col-sm-7">
-		@if (Model.CartDetails.Count > 0)
-		{
-			@foreach (var item in Model.CartDetails)
-			{
-				amount += item.Amount;
-				price += item.CartDetailTotalSum;
-				<component type="typeof(CartItemCard)" render-mode="ServerPrerendered" param-cartItem=@item param-cartItemId=@item.CartDetailId />
-			}
-		}
-	</section>
+	<component type="typeof(CartCompo)" render-mode="ServerPrerendered" param-cart=@Model param-cartId=@Model.CartId param-cartDetailIds=@ids
+			   param-url1=@Url.Action("UpdateAmount","Cart",null,Context.Request.Scheme)
+			   param-url2=@Url.Action("UpdateChecked","Cart",null,Context.Request.Scheme)
+			   param-url3=@Url.Action("Delete","Cart",null,Context.Request.Scheme)
+			   param-url3=@Url.Action("MakeAnOrder","Order",null,Context.Request.Scheme)
+			   param-disabled=@disabled>
+	</component>
 
-	<section class="col-4 padding-cart" aria-label="price">
-		<div class="d-flex justify-content-between">
-			<h6>Items amount</h6>
-			<h6>@amount</h6>
-		</div>
-		<div class="d-flex justify-content-between">
-			<h5 class="fw-bold mt-3">Total price</h5>
-			<h5 class="fw-bold mt-3">$@price</h5>
-		</div>
-		<button class="btn btn-primary mt-5 w-100" onclick="location.href = '@(Url.Action("MakeAnOrder", "Order"))'" @disabled >Make an order</button>
-	</section>
+	<button class="btn btn-primary mt-5 w-100" onclick="location.href = '@(Url.Action("MakeAnOrder", "Order"))'" @disabled >Make an order</button>
 </div>
 

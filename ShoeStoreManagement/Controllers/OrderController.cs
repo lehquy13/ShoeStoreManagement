@@ -90,6 +90,7 @@ namespace ShoeStoreManagement.Controllers
                     ProductId = item.ProductId,
                 };
 
+                _orderVM.totalAmount += item.Amount;
                 _orderVM.currOrder.OrderDetails.Add(orderDetail);
                 _orderVM.currOrder.OrderTotalPayment += (int)item.CartDetailTotalSum;
             }

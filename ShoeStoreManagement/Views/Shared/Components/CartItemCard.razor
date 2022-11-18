@@ -1,91 +1,119 @@
 ﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core;
 @using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.JSInterop
 
 @inject NavigationManager UriHelper
+@inject IJSRuntime js
 
 <div class="form-check mt-2">
-    <input type="checkbox" class="form-check-input" checked=@cartItem.IsChecked @onchange="UpdateChecked"/>
-    <div class="card d-flex flex-row col border-1 border-color p-0">
-        <img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
-        <div class="card-body d-flex flex-column justify-content-between">
-            <div>
-                <div class="d-flex justify-content-between">
-                    <p class="h3">@cartItem.Product.ProductName</p>
-                    <p class="h6">x @cartItem.Amount</p>
-                </div>
-                <div class="d-flex justify-content-between align-items-end mb-1">
-                    <p class="h5">@cartItem.Product.Color</p>
-                    <p class="h2 text-dark">$@cartItem.CartDetailTotalSum</p>
-                </div>
-            </div>
-            <div class="d-flex justify-content-between align-items-end">
-                <div>
-                    <p class="m-0 caption text-primary">$@cartItem.Product.ProductUnitPrice</p>
-                    <Counter count="@cartItem.Amount" max=@cartItem.Product.Amount OnGetAmount="OK" />
-                </div>
-                <a class="icon-delete btn-icon m-0 text-primary" @onclick="DeleteCartItem"></a>
-            </div>
-        </div>
-    </div>
+	<input type="checkbox" class="form-check-input" checked=@cartItem.IsChecked @onchange="UpdateChecked" />
+	<div class="card d-flex flex-row col border-1 border-color p-0">
+		<img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
+		<div class="card-body d-flex flex-column justify-content-between">
+			<div>
+				<div class="d-flex justify-content-between">
+					<p class="h3">@cartItem.Product.ProductName</p>
+					<p class="h6">x @cartItem.Amount</p>
+				</div>
+				<div class="d-flex justify-content-between align-items-end mb-1">
+					<div>
+						<span class="h5">@cartItem.Product.Color - </span>
+						<span class="h6">@cartItem.Size</span>
+					</div>
+					<p class="h2 text-dark">$@cartItem.CartDetailTotalSum</p>
+				</div>
+			</div>
+			<div class="d-flex justify-content-between align-items-end">
+				<div>
+					<p class="m-0 caption text-primary">$@cartItem.Product.ProductUnitPrice</p>
+					<Counter count="@cartItem.Amount" max=@cartItem.Product.Amount OnGetAmount="OK" />
+				</div>
+				<a class="icon-delete btn-icon m-0 text-primary" @onclick="DeleteCartItem"></a>
+			</div>
+		</div>
+	</div>
 </div>
 
 @code {
-  [Parameter]
-  public string cartItemId { get; set; } = null!;
+	[Parameter]
+	public string cartItemId { get; set; } = null!;
 
-  [Parameter]
-  public CartDetail cartItem { get; set; } = null!;
+	[Parameter]
+	public CartDetail cartItem { get; set; } = null!;
 
-  protected void OK(int count)
-  {
-    cartItem.Amount = count;
-    cartItem.CartDetailTotalSum = cartItem.Product.ProductUnitPrice * count;
-    StateHasChanged();
+	[Parameter]
+	public string url1 { get; set; } = null!;
 
-    UpdateState(count, cartItem.CartDetailTotalSum);
-  }
+	[Parameter]
+	public string url2 { get; set; } = null!;
 
-  void UpdateState(int count, float sum)
-  {
-    if (UriHelper.Uri.Contains("Admin"))
-    {
-      UriHelper.NavigateTo("Admin/Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
-    }
-    else
-    {
-      UriHelper.NavigateTo("Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
-    }
-  }
+	[Parameter]
+	public string url3 { get; set; } = null!;
 
-  void DeleteCartItem()
-  {
-    if (UriHelper.Uri.Contains("Admin"))
-    {
-      UriHelper.NavigateTo("Admin/Cart/Delete/" + cartItemId, true);
-    }
-    else
-    {
-      UriHelper.NavigateTo("Cart/Delete/" + cartItemId, true);
-    }
-  }
 
-  void UpdateChecked()
-  {
-    if (!cartItem.IsChecked)
-    {
-      cartItem.IsChecked = true;
-    }
-    else
-    {
-      cartItem.IsChecked = false;
-    }
+	[Parameter]
+	public EventCallback<MyArgs> IsChanged { get; set; }
 
-    if (UriHelper.Uri.Contains("Admin"))
-    {
-      UriHelper.NavigateTo("Admin/Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
-    }
-    else
-      UriHelper.NavigateTo("Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
-    }
-  }
+	protected async void OK(int count)
+	{
+		var oldAmount = cartItem.Amount;
+		var oldPrice = cartItem.CartDetailTotalSum;
+
+		cartItem.Amount = count;
+		cartItem.CartDetailTotalSum = cartItem.Product.ProductUnitPrice * count;
+		StateHasChanged();
+
+		await js.InvokeVoidAsync("updateAmount", new object[] { url1, cartItemId, count, cartItem.CartDetailTotalSum });
+		await IsChanged.InvokeAsync(new MyArgs() { myInt = count, myOldInt = oldAmount, myBool = cartItem.IsChecked, myFloat = cartItem.CartDetailTotalSum, myOldFloat = oldPrice });
+	}
+
+	void UpdateState(int count, float sum)
+	{
+		if (UriHelper.Uri.Contains("Admin"))
+		{
+			UriHelper.NavigateTo("Admin/Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
+		}
+		else
+		{
+			UriHelper.NavigateTo("Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
+		}
+	}
+
+	protected async void DeleteCartItem()
+	{
+		//if (UriHelper.Uri.Contains("Admin"))
+		//{
+		//	UriHelper.NavigateTo("Admin/Cart/Delete/" + cartItemId, true);
+		//}
+		//else
+		//{
+		//	UriHelper.NavigateTo("Cart/Delete/" + cartItemId, true);
+		//}
+		await js.InvokeVoidAsync("deleteCartItem", new object[] { url3, cartItemId });
+		await IsChanged.InvokeAsync(new MyArgs() { myInt = cartItem.Amount, myBool = cartItem.IsChecked, myFloat = cartItem.CartDetailTotalSum, isDeleted = true, myId = cartItemId });
+	}
+
+	protected async void UpdateChecked()
+	{
+		if (!cartItem.IsChecked)
+		{
+			cartItem.IsChecked = true;
+		}
+		else
+		{
+			cartItem.IsChecked = false;
+		}
+
+		await js.InvokeVoidAsync("updateChecked", new object[] { url2, cartItemId, cartItem.IsChecked });
+		await IsChanged.InvokeAsync(new MyArgs() { myInt = cartItem.Amount, myBool = cartItem.IsChecked, myFloat = cartItem.CartDetailTotalSum, isUpdateChecked = true });
+
+		//if (UriHelper.Uri.Contains("Admin"))
+		//{
+		//  UriHelper.NavigateTo("Admin/Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
+		//}
+		//else
+		//  UriHelper.NavigateTo("Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
+		//}
+	}
 }
