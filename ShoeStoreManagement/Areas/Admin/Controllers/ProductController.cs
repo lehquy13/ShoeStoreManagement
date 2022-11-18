@@ -42,7 +42,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _sizeDetailCRUD = sizeDetailCRUD;
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
-
+            _usermanager = usermanager;
             Init();
         }
 
@@ -88,52 +88,52 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             List<SizeDetail> sizes = _sizeDetailCRUD.GetAllByIdAsync(product.ProductId).Result;
 
-            foreach (SizeDetail i in sizes)
-            {
-                var a = product.CheckedSize;
-                var b = product.CheckedSizeAmount;
-                // Handle Change Size in Size Detail
-                if (product.CheckedSize[i.Size - minusIndex]) //Size 35 in Index 0 and so on.
-                {
-                    if (product.CheckedSizeAmount[i.Size - minusIndex].HasValue)
-                    {
-                        i.Amount -= product.CheckedSizeAmount[i.Size - minusIndex].Value;
-                        _sizeDetailCRUD.Update(i);
+            //foreach (SizeDetail i in sizes)
+            //{
+            //    var a = product.CheckedSize;
+            //    var b = product.CheckedSizeAmount;
+            //    // Handle Change Size in Size Detail
+            //    if (product.CheckedSize[i.Size - minusIndex]) //Size 35 in Index 0 and so on.
+            //    {
+            //        if (product.CheckedSizeAmount[i.Size - minusIndex].HasValue)
+            //        {
+            //            i.Amount -= product.CheckedSizeAmount[i.Size - minusIndex].Value;
+            //            _sizeDetailCRUD.Update(i);
 
-                        CartDetail? cartDetail = null;
+            //            CartDetail? cartDetail = null;
 
-                        //Get Cart Detail with suitable size and id
-                        foreach (CartDetail cd in _cartDetailCRUD.GetAllAsync(cart.CartId).Result)
-                        {
-                            if (cd.ProductId.Equals(product.ProductId) && cd.Size == i.Size)
-                                cartDetail = cd;
-                        }
+            //            //Get Cart Detail with suitable size and id
+            //            foreach (CartDetail cd in _cartDetailCRUD.GetAllAsync(cart.CartId).Result)
+            //            {
+            //                if (cd.ProductId.Equals(product.ProductId) && cd.Size == i.Size)
+            //                    cartDetail = cd;
+            //            }
 
-                        if (cartDetail != null)
-                        {
-                            if (cartDetail.Amount < product.Amount)
-                            {
-                                cartDetail.Amount += product.CheckedSizeAmount[i.Size - minusIndex].Value;
-                                cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
-                                _cartDetailCRUD.Update(cartDetail);
-                            }
-                        }
-                        else
-                        {
-                            cartDetail = new CartDetail()
-                            {
-                                CartId = cart.CartId,
-                                ProductId = product.ProductId,
-                                Amount = product.CheckedSizeAmount[i.Size - minusIndex].Value,
-                                Size = i.Size,
-                                CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice,
-                            };
+            //            if (cartDetail != null)
+            //            {
+            //                if (cartDetail.Amount < product.Amount)
+            //                {
+            //                    cartDetail.Amount += product.CheckedSizeAmount[i.Size - minusIndex].Value;
+            //                    cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
+            //                    _cartDetailCRUD.Update(cartDetail);
+            //                }
+            //            }
+            //            else
+            //            {
+            //                cartDetail = new CartDetail()
+            //                {
+            //                    CartId = cart.CartId,
+            //                    ProductId = product.ProductId,
+            //                    Amount = product.CheckedSizeAmount[i.Size - minusIndex].Value,
+            //                    Size = i.Size,
+            //                    CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice,
+            //                };
 
-                            _cartDetailCRUD.CreateAsync(cartDetail);
-                        }
-                    }
-                }
-            }
+            //                _cartDetailCRUD.CreateAsync(cartDetail);
+            //            }
+            //        }
+            //    }
+            //}
 
             return RedirectToAction("Index");
         }
