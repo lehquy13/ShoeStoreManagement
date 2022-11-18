@@ -88,52 +88,54 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             List<SizeDetail> sizes = _sizeDetailCRUD.GetAllByIdAsync(product.ProductId).Result;
 
-            //foreach (SizeDetail i in sizes)
-            //{
-            //    var a = product.CheckedSize;
-            //    var b = product.CheckedSizeAmount;
-            //    // Handle Change Size in Size Detail
-            //    if (product.CheckedSize[i.Size - minusIndex]) //Size 35 in Index 0 and so on.
-            //    {
-            //        if (product.CheckedSizeAmount[i.Size - minusIndex].HasValue)
-            //        {
-            //            i.Amount -= product.CheckedSizeAmount[i.Size - minusIndex].Value;
-            //            _sizeDetailCRUD.Update(i);
+            List<string> checkedSize = product.TestSize; // Store checked sizes
+            List<string> checkedSizeAmount = new List<string>(); // Store amount of checked sizes
 
-            //            CartDetail? cartDetail = null;
+            foreach(string i in product.TestSizeAmount) // Remove null indexes
+            {
+                if (!string.IsNullOrEmpty(i))
+                    checkedSizeAmount.Add(i);
+            }
 
-            //            //Get Cart Detail with suitable size and id
-            //            foreach (CartDetail cd in _cartDetailCRUD.GetAllAsync(cart.CartId).Result)
-            //            {
-            //                if (cd.ProductId.Equals(product.ProductId) && cd.Size == i.Size)
-            //                    cartDetail = cd;
-            //            }
 
-            //            if (cartDetail != null)
-            //            {
-            //                if (cartDetail.Amount < product.Amount)
-            //                {
-            //                    cartDetail.Amount += product.CheckedSizeAmount[i.Size - minusIndex].Value;
-            //                    cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
-            //                    _cartDetailCRUD.Update(cartDetail);
-            //                }
-            //            }
-            //            else
-            //            {
-            //                cartDetail = new CartDetail()
-            //                {
-            //                    CartId = cart.CartId,
-            //                    ProductId = product.ProductId,
-            //                    Amount = product.CheckedSizeAmount[i.Size - minusIndex].Value,
-            //                    Size = i.Size,
-            //                    CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice,
-            //                };
+            // Handle changes in size's amount
+            for (int i = 0; i < checkedSize.Count; i++)
+            {
+                SizeDetail sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(product.ProductId, int.Parse(checkedSize[i])).Result;
 
-            //                _cartDetailCRUD.CreateAsync(cartDetail);
-            //            }
-            //        }
-            //    }
-            //}
+                if (sizeDetail == null) return NotFound();
+
+                sizeDetail.Amount -= int.Parse(checkedSizeAmount[i]);
+                _sizeDetailCRUD.Update(sizeDetail);
+
+                CartDetail? cartDetail = null;
+
+                foreach (CartDetail cd in _cartDetailCRUD.GetAllAsync(cart.CartId).Result) // Find Cart Detail of Chosen Product with the Size we need
+                {
+                    if (cd.ProductId.Equals(product.ProductId) && cd.Size == sizeDetail.Size)
+                        cartDetail = cd;
+                }
+
+                if (cartDetail != null)
+                {
+                    cartDetail.Amount += int.Parse(checkedSizeAmount[i]);
+                    cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
+                    _cartDetailCRUD.Update(cartDetail);
+                }
+                else
+                {
+                    CartDetail newCartDetail = new CartDetail()
+                    {
+                        CartId = cart.CartId,
+                        ProductId = product.ProductId,
+                        Amount = int.Parse(checkedSizeAmount[i]),
+                        Size = int.Parse(checkedSize[i]),
+                    };
+                    newCartDetail.CartDetailTotalSum = newCartDetail.Amount * product.ProductUnitPrice;
+
+                    _cartDetailCRUD.CreateAsync(newCartDetail);
+                }
+            }
 
             return RedirectToAction("Index");
         }
