@@ -1,0 +1,122 @@
+﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.JSInterop;
+
+@inject IJSRuntime js
+@inject NavigationManager UriHelper
+
+<section class="col-8 col-sm-7">
+	@if (cart.CartDetails.Count > 0)
+	{
+		@for (var i = 0; i < cart.CartDetails.Count; i++)
+		{
+			<CartItemCard cartItem=@cart.CartDetails[i]
+				  cartItemId=@cartDetailIds[i]
+				  url1=@url1
+				  url2=@url2
+				  url3=@url3
+				  IsChanged="ReRender" />
+		}
+	}
+</section>
+
+<section class="col-4 padding-cart" aria-label="price">
+	<div class="d-flex justify-content-between">
+		<h6>Items amount</h6>
+		<h6>@cart.CartTotalAmountSelected</h6>
+	</div>
+	<div class="d-flex justify-content-between">
+		<h5 class="fw-bold mt-3">Total price</h5>
+		<h5 class="fw-bold mt-3">$@cart.CartTotalPrice</h5>
+	</div>
+	<button class="btn btn-primary mt-5 w-100 @disabled" id="btn-js" @onclick="MakeAnOrder">Make an order</button>
+</section>
+
+@code {
+	[Parameter]
+	public string url1 { get; set; } = null!;
+
+	[Parameter]
+	public string url2 { get; set; } = null!;
+
+	[Parameter]
+	public string url3 { get; set; } = null!;
+
+	[Parameter]
+	public string disabled { get; set; } = "";
+
+	[Parameter]
+	public string cartId { get; set; } = null!;
+
+	[Parameter]
+	public Cart cart { get; set; } = null!;
+
+	[Parameter]
+	public List<string> cartDetailIds { get; set; } = null!;
+
+	protected void ReRender(MyArgs args)
+	{
+		if (args.myBool)
+		{
+			if (args.isUpdateChecked)
+			{
+				cart.CartTotalAmountSelected += args.myInt;
+				cart.CartTotalPrice += args.myFloat;
+
+				if (cart.CartTotalAmountSelected == args.myInt)
+				{
+					disabled = "";
+				}
+			}
+			else if (args.isDeleted)
+			{
+				cart.CartTotalAmountSelected -= args.myInt;
+				cart.CartTotalPrice -= args.myFloat;
+			}
+			else
+			{
+				cart.CartTotalAmountSelected -= args.myOldInt;
+				cart.CartTotalAmountSelected += args.myInt;
+
+				cart.CartTotalPrice -= args.myOldFloat;
+				cart.CartTotalPrice += args.myFloat;
+			}
+		}
+
+		if (args.myBool == false)
+		{
+			if (args.isUpdateChecked)
+			{
+				cart.CartTotalAmountSelected -= args.myInt;
+				cart.CartTotalPrice -= args.myFloat;
+
+				if (cart.CartTotalAmountSelected == 0)
+				{
+					disabled = "disabled";
+				}
+			}
+		}
+
+		if (args.isDeleted)
+		{
+			for (int i = 0; i < cart.CartDetails.Count(); i++)
+			{
+				if (cartDetailIds[i] == args.myId)
+				{
+					cart.CartDetails.RemoveAt(i);
+					cartDetailIds.RemoveAt(i);
+				}
+			}
+		}
+
+		StateHasChanged();
+	}
+
+	protected async void MakeAnOrder()
+	{
+		//await js.InvokeVoidAsync("call", new object[] { url4 });
+		UriHelper.NavigateTo("Order/MakeAnOrder" , true);
+	}
+}
+
