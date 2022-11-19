@@ -14,6 +14,16 @@ $(function () {
     });
 });
 
+function modifyClass(className, isAdd) {
+
+    if (isAdd) {
+        $("btn-js").addClass(className);
+    }
+    else {
+        $("btn-js").removeClass(className);
+    }
+}
+
 function toCart(url, title, id) {
 
     $.ajax({
@@ -82,9 +92,20 @@ function deleteCartItem(url, id) {
 }
 
 function call(url) {
+    alert(url)
     $.ajax({
         type: "GET",
         url: url,
+        success: function () {
+        }
+    })
+}
+
+function callWithId(url, id) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: {id: id},
         success: function () {
         }
     })

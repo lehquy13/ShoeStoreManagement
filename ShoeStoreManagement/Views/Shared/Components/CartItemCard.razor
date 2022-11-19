@@ -68,28 +68,8 @@
 		await IsChanged.InvokeAsync(new MyArgs() { myInt = count, myOldInt = oldAmount, myBool = cartItem.IsChecked, myFloat = cartItem.CartDetailTotalSum, myOldFloat = oldPrice });
 	}
 
-	void UpdateState(int count, float sum)
-	{
-		if (UriHelper.Uri.Contains("Admin"))
-		{
-			UriHelper.NavigateTo("Admin/Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
-		}
-		else
-		{
-			UriHelper.NavigateTo("Cart/Edit/" + cartItemId + "/" + count + "/" + sum, true);
-		}
-	}
-
 	protected async void DeleteCartItem()
 	{
-		//if (UriHelper.Uri.Contains("Admin"))
-		//{
-		//	UriHelper.NavigateTo("Admin/Cart/Delete/" + cartItemId, true);
-		//}
-		//else
-		//{
-		//	UriHelper.NavigateTo("Cart/Delete/" + cartItemId, true);
-		//}
 		await js.InvokeVoidAsync("deleteCartItem", new object[] { url3, cartItemId });
 		await IsChanged.InvokeAsync(new MyArgs() { myInt = cartItem.Amount, myBool = cartItem.IsChecked, myFloat = cartItem.CartDetailTotalSum, isDeleted = true, myId = cartItemId });
 	}
@@ -107,13 +87,5 @@
 
 		await js.InvokeVoidAsync("updateChecked", new object[] { url2, cartItemId, cartItem.IsChecked });
 		await IsChanged.InvokeAsync(new MyArgs() { myInt = cartItem.Amount, myBool = cartItem.IsChecked, myFloat = cartItem.CartDetailTotalSum, isUpdateChecked = true });
-
-		//if (UriHelper.Uri.Contains("Admin"))
-		//{
-		//  UriHelper.NavigateTo("Admin/Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
-		//}
-		//else
-		//  UriHelper.NavigateTo("Cart/UpdateChecked/" + cartItemId + "/" + cartItem.IsChecked, true);
-		//}
 	}
 }

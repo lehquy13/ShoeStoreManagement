@@ -28,10 +28,9 @@
 			   param-url1=@Url.Action("UpdateAmount","Cart",null,Context.Request.Scheme)
 			   param-url2=@Url.Action("UpdateChecked","Cart",null,Context.Request.Scheme)
 			   param-url3=@Url.Action("Delete","Cart",null,Context.Request.Scheme)
-			   param-url3=@Url.Action("MakeAnOrder","Order",null,Context.Request.Scheme)
 			   param-disabled=@disabled>
 	</component>
 
-	<button class="btn btn-primary mt-5 w-100" onclick="location.href = '@(Url.Action("MakeAnOrder", "Order"))'" @disabled >Make an order</button>
+	@*<button class="btn btn-primary mt-5 w-100" onclick="location.href = '@(Url.Action("MakeAnOrder", "Order"))'" @disabled >Make an order</button>*@
 </div>
 

@@ -39,7 +39,7 @@ namespace ShoeStoreManagement.Controllers
             {
                 order.OrderDetails = _orderDetailCRUD.GetAllAsync(order.OrderId).Result;
 
-                foreach(var detail in order.OrderDetails)
+                foreach (var detail in order.OrderDetails)
                 {
                     detail.Product = _productCRUD.GetByIdAsync(detail.ProductId).Result;
                 }
@@ -57,7 +57,6 @@ namespace ShoeStoreManagement.Controllers
             ViewData["vouchers"] = vouchers;
             ViewData["deliveryMethods"] = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
 
-            // create fake order
             _orderVM.currOrder = new Order();
             OrderDetail orderDetail = new OrderDetail();
 
@@ -65,14 +64,14 @@ namespace ShoeStoreManagement.Controllers
 
             Cart? cart = _cartCRUD.GetAsync(userId).Result;
 
-            if(cart == null)
+            if (cart == null)
             {
                 return NotFound();
             }
 
             var list = _cartDetailCRUD.GetAllCheckedAsync(cart.CartId).Result;
 
-            if(list.Count <= 0)
+            if (list.Count <= 0)
             {
                 return NotFound();
             }
@@ -80,14 +79,19 @@ namespace ShoeStoreManagement.Controllers
             _orderVM.currOrder.UserId = userId;
             _orderVM.currOrder.OrderVoucherId = "";
             _orderVM.currOrder.OrderDetails.Clear();
+            _orderVM.totalAmount = 0;
 
-            foreach(var item in list)
+            foreach (var item in list)
             {
-                orderDetail = new OrderDetail() {
+                Product? product = _productCRUD.GetByIdAsync(item.ProductId).Result;
+
+                orderDetail = new OrderDetail()
+                {
                     Amount = item.Amount,
                     OrderId = _orderVM.currOrder.OrderId,
                     Payment = (int)item.CartDetailTotalSum,
                     ProductId = item.ProductId,
+                    Product = product,
                 };
 
                 _orderVM.totalAmount += item.Amount;
@@ -117,12 +121,13 @@ namespace ShoeStoreManagement.Controllers
         [HttpPost]
         public IActionResult Create(OrderVM? orderVM)
         {
-            if(orderVM.currOrder == null)
+            if (orderVM.currOrder == null)
             {
                 return NotFound();
             }
 
             _orderVM.currOrder.PaymentMethod = orderVM.currOrder.PaymentMethod;
+            _orderVM.currOrder.TotalAmount = orderVM.totalAmount;
 
             _orderCRUD.CreateAsync(_orderVM.currOrder);
 
@@ -133,18 +138,23 @@ namespace ShoeStoreManagement.Controllers
                 return NotFound();
             }
 
-            foreach(var item in _orderVM.currOrder.OrderDetails)
+            foreach (var item in _orderVM.currOrder.OrderDetails)
             {
                 _orderDetailCRUD.CreateAsync(item);
 
-                Product? product = _productCRUD.GetByIdAsync(item.ProductId).Result;
+                //Product? product = _productCRUD.GetByIdAsync(item.ProductId).Result;
                 CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId).Result;
 
-                product.Amount -= item.Amount;
+                item.Product.Amount -= item.Amount;
 
-                if ( cartDetail != null )
+                if (cartDetail != null)
                 {
-                    _productCRUD.Update(product);
+                    if (item.Product.Amount >= 0)
+                    {
+                        item.Product.ProductId = item.ProductId;
+                        _productCRUD.Update(item.Product);
+                    }
+
                     _cartDetailCRUD.Remove(cartDetail);
                 }
             }
