@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Models;
+using ShoeStoreManagement.Core.ViewModels;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;
 
@@ -12,17 +15,23 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class CartController : Controller
     {
+        private const string role = "Customer";
+
         private readonly ICartCRUD _cartCRUD;
 
         private readonly ICartDetailCRUD _cartDetailCRUD;
 
         private readonly IProductCRUD _productCRUD;
+        private readonly IApplicationUserCRUD _applicationUserCRUD;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IProductCRUD productCRUD)
+        public CartController(ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IProductCRUD productCRUD, IApplicationUserCRUD applicationUserCRUD, UserManager<ApplicationUser> userManager)
         {
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
             _productCRUD = productCRUD;
+            _applicationUserCRUD = applicationUserCRUD;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -46,6 +55,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(new Cart());
         }
 
+        public IActionResult CartToOrder()
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            ViewData["pickedUser"] = _applicationUserCRUD.GetByIdAsync(userId).Result;
+            
+            return RedirectToAction("PickCustomer", "Order");
+        }
         //[HttpGet("Cart/Create/{id}")]
         //public IActionResult Create(string? id)
         //{
