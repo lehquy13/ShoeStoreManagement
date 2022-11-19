@@ -7,6 +7,7 @@ using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModels;
 using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
+using System.Data;
 using System.Security.Claims;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
@@ -15,6 +16,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class OrderController : Controller
     {
+        private const string role = "Customer";
         // DI
         private readonly ILogger<OrderController> _logger;
         private readonly IOrderCRUD _orderCRUD;
@@ -156,6 +158,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> PickItem()
         {
+
             _orderVM.pickingQuantity.Clear();
             //ViewData["customer"] = _orderVM.customers;
             var obj = await _productCRUD.GetAllAsync();
@@ -164,7 +167,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(_orderVM);
         }
         [HttpPost]
-        public IActionResult PickCustomer(OrderVM orderVM = null)
+        public IActionResult PickCustomer(OrderVM orderVM)
         {
             _orderVM.pickitems = orderVM.pickitems;
             foreach (string i in orderVM.pickingQuantity)
@@ -189,6 +192,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _orderVM.products.Add(product);
             }
             _customerDialogVM.customers = _orderVM.customers;
+            return View(_customerDialogVM);
+        }
+
+        public IActionResult PickCustomer()
+        {
+            CustomerDialogVM cusVM = new CustomerDialogVM();
+            cusVM.customers = (List<ApplicationUser>?)_usermanager.GetUsersInRoleAsync(role).Result;
+
+            _customerDialogVM = cusVM;
+
             return View(_customerDialogVM);
         }
 
@@ -248,14 +261,20 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             _orderVM = new OrderVM(); // cần clear lại VM
 
+            // Clear the admin's cart
+            foreach (CartDetail i in _cartDetailCRUD.GetAllAsync(_cartCRUD.GetAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)).Result.CartId).Result)
+            {
+                _cartDetailCRUD.Remove(i);
+            }
+
             return View();
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrderAsync(CustomerDialogVM id)
+        public IActionResult ConfirmOrderAsync(CustomerDialogVM? id)
         {
             var obj = _applicationuserCRUD.GetByIdAsync(id.pickCustomerId).Result;
-
+            
             //Handle if user isn't existed
             if (obj == null)
             {
@@ -269,7 +288,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = newuser.SingleAddress, UserId = newuser.Id });
                 _applicationuserCRUD.CreateAsync(newuser).Wait();
 
-                _usermanager.AddToRoleAsync(newuser, "Customer").Wait();
+                _usermanager.AddToRoleAsync(newuser, "Passenger").Wait();
 
                 obj = newuser;
             }
@@ -280,43 +299,67 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             _orderVM.totalPayment = _orderVM.totalAmount = 0;
 
-            _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
-            _orderVM.currOrder.Status = Core.Enums.Status.Waiting;
             
 
-            for (var i = 0; i < _orderVM.products.Count; i++)
+            if (_orderVM.currOrder == null) // Handle when admin creates order directly from cart
             {
-                //calculate totalprice
-                var m = Int32.Parse(_orderVM.pickingQuantity[i]);
-                _orderVM.totalPayment += _orderVM.products[i].ProductUnitPrice * m;//sai nhas
-                _orderVM.totalAmount += m;//van sai nha
-                //reduce product
-                if (m > _orderVM.products[i].Amount)
+                _orderVM.currOrder = new Order();
+
+                string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                List<CartDetail> cartDetails = _cartDetailCRUD.GetAllAsync(_cartCRUD.GetAsync(userId).Result.CartId).Result;
+
+                foreach (CartDetail cd in cartDetails)
                 {
-                    return NoContent();// nay can validation
+                    _orderVM.totalPayment += cd.CartDetailTotalSum;
+                    _orderVM.totalAmount += cd.Amount;
+
+                    var newOrderDetail = new OrderDetail()
+                    {
+                        OrderId = _orderVM.currOrder.OrderId,
+                        Amount = cd.Amount,
+                        Payment = cd.CartDetailTotalSum,
+                        ProductId = cd.ProductId,
+                        Size = cd.Size
+                    };
+
+                    _orderVM.currOrder.OrderDetails.Add(newOrderDetail);
                 }
-                else
+            }
+            else
+            {
+                for (var i = 0; i < _orderVM.products.Count; i++)
                 {
-                    _orderVM.products[i].Amount -= m;
+                    //calculate totalprice
+                    var m = Int32.Parse(_orderVM.pickingQuantity[i]);
+                    _orderVM.totalPayment += _orderVM.products[i].ProductUnitPrice * m;//sai nhas
+                    _orderVM.totalAmount += m;//van sai nha
+                                              //reduce product
+                    if (m > _orderVM.products[i].Amount)
+                    {
+                        return NoContent();// nay can validation
+                    }
+                    else
+                    {
+                        _orderVM.products[i].Amount -= m;
+                    }
+                    //create detail
+
+
+                    var it = new OrderDetail()
+                    {
+                        OrderId = _orderVM.currOrder.OrderId,
+                        Amount = m,
+                        Payment = _orderVM.products[i].ProductUnitPrice * m,
+                        ProductId = _orderVM.products[i].ProductId
+                    };
+
+                    _orderVM.currOrder.OrderDetails.Add(it);
                 }
-                //create detail
-
-
-                var it = new OrderDetail()
-                {
-                    OrderId = _orderVM.currOrder.OrderId,
-                    Amount = m,
-                    Payment = _orderVM.products[i].ProductUnitPrice * m,
-                    ProductId = _orderVM.products[i].ProductId
-                };
-
-                _orderVM.currOrder.OrderDetails.Add(it);
             }
 
-            foreach (CartDetail i in _cartDetailCRUD.GetAllAsync(_cartCRUD.GetAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)).Result.CartId).Result)
-            {
-                _cartDetailCRUD.Remove(i);
-            }
+            _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
+            _orderVM.currOrder.Status = Core.Enums.Status.Waiting;
 
             return View(_orderVM);
         }

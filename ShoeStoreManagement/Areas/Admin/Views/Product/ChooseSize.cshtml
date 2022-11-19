@@ -41,6 +41,8 @@
 			<div class="col-6">
 				<div class="form-group">
 					<input asp-for="@Model.ProductId" hidden />
+					<input asp-for="@Model.ProductUnitPrice" hidden />
+					<input asp-for="@Model.Amount" hidden />
 					@for (int i = 0; i < 5; i++)
 					{
 						<div class="form-check mt-2">
