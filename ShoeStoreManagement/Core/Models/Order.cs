@@ -119,4 +119,7 @@ public class Order
     //[Column(TypeName = "decimal(18,2)")]
     [NotMapped]
     public float OrderTotalPrice { get; set; } = 0;
+
+    [Range(1, 99999)]
+    public int TotalAmount { get; set; } = 0;
 }

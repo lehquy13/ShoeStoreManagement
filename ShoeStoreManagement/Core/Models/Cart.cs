@@ -48,4 +48,10 @@ public class Cart
         get { return cartTotalPrice; }
         set { cartTotalPrice = value; }
     }
+
+    [Range(1, 99999)]
+    public int CartTotalAmountSelected { get; set; } = 0;
+
+    [Range(1, 99999)]
+    public int CartTotalAmount { get; set; } = 0;
 }
