@@ -160,6 +160,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             //ViewData["customer"] = _orderVM.customers;
             var obj = await _productCRUD.GetAllAsync();
             //ViewData["products"] = obj;
+            if(obj.Count > 0)
+            {
+                foreach(var i in obj)
+                {
+                    i.Sizes = _sizeDetailCRUD.GetAllByIdAsync(i.ProductId).Result;
+
+                }
+            }
             _orderVM.products = obj;
             return View(_orderVM);
         }
@@ -198,21 +206,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
-        public async Task<IActionResult> PickUser(string id)
-        {
-            ViewData["customer"] = _orderVM.customers;
-            var obj = await _applicationuserCRUD.GetByIdAsync(id);
-            var addressList = await _addressCRUD.GetAllAsync(id);
-            obj.Addresses = addressList;
-            ViewData["pickedUser"] = obj;
-            if (obj != null) // xu ly admin se k xoa acc 
-            {
-
-                return View("Create");
-
-            }
-            return RedirectToAction("Index");
-        }
         
         [HttpPost]
         public async Task<IActionResult> Index(OrderVM orderVM)
@@ -252,7 +245,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult ConfirmOrderAsync(CustomerDialogVM id)
+        public IActionResult ConfirmOrder(CustomerDialogVM id)
         {
             var obj = _applicationuserCRUD.GetByIdAsync(id.pickCustomerId).Result;
 

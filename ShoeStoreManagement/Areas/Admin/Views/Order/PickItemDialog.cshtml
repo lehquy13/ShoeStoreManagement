@@ -8,7 +8,6 @@
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
     List<int> ints = new List<int>() { 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44 };
 }
-
 <form method="post" action="Admin/Order/PickCustomer">
 
     <div class="row">
@@ -41,53 +40,36 @@
                                         </thead>
                                         <tbody>
                                             @if (Model.products != null)
-                                                @for (var i = 1; i <= Model.products.Count; i++)
+                                                @foreach (var i in products)
                                                 {
                                                     <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
                                                         <th scope="row">@i</th>
-                                                        <td>@Model.products[i-1].ProductName</td>
-                                                        <td>@Model.products[i-1].ProductUnitPrice</td>
-                                                        <td>@Model.products[i-1].Color</td>
-
-
+                                                        <td>@i.ProductName</td>
+                                                        <td>@i.ProductUnitPrice</td>
+                                                        <td>@i.Color</td>
                                                         <td>
-                                                           @* <div class="form-floating">
-                                                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="pickingSize" asp-items="@(new SelectList(ints))">
-
-                                                                    
-
-                                                                </select>
-                                                            </div>*@
-                                                            <div class="">
-                                                                <select style="height:100px;" asp-for="pickingSize">
-                                                                    <option selected>
-                                                                        --
+                                                            <select style="height:40px;" asp-for="pickingSize">
+                                                                <option selected>
+                                                                    --
+                                                                </option>
+                                                                @foreach (var count in i.TestSize)
+                                                                {
+                                                                    <option value="@count">
+                                                                        @count
                                                                     </option>
-                                                                    @foreach (var count in @Model.products[i - 1].Sizes)
-                                                                    {
-
-                                                                        <option value="@count.Size" >
-                                                                            @count.Size
-                                                                        </option>
-                                                                    }
-
-                                                                </select>
-                                                            </div>
+                                                                }
+                                                            </select>
                                                         </td>
-
-
-
-
-                                                        <td>@Model.products[i-1].Amount</td>
+                                                        <td>@i.Amount</td>
                                                         <td>
                                                             <div class="form-check mt-2">
                                                                 <input class="form-check-input" type="checkbox"
-                                                               value="@Model.products[i-1].ProductId" name="pickitems" id="checkbox_@Model.products[i-1].ProductId"
-                                                               checked="@Model.products[i-1].isChecked" />
+                                                               value="@i.ProductId" name="pickitems" id="checkbox_@i.ProductId"
+                                                               checked="@i.isChecked" />
 
                                                                 <label class="form-check-label ml-5 d-flex align-items-center">
-                                                                    <input type="number" name="pickingQuantity" value="0" id="input_@Model.products[i-1].ProductId" class="form-control ms-2" />
+                                                                    <input type="number" name="pickingQuantity" value="0" id="input_@i.ProductId" class="form-control ms-2" />
                                                                 </label>
 
                                                             </div>
@@ -101,24 +83,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                @*<div class="row ms-1">
-                @if (Model.pickitems != null)
-                @foreach (var item in Model.pickitems)
-                {
-                <component type="typeof(CartItemCard)" render-mode="Static" param-product=@item />
-                }
-                </div>*@
-
-                @*  <div class="d-flex justify-content-between mt-3">
-                <h5>Amounts</h5>
-                <h5>3</h5>
-                </div>
-                <div class="d-flex justify-content-between">
-                <h4 style="font-weight:bold">Total</h4>
-                <h4 style="font-weight:bold">$60</h4>
-                </div>*@
             </div>
         </div>
     </div>
