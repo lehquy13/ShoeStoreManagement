@@ -68,6 +68,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         }
 
+        [HttpPost]
         public IActionResult ToCart(Product product)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -80,6 +81,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 cart.UserId = userId;
                 _cartCRUD.CreateAsync(cart);
             }
+
+            //Product product = _productCRUD.GetByIdAsync(productID).Result; 
 
             if (product == null)
             {
@@ -97,10 +100,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     checkedSizeAmount.Add(i);
             }
 
-
             // Handle changes in size's amount
             for (int i = 0; i < checkedSize.Count; i++)
             {
+                if (checkedSizeAmount[i] == null)
+                    continue;
+
                 SizeDetail sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(product.ProductId, int.Parse(checkedSize[i])).Result;
 
                 if (sizeDetail == null) return NotFound();
@@ -129,9 +134,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         CartId = cart.CartId,
                         ProductId = product.ProductId,
                         Amount = int.Parse(checkedSizeAmount[i]),
+                        CartDetailTotalSum = int.Parse(checkedSizeAmount[i]) * product.ProductUnitPrice,
                         Size = int.Parse(checkedSize[i]),
                     };
-                    newCartDetail.CartDetailTotalSum = newCartDetail.Amount * product.ProductUnitPrice;
 
                     _cartDetailCRUD.CreateAsync(newCartDetail);
                 }
