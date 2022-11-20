@@ -34,7 +34,19 @@ namespace ShoeStoreManagement.CRUD.Implementations
         public void Update(Product updateProduct)
         {
             if (updateProduct != null)
-                _applicationDBContext.Products.Update(updateProduct);
+            {
+                var obj = this.GetByIdAsync(updateProduct.ProductId).Result;
+                if (obj != null)
+                {
+                    obj.ProductUnitPrice = updateProduct.ProductUnitPrice;
+                    obj.ProductCategoryId = updateProduct.ProductCategoryId;
+                    obj.Color = updateProduct.Color;
+                    obj.Description= updateProduct.Description;
+                    obj.ProductName = updateProduct.ProductName;
+                   
+                }
+            }
+                //_applicationDBContext.Products.Update(updateProduct);
             _applicationDBContext.SaveChanges();
         }
 
