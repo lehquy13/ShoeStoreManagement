@@ -48,7 +48,7 @@
             <div class="row">
                 <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-                <div class="radioLayoutTabCustom row-cols-6">
+                <div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
                     @if (string.IsNullOrEmpty(filters[0]))
                     {
                         <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
@@ -81,7 +81,7 @@
             <div class="row mt-3">
                 <ii class="row-1 h6">Price</ii>
 
-                <div class="radioLayoutTabCustom row-cols-6">
+                <div class="radioLayoutTabCustom row-cols-6 w-100">
                     @foreach (string i in priceFilters)
                     {
                         if (i.Equals(filters[1]))
@@ -100,7 +100,7 @@
                 </div>
             </div>
 
-            <input class="btn-primary" type="submit" />
+            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" />
         </div> @*used to col-3 vs col-10*@
     </form>
 
@@ -130,7 +130,7 @@
                                     a++;
                                     if (a == (nProducts + 1) * 10 + 1) break;
 
-                                    <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                    <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
 
                                         <th scope="row">@a</th>
                                         <td>@products[i].ProductName</td>
@@ -139,13 +139,13 @@
                                         <td>@products[i].ProductCategory.ProductCategoryName</td>
                                         <td>@products[i].Amount</td>
                                         <td>
-                                            <a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Im not here','@products[i].ProductId')" class="btn btn-outline-info">
+                                            <a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Im not here','@products[i].ProductId')" class="border-1 table-icon">
                                                 <i class="fas fa-edit"></i>
                                             </a>
                                         </td>
                                         <td>
-                                            <a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@products[i].ProductId')" class="btn btn-outline-info">
-                                                <i class="fas fa-edit"></i>
+                                            <a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@products[i].ProductId')" class="link-info table-icon">
+                                                <i class="fas fa-cart-plus"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -198,5 +198,5 @@
 <partial name="Create.cshtml" view-data="ViewData" model="metmoi"></partial>
 
 @{
-    <partial name="./_ValidationScriptsPartial"></partial>
+        <partial name="./_ValidationScriptsPartial"></partial>
 }

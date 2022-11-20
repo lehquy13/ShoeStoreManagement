@@ -38,3 +38,8 @@
     font-family: 'FontAwesome';
     margin: 0 5px 0 5px;
 }
+
+.table-icon {
+    font-size: 20px;
+    padding: 8px;
+}

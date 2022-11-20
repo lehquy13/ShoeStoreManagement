@@ -13,7 +13,7 @@
 		<div class="row">
 			<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-			<div class="tabCustom row-cols-6">
+			<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
 				<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
 				<button class="tabCustom" onclick="openCity(event, 'London')">Using</button>
 				<button class="tabCustom" onclick="openCity(event, 'London')">Out of date</button>
@@ -45,7 +45,7 @@
 							}
 							@foreach (var i in vouchers)
 							{
-								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
 									<th scope="row">@{
 											index++; 
 										} @index</th>
@@ -56,7 +56,7 @@
 									<td>@i.ExpiredValue</td>
 									<th>@i.State</th>
 									<td>
-										<a href="@Url.Action("Edit","Voucher",new {id = @i.Id})"  class="fas fa-edit"></a>
+										<a href="@Url.Action("Edit","Voucher",new {id = @i.Id})"  class="fas fa-edit table-icon"></a>
 									</td>
 								</tr>
 							}

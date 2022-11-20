@@ -82,9 +82,9 @@
             </div>
         </div>
     </div>
-    <div class="row d-flex justify-content-start mt-3 gx-1">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="submit" class="btn btn-secondary" asp-action="Delete" asp-controller="Product"
+    <div class="d-flex justify-content-end mt-3 pe-3">
+        <button type="submit" class="btn btn-primary flex-grow-1">Submit</button>
+        <button type="submit" class="btn btn-secondary ms-1 icon-delete" asp-action="Delete" asp-controller="Product"
                 asp-route-id=@Model.ProductId>
             Delete
         </button>

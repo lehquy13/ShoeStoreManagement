@@ -12,7 +12,7 @@
 		<div class="row">
 			<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 			<form method="post">
-				<div class="tabCustom row-cols-6">
+				<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
 					<button class="tabCustom" asp-action="Index" asp-route-filter="All">All</button>
 					<button class="tabCustom" asp-action="Index" asp-route-filter="Admin">Admin</button>
 					<button class="tabCustom" asp-action="Index" asp-route-filter="Staff">Staff</button>
@@ -42,7 +42,7 @@
 						<tbody>
 							@for (var i = 1; i <= users.Count; i++)
 							{
-								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
 
 									<th scope="row">@i</th>
 									<td>@users[i-1].UserName</td>
@@ -52,7 +52,7 @@
 									<td>@users[i-1].CreatedDate</td>
 									<td>@roles[i-1]</td>
 									<td>
-										<a onclick="showContent('@Url.Action("Edit","User",null,Context.Request.Scheme)','Im here','@users[i-1].Id')" class="btn btn-outline-info">
+										<a onclick="showContent('@Url.Action("Edit","User",null,Context.Request.Scheme)','Im here','@users[i-1].Id')" class="table-icon">
 											<i class="fas fa-edit"></i>
 										</a>
 									</td>
