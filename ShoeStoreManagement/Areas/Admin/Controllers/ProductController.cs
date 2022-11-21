@@ -9,6 +9,7 @@ using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Drawing;
 using System.Security.Claims;
+using Image = ShoeStoreManagement.Core.Models.Image;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -19,11 +20,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private const int minusIndex = 35;
 
         private readonly ILogger<ProductController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IProductCRUD _productCRUD;
         private readonly ICartCRUD _cartCRUD;
         private readonly ICartDetailCRUD _cartDetailCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
+        private readonly IImageCRUD _imageCRUD;
         private List<ProductCategory>? productCategories;
         private List<SizeDetail>? sizes;
         private IList<SelectListItem>? test;
@@ -34,7 +37,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private Cart _userCart;
 
         public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
-            , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD)
+            , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IWebHostEnvironment webHostEnvironment, IImageCRUD imageCRUD)
         {
             _logger = logger;
             _productCRUD = productCRUD;
@@ -42,7 +45,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _sizeDetailCRUD = sizeDetailCRUD;
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
+            _imageCRUD = imageCRUD;
             _usermanager = usermanager;
+            _hostEnvironment = webHostEnvironment;
             Init();
         }
 
@@ -64,6 +69,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     totalNumberShoeOfThatSize += obj.Amount;
                 }
                 products[i].Amount = totalNumberShoeOfThatSize;
+                List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(products[i].ProductId).Result;
+                if (imgs.Count > 0)
+                {
+                    products[i].ImageName = imgs[0].ImageName;
+                }
             }
 
         }
@@ -94,7 +104,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             List<string> checkedSize = product.TestSize; // Store checked sizes
             List<string> checkedSizeAmount = new List<string>(); // Store amount of checked sizes
 
-            foreach(string i in product.TestSizeAmount) // Remove null indexes
+            foreach (string i in product.TestSizeAmount) // Remove null indexes
             {
                 if (!string.IsNullOrEmpty(i))
                     checkedSizeAmount.Add(i);
@@ -246,6 +256,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     return NotFound(obj.ProductCategoryId);
 
                 }
+
                 ModelState.Clear();
                 if (TryValidateModel(obj))
                 {
@@ -253,10 +264,38 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                     for (var i = 0; i < obj.TestSize.Count; i++)
                     {
-                        _sizeDetailCRUD.CreateAsync(new SizeDetail() { Size = int.Parse(obj.TestSize[i]), Amount = int.Parse(temp[i]), ProductId = obj.ProductId });
+                        _sizeDetailCRUD.CreateAsync(new SizeDetail()
+                        {
+                            Size = int.Parse(obj.TestSize[i]),
+                            Amount = int.Parse(temp[i]),
+                            ProductId = obj.ProductId
+                        });
                     }
 
                     _productCRUD.CreateAsync(obj);
+
+                    // Add image
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(obj.Image.FileName);
+                    string extension = Path.GetExtension(obj.Image.FileName);
+                    fileName = fileName + DateTime.Now.ToString("yymmssffff") + extension;
+
+                    Image image = new Image()
+                    {
+                        ImageName = fileName,
+                        ImageFile = obj.Image,
+                        Title = "hi",
+                        ProductId = obj.ProductId,
+                    };
+
+                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        image.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    _imageCRUD.CreateAsync(image);
+
                     TempData["success"] = "Category is Created Successfully!!";
                     return RedirectToAction("Index");
                 }
@@ -341,7 +380,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var obj = await _productCRUD.GetByIdAsync(id);
-            if(obj != null)
+            if (obj != null)
             {
                 obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;
                 ViewData["productCategories"] = productCategories;

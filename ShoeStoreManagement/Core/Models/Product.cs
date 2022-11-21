@@ -125,5 +125,11 @@ namespace ShoeStoreManagement.Core.Models
 
         [NotMapped]
         public bool IsLiked { get; set; } = false;
+
+        [NotMapped]
+        public IFormFile Image { get; set; }
+
+        [NotMapped]
+        public string ImageName { get; set; }
     }
 }
