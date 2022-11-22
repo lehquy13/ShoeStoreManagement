@@ -291,11 +291,15 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             //Handle if user isn't existed
             if (obj == null)
             {
+
                 ApplicationUser newuser = new ApplicationUser();
-                newuser.UserName = id.pickCustomers.UserName;
-                newuser.Email = id.pickCustomers.Email;
-                newuser.SingleAddress = id.pickCustomers.SingleAddress;
-                newuser.PhoneNumber = id.pickCustomers.PhoneNumber;
+                if (id.pickCustomers.UserName != null && id.pickCustomers.Email != null && id.pickCustomers.SingleAddress != null && id.pickCustomers.PhoneNumber != null)
+                {
+                    newuser.UserName = id.pickCustomers.UserName;
+                    newuser.Email = id.pickCustomers.Email;
+                    newuser.SingleAddress = id.pickCustomers.SingleAddress;
+                    newuser.PhoneNumber = id.pickCustomers.PhoneNumber;
+                }
 
                 _cartCRUD.CreateAsync(new Cart() { UserId = newuser.Id });
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = newuser.SingleAddress, UserId = newuser.Id });
