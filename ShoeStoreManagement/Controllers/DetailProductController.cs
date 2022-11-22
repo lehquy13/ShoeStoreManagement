@@ -44,30 +44,17 @@ namespace ShoeStoreManagement.Controllers
 
             _productVM.ProductId = product.ProductId;
             _productVM.Product = product;
+            //_productVM.sizeDetails = sizeDetails;
 
             return View(_productVM);
         }
 
         [HttpPost]
-        public IActionResult LoadAmountOfSize(int size)
+        public void AddToCart(int amount, int size)
         {
+            _productVM.AmountSelected = amount;
             _productVM.Size = size;
 
-            SizeDetail? sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(_productVM.ProductId, size).Result;
-
-            if(sizeDetail == null)
-            {
-                return NotFound();
-            }
-
-            _productVM.Amount = sizeDetail.Amount;
-
-            return Redirect("Index/" + _productVM.ProductId);
-        }
-
-        [HttpPost]
-        public IActionResult CreateCartItem(ProductVM productVM)
-        {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             Cart? cart = _cartCRUD.GetAsync(userId).Result;
@@ -83,7 +70,7 @@ namespace ShoeStoreManagement.Controllers
 
             if (product == null)
             {
-                return NotFound();
+                return;
             }
 
             CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(_productVM.ProductId, cart.CartId).Result;
@@ -92,7 +79,7 @@ namespace ShoeStoreManagement.Controllers
             {
                 if (cartDetail.Size == _productVM.Size && cartDetail.Amount < product.Amount)
                 {
-                    cartDetail.Amount += productVM.AmountSelected;
+                    cartDetail.Amount += _productVM.AmountSelected;
                     cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
                     _cartDetailCRUD.Update(cartDetail);
                 }
@@ -102,9 +89,9 @@ namespace ShoeStoreManagement.Controllers
                     {
                         CartId = cart.CartId,
                         ProductId = _productVM.ProductId,
-                        Amount = productVM.AmountSelected,
+                        Amount = _productVM.AmountSelected,
                         Size = _productVM.Size,
-                        CartDetailTotalSum = product.ProductUnitPrice * productVM.AmountSelected,
+                        CartDetailTotalSum = product.ProductUnitPrice * _productVM.AmountSelected,
                     };
 
                     _cartDetailCRUD.CreateAsync(cartDetail);
@@ -116,9 +103,9 @@ namespace ShoeStoreManagement.Controllers
                 {
                     CartId = cart.CartId,
                     ProductId = _productVM.ProductId,
-                    Amount = productVM.AmountSelected,
+                    Amount = _productVM.AmountSelected,
                     Size = _productVM.Size,
-                    CartDetailTotalSum = product.ProductUnitPrice * productVM.AmountSelected,
+                    CartDetailTotalSum = product.ProductUnitPrice * _productVM.AmountSelected,
                 };
 
                 _cartDetailCRUD.CreateAsync(cartDetail);
@@ -126,14 +113,14 @@ namespace ShoeStoreManagement.Controllers
 
             if (cartDetail.IsChecked)
             {
-                cart.CartTotalAmountSelected += productVM.AmountSelected;
+                cart.CartTotalAmountSelected += _productVM.AmountSelected;
                 cart.CartTotalPrice = cartDetail.Amount * product.ProductUnitPrice;
             }
 
-            cart.CartTotalAmount += productVM.AmountSelected;
+            cart.CartTotalAmount += _productVM.AmountSelected;
 
 
-            return Redirect("Index/" + _productVM.ProductId);
+            return;
         }
     }
 }

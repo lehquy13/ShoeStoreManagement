@@ -50,7 +50,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         public IActionResult Index(string filter)
         {
-            ViewBag.ApplicationUser = true;
+            ViewBag.User = true;
 
             if (string.IsNullOrEmpty(filter))
                 filter = "All";

@@ -1,0 +1,95 @@
+﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.ViewModel;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.JSInterop
+
+@inject NavigationManager UriHelper
+@inject IJSRuntime js
+
+
+<div class="d-flex flex-column gap-4">
+	<p class="h2">@productVM.Product.ProductName</p>
+	<div>
+		<span class="h6">Color</span>
+		<p class="h5 mt-1">@productVM.Product.Color</p>
+	</div>
+	<div>
+		<span class="h6">Amount</span>
+		<Counter max=@productVM.Amount
+				 count=@productVM.AmountSelected
+				 OnGetAmount="GetAmountFromCounter">
+		</Counter>
+		<div class="d-flex">
+			<span class="caption">Remain - </span>
+			<span class="button text-primary">@productVM.Amount</span>
+		</div>
+	</div>
+	<div>
+		@for (int i = 35; i <= 45; i++)
+		{
+			var j = i;
+
+			var disabled = "disabled";
+
+			foreach (var item in productVM.Product.Sizes)
+			{
+				if (item.Size == i)
+				{
+					disabled = "";
+				}
+			}
+
+			var active = "";
+
+			if (productVM.Size == i)
+			{
+				active = "active";
+				selectedSize = i;
+			}
+
+			<SizeItem size="@i" active="@active" disabled="@disabled" IsChanged="LoadAmount" />
+		}
+	</div>
+</div>
+
+<div class="d-flex flex-column gap-2 col-7">
+	<a class="btn btn-secondary icon-cart" @onclick="AddToCart">Add to Cart</a>
+	<button class="btn btn-primary icon-arrow" @onclick="BuyNow">Buy Now</button>
+</div>
+
+@code {
+	[Parameter]
+	public ProductVM productVM { get; set; } = null!;
+
+	public int selectedSize { get; set; } = 0;
+
+	[Parameter]
+	public string url { get; set; } = null!;
+
+	public int hi { get; set; } = 0;
+
+	protected void LoadAmount(int size)
+	{
+		productVM.Size = size;
+		productVM.Amount = productVM.Product.Sizes.Where(x => x.Size == size).First().Amount;
+
+		StateHasChanged();
+	}
+
+	protected void GetAmountFromCounter(int amount)
+	{
+		productVM.AmountSelected = amount;
+
+		StateHasChanged();
+	}
+
+	protected async void AddToCart() {
+		await js.InvokeVoidAsync("addToCart", new object[] { url, productVM.AmountSelected, productVM.Size });
+	}
+
+	protected async void BuyNow() {
+		AddToCart();
+		UriHelper.NavigateTo("Cart/Index", true);
+	}
+}

@@ -138,3 +138,24 @@ function callWithId(url, id) {
         }
     })
 }
+
+function addToCart(url, amount, size) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { amount: amount, size: size },
+        success: function () {
+        }
+    })
+}
+
+//function loadAmount(url, size) {
+//    alert(url)
+//    $.ajax({
+//        type: "GET",
+//        url: url,
+//        data: { size: size }
+//        success: function () {
+//        }
+//    })
+//}

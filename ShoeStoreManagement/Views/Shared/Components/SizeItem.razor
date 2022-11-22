@@ -1,0 +1,30 @@
+﻿@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core;
+@using Microsoft.AspNetCore.Components.Web;
+
+<div style="width:42px; height:42px; display:inline-block">
+	<a class="btn btn-secondary @active @disabled"
+			style="width:42px; height:42px;"
+			@onclick="Handle">
+		@size
+	</a>
+</div>
+
+@code {
+
+	[Parameter]
+	public int size { get; set; } = 0;
+
+	[Parameter]
+	public string active { get; set; } = "";
+
+	[Parameter]
+	public string disabled { get; set; } = "";
+
+	[Parameter]
+	public EventCallback<int> IsChanged { get; set; }
+
+	protected async void Handle() {
+		await IsChanged.InvokeAsync(size);
+	}
+}

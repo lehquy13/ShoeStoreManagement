@@ -12,7 +12,7 @@
         <div class="row">
             <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-            <div class="tabCustom row-cols-6">
+            <div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
                 <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
                 <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
                 <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
@@ -44,7 +44,7 @@
                             <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
                                 @for (var i = 1; i <= orders.Count; i++)
                                 {
-                                <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
 
                                     <th scope="row">@i</th>
                                     <td>@orders[i-1].OrderId.Substring(0,5)</td>
@@ -73,4 +73,4 @@
     </div>
 </div>
 
-<button class="btn btn-primary icon-plus rounded position-fixed bottom-0" onclick="location.href = '@(Url.Action("PickItem", "Order"))'"></button>
+<button class="btn btn-primary icon-plus rounded position-fixed" style="right:160px; bottom:40px;" onclick="location.href = '@(Url.Action("PickItem", "Order"))'"></button>

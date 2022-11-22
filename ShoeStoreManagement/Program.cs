@@ -29,6 +29,7 @@ builder.Services.AddScoped<IOrderCRUD, OrderCRUD>();
 builder.Services.AddScoped<IOrderDetailCRUD, OrderDetailCRUD>();
 builder.Services.AddScoped<IWishListCRUD, WishListCRUD>();
 builder.Services.AddScoped<IWishListDetailCRUD, WishListDetailCRUD>();
+builder.Services.AddScoped<IImageCRUD, ImageCRUD>();
 
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
