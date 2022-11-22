@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeStoreManagement.Areas.Identity.Data;
-using ShoeStoreManagement.Controllers;
 using ShoeStoreManagement.Core.Models;
-using ShoeStoreManagement.CRUD.Implementations;
+using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Drawing;
 using System.Security.Claims;
+using Image = ShoeStoreManagement.Core.Models.Image;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
 {
@@ -19,11 +19,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private const int minusIndex = 35;
 
         private readonly ILogger<ProductController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IProductCRUD _productCRUD;
         private readonly ICartCRUD _cartCRUD;
         private readonly ICartDetailCRUD _cartDetailCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IProductCategoryCRUD _productCategoryCRUD;
+        private readonly IImageCRUD _imageCRUD;
         private List<ProductCategory>? productCategories;
         private List<SizeDetail>? sizes;
         private IList<SelectListItem>? test;
@@ -32,9 +34,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _usermanager;
         private ApplicationUser _currentUser;
         private Cart _userCart;
+        //private static ProductVM _productVM = new ProductVM();
 
         public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
-            , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD)
+            , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IWebHostEnvironment webHostEnvironment, IImageCRUD imageCRUD)
         {
             _logger = logger;
             _productCRUD = productCRUD;
@@ -42,7 +45,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _sizeDetailCRUD = sizeDetailCRUD;
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
+            _imageCRUD = imageCRUD;
             _usermanager = usermanager;
+            _hostEnvironment = webHostEnvironment;
             Init();
         }
 
@@ -64,6 +69,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     totalNumberShoeOfThatSize += obj.Amount;
                 }
                 products[i].Amount = totalNumberShoeOfThatSize;
+                List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(products[i].ProductId).Result;
+                if (imgs.Count > 0)
+                {
+                    products[i].ImageName = imgs[0].ImageName;
+                }
             }
 
         }
@@ -94,7 +104,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             List<string> checkedSize = product.TestSize; // Store checked sizes
             List<string> checkedSizeAmount = new List<string>(); // Store amount of checked sizes
 
-            foreach(string i in product.TestSizeAmount) // Remove null indexes
+            foreach (string i in product.TestSizeAmount) // Remove null indexes
             {
                 if (!string.IsNullOrEmpty(i))
                     checkedSizeAmount.Add(i);
@@ -219,48 +229,68 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return false;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit1(string? id)
-        {
-            if (id == null || id == "")
-            {
-                return NotFound();
-            }
-            var obj = await _productCRUD.GetByIdAsync(id);
-            ViewData["productCategories"] = productCategories;
-            return View(obj);
-        }
-
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create(Product obj)
+        public IActionResult Create(ProductVM productVM)
         {
-            if (obj != null)
+            if (productVM.Product != null)
             {
-                if (obj.ProductCategoryId != null)
+                if (productVM.Product.ProductCategoryId != null)
                 {
-                    obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;//note
+                    productVM.Product.ProductCategory = _productCategoryCRUD.GetByIdAsync(productVM.Product.ProductCategoryId).Result;//note
                 }
                 else
                 {
-                    return NotFound(obj.ProductCategoryId);
+                    return NotFound(productVM.Product.ProductCategoryId);
 
                 }
-                ModelState.Clear();
-                if (TryValidateModel(obj))
-                {
-                    var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
+                productVM.Product.TestSize = productVM.TestSize;
+                productVM.Product.TestSizeAmount = productVM.TestSizeAmount;
 
-                    for (var i = 0; i < obj.TestSize.Count; i++)
+                ModelState.Clear();
+                
+                if (TryValidateModel(productVM))
+                {
+                    var temp = productVM.Product.TestSizeAmount.Where(x => x != "0").ToList();
+
+                    for (var i = 0; i < productVM.Product.TestSize.Count; i++)
                     {
-                        _sizeDetailCRUD.CreateAsync(new SizeDetail() { Size = int.Parse(obj.TestSize[i]), Amount = int.Parse(temp[i]), ProductId = obj.ProductId });
+                        _sizeDetailCRUD.CreateAsync(new SizeDetail()
+                        {
+                            Size = int.Parse(productVM.Product.TestSize[i]),
+                            Amount = int.Parse(temp[i]),
+                            ProductId = productVM.Product.ProductId
+                        });
                     }
 
-                    _productCRUD.CreateAsync(obj);
+                    _productCRUD.CreateAsync(productVM.Product);
+
+                    // Add image
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(productVM.Image.FileName);
+                    string extension = Path.GetExtension(productVM.Image.FileName);
+                    fileName = fileName + DateTime.Now.ToString("yymmssffff") + extension;
+
+                    Image image = new Image()
+                    {
+                        ImageName = fileName,
+                        ImageFile = productVM.Image,
+                        Title = "hi",
+                        ProductId = productVM.Product.ProductId,
+                    };
+
+                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        image.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    _imageCRUD.CreateAsync(image);
+
                     TempData["success"] = "Category is Created Successfully!!";
                     return RedirectToAction("Index");
                 }
-                return View(obj);
+                return View(productVM.Product);
             }
 
             return NotFound();
@@ -280,7 +310,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;//note
 
             }
+
+
+
             ModelState.Clear();
+            obj.ImageName = "";
             if (TryValidateModel(obj))
             {
                 //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
@@ -320,7 +354,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return RedirectToAction("Index");
         }
 
         [ValidateAntiForgeryToken]
@@ -341,10 +375,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(string id)
         {
             var obj = await _productCRUD.GetByIdAsync(id);
-            if(obj != null)
+            if (obj != null)
             {
                 obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;
                 ViewData["productCategories"] = productCategories;
+
                 return PartialView(obj);
 
             }

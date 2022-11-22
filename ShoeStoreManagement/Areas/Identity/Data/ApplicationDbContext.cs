@@ -49,4 +49,6 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<WishList> WishLists { get; set; } = null!;
     public virtual DbSet<WishListDetail> WishListDetails { get; set; } = null!;
 
+    public virtual DbSet<Image> Images { get; set; } = null!;
+
 }

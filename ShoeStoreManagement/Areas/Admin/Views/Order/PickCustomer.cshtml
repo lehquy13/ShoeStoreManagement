@@ -41,6 +41,7 @@
                                         @for (var i = 1; i <= @Model.customers.Count; i++)
                                         {
                                             <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+                                                <input asp-for="@Model.pickCustomerId" value="@Model.customers[i-1].Id" hidden />
 
                                                 <th scope="row"> @i </th>
                                                 <td> @Model.customers[i-1].UserName </td>
@@ -89,31 +90,6 @@
         </div>
     </div>
 
-    @*div class="col-6 d-flex flex-column gap-2">
-           <div class="row ms-1">
-           @foreach (var item in items)
-           {
-           <component type="typeof(CartItemCard)" render-mode="Static" param-product=@item />
-           }
-           </div>
-           <div class="d-flex justify-content-between mt-3">
-           <h5>Amounts</h5>
-           <h5>3</h5>
-           </div>
-           <div class="d-flex justify-content-between">
-           <h4 style="font-weight:bold">Total</h4>
-           <h4 style="font-weight:bold">$60</h4>
-           </div>
-           </div>*@
-   
-
     <button type="submit" class="btn btn-primary rounded mt-5" style="width:120px;">Confirm</button>
 </form>
-
-@*<form>
-  <span>
-    <button class="btn btn-primary rounded mt-5 ms-1" style="width:120px;" onclick="location.href = '@(Url.Action("PickItem", "Order"))'">Go Back</button>
-  </span>
-</form>
-*@
 

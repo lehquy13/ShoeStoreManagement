@@ -32,7 +32,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
 
             var obj = _applicationDBContext.SizeDetails.Where(b => b.ProductId == id).ToArray<SizeDetail>();
             _applicationDBContext.SizeDetails.RemoveRange(obj);
-               
+            _applicationDBContext.SaveChanges();
                 
         }
 
