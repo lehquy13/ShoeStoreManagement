@@ -160,7 +160,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             var dataset = new BarDataset
             {
-                Label = "# of Votes",
+                Label = "# Data",
                 Data = dataValues,
                 BackgroundColor = colors,
                 BorderColor = borderColors,
