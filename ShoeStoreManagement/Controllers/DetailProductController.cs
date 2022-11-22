@@ -73,28 +73,15 @@ namespace ShoeStoreManagement.Controllers
                 return;
             }
 
-            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(_productVM.ProductId, cart.CartId).Result;
+            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(_productVM.ProductId, cart.CartId, _productVM.Size).Result;
 
             if (cartDetail != null)
             {
-                if (cartDetail.Size == _productVM.Size && cartDetail.Amount < product.Amount)
+                if (cartDetail.Amount < product.Amount)
                 {
                     cartDetail.Amount += _productVM.AmountSelected;
                     cartDetail.CartDetailTotalSum = cartDetail.Amount * product.ProductUnitPrice;
                     _cartDetailCRUD.Update(cartDetail);
-                }
-                else if (cartDetail.Size != _productVM.Size)
-                {
-                    cartDetail = new CartDetail()
-                    {
-                        CartId = cart.CartId,
-                        ProductId = _productVM.ProductId,
-                        Amount = _productVM.AmountSelected,
-                        Size = _productVM.Size,
-                        CartDetailTotalSum = product.ProductUnitPrice * _productVM.AmountSelected,
-                    };
-
-                    _cartDetailCRUD.CreateAsync(cartDetail);
                 }
             }
             else
