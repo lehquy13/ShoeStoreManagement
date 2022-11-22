@@ -299,16 +299,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit(Product obj)
+        public async Task<IActionResult> Edit(Product obj)
         {
-            if (obj.ProductCategoryId == null)
+            if (obj != null)
             {
-                return NotFound(obj.ProductCategoryId);
+                if (obj.ProductCategoryId != null)
+                    obj.ProductCategory = await _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId);//note
             }
             else
             {
-                obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;//note
-
+                return NotFound(obj.ProductCategoryId);
             }
 
 
@@ -329,7 +329,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     {
                         if (amount > 0 && amount != tempDetail.Amount)
                         {
-                            _sizeDetailCRUD.Update(newDetail);
+                            await _sizeDetailCRUD.Update(newDetail);
 
                         }
                         else if (amount == 0 || !obj.TestSize.Contains(i.ToString()))
@@ -341,7 +341,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     else
                     {
                         if (amount > 0)
-                            _sizeDetailCRUD.CreateAsync(new SizeDetail()
+                            await _sizeDetailCRUD.CreateAsync(new SizeDetail()
                             {
                                 Size = i,
                                 Amount = amount,

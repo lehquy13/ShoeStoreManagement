@@ -56,7 +56,7 @@
                                                         @if (@Model.currentOrderDetail[i - 1].Product.Sizes.Count > 0)
                                                         {
                                                             <td>
-                                                                @Model.currentOrderDetail[i-1].Product.Sizes[0].Size
+                                                                @Model.currentOrderDetail[i-1].Size
                                                             </td>
                                                         }
                                                         else
@@ -67,7 +67,7 @@
 
 
 
-                                                        <td>@Model.currentOrderDetail[i-1].Product.Sizes[0].Amount</td>
+                                                        <td>@Model.currentOrderDetail[i-1].Amount</td>
                                                         <td>
                                                             <a asp-action="DeteleItem"
                                                        asp-route-id="@Model.currentOrderDetail[i-1].OrderDetailId"

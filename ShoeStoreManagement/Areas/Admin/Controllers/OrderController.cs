@@ -104,9 +104,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             return View();
         }
-
-        
-
+   
         [HttpGet]
         public IActionResult PickItemDialog()
         {
@@ -143,16 +141,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     _orderVM.pickitems.Add(productList[i].ProductId);
 
                     Product product = productList[i];
-                    product.Sizes.Add(new SizeDetail()
-                    {
-                        Amount = Int32.Parse(_orderVM.pickingQuantity[index]),
-                        Size = Int32.Parse(_orderVM.pickingSize[index])
-                    });
+                    //product.Sizes.Add(new SizeDetail()
+                    //{
+                    //    Amount = Int32.Parse(_orderVM.pickingQuantity[index]),
+                    //    Size = Int32.Parse(_orderVM.pickingSize[index])
+                    //});
                     var newOrderD = new OrderDetail() { Product = product, ProductId = product.ProductId,
                         OrderId = _orderVM.currOrder.OrderId,
                         Amount = Int32.Parse(_orderVM.pickingQuantity[index]),
-                        Size = Int32.Parse(_orderVM.pickingSize[index])
-
+                        Size = Int32.Parse(_orderVM.pickingSize[index]),
+                        Payment = Int32.Parse(_orderVM.pickingQuantity[index]) * product.ProductUnitPrice,
                     };
                     _orderVM.currentOrderDetail.Add(newOrderD);
                     index++;
@@ -194,33 +192,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         [HttpPost]
         public IActionResult PickCustomer(OrderVM orderVM)
-        {
-            _orderVM.pickitems = orderVM.pickitems;
-            foreach (string i in orderVM.pickingQuantity)
-                if (i != "0")
-                {
-                   
-                    _orderVM.pickingQuantity.Add(i);
-
-                }
-            foreach (string i in orderVM.pickingSize)
-                if (i != "--")
-                    _orderVM.pickingSize.Add(i);
-            //_orderVM.pickingSize = orderVM.pickingSize;
-            //_orderVM.products.Clear();
-
-
-            foreach (var item in _orderVM.pickitems)
-            {
-                if (item == null)
-                {
-                    continue;
-                }
-                var product = _productCRUD.GetByIdAsync(item).Result;
-                product.Sizes = _sizeDetailCRUD.GetAllByIdAsync(product.ProductId).Result;
-                //check size avaiables before adding
-                _orderVM.products.Add(product);
-            }
+        {           
             _customerDialogVM.customers = _orderVM.customers;
             return View(_customerDialogVM);
         }
@@ -253,11 +225,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             
             foreach (var s in _orderVM.currentOrderDetail)
             {
-                var soldAmount = s.Product.Sizes[0].Amount;
+                var soldAmount = s.Amount;
 
-                var sizeD = _sizeDetailCRUD.GetProductSizeAsync(s.ProductId, s.Product.Sizes[0].Size).Result;
+                var sizeD = _sizeDetailCRUD.GetProductSizeAsync(s.ProductId, s.Size).Result;
                 sizeD.Amount -= soldAmount;
-                _sizeDetailCRUD.Update(sizeD);
+                await _sizeDetailCRUD.Update(sizeD);
                 var product = s.Product;
                 product.Amount -= soldAmount;
                 _productCRUD.Update(product); 
@@ -353,9 +325,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 for (var i = 0; i < _orderVM.currentOrderDetail.Count; i++)
                 {
                     //calculate totalprice
-                    var product = _orderVM.currentOrderDetail[i].Product;
-                    var m = product.Sizes[0].Amount;
-                    _orderVM.totalPayment += product.ProductUnitPrice * m;//sai nhas
+                    //var product = _orderVM.currentOrderDetail[i].Product;
+                    var m = _orderVM.currentOrderDetail[i].Amount;
+                    _orderVM.totalPayment += _orderVM.currentOrderDetail[i].Product.ProductUnitPrice * m;//sai nhas
                     _orderVM.totalAmount += m;//van sai nha
                                               //reduce product
                                               //create detail
@@ -371,8 +343,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     
 
                     _orderVM.currOrder.OrderDetails.Add(_orderVM.currentOrderDetail[i]);
-                    _orderVM.currOrder.OrderDetails[i].Amount = _orderVM.totalAmount;
-                    _orderVM.currOrder.OrderDetails[i].Payment = _orderVM.totalPayment;
+                    //_orderVM.currOrder.OrderDetails[i].Amount = _orderVM.totalAmount;
+                    //_orderVM.currOrder.OrderDetails[i].Payment = _orderVM.totalPayment;
                 }
             }
 

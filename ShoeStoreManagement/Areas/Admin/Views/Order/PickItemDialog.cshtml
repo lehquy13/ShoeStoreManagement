@@ -39,6 +39,7 @@
                                             @if (products != null)
                                                 @foreach (var i in products)
                                                 {
+                                                    //<input name="pickitems" value="@i.ProductId" hidden />
                                                     <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
                                                         <th scope="row">@i.ProductId.Substring(i.ProductId.Length-6,5)</th>
