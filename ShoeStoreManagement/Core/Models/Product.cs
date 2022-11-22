@@ -10,6 +10,7 @@ namespace ShoeStoreManagement.Core.Models
 {
     public class Product
     {
+        
         string productId = Guid.NewGuid().ToString();
         string productName = string.Empty;
         string productCategoryId = string.Empty;

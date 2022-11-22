@@ -34,7 +34,7 @@ namespace ShoeStoreManagement.Core.Models
             get { return productId; }
             set { productId = value; }
         }
-
+        
         public Product? Product
         {
             get { return product; }
