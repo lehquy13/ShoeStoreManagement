@@ -10,13 +10,15 @@ namespace ShoeStoreManagement.Core.ViewModels;
 public class OrderVM
 {
     public List<Product>? products { get; set; } = new List<Product>();
-    public List<string> pickitems { get; set; } = new List<string>();
-    
+
+    public List<OrderDetail> currentOrderDetail { get; set; } = new List<OrderDetail>();
+
     public List<ApplicationUser>? customers { get; set; } = new List<ApplicationUser>();
     public ApplicationUser pickCustomers { get; set; } = new ApplicationUser();
 
     public Order? currOrder { get; set; } = new Order();
 
+    public List<string> pickitems { get; set; } = new List<string>();
 
     public List<string> pickingQuantity { get; set; } = new List<string>();
 
