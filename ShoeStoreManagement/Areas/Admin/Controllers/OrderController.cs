@@ -81,6 +81,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             productList = _productCRUD.GetAllAsync().Result;
+            foreach(var p in productList)
+            {
+                p.Sizes = _sizeDetailCRUD.GetAllByIdAsync(p.ProductId).Result;
+            }
 
         }
         public async Task<IActionResult> Index()
@@ -101,52 +105,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult MakeAnOrder()
-        {
-            List<Voucher>? vouchers = _voucherCRUD.GetAllAsync().Result;
-
-            ViewData["vouchers"] = vouchers;
-            ViewData["deliveryMethods"] = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
-
-
-            // create fake order
-            OrderDetail orderDetail = new OrderDetail();
-
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            Cart? cart = _cartCRUD.GetAsync(userId).Result;
-
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            var list = _cartDetailCRUD.GetAllCheckedAsync(cart.CartId).Result;
-
-            if (list.Count <= 0)
-            {
-                return NotFound();
-            }
-
-            _orderVM.currOrder.UserId = userId;
-            _orderVM.currOrder.OrderDetails.Clear();
-
-            foreach (var item in list)
-            {
-                orderDetail = new OrderDetail()
-                {
-                    Amount = item.Amount,
-                    OrderId = _orderVM.currOrder.OrderId,
-                    Payment = (int)item.CartDetailTotalSum,
-                    ProductId = item.ProductId,
-                };
-
-                _orderVM.currOrder.OrderDetails.Add(orderDetail);
-                _orderVM.currOrder.OrderTotalPayment += (int)item.CartDetailTotalSum;
-            }
-
-            return View(_orderVM);
-        }
+        
 
         [HttpGet]
         public IActionResult PickItemDialog()
@@ -239,7 +198,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _orderVM.pickitems = orderVM.pickitems;
             foreach (string i in orderVM.pickingQuantity)
                 if (i != "0")
+                {
+                   
                     _orderVM.pickingQuantity.Add(i);
+
+                }
             foreach (string i in orderVM.pickingSize)
                 if (i != "--")
                     _orderVM.pickingSize.Add(i);
@@ -262,16 +225,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View(_customerDialogVM);
         }
 
-        public IActionResult PickCustomer()
-        {
-            CustomerDialogVM cusVM = new CustomerDialogVM();
-            cusVM.customers = (List<ApplicationUser>?)_usermanager.GetUsersInRoleAsync(role).Result;
-
-            _customerDialogVM = cusVM;
-
-            return View(_customerDialogVM);
-        }
-
+       
         [HttpPost]
         public IActionResult Edit()
         {
@@ -279,7 +233,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
-        //confirm Index
+        //confirm and get back to Index
         [HttpPost]
         public async Task<IActionResult> Index(OrderVM orderVM)
         {

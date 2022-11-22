@@ -30,8 +30,8 @@
                                                 <th class="button">Name</th>
                                                 <th class="button">Price</th>
                                                 <th class="button">Color</th>
-                                                <th class="button">Size</th>
-                                                <th class="button">Amount</th>
+                                                <th class="button">Size - Stock</th>
+                                                @*<th class="button">Amount</th>*@
                                                 <th class="button">Quantity</th>
                                             </tr>
                                         </thead>
@@ -46,19 +46,19 @@
                                                         <td>@i.ProductUnitPrice</td>
                                                         <td>@i.Color</td>
                                                         <td>
-                                                            <select style="height:40px;" asp-for="pickingSize">
+                                                            <select style="height:40px; width:120px;" asp-for="pickingSize">
                                                                 <option selected>
                                                                     --
                                                                 </option>
                                                                 @foreach (var count in i.Sizes)
                                                                 {
                                                                     <option value="@count.Size">
-                                                                        @count.Size
+                                                                        @count.Size : @count.Amount left
                                                                     </option>
                                                                 }
                                                             </select>
                                                         </td>
-                                                        <td>@i.Amount</td>
+                                                        @*<td>@i.Amount</td>*@
                                                         <td>
                                                             <div class="form-check mt-2">
                                                                 @*<input class="form-check-input" type="checkbox"
@@ -66,7 +66,7 @@
                                                                checked="@i.isChecked" />*@
 
                                                                 <label class="form-check-label ml-5 d-flex align-items-center">
-                                                                    <input type="number" name="pickingQuantity" value="0" id="input_@i.ProductId" class="form-control ms-2" />
+                                                                    <input type="number" name="pickingQuantity" value="0" id="input_@i.ProductId" class="form-control ms-2" style="width:100px;" />
                                                                 </label>
 
                                                             </div>

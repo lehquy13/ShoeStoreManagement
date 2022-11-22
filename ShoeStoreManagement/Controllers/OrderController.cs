@@ -140,21 +140,22 @@ namespace ShoeStoreManagement.Controllers
 
             foreach (var item in _orderVM.currOrder.OrderDetails)
             {
+                //item.Product = null;
                 _orderDetailCRUD.CreateAsync(item);
 
                 //Product? product = _productCRUD.GetByIdAsync(item.ProductId).Result;
                 CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId).Result;
 
-                item.Product.Amount -= item.Amount;
+                //item.Product.Amount -= item.Amount;
 
                 if (cartDetail != null)
                 {
-                    if (item.Product.Amount >= 0)
-                    {
-                        item.Product.ProductId = item.ProductId;
-                        _productCRUD.Update(item.Product);
-                    }
-
+                    //if (item.Product.Amount >= 0)
+                    //{
+                    //    item.Product.ProductId = item.ProductId;
+                    //    _productCRUD.Update(item.Product);
+                    //}
+                    //cartDetail.Product = null;
                     _cartDetailCRUD.Remove(cartDetail);
                 }
             }
