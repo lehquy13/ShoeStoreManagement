@@ -33,12 +33,12 @@ namespace ShoeStoreManagement.CRUD.Implementations
             var obj = _applicationDBContext.SizeDetails.Where(b => b.ProductId == id).ToArray<SizeDetail>();
             _applicationDBContext.SizeDetails.RemoveRange(obj);
             _applicationDBContext.SaveChanges();
-                
+
         }
 
         public async Task<SizeDetail?> GetProductSizeAsync(string id, int size)
         {
-            return await _applicationDBContext.SizeDetails.Where(x=> x.ProductId == id && x.Size == size).FirstOrDefaultAsync();
+            return await _applicationDBContext.SizeDetails.Where(x => x.ProductId == id && x.Size == size).FirstOrDefaultAsync();
         }
 
         public async Task<SizeDetail?> GetByIdAsync(string id)
@@ -52,19 +52,19 @@ namespace ShoeStoreManagement.CRUD.Implementations
             _applicationDBContext.SaveChanges();
         }
 
-        public void Update(SizeDetail updateSizeDetail)
+        public async Task Update(SizeDetail updateSizeDetail)
         {
-            if(updateSizeDetail != null)
+            if (updateSizeDetail != null)
             {
                 var obj = this.GetProductSizeAsync(updateSizeDetail.ProductId, updateSizeDetail.Size).Result;
                 if (obj != null)
                 {
                     obj.Amount = updateSizeDetail.Amount;
-                    _applicationDBContext.SaveChanges();
+                    await _applicationDBContext.SaveChangesAsync();
 
                 }
             }
-           
+
         }
 
         public void Remove(SizeDetail deteleSizeDetail)
@@ -75,6 +75,6 @@ namespace ShoeStoreManagement.CRUD.Implementations
             _applicationDBContext.SaveChanges();
         }
 
-       
+
     }
 }

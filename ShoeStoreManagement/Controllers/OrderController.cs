@@ -94,6 +94,7 @@ namespace ShoeStoreManagement.Controllers
                     Payment = (int)item.CartDetailTotalSum,
                     ProductId = item.ProductId,
                     Product = product,
+                    Size = item.Size,
                 };
 
                 _orderVM.totalAmount += item.Amount;
@@ -142,12 +143,24 @@ namespace ShoeStoreManagement.Controllers
 
             foreach (var item in _orderVM.currOrder.OrderDetails)
             {
-                //item.Product = null;
+                item.Product = null;
+
                 _orderDetailCRUD.CreateAsync(item);
 
                 CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId, item.Size).Result;
 
-                // Subtract amount of size 
+
+                //Subtract amount of size
+
+
+
+                var ob = _productCRUD.GetByIdAsync(item.ProductId);
+
+                if (cartDetail != null)
+                {
+                    item.Product = ob.Result;
+                    _cartDetailCRUD.Remove(cartDetail.CartDetailId);
+                }
                 SizeDetail? sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(item.ProductId, item.Size).Result;
 
                 if (sizeDetail != null)
@@ -162,13 +175,6 @@ namespace ShoeStoreManagement.Controllers
                         // Thong bao len la khong du so luong
                     }
                 }
-
-                if (cartDetail != null)
-                {
-                    cartDetail.Product = null;
-                    _cartDetailCRUD.Remove(cartDetail);
-                }
-
             }
 
             return RedirectToAction("Index");

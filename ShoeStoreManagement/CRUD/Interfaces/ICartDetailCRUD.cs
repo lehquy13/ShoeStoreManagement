@@ -11,5 +11,6 @@ namespace ShoeStoreManagement.CRUD.Interfaces
         public Task CreateAsync(CartDetail cartDetail);
         public void Update(CartDetail updateCartDetail);
         public void Remove(CartDetail deteleCartDetail);
+        public void Remove(string id);
     }
 }
