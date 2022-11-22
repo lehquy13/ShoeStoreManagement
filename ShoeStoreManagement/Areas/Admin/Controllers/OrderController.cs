@@ -2,12 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Areas.Identity.Data;
-using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModels;
-using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
-using System.Data;
 using System.Security.Claims;
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
@@ -81,7 +78,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             productList = _productCRUD.GetAllAsync().Result;
-            foreach(var p in productList)
+            foreach (var p in productList)
             {
                 p.Sizes = _sizeDetailCRUD.GetAllByIdAsync(p.ProductId).Result;
             }
@@ -104,7 +101,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             return View();
         }
-   
+
         [HttpGet]
         public IActionResult PickItemDialog()
         {
@@ -146,7 +143,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     //    Amount = Int32.Parse(_orderVM.pickingQuantity[index]),
                     //    Size = Int32.Parse(_orderVM.pickingSize[index])
                     //});
-                    var newOrderD = new OrderDetail() { Product = product, ProductId = product.ProductId,
+                    var newOrderD = new OrderDetail()
+                    {
+                        Product = product,
+                        ProductId = product.ProductId,
                         OrderId = _orderVM.currOrder.OrderId,
                         Amount = Int32.Parse(_orderVM.pickingQuantity[index]),
                         Size = Int32.Parse(_orderVM.pickingSize[index]),
@@ -162,10 +162,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         public IActionResult DeteleItem(string id)
         {
-            
-                foreach (var i in _orderVM.currentOrderDetail.ToList())
-                    if (id == i.OrderDetailId)
-                        _orderVM.currentOrderDetail.Remove(i);
+
+            foreach (var i in _orderVM.currentOrderDetail.ToList())
+                if (id == i.OrderDetailId)
+                    _orderVM.currentOrderDetail.Remove(i);
 
             return RedirectToAction("PickItem");
         }
@@ -192,12 +192,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         [HttpPost]
         public IActionResult PickCustomer(OrderVM orderVM)
-        {           
+        {
             _customerDialogVM.customers = _orderVM.customers;
             return View(_customerDialogVM);
         }
 
-       
+
         [HttpPost]
         public IActionResult Edit()
         {
@@ -218,21 +218,40 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 _orderVM.currOrder.OrderTotalPayment += orderDetail.Payment;
                 _orderVM.currOrder.TotalAmount += orderDetail.Amount;
-                
+
             }
             await _orderCRUD.CreateAsync(_orderVM.currOrder);
 
-            
+
             foreach (var s in _orderVM.currentOrderDetail)
             {
                 var soldAmount = s.Amount;
 
                 var sizeD = _sizeDetailCRUD.GetProductSizeAsync(s.ProductId, s.Size).Result;
-                sizeD.Amount -= soldAmount;
+                if (sizeD.Amount > soldAmount)
+                    sizeD.Amount -= soldAmount;
+                else
+                {
+                    _orderCRUD.Remove(_orderVM.currOrder);
+                    _orderVM = new OrderVM(); // cần clear lại VM
+                    Init();
+                    var orderList1 = await _orderCRUD.GetAllOrderAsync();
+                    foreach (var item in orderList1)
+                    {
+                        item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+                        //foreach (var itemDetail in item.OrderDetails)
+                        //{
+                        //    item.OrderTotalPayment += itemDetail.Payment;
+                        //}
+                    }
+                    ViewData["orders"] = orderList1;
+                    //ClientScript.RegisterStartupScript(this.GetType(), "myalert", "alert('" + myStringVariable + "');", true);
+                    return View();
+                }
                 await _sizeDetailCRUD.Update(sizeD);
                 var product = s.Product;
                 product.Amount -= soldAmount;
-                _productCRUD.Update(product); 
+                _productCRUD.Update(product);
             }
             foreach (var s in _orderVM.currOrder.OrderDetails)
             {
@@ -340,7 +359,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     //    Payment = _orderVM.products[i].ProductUnitPrice * m,
                     //    ProductId = _orderVM.products[i].ProductId
                     //};
-                    
+
 
                     _orderVM.currOrder.OrderDetails.Add(_orderVM.currentOrderDetail[i]);
                     //_orderVM.currOrder.OrderDetails[i].Amount = _orderVM.totalAmount;
