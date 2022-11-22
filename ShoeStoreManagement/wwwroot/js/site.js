@@ -59,6 +59,34 @@ function showContent(url, title, id) {
   })
 }
 
+function deteleItem(url, id) {
+    alert(url);
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { id: id },
+        success: function (res) {
+          
+            $("#_pickItem").html(res);
+        }
+    })
+}
+
+function showContentItem(url, title) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+            //$.notify("I'm over here !");
+            //$.notify("Access granted", "success", { position: "right" });
+        }
+    })
+}
+
 function updateAmount(url, id, amount, sum) {
     //alert(url);
     $.ajax({

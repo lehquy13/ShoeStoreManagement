@@ -8,13 +8,14 @@
     List<Product>? products = ViewData["products"] as List<Product> ?? null;
     List<int> ints = new List<int>() { 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44 };
 }
+
 <form method="post" action="Admin/Order/PickCustomer">
 
     <div class="row">
         <p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
     </div>
 
-    <div class="row">
+    <div class="row" id="_pickItem">
         <div class="col p-0 mt-2">
             <div class="col d-flex flex-column gap-2">
                 <div class="d-flex flex-row">
@@ -39,57 +40,42 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if (Model.products != null)
-                                                @for (var i = 1; i <= Model.products.Count; i++)
+                                            @if (Model.currentOrderDetail != null)
+                                                @for (var i = 1; i <= Model.currentOrderDetail.Count; i++)
                                                 {
                                                     <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
 
                                                         <th scope="row">@i</th>
-                                                        <td>@Model.products[i-1].ProductName</td>
-                                                        <td>@Model.products[i-1].ProductUnitPrice</td>
-                                                        <td>@Model.products[i-1].Color</td>
+                                                        <td>@Model.currentOrderDetail[i-1].Product.ProductName</td>
+                                                        <td>@Model.currentOrderDetail[i-1].Product.ProductUnitPrice</td>
+                                                        <td>@Model.currentOrderDetail[i-1].Product.Color</td>
 
 
+
+
+                                                        @if (@Model.currentOrderDetail[i - 1].Product.Sizes.Count > 0)
+                                                        {
+                                                            <td>
+                                                                @Model.currentOrderDetail[i-1].Product.Sizes[0].Size
+                                                            </td>
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>Fail </td>
+                                                        }
+
+
+
+
+                                                        <td>@Model.currentOrderDetail[i-1].Product.Sizes[0].Amount</td>
                                                         <td>
-                                                           @* <div class="form-floating">
-                                                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="pickingSize" asp-items="@(new SelectList(ints))">
-
-                                                                    
-
-                                                                </select>
-                                                            </div>*@
-                                                            <div class="">
-                                                                <select asp-items="@(new SelectList(ints))" style="height:40px;" asp-for="pickingSize">
-                                                                    <option selected>
-                                                                        --
-                                                                    </option>
-                                                                    @*@for (var count = 33; count < 45; count++)
-                                                                    {
-
-                                                                        <option value="@count" >
-                                                                            @count
-                                                                        </option>
-                                                                    }*@
-
-                                                                </select>
-                                                            </div>
-                                                        </td>
-
-
-
-
-                                                        <td>@Model.products[i-1].Amount</td>
-                                                        <td>
-                                                            <div class="form-check mt-2">
-                                                                <input class="form-check-input" type="checkbox"
-                                                               value="@Model.products[i-1].ProductId" name="pickitems" id="checkbox_@Model.products[i-1].ProductId"
-                                                               checked="@Model.products[i-1].isChecked" />
-
-                                                                <label class="form-check-label ml-5 d-flex align-items-center">
-                                                                    <input type="number" name="pickingQuantity" value="0" id="input_@Model.products[i-1].ProductId" class="form-control ms-2" />
-                                                                </label>
-
-                                                            </div>
+                                                            <a asp-action="DeteleItem"
+                                                       asp-route-id="@Model.currentOrderDetail[i-1].OrderDetailId"
+                                                       asp-controller="Order"
+                                                       class="btn btn-primary rounded"
+                                                       style="width:180px; right: 245px">
+                                                                eliminate
+                                                            </a>
                                                         </td>
                                                     </tr>
                                                 }
@@ -100,30 +86,22 @@
                         </div>
                     </div>
                 </div>
-
-
-                @*<div class="row ms-1">
-                @if (Model.pickitems != null)
-                @foreach (var item in Model.pickitems)
-                {
-                <component type="typeof(CartItemCard)" render-mode="Static" param-product=@item />
-                }
-                </div>*@
-
-                @*  <div class="d-flex justify-content-between mt-3">
-                <h5>Amounts</h5>
-                <h5>3</h5>
-                </div>
-                <div class="d-flex justify-content-between">
-                <h4 style="font-weight:bold">Total</h4>
-                <h4 style="font-weight:bold">$60</h4>
-                </div>*@
             </div>
         </div>
     </div>
 
     <div class="row-10 md-flex justify-content-between " style=" margin-bottom:0; ">
-        <button type="submit" class="btn btn-primary rounded position-fixed" style="width:180px; right: 245px">Choose Customer</button>
+        <button type="button"
+                onclick="showContentItem('@Url.Action("PickItemDialog","Order",null,Context.Request.Scheme)','Choose product')"
+                class="btn btn-primary rounded"
+                style="width:180px; right: 245px">
+            Pick item here!
+        </button>
+        <button type="submit"
+                class="btn btn-primary rounded position-fixed"
+                style="width:180px; right: 245px">
+            Choots
+        </button>
         @*<button type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("PickCustomer", "Order"))'" style="width:180px;">Submit</button>*@
     </div>
 </form>
