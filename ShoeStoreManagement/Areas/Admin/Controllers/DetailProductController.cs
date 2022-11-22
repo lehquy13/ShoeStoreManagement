@@ -91,11 +91,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(_productVM.ProductId, cart.CartId).Result;
+            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(_productVM.ProductId, cart.CartId, productVM.Size).Result;
 
             if (cartDetail != null)
             {
-                if (cartDetail.Size == productVM.Size && cartDetail.Amount < product.Amount)
+                if (cartDetail.Amount < product.Amount)
                 {
                     cartDetail.Amount += productVM.AmountSelected;
                     cartDetail.CartDetailTotalSum += cartDetail.Amount * product.ProductUnitPrice;

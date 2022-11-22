@@ -12,12 +12,13 @@ namespace ShoeStoreManagement.Controllers
         private readonly IOrderCRUD _orderCRUD;
         private readonly IOrderDetailCRUD _orderDetailCRUD;
         private readonly IProductCRUD _productCRUD;
+        private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IVoucherCRUD _voucherCRUD;
         private readonly ICartCRUD _cartCRUD;
         private readonly ICartDetailCRUD _cartDetailCRUD;
         private static OrderVM _orderVM = new OrderVM();
 
-        public OrderController(IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD)
+        public OrderController(IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD, ISizeDetailCRUD sizeDetailCRUD)
         {
             _orderCRUD = orderCRUD;
             _orderDetailCRUD = orderDetailCRUD;
@@ -25,6 +26,7 @@ namespace ShoeStoreManagement.Controllers
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
             _voucherCRUD = voucherCRUD;
+            _sizeDetailCRUD = sizeDetailCRUD;
         }
 
         public IActionResult Index()
@@ -143,21 +145,30 @@ namespace ShoeStoreManagement.Controllers
                 //item.Product = null;
                 _orderDetailCRUD.CreateAsync(item);
 
-                //Product? product = _productCRUD.GetByIdAsync(item.ProductId).Result;
-                CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId).Result;
+                CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId, item.Size).Result;
 
-                //item.Product.Amount -= item.Amount;
+                // Subtract amount of size 
+                SizeDetail? sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(item.ProductId, item.Size).Result;
+
+                if (sizeDetail != null)
+                {
+                    if (sizeDetail.Amount >= item.Amount)
+                    {
+                        sizeDetail.Amount -= item.Amount;
+                        _sizeDetailCRUD.Update(sizeDetail);
+                    }
+                    else
+                    {
+                        // Thong bao len la khong du so luong
+                    }
+                }
 
                 if (cartDetail != null)
                 {
-                    //if (item.Product.Amount >= 0)
-                    //{
-                    //    item.Product.ProductId = item.ProductId;
-                    //    _productCRUD.Update(item.Product);
-                    //}
-                    //cartDetail.Product = null;
+                    cartDetail.Product = null;
                     _cartDetailCRUD.Remove(cartDetail);
                 }
+
             }
 
             return RedirectToAction("Index");

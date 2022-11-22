@@ -35,9 +35,9 @@ namespace ShoeStoreManagement.CRUD.Implementations
             return await _applicationDBContext.CartDetails.FindAsync(id);
         }
 
-        public async Task<CartDetail?> GetByProductIdAsync(string id, string cartId)
+        public async Task<CartDetail?> GetByProductIdAsync(string id, string cartId, int size)
         {
-            return await _applicationDBContext.CartDetails.Where(x => x.CartId == cartId && x.ProductId == id ).FirstOrDefaultAsync();
+            return await _applicationDBContext.CartDetails.Where(x => x.CartId == cartId && x.ProductId == id && x.Size == size ).FirstOrDefaultAsync();
         }
 
         public void Remove(CartDetail deteleCartDetail)

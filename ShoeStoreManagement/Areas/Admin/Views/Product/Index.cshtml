@@ -1,8 +1,8 @@
 ﻿@model ShoeStoreManagement.Core.Models.Product
-
 @using ShoeStoreManagement.Areas.Admin.Controllers
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.ViewModel;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
 
@@ -192,10 +192,7 @@
 </div>
 
 @{
-	Product metmoi = new Product()
-	{
-
-	};
+	ProductVM metmoi = new ProductVM() { };
 }
 
 <partial name="Create.cshtml" view-data="ViewData" model="metmoi"></partial>

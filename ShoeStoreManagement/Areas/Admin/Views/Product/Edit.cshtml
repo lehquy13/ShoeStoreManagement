@@ -14,7 +14,7 @@
 }
 <!-- Modal -->
 
-<form method="post" asp-action="Edit"  asp-controller="Product" asp-area="Admin" class="modal-content w-auto border-0" enctype="multipart/form-data">
+<form method="post" asp-action="Edit" asp-controller="Product" asp-area="Admin" class="modal-content w-auto border-0" enctype="multipart/form-data">
 	<div class="row">
 		<div class="col-8">
 			<div class="row">
@@ -62,7 +62,8 @@
 					 asp-append-version="true" />
 
 					<div class="form-floating">
-						<input asp-for="Image" accept="image/*" />
+						@*<input asp-for="Image" accept="image/*" />*@
+						<input asp-for="ImageName" type="hidden" />
 					</div>
 				}
 			</div>

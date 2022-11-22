@@ -43,11 +43,9 @@ namespace ShoeStoreManagement.CRUD.Implementations
                     obj.Color = updateProduct.Color;
                     obj.Description= updateProduct.Description;
                     obj.ProductName = updateProduct.ProductName;
-                   
                 }
 
             }
-                //_applicationDBContext.Products.Update(updateProduct);
             _applicationDBContext.SaveChanges();
         }
 
