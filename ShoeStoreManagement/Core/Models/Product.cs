@@ -130,6 +130,7 @@ namespace ShoeStoreManagement.Core.Models
         public IFormFile Image { get; set; }
 
         [NotMapped]
-        public string ImageName { get; set; }
+        [AllowNull]
+        public string ImageName { get; set; } = "";
     }
 }

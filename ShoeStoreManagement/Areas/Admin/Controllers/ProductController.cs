@@ -257,6 +257,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 }
 
+                obj.ImageName = "";
+
                 ModelState.Clear();
                 if (TryValidateModel(obj))
                 {
