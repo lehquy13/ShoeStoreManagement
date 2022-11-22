@@ -44,14 +44,16 @@ namespace ShoeStoreManagement.CRUD.Implementations
                     obj.Description= updateProduct.Description;
                     obj.ProductName = updateProduct.ProductName;
                 }
+
             }
             _applicationDBContext.SaveChanges();
         }
 
         public void Remove(Product deteleProduct)
         {
-            if (deteleProduct != null)
-                _applicationDBContext.Products.Remove(deteleProduct);
+            var obj = _applicationDBContext.Products.FindAsync(deteleProduct.ProductId).Result;
+            if (obj != null)
+                _applicationDBContext.Products.Remove(obj);
             _applicationDBContext.SaveChanges();
         }
     }

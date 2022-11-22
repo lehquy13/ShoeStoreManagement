@@ -414,10 +414,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     //    Payment = _orderVM.products[i].ProductUnitPrice * m,
                     //    ProductId = _orderVM.products[i].ProductId
                     //};
-                    _orderVM.currOrder.OrderDetails[i].Amount = _orderVM.totalAmount;
-                    _orderVM.currOrder.OrderDetails[i].Payment = _orderVM.totalPayment;
+                    
 
                     _orderVM.currOrder.OrderDetails.Add(_orderVM.currentOrderDetail[i]);
+                    _orderVM.currOrder.OrderDetails[i].Amount = _orderVM.totalAmount;
+                    _orderVM.currOrder.OrderDetails[i].Payment = _orderVM.totalPayment;
                 }
             }
 

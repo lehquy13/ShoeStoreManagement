@@ -314,6 +314,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
 
             ModelState.Clear();
+            obj.ImageName = "";
             if (TryValidateModel(obj))
             {
                 //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
@@ -353,7 +354,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return RedirectToAction("Index");
         }
 
         [ValidateAntiForgeryToken]
