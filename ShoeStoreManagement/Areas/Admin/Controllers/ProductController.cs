@@ -229,17 +229,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return false;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Edit1(string? id)
-        {
-            if (id == null || id == "")
-            {
-                return NotFound();
-            }
-            var obj = await _productCRUD.GetByIdAsync(id);
-            ViewData["productCategories"] = productCategories;
-            return View(obj);
-        }
 
         [ValidateAntiForgeryToken]
         [HttpPost]
@@ -258,6 +247,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
 
                 ModelState.Clear();
+                obj.ImageName = "";//okela
                 if (TryValidateModel(obj))
                 {
                     var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
@@ -320,6 +310,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             }
             ModelState.Clear();
+            obj.ImageName = "";
             if (TryValidateModel(obj))
             {
                 //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
@@ -359,7 +350,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(obj);
+            return RedirectToAction("Index");
         }
 
         [ValidateAntiForgeryToken]

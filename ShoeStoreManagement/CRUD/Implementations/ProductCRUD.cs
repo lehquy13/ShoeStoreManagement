@@ -45,6 +45,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                     obj.ProductName = updateProduct.ProductName;
                    
                 }
+
             }
                 //_applicationDBContext.Products.Update(updateProduct);
             _applicationDBContext.SaveChanges();
@@ -52,8 +53,9 @@ namespace ShoeStoreManagement.CRUD.Implementations
 
         public void Remove(Product deteleProduct)
         {
-            if (deteleProduct != null)
-                _applicationDBContext.Products.Remove(deteleProduct);
+            var obj = _applicationDBContext.Products.FindAsync(deteleProduct.ProductId).Result;
+            if (obj != null)
+                _applicationDBContext.Products.Remove(obj);
             _applicationDBContext.SaveChanges();
         }
     }
