@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
+using Microsoft.Extensions.Hosting;
+using ShoeStoreManagement.Core.ViewModel;
 
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
@@ -13,6 +15,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly ILogger<UserController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IApplicationUserCRUD _applicationuserCRUD;
         private readonly UserManager<ApplicationUser> _usermanager;
         private List<ApplicationUser>? applicationUsers;
@@ -23,7 +26,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly ICartCRUD _cartCRUD;
 
         public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager,
-            RoleManager<IdentityRole> roleManager, IAddressCRUD addressCRUD, ICartCRUD cartCRUD)
+            RoleManager<IdentityRole> roleManager, IAddressCRUD addressCRUD, ICartCRUD cartCRUD, IWebHostEnvironment hostEnvironment)
         {
             _logger = logger;
             _applicationuserCRUD = applicationuserCRUD;
@@ -31,8 +34,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _rolemanager = roleManager;
             _addressCRUD = addressCRUD;
             _cartCRUD = cartCRUD;
+            _hostEnvironment = hostEnvironment;
 
             Init();
+
         }
         private void Init()
         {
@@ -59,8 +64,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             foreach (ApplicationUser i in applicationUsers)
             {
-				var role = _usermanager.GetRolesAsync(i).Result.ToList();
-                if (role != null && role.Count != 0 )
+                var role = _usermanager.GetRolesAsync(i).Result.ToList();
+                if (role != null && role.Count != 0)
                 {
                     //string role = "a";
                     if (!string.IsNullOrEmpty(role[0]))
@@ -88,18 +93,48 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return View();
         }
 
-        
+
         [HttpPost]
         public IActionResult Create(ApplicationUser obj)
         {
+
+            if (obj.Avatar == null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    obj.Avatar = new FormFile(stream, 0, 0, "name", "fileName");
+                }
+            }
+
             // Haven't done with user creating conditions
-            if (ModelState.IsValid && obj.Role != string.Empty)
+            ModelState.Clear();
+            if (TryValidateModel(obj) && obj.Role != string.Empty)
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
+
+                // Add image
+                if (obj.Avatar.Length > 0)
+                {
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(obj.Avatar.FileName);
+                    string extension = Path.GetExtension(obj.Avatar.FileName);
+                    fileName = fileName + extension;
+
+                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        obj.Avatar.CopyToAsync(fileStream);
+                    }
+
+                    obj.AvatarName = fileName;
+
+                }
+
                 _applicationuserCRUD.CreateAsync(obj);
 
                 _usermanager.AddToRoleAsync(obj, obj.Role).Wait();
+
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -128,8 +163,33 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Edit(ApplicationUser obj)
         {
-            if (ModelState.IsValid)
+            if (obj.Avatar == null)
             {
+                using (var stream = new MemoryStream())
+                {
+                    obj.Avatar = new FormFile(stream, 0, 0, "name", "fileName");
+                }
+            }
+
+            ModelState.Clear();
+            if (TryValidateModel(obj))
+            {
+                if (obj.Avatar.Length > 0)
+                {
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(obj.Avatar.FileName);
+                    string extension = Path.GetExtension(obj.Avatar.FileName);
+                    fileName = fileName + extension;
+
+                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        obj.Avatar.CopyToAsync(fileStream);
+                    }
+
+                    obj.AvatarName = fileName;
+                }
+
                 _applicationuserCRUD.Update(obj);
 
                 return RedirectToAction("Index");

@@ -45,7 +45,16 @@
 								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
 
 									<th scope="row">@i</th>
-									<td>@users[i-1].UserName</td>
+									<td>
+										@if (users[i - 1].AvatarName != null)
+										{
+											<img src="~/image/@users[i-1].AvatarName"
+												 class="rounded-circle"
+												 height="40" width="40"
+												 asp-append-version="true" />
+										}
+										@users[i-1].UserName
+									</td>
 									<td>@users[i-1].Email</td>
 									<td>@users[i-1].PhoneNumber</td>
 									<td>numbers of Orders</td>

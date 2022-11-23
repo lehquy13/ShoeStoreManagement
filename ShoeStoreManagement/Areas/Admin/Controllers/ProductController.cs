@@ -299,7 +299,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> EditAsync(ProductVM productVM)
+        public async Task<IActionResult> Edit(ProductVM productVM)
         {
             if (productVM.Product.ProductCategoryId == null)
             {
@@ -377,7 +377,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     string path = Path.Combine(wwwRootPath + "/Image/", fileName);
                     using (var fileStream = new FileStream(path, FileMode.Create))
                     {
-                        image.ImageFile.CopyToAsync(fileStream);
+                        await image.ImageFile.CopyToAsync(fileStream);
                     }
 
                     List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(productVM.Product.ProductId).Result;
@@ -390,7 +390,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
                     else
                     {
-                        _imageCRUD.CreateAsync(new Image()
+                        await _imageCRUD.CreateAsync(new Image()
                         {
                             ImageName = image.ImageName,
                             Title = "new",
