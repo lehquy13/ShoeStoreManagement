@@ -41,7 +41,7 @@
                                         @for (var i = 1; i <= @Model.customers.Count; i++)
                                         {
                                             <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                                <input asp-for="@Model.pickCustomerId" value="@Model.customers[i-1].Id" hidden />
+                                               
 
                                                 <th scope="row"> @i </th>
                                                 <td> @Model.customers[i-1].UserName </td>

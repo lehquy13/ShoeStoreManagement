@@ -336,7 +336,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     {
                         if (amount > 0 && amount != tempDetail.Amount)
                         {
-                            _sizeDetailCRUD.Update(newDetail);
+                            await _sizeDetailCRUD.Update(newDetail);
 
                         }
                         else if (amount == 0 || !productVM.TestSize.Contains(i.ToString()))
@@ -347,7 +347,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     else
                     {
                         if (amount > 0)
-                            _sizeDetailCRUD.CreateAsync(new SizeDetail()
+                            await _sizeDetailCRUD.CreateAsync(new SizeDetail()
                             {
                                 Size = i,
                                 Amount = amount,
