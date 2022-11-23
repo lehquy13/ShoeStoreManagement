@@ -94,6 +94,7 @@ namespace ShoeStoreManagement.Core.Models
 
         [NotMapped]
         public bool? isChecked { get; set; } = false;
+
         [NotMapped]
         public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();
 
