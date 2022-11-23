@@ -24,6 +24,8 @@ public class ApplicationUser : IdentityUser
 
     public List<Address> Addresses { get; set; } = new List<Address>();
 
-    //[NotMapped]
-    //public bool? isCheck { get; set; } = false;
+    public string AvatarName { get; set; } = "";
+
+    [NotMapped]
+    public IFormFile Avatar { get; set; }
 }

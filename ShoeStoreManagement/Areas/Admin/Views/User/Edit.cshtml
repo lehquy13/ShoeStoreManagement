@@ -1,5 +1,6 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
+@using Microsoft.AspNetCore.Identity;
 @using ShoeStoreManagement.Areas.Identity.Data
 @model ApplicationUser
 @{
@@ -8,7 +9,7 @@
 }
 
 <!-- Modal -->
-<form method="post" action="Admin/User/Edit" class="modal-content w-auto border-0">
+<form method="post" asp-action="Edit" asp-controller="User" asp-area="Admin" class="modal-content w-auto border-0" enctype="multipart/form-data">
 @*	<div class="modal-header">
 		<h5 class="modal-title" id="ModalLabel">@Model.UserName</h5>
 	</div>*@
@@ -27,13 +28,17 @@
 					<input type="text" class="form-control" hidden id="floatingInput" placeholder="abc@gm.uit.edu.vn" asp-for="@Model.Id">
 					<label for="floatingInput" hidden>Id</label>
 				</div>
-				@*<div class="form-floating">
-					<input type="text" class="form-control" id="floatingInput" placeholder="" asp-for="@Model.Addresses">
-					<label for="floatingInput">Enter Address</label>
-				</div>*@
 				<div class="flex-grow-1">
-					@*<img src="image/shoe.jpg" class="img h-auto w-65" alt="image" />*@
-					<input type="image" class="img h-auto w-65" title="image" />
+					@if (Model.AvatarName != null)
+					{
+						<img src="~/image/@Model.AvatarName"
+						 style="width:200px; height:auto"
+						 asp-append-version="true" />
+					}
+
+					<div class="form-floating">
+						<input asp-for="Avatar" accept="image/*" class="form-control" />
+					</div>
 				</div>
 			</div>
 			<div class="col-6 d-grid gap-2">
