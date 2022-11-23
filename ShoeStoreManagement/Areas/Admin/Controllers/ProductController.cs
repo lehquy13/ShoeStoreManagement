@@ -290,7 +290,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     TempData["success"] = "Category is Created Successfully!!";
                     return RedirectToAction("Index");
                 }
-                return View(productVM.Product);
+                return View(productVM);
             }
 
             return NotFound();
@@ -299,7 +299,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit(ProductVM productVM)
+        public async Task<IActionResult> EditAsync(ProductVM productVM)
         {
             if (productVM.Product.ProductCategoryId == null)
             {

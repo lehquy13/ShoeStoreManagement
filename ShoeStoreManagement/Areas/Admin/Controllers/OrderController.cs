@@ -2,8 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Areas.Identity.Data;
+using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
+using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.Core.ViewModels;
+using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;
 
@@ -195,14 +198,59 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             _customerDialogVM.customers = _orderVM.customers;
             return View(_customerDialogVM);
+        } 
+        public async Task<IActionResult> CompletedCheck(string id)
+        {			
+			var orderList = await _orderCRUD.GetAllOrderAsync();
+			foreach (var item in orderList)
+			{
+                if(item.OrderId == id)
+                {
+					item.Status = Status.Finish;
+                    _orderCRUD.Update(item);
+				}
+				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+				
+			}
+			ViewData["orders"] = orderList;
+			return RedirectToAction("Index");
         }
 
+		public async Task<IActionResult> CanceledCheck(string id)
+		{
+			var orderList = await _orderCRUD.GetAllOrderAsync();
+			foreach (var item in orderList)
+			{
+				if (item.OrderId == id)
+				{
+					item.Status = Status.Canceled;
+				}
+				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+				
+			}
+			ViewData["orders"] = orderList;
+			return RedirectToAction("Index");
+		}
 
-        [HttpPost]
-        public IActionResult Edit()
+
+		[HttpGet]
+        public async Task<IActionResult> Edit(string id)
         {
-            //ViewBag.Order = true;
-            return View();
+            var obj = await _orderCRUD.GetByIdAsync(id);
+            if (obj != null)
+            {
+                obj.OrderDetails = await _orderDetailCRUD.GetAllAsync(obj.OrderId);
+                
+                obj.User = await _applicationuserCRUD.GetByIdAsync(obj.UserId);
+                foreach(var i in obj.OrderDetails)
+                {
+                    i.Product = await _productCRUD.GetByIdAsync(i.ProductId);
+                }
+
+                return PartialView(obj);
+
+            }
+            return RedirectToAction("Index");
         }
 
         //confirm and get back to Index
