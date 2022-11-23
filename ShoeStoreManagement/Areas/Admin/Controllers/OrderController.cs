@@ -224,6 +224,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 				if (item.OrderId == id)
 				{
 					item.Status = Status.Canceled;
+					_orderCRUD.Update(item);
 				}
 				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
 				
