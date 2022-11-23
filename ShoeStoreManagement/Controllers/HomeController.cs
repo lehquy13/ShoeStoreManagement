@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+
+
 using Microsoft.EntityFrameworkCore;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.CRUD.Interfaces;
@@ -14,12 +16,14 @@ namespace ShoeStoreManagement.Controllers
         private readonly IProductCRUD _productCRUD;
         private readonly IWishListCRUD _wishListCRUD;
         private readonly IWishListDetailCRUD _wishListDetailCRUD;
+        private readonly IImageCRUD _imageCRUD;
 
-        public HomeController(IProductCRUD productCRUD, IWishListCRUD wishListCRUD, IWishListDetailCRUD wishListDetailCRUD)
+        public HomeController(IProductCRUD productCRUD, IWishListCRUD wishListCRUD, IWishListDetailCRUD wishListDetailCRUD, IImageCRUD imageCRUD)
         {
             _productCRUD = productCRUD;
             _wishListCRUD = wishListCRUD;
             _wishListDetailCRUD = wishListDetailCRUD;
+            _imageCRUD = imageCRUD;
         }
 
         public IActionResult Index()
@@ -39,6 +43,13 @@ namespace ShoeStoreManagement.Controllers
                     if (_wishListDetailCRUD.GetByProductIdAsync(wishList.WishListId, item.ProductId).Result != null)
                     {
                         item.IsLiked = true;
+                    }
+
+                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+
+                    if ( img.Count > 0 )
+                    {
+                        item.ImageName = img[0].ImageName;
                     }
                 }
             }

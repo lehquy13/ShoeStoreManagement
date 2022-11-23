@@ -1,5 +1,7 @@
 ﻿using ShoeStoreManagement.Core.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 
 namespace ShoeStoreManagement.Core.ViewModel
 {
@@ -15,7 +17,7 @@ namespace ShoeStoreManagement.Core.ViewModel
 
         public int AmountSelected { get; set; } = 1;
 
-        public IFormFile Image { get; set; }
+        public IFormFile Image { get; set; } = null;
 
 
         [NotMapped]
@@ -24,6 +26,7 @@ namespace ShoeStoreManagement.Core.ViewModel
         [NotMapped]
         public List<string> TestSizeAmount { get; set; } = new List<string>();
 
-     
+        [NotMapped]
+        public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();
     }
 }

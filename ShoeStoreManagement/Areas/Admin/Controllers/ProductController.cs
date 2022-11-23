@@ -269,7 +269,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     string wwwRootPath = _hostEnvironment.WebRootPath;
                     string fileName = Path.GetFileNameWithoutExtension(productVM.Image.FileName);
                     string extension = Path.GetExtension(productVM.Image.FileName);
-                    fileName = fileName + DateTime.Now.ToString("yymmssffff") + extension;
+                    fileName = fileName + extension;
 
                     Image image = new Image()
                     {
@@ -299,31 +299,38 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Edit(Product obj)
+        public IActionResult Edit(ProductVM productVM)
         {
-            if (obj != null)
+            if (productVM.Product.ProductCategoryId == null)
             {
-                if (obj.ProductCategoryId != null)
-                    obj.ProductCategory = await _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId);//note
+                return NotFound(productVM.Product.ProductCategoryId);
             }
             else
             {
-                return NotFound(obj.ProductCategoryId);
+                productVM.Product.ProductCategory = _productCategoryCRUD.GetByIdAsync(productVM.Product.ProductCategoryId).Result;//note
+
             }
 
+            productVM.Product.ImageName = "";
 
+            if (productVM.Image == null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    productVM.Image = new FormFile(stream, 0, 0, "name", "fileName");
+                }
+            }
 
             ModelState.Clear();
-            obj.ImageName = "";
-            if (TryValidateModel(obj))
+            if (TryValidateModel(productVM))
             {
-                //var temp = obj.TestSizeAmount.Where(x => x != "0").ToList();
+                productVM.Product.ProductId = productVM.ProductId;
 
                 for (var i = 35; i <= 44; i++)
                 {
-                    var tempDetail = _sizeDetailCRUD.GetProductSizeAsync(obj.ProductId, i).Result;
-                    int amount = Int32.Parse(obj.TestSizeAmount[i - 35]);
-                    var newDetail = new SizeDetail() { Amount = amount, Size = i, ProductId = obj.ProductId };
+                    var tempDetail = _sizeDetailCRUD.GetProductSizeAsync(productVM.ProductId, i).Result;
+                    int amount = Int32.Parse(productVM.TestSizeAmount[i - 35]);
+                    var newDetail = new SizeDetail() { Amount = amount, Size = i, ProductId = productVM.ProductId };
 
                     if (tempDetail != null)
                     {
@@ -332,11 +339,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             await _sizeDetailCRUD.Update(newDetail);
 
                         }
-                        else if (amount == 0 || !obj.TestSize.Contains(i.ToString()))
+                        else if (amount == 0 || !productVM.TestSize.Contains(i.ToString()))
                         {
                             _sizeDetailCRUD.Remove(newDetail);
                         }
-
                     }
                     else
                     {
@@ -345,11 +351,53 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             {
                                 Size = i,
                                 Amount = amount,
-                                ProductId = obj.ProductId
+                                ProductId = productVM.Product.ProductId
                             });
                     }
                 }
-                _productCRUD.Update(obj);
+
+                _productCRUD.Update(productVM.Product);
+
+                if (productVM.Image.Length > 0)
+                {
+                    // Add image
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
+                    string fileName = Path.GetFileNameWithoutExtension(productVM.Image.FileName);
+                    string extension = Path.GetExtension(productVM.Image.FileName);
+                    fileName = fileName + extension;
+
+                    Image image = new Image()
+                    {
+                        ImageName = fileName,
+                        ImageFile = productVM.Image,
+                        Title = "hi",
+                        ProductId = productVM.ProductId,
+                    };
+
+                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        image.ImageFile.CopyToAsync(fileStream);
+                    }
+
+                    List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(productVM.Product.ProductId).Result;
+
+                    if (imgs.Count > 0)
+                    {
+                        imgs[0].ImageName = image.ImageName;
+                        imgs[0].Title = "updated";
+                        _imageCRUD.Update(imgs[0]);
+                    }
+                    else
+                    {
+                        _imageCRUD.CreateAsync(new Image()
+                        {
+                            ImageName = image.ImageName,
+                            Title = "new",
+                            ProductId = productVM.ProductId,
+                        });
+                    }
+                }
 
 
                 return RedirectToAction("Index");
@@ -380,7 +428,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;
                 ViewData["productCategories"] = productCategories;
 
-                return PartialView(obj);
+                ProductVM productVM = new ProductVM();
+                productVM.Product = obj;
+                productVM.ProductId = obj.ProductId;
+                productVM.SizeHashtable = obj.SizeHashtable;
+
+                return PartialView(productVM);
 
             }
             return RedirectToAction("Index");
