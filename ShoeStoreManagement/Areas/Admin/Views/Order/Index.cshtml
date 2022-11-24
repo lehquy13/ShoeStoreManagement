@@ -54,7 +54,7 @@
                                     <td>@orders[i-1].OrderDate.ToString("dd MMM y HH:mm")</td>
                                     <td>@orders[i-1].Status.ToString()</td>
                                     <td>
-                                        <a onclick="showContent('@Url.Action("Edit","Order",null,Context.Request.Scheme)','Im not here','@orders[i-1].OrderId')" class="border-1 table-icon">
+                                        <a onclick="showContent('@Url.Action("Edit","Order",null,Context.Request.Scheme)','Edit Order','@orders[i-1].OrderId')" class="border-1 table-icon">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                     </td>

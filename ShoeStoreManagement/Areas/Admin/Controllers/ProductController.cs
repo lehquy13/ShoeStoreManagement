@@ -263,8 +263,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         });
                     }
 
-                    _productCRUD.CreateAsync(productVM.Product);
-
                     // Add image
                     string wwwRootPath = _hostEnvironment.WebRootPath;
                     string fileName = Path.GetFileNameWithoutExtension(productVM.Image.FileName);
@@ -286,6 +284,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
 
                     _imageCRUD.CreateAsync(image);
+
+                    productVM.Product.ImageName = fileName;
+
+                    _productCRUD.CreateAsync(productVM.Product);
 
                     TempData["success"] = "Category is Created Successfully!!";
                     return RedirectToAction("Index");

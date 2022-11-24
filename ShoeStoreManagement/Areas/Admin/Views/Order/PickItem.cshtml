@@ -5,105 +5,93 @@
 @using ShoeStoreManagement.Core.ViewModels;
 @model OrderVM
 @{
-    List<Product>? products = ViewData["products"] as List<Product> ?? null;
-    List<int> ints = new List<int>() { 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44 };
+	List<Product>? products = ViewData["products"] as List<Product> ?? null;
+	List<int> ints = new List<int>() { 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44 };
 }
 
-<form method="post" action="Admin/Order/PickCustomer">
+<form method="post" asp-action="PickCustomer" asp-controller="Order" asp-area="Admin">
 
-    <div class="row">
-        <p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
-    </div>
+	<div class="row">
+		<p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
+	</div>
 
-    <div class="row" id="_pickItem">
-        <div class="col p-0 mt-2">
-            <div class="col d-flex flex-column gap-2">
-                <div class="d-flex flex-row">
-                    @*<partial name="ProductDialog.cshtml" view-data="ViewData" model="Model" />*@
-                    <div class="container col-10">
-                        <div class="row">
-                            <input name="customers" hidden value="@Model.customers" />
-                            <div class="col-md-12">
-                                <div class="table-wrap">
-                                    <table class="table myaccordion table-hover" id="accordion">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th class="button">Name</th>
-                                                <th class="button">Price</th>
-                                                <th class="button">Color</th>
-                                                <th class="button">Size</th>
-                                                <th class="button">Amount</th>
-                                                <th class="button">
-                                                    Quantity
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (Model.currentOrderDetail != null)
-                                                @for (var i = 1; i <= Model.currentOrderDetail.Count; i++)
-                                                {
-                                                    <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+	<div class="d-flex justify-content-between mt-5">
+		<button type="button"
+				onclick="showContentItem('@Url.Action("PickItemDialog","Order",null,Context.Request.Scheme)','Choose product')"
+				class="btn btn-primary"
+				style="width:180px;">
+			Pick item here!
+		</button>
+		<button type="submit"
+				class="btn btn-primary icon-arrow"
+				style="">
+			Next to Pick Customer
+		</button>
+		@*<button type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("PickCustomer", "Order"))'" style="width:180px;">Submit</button>*@
+	</div>
 
-                                                        <th scope="row">@i</th>
-                                                        <td>@Model.currentOrderDetail[i-1].Product.ProductName</td>
-                                                        <td>@Model.currentOrderDetail[i-1].Product.ProductUnitPrice</td>
-                                                        <td>@Model.currentOrderDetail[i-1].Product.Color</td>
+	<div class="row mt-4" id="_pickItem">
+		<table class="table myaccordion table-hover" id="accordion">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th class="button">Name</th>
+					<th class="button">Price</th>
+					<th class="button">Color</th>
+					<th class="button">Size</th>
+					<th class="button">Amount</th>
+					<th class="button">
+						Remove
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				@if (Model.currentOrderDetail != null)
+					@for (var i = 1; i <= Model.currentOrderDetail.Count; i++)
+					{
+						<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+
+							<th scope="row">@i</th>
+							<td>
+								<div class="d-flex align-items-start">
+									@if (Model.currentOrderDetail[i - 1].Product.ImageName != null)
+									{
+										<img src="~/image/@Model.currentOrderDetail[i-1].Product.ImageName"
+								 height="60" width="60"
+								 asp-append-version="true" />
+									}
+									@Model.currentOrderDetail[i-1].Product.ProductName
+								</div>
+							</td>
+							<td>@Model.currentOrderDetail[i-1].Product.ProductUnitPrice</td>
+							<td>@Model.currentOrderDetail[i-1].Product.Color</td>
+
+							@if (@Model.currentOrderDetail[i - 1].Product.Sizes.Count > 0)
+							{
+								<td>
+									@Model.currentOrderDetail[i-1].Size
+								</td>
+							}
+							else
+							{
+								<td>Fail </td>
+							}
+
+							<td>@Model.currentOrderDetail[i-1].Amount</td>
+							<td>
+								<a asp-action="DeteleItem"
+						   asp-route-id="@Model.currentOrderDetail[i-1].OrderDetailId"
+						   asp-controller="Order" class="border-1 table-icon">
+									<i class="fa-solid fa-trash-can"></i>
+								</a>
+							</td>
+						</tr>
+					}
+			</tbody>
+		</table>
+	</div>
 
 
-
-
-                                                        @if (@Model.currentOrderDetail[i - 1].Product.Sizes.Count > 0)
-                                                        {
-                                                            <td>
-                                                                @Model.currentOrderDetail[i-1].Size
-                                                            </td>
-                                                        }
-                                                        else
-                                                        {
-                                                            <td>Fail </td>
-                                                        }
-
-
-
-
-                                                        <td>@Model.currentOrderDetail[i-1].Amount</td>
-                                                        <td>
-                                                            <a asp-action="DeteleItem"
-                                                       asp-route-id="@Model.currentOrderDetail[i-1].OrderDetailId"
-                                                       asp-controller="Order"
-                                                       class="btn btn-primary rounded"
-                                                       style="width:180px; right: 245px">
-                                                                eliminate
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row-10 md-flex justify-content-between " style=" margin-bottom:0; ">
-        <button type="button"
-                onclick="showContentItem('@Url.Action("PickItemDialog","Order",null,Context.Request.Scheme)','Choose product')"
-                class="btn btn-primary rounded"
-                style="width:180px; right: 245px">
-            Pick item here!
-        </button>
-        <button type="submit"
-                class="btn btn-primary rounded position-fixed"
-                style="width:180px; right: 245px">
-            Choots
-        </button>
-        @*<button type="button" class="btn btn-primary" onclick="location.href = '@(Url.Action("PickCustomer", "Order"))'" style="width:180px;">Submit</button>*@
-    </div>
 </form>
 
 

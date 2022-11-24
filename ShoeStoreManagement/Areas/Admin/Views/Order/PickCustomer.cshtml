@@ -6,90 +6,91 @@
 @model CustomerDialogVM
 
 @{
-    ApplicationUser? user = ViewData["pickedUser"] as ApplicationUser ?? new ApplicationUser();
-    //List<Product>? items = ViewData["pickedItems"] as List<Product> ?? new List<Product>();
+	ApplicationUser? user = ViewData["pickedUser"] as ApplicationUser ?? new ApplicationUser();
 }
 
-<div class="row">
-    <p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
-</div>
-<form class="row p-0 mt-2" method="post" action="Admin/Order/ConfirmOrder">
-    <div class="row">
-        <h5 class="modal-title" id="ModalLabel">CHOOSE User</h5>
-    </div>
+<form class="p-0 mt-2" method="post" action="Admin/Order/ConfirmOrder">
 
-    <div class="col-8 d-flex flex-column gap-2">
-        <div class="d-flex flex-row">
-
-            <div class="modal-body p-0 mt-2" style="width: 850px">
-                <div class="container col-10">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-wrap">
-                                <table class="table myaccordion table-hover" id="accordion">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th class="button">Name</th>
-                                            <th class="button">Email</th>
-                                            <th class="button">Phone</th>
-                                            <th class="button">Start Date</th>
-                                            <th class="button"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @for (var i = 1; i <= @Model.customers.Count; i++)
-                                        {
-                                            <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
-                                               
-
-                                                <th scope="row"> @i </th>
-                                                <td> @Model.customers[i-1].UserName </td>
-                                                <td> @Model.customers[i-1].Email </td>
-                                                <td> @Model.customers[i-1].PhoneNumber </td>
-                                                <td> @Model.customers[i-1].CreatedDate </td>
-                                                <td>
-                                                    <input type="radio" class="fa-solid fa-check" value="@Model.customers[i-1].Id" name="pickCustomerId">
-                                                </td>
-
-                                            </tr>
-                                        }
+	<div class="w-100 d-flex justify-content-end">
+		<button type="submit" class="row btn btn-primary button">Next to Confirm Order</button>
+	</div>
 
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class="row mt-3">
+		<div class="col-8">
+			<p class="h3" id="ModalLabel">CHOOSE USER</p>
 
-    </div>
+			<div class="modal-body p-0 mt-2">
+				<table class="table myaccordion table-hover" id="accordion">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th class="button">Name</th>
+							<th class="button">Email</th>
+							<th class="button">Phone</th>
+							<th class="button">Start Date</th>
+							<th class="button"></th>
+						</tr>
+					</thead>
+					<tbody>
+						@for (var i = 1; i <= @Model.customers.Count; i++)
+						{
+							<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
 
-    <div class="col-4 d-flex flex-column gap-2">
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" hidden placeholder="Nguyen Van A" asp-for="pickCustomerId">
-        </div>
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="Nguyen Van A" asp-for="pickCustomers.UserName">
-            <label for="floatingInput">Enter Name</label>
-        </div>
 
-        <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="Thu Duc, Tp.Ho Chi Minh" asp-for="pickCustomers.SingleAddress">
-            <label for="floatingInput">Enter Address</label>
-        </div>
-        <div class="form-floating">
-            <input type="tel" class="form-control" id="floatingInput" placeholder="0947xxx73" asp-for="pickCustomers.PhoneNumber">
-            <label for="floatingInput">Enter Phone</label>
-        </div>
-        <div class="form-floating">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" asp-for="pickCustomers.Email">
-            <label for="floatingInput">Enter Email</label>
-        </div>
-    </div>
+								<th scope="row"> @i </th>
+								<td>
+									@if (Model.customers[i - 1].AvatarName != null)
+									{
+										<img src="~/image/@Model.customers[i-1].AvatarName"
+									 class="rounded-circle"
+									 height="40" width="40"
+									 asp-append-version="true" />
+									}
+									@Model.customers[i-1].UserName
+								</td>
+								<td> @Model.customers[i-1].Email </td>
+								<td> @Model.customers[i-1].PhoneNumber </td>
+								<td> @Model.customers[i-1].CreatedDate </td>
+								<td>
+									<input type="radio" class="form-check-input" value="@Model.customers[i-1].Id" name="pickCustomerId">
+								</td>
 
-    <button type="submit" class="btn btn-primary rounded mt-5" style="width:120px;">Confirm</button>
+							</tr>
+						}
+
+
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="col-4 d-flex flex-column gap-2">
+			<p class="h3" id="ModalLabel">new customer</p>
+
+			<div class="form-floating" hidden>
+				<input type="text" class="form-control" id="floatingInput" hidden placeholder="Nguyen Van A" asp-for="pickCustomerId">
+			</div>
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingInput" placeholder="Nguyen Van A" asp-for="pickCustomers.UserName">
+				<label for="floatingInput">Enter Name</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="text" class="form-control" id="floatingInput" placeholder="Thu Duc, Tp.Ho Chi Minh" asp-for="pickCustomers.SingleAddress">
+				<label for="floatingInput">Enter Address</label>
+			</div>
+			<div class="form-floating">
+				<input type="tel" class="form-control" id="floatingInput" placeholder="0947xxx73" asp-for="pickCustomers.PhoneNumber">
+				<label for="floatingInput">Enter Phone</label>
+			</div>
+			<div class="form-floating">
+				<input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" asp-for="pickCustomers.Email">
+				<label for="floatingInput">Enter Email</label>
+			</div>
+		</div>
+	</div>
+
+
 </form>
 

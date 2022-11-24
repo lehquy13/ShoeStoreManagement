@@ -5,115 +5,118 @@
 @using ShoeStoreManagement.Core.ViewModels;
 @using Newtonsoft.Json;
 @model OrderVM
+
 @{
-    List<Product>? products = ViewData["products"] as List<Product> ?? null;
+	List<Product>? products = ViewData["products"] as List<Product> ?? null;
 }
 
-<form method="post" action="Admin/Order/PickedItem">
-    <div class="row">
-        <p class="h1" id="label" style="margin-left:auto;margin-right:auto">Add a new Order</p>
-    </div>
+<form method="post" asp-action="PickedItem" asp-controller="Order" asp-area="Admin" style="width:800px">
 
-    <div class="row">
-        <div class="col p-0 mt-2">
-            <div class="col d-flex flex-column gap-2">
-                <div class="d-flex flex-row">
-                    <div class="container col-10">
-                        <div class="row">
-                            <input name="customers" hidden value="@Model.customers" />
-                            <div class="col-md-12">
-                                <div class="table-wrap">
-                                    <table class="table myaccordion table-hover" id="accordion">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th class="button">Name</th>
-                                                <th class="button">Price</th>
-                                                <th class="button">Color</th>
-                                                <th class="button">Size - Stock</th>
-                                                @*<th class="button">Amount</th>*@
-                                                <th class="button">Quantity</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if (products != null)
-                                                @foreach (var i in products)
-                                                {
-                                                    //<input name="pickitems" value="@i.ProductId" hidden />
-                                                    <tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed">
+	<div class="row">
+		<div class="col p-0 mt-2">
+			<div class="col d-flex flex-column gap-2">
+				<div class="d-flex flex-row">
+					<div class="container">
+						<div class="row">
+							<input name="customers" hidden value="@Model.customers" />
+							<div class="col-md-12">
+								<div class="table-wrap">
+									<table class="table myaccordion table-hover" id="accordion">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th class="button">Name</th>
+												<th class="button">Price</th>
+												<th class="button">Color</th>
+												<th class="button">Size - Stock</th>
+												@*<th class="button">Amount</th>*@
+												<th class="button">Quantity</th>
+											</tr>
+										</thead>
+										<tbody>
+											@if (products != null)
+												@foreach (var i in products)
+												{
+												//<input name="pickitems" value="@i.ProductId" hidden />
+													<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed w-100">
 
-                                                        <th scope="row">@i.ProductId.Substring(i.ProductId.Length-6,5)</th>
-                                                        <td>@i.ProductName</td>
-                                                        <td>@i.ProductUnitPrice</td>
-                                                        <td>@i.Color</td>
-                                                        <td>
-                                                            <select style="height:40px; width:120px;" asp-for="pickingSize">
-                                                                <option selected>
-                                                                    --
-                                                                </option>
-                                                                @foreach (var count in i.Sizes)
-                                                                {
-                                                                    <option value="@count.Size">
-                                                                        @count.Size : @count.Amount left
-                                                                    </option>
-                                                                }
-                                                            </select>
-                                                        </td>
-                                                        @*<td>@i.Amount</td>*@
-                                                        <td>
-                                                            <div class="form-check mt-2">
-                                                                @*<input class="form-check-input" type="checkbox"
-                                                               value="@i.ProductId" name="pickitems" id="checkbox_@i.ProductId"
-                                                               checked="@i.isChecked" />*@
+														<th>
+															<div class="d-flex flex-column">
+																@i.ProductId.Substring(i.ProductId.Length-6,5)
+																@if (i.ImageName != null)
+																{
+																	<img src="~/image/@i.ImageName"
+															 height="80" width="80"
+															 asp-append-version="true" />
+																}
+															</div>
 
-                                                                <label class="form-check-label ml-5 d-flex align-items-center">
-                                                                    <input type="number" name="pickingQuantity" value="0" id="input_@i.ProductId" class="form-control ms-2" style="width:100px;" />
-                                                                </label>
+														</th>
+														<td>@i.ProductName</td>
+														<td>@i.ProductUnitPrice</td>
+														<td>@i.Color</td>
+														<td>
+															<select class="form-select" asp-for="pickingSize">
+																<option selected>
+																	--
+																</option>
+																@foreach (var count in i.Sizes)
+																{
+																	<option value="@count.Size">
+																		@count.Size : @count.Amount left
+																	</option>
+																}
+															</select>
+														</td>
+														<td>
+															<div class="">
+																<label class="form-check-label ml-5 d-flex align-items-center">
+																	<input type="number" name="pickingQuantity" value="0" id="input_@i.ProductId" class="form-control ms-2" style="width:100px;" />
+																</label>
+															</div>
+														</td>
+													</tr>
+												}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="">
+		<button type="submit"
+				class="btn btn-primary position-fixed icon-plus"
+				style="bottom:50px; right:50px; height:50px; width:200px">
+			Add
+		</button>
 
-    <div class="row-10 md-flex justify-content-between " style=" margin-bottom:0; ">
-        <button type="submit"
-                class="btn btn-primary rounded position-fixed"
-                style="width:180px; right: 245px">
-            Add
-        </button>
-
-    </div>
-    @* onclick="itemPick('@Url.Action("PickedItem","Order",null,Context.Request.Scheme)','helo')"*@
+	</div>
+	@* onclick="itemPick('@Url.Action("PickedItem","Order",null,Context.Request.Scheme)','helo')"*@
 
 
 
 </form>
 
 @section Scripts {
-    <script>
-        function itemPick(url, data) {
-            let myform = $('myForm');
-            let fd = new FormData(myform);
-            alert(data);
-            debugger;
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: fd.serialize(),
-                success: function () {
+	<script>
+		function itemPick(url, data) {
+			let myform = $('myForm');
+			let fd = new FormData(myform);
+			alert(data);
+			debugger;
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: fd.serialize(),
+				success: function () {
 
-                }
-            })
-        }
-    </script>
+				}
+			})
+		}
+	</script>
 }
