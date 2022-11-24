@@ -206,14 +206,14 @@ namespace ShoeStoreManagement.Controllers
                     {
                         case ValueType.RealValue:
                             {
-                                _orderVM.currOrder.OrderTotalPayment = orderVM.currOrder.OrderTotalPrice;
-                                _orderVM.currOrder.OrderTotalPayment -= currentVoucher.Value;
+                                _orderVM.currOrder.OrderTotalPrice = _orderVM.currOrder.OrderTotalPayment;
+                                _orderVM.currOrder.OrderTotalPrice -= currentVoucher.Value;
                                 break;
                             }
                         case ValueType.Percent:
                             {
-                                _orderVM.currOrder.OrderTotalPayment = orderVM.currOrder.OrderTotalPrice;
-                                _orderVM.currOrder.OrderTotalPayment -= _orderVM.currOrder.OrderTotalPayment * currentVoucher.Value / 100;
+                                _orderVM.currOrder.OrderTotalPrice = _orderVM.currOrder.OrderTotalPayment;
+                                _orderVM.currOrder.OrderTotalPrice -= _orderVM.currOrder.OrderTotalPrice * currentVoucher.Value / 100;
                                 break;
                             }
                     }
@@ -225,8 +225,8 @@ namespace ShoeStoreManagement.Controllers
                 }
             }
 
-            _orderVM.currOrder.PaymentMethod = orderVM.currOrder.PaymentMethod;
-            _orderVM.currOrder.TotalAmount = orderVM.totalAmount;
+            _orderVM.currOrder.PaymentMethod = _orderVM.currOrder.PaymentMethod;
+            _orderVM.currOrder.TotalAmount = _orderVM.totalAmount;
 
             _orderCRUD.CreateAsync(_orderVM.currOrder);
 
