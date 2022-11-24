@@ -4,6 +4,7 @@ using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModels;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;
+using ValueType = ShoeStoreManagement.Core.Enums.ValueType;
 
 namespace ShoeStoreManagement.Controllers
 {
@@ -127,6 +128,101 @@ namespace ShoeStoreManagement.Controllers
             if (orderVM.currOrder == null)
             {
                 return NotFound();
+            }
+
+            // Handle if having voucher code
+            if (!string.IsNullOrEmpty(orderVM.currOrder.OrderVoucher.Code))
+            {
+                List<Voucher> vouchers = _voucherCRUD.GetAllAsync().Result;
+                Voucher currentVoucher = null;
+
+                foreach(Voucher voucher in vouchers)
+                {
+                    if (orderVM.currOrder.OrderVoucher.Code.Equals(voucher.Code))
+                    {
+                        currentVoucher = voucher;
+                        break;
+                    }
+                }
+
+                if (currentVoucher != null)
+                {
+                    // Handle voucher's type
+                    switch (currentVoucher.ConditionType)
+                    {
+                        case ConditionType.MinPrice:
+                            {
+                                // Debug 01: TotalPayment = 0
+                                if (orderVM.currOrder.OrderTotalPrice < float.Parse(currentVoucher.ConditionValue))
+                                {
+                                    // Annouce the total price does not satisfy
+                                    return RedirectToAction("Index", "Cart");
+                                }      
+                                break;
+                            }
+                        case ConditionType.NewCustomer:
+                            {
+                                if (_orderCRUD.GetAllAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)).Result != null)
+                                {
+                                    // Annouce that user is not New Customer (first time ordering)
+                                    return RedirectToAction("Index", "Cart");
+                                }
+                                break;
+                            }
+                            
+                    }
+
+                    // Handle if expired
+                    switch (currentVoucher.ExpiredType)
+                    {
+                        case ExpireType.ExpiredDate:
+                            {
+                                DateTime expiredDate = DateTime.ParseExact(currentVoucher.ExpiredValue, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+                                if (DateTime.Now > expiredDate) 
+                                {
+                                    // Annouce that voucer has been expired
+                                    return RedirectToAction("Index", "Cart");
+                                }
+                                break;
+                            }
+                        case ExpireType.Amount:
+                            {
+                                if (int.Parse(currentVoucher.ExpiredValue) <= 0) 
+                                {
+                                    // Annouce that voucer has been sold out
+                                    return RedirectToAction("Index", "Cart");
+                                }
+                                else
+                                {
+                                    currentVoucher.ExpiredValue = (int.Parse(currentVoucher.ExpiredValue) - 1).ToString();
+                                }
+                                break;
+                            }
+                    }
+
+                    // Handle voucher value type
+                    switch (currentVoucher.ValueType)
+                    {
+                        case ValueType.RealValue:
+                            {
+                                _orderVM.currOrder.OrderTotalPayment = orderVM.currOrder.OrderTotalPrice;
+                                _orderVM.currOrder.OrderTotalPayment -= currentVoucher.Value;
+                                break;
+                            }
+                        case ValueType.Percent:
+                            {
+                                _orderVM.currOrder.OrderTotalPayment = orderVM.currOrder.OrderTotalPrice;
+                                _orderVM.currOrder.OrderTotalPayment -= _orderVM.currOrder.OrderTotalPayment * currentVoucher.Value / 100;
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    // Annouce there is no valid voucher
+                    return RedirectToAction("Index", "Cart");
+                }
             }
 
             _orderVM.currOrder.PaymentMethod = orderVM.currOrder.PaymentMethod;

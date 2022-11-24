@@ -27,6 +27,6 @@ namespace ShoeStoreManagement.Core.ViewModel
         public List<string> TestSizeAmount { get; set; } = new List<string>();
 
         [NotMapped]
-        public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();
+        public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();   
     }
 }
