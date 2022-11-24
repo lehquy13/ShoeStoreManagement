@@ -153,7 +153,7 @@ namespace ShoeStoreManagement.Controllers
                         case ConditionType.MinPrice:
                             {
                                 // Debug 01: TotalPayment = 0
-                                if (orderVM.currOrder.OrderTotalPrice < float.Parse(currentVoucher.ConditionValue))
+                                if (orderVM.currOrder.OrderTotalPayment < float.Parse(currentVoucher.ConditionValue))
                                 {
                                     // Annouce the total price does not satisfy
                                     return RedirectToAction("Index", "Cart");
@@ -206,17 +206,20 @@ namespace ShoeStoreManagement.Controllers
                     {
                         case ValueType.RealValue:
                             {
+                                _orderVM.currOrder.OrderTotalPayment = _orderVM.currOrder.OrderTotalPayment;
                                 _orderVM.currOrder.OrderTotalPrice = _orderVM.currOrder.OrderTotalPayment;
                                 _orderVM.currOrder.OrderTotalPrice -= currentVoucher.Value;
                                 break;
                             }
                         case ValueType.Percent:
                             {
+                                _orderVM.currOrder.OrderTotalPayment = _orderVM.currOrder.OrderTotalPayment;
                                 _orderVM.currOrder.OrderTotalPrice = _orderVM.currOrder.OrderTotalPayment;
                                 _orderVM.currOrder.OrderTotalPrice -= _orderVM.currOrder.OrderTotalPrice * currentVoucher.Value / 100;
                                 break;
                             }
                     }
+                    _orderVM.currOrder.OrderVoucherId = currentVoucher.Id;
                 }
                 else
                 {
@@ -225,6 +228,7 @@ namespace ShoeStoreManagement.Controllers
                 }
             }
 
+            
             _orderVM.currOrder.PaymentMethod = _orderVM.currOrder.PaymentMethod;
             _orderVM.currOrder.TotalAmount = _orderVM.totalAmount;
 
