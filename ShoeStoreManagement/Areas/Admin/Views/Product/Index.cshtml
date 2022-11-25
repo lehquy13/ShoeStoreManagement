@@ -7,196 +7,119 @@
 @using Microsoft.AspNetCore.Components.Web;
 
 @{
-	List<Product>? products = ViewData["products"] as List<Product> ?? null;
-	List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
-	List<string> filters = ViewData["filters"] as List<string> ?? null;
-	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
-	int nProducts = (int)ViewData["page"] - 1;
+    List<Product>? products = ViewData["products"] as List<Product> ?? null;
+    List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
+    List<string> filters = ViewData["filters"] as List<string> ?? null;
+    List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
+    int nProducts = (int)ViewData["page"] - 1;
 
-	int countPage()
-	{
+    int countPage()
+    {
 
-		int numberPages = 0;
-		int numberProducts = 0;
+        int numberPages = 0;
+        int numberProducts = 0;
 
-		foreach (Product i in products)
-		{
-			numberProducts++;
-		}
+        foreach (Product i in products)
+        {
+            numberProducts++;
+        }
 
-		numberPages = numberProducts / 10;
+        numberPages = numberProducts / 10;
 
-		if (numberProducts % 10 != 0)
-			numberPages++;
+        if (numberProducts % 10 != 0)
+            numberPages++;
 
-		return numberPages;
-	}
+        return numberPages;
+    }
 }
 
 <style>
-	table,
-	thead {
-		border-bottom: dotted;
-		border-bottom: 1px solid rgba(20, 33, 61, 0.1);
-	}
+    table,
+    thead {
+        border-bottom: dotted;
+        border-bottom: 1px solid rgba(20, 33, 61, 0.1);
+    }
 
 </style>
 
 <div class="row">
-	<form method="post" action="Admin/Product/Index" class="col-2 borderCustom1">
-		<div class="col">
-			<div class="row">
-				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+    <form method="post" action="Admin/Product/Index" class="col-2 borderCustom1">
+        <div class="col">
+            <div class="row">
+                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
-					@if (string.IsNullOrEmpty(filters[0]))
-					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
-					}
-					@if (!string.IsNullOrEmpty(filters[0]))
-					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
-					}
-					@foreach (ProductCategory i in productCategories)
-					{
-						if (i.ProductCategoryName.Equals(filters[0]))
-						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
-						}
-						else
-						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
-						}
-					}
+                <div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+                    @if (string.IsNullOrEmpty(filters[0]))
+                    {
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+                    }
+                    @if (!string.IsNullOrEmpty(filters[0]))
+                    {
+                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+                    }
+                    @foreach (ProductCategory i in productCategories)
+                    {
+                        if (i.ProductCategoryName.Equals(filters[0]))
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
+                        }
+                        else
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
+                        }
+                    }
 
-				</div>
+                </div>
 
-			</div>
+            </div>
 
-			<div class="row mt-3">
-				<ii class="row-1 h6">Price</ii>
+            <div class="row mt-3">
+                <ii class="row-1 h6">Price</ii>
 
-				<div class="radioLayoutTabCustom row-cols-6 w-100">
-					@foreach (string i in priceFilters)
-					{
-						if (i.Equals(filters[1]))
-						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
-						}
-						else if (string.IsNullOrEmpty(i))
-						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
-						}
-						else
-						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
-						}
-					}
-				</div>
-			</div>
+                <div class="radioLayoutTabCustom row-cols-6 w-100">
+                    @foreach (string i in priceFilters)
+                    {
+                        if (i.Equals(filters[1]))
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
+                        }
+                        else if (string.IsNullOrEmpty(i))
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+                        }
+                        else
+                        {
+                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+                        }
+                    }
+                </div>
+            </div>
 
-			<input class="btn btn-secondary rounded w-100 mt-5" type="submit" />
-		</div> @*used to col-3 vs col-10*@
-	</form>
+            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" />
+        </div> @*used to col-3 vs col-10*@
+    </form>
 
-	<div class="container col-10">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="table-wrap">
-					<table class="table myaccordion table-hover" id="accordion">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th class="button">Name</th>
-								<th class="button">Price</th>
-								<th class="button">Color</th>
-								<th class="button">Category</th>
-								<th class="button">Amount</th>
-								<th class="button">Edit</th>
-								<th class="button">Add to cart</th>
-							</tr>
-						</thead>
-						<tbody>
-							@if (products != null)
-							{
-								var a = nProducts * 10;
-								for (int i = (nProducts) * 10; i < products.Count; i++)
-								{
-									a++;
-									if (a == (nProducts + 1) * 10 + 1) break;
-
-									<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
-
-										<th scope="row">@a</th>
-										<td>
-											@if(products[i].ImageName != null) {
-												<img src="~/image/@products[i].ImageName"
-												 class="rounded-circle"
-												 height="40" width="40"
-												 asp-append-version="true" />
-											}
-											@products[i].ProductName
-										</td>
-										<td>@products[i].ProductUnitPrice</td>
-										<td>@products[i].Color</td>
-										<td>@products[i].ProductCategory.ProductCategoryName</td>
-										<td>@products[i].Amount</td>
-										<td>
-											<a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Im not here','@products[i].ProductId')" class="border-1 table-icon">
-												<i class="fas fa-edit"></i>
-											</a>
-										</td>
-										<td>
-											<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@products[i].ProductId')" class="link-info table-icon">
-												<i class="fas fa-cart-plus"></i>
-											</a>
-										</td>
-									</tr>
-
-								}
-							}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-
-		<form method="post" action="Admin/Product/Index">
-			<nav class="container">
-				<ul class="pagination" style="display:flex; flex-direction:row">
-					@if (nProducts != 0)
-					{
-						if (nProducts > 1) nProducts -= 1;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
-					}
-					@for (int i = 1; i <= @countPage(); i++)
-					{
-						if (i == nProducts + 1)
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-						}
-						else
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
-						}
-					}
-					@if (nProducts + 1 != @countPage())
-					{
-						nProducts += 2;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-					}
-				</ul>
-			</nav>
-		</form>
-	</div>
+    <div class="container col-10" id="product-table">
+        @await Html.PartialAsync("ProductTable.cshtml",Model)
+    </div>
 </div>
-
+<div class="modal fade" tabindex="-1" role="dialog" id="form-modal">
+    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+        <div class="modal-content border-0 px-3 py-3" style="width:fit-content">
+            <div class="modal-header pt-4 pb-2">
+                <h5 class="modal-title"></h5>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
 @{
-	ProductVM metmoi = new ProductVM() { };
+    ProductVM metmoi = new ProductVM() { };
 }
 
 <partial name="Create.cshtml" view-data="ViewData" model="metmoi"></partial>
 
 @{
-	<partial name="./_ValidationScriptsPartial"></partial>
+    <partial name="./_ValidationScriptsPartial"></partial>
 }
