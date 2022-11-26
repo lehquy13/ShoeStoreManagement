@@ -307,9 +307,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 
-        [ValidateAntiForgeryToken]
+        
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductVM productVM)
+        public async Task<IActionResult> Edit([Bind("ProductId,Product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
         {
             if (productVM.Product.ProductCategoryId == null)
             {
@@ -409,30 +409,21 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
                 }
 
-
-                return RedirectToAction("Index");
+                await load();
+                return PartialView("ProductTable");
             }
             return RedirectToAction("Index");
         }
 
-       
-        [HttpPost]
-        public async Task<IActionResult> Delete(string id)
+        private async Task load()
         {
-            var obj = await _productCRUD.GetByIdAsync(id);
-            if (obj != null)
-            {
-                _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
-                _productCRUD.Remove(obj);
-            }
-
 			List<Product> productFilter = new List<Product>();
 			List<string> filters = new List<string>();
 			filters.Add(categoryRadio);
 			filters.Add(priceRadio);
 
 			float minvalue = -1, maxvalue = -1;
-            products = await _productCRUD.GetAllAsync();
+			products = await _productCRUD.GetAllAsync();
 			if (products.Count > 0)
 			{
 				if (!string.IsNullOrEmpty(priceRadio))
@@ -456,6 +447,19 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 			ViewData["page"] = page;
 			ViewData["test"] = test;
 
+		}
+
+		[HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var obj = await _productCRUD.GetByIdAsync(id);
+            if (obj != null)
+            {
+                _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
+                _productCRUD.Remove(obj);
+            }
+
+            await load();
 			return PartialView("ProductTable");
         }
 

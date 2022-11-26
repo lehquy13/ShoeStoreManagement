@@ -36,28 +36,28 @@ function toCart(url, title, id) {
             $("#size-dialog").modal('show');
             $.notify("I'm over here !");
         }
-       
+
     })
 }
 
 function showContent(url, title, id) {
 
-  $.ajax({
-    type: "GET",
-    url: url,
-    data: { id: id },
-    success: function (res) {
-      $("#form-modal .modal-body").html(res);
-      $("#form-modal .modal-title").html(title);
-        $("#form-modal").modal('show');
-        //$.notify("I'm over here !");
-        //$.notify("Access granted", "success", { position: "right" });
-        $("#form-modal .modal-title").notify(
-            "I'm to the right of this box",
-            { position: "top" }
-        );
-    }
-  })
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: { id: id },
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+            //$.notify("I'm over here !");
+            //$.notify("Access granted", "success", { position: "right" });
+            $("#form-modal .modal-title").notify(
+                "I'm to the right of this box",
+                { position: "top" }
+            );
+        }
+    })
 }
 
 function deteleItem(url, id) {
@@ -67,7 +67,7 @@ function deteleItem(url, id) {
         url: url,
         data: { id: id },
         success: function (res) {
-          
+
             $("#_pickItem").html(res);
         }
     })
@@ -79,7 +79,7 @@ function showContentItem(url, title) {
         url: url,
         success: function (res) {
             $("#form-modal .modal-body").html(res);
-            
+
             $("#form-modal .modal-title").html(title);
             $("#form-modal").modal('show');
             //$.notify("I'm over here !");
@@ -134,7 +134,7 @@ function callWithId(url, id) {
     $.ajax({
         type: "GET",
         url: url,
-        data: {id: id},
+        data: { id: id },
         success: function () {
         }
     })
@@ -162,51 +162,58 @@ function addToCart(url, amount, size) {
 //}
 
 function jQueryAjaxDelete(url) {
-        alert(url);
 
-        //try {
-        //    $.ajax({
-        //        type: 'POST',
-        //        url: route,
-        //        data: { id: id },
-        //        success: function (res) {
-        //            alert(res);
-        //            $("#form-modal .modal-body").html(res);
-        //            $("#form-modal").modal('show');
+   
+    $.ajax({
+        type: "POST",
+        url: url,
+        success: function (res) {
+            //$("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html();
+            $("#form-modal").modal('hide');
+            $("#product-table").html(res);
+
+            $.notify("dung !");
+        },
+        error: function (xhr, status, error) {
+            alert("sai");
+            console.log(xhr);
+            console.log(status);
+            console.log(error);
+
+        }
+    })
 
 
-        //        },
-        //        error: function (err) {
-        //            alert("im i here?");
-        //            alert(err);
-        //        }
-        //    })
-        //} catch (ex) {
-        //    alert(ex);
-        //}
-        $.ajax({
-            type: "POST",
-            url: url,
-            success: function (res) {
-                alert(res);
-                //$("#form-modal .modal-body").html(res);
-                $("#form-modal .modal-title").html();
-                $("#form-modal").modal('hide');
-                $("#product-table").html(res);
-
-                $.notify("dung !");
-            },
-            error: function (xhr, status, error) {
-                alert("sai");
-                console.log(xhr);
-                console.log(status);
-                console.log(error);
-                 
-            }
-        })
-        
-    
 
     //prevent default form submit event
-    
+
+}
+
+function jQueryAjaxPost(form) {
+    var obj = new FormData(form);
+
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: obj,
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                $("#form-modal .modal-title").html();
+                $("#form-modal").modal('hide');
+                $('#product-table').html(res);
+
+            },
+            error: function (err) {
+
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        return false;
+    } catch (ex) {
+        console.log(ex)
+    }
 }
