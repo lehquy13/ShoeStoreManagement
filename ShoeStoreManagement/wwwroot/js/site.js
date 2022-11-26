@@ -36,6 +36,7 @@ function toCart(url, title, id) {
             $("#size-dialog").modal('show');
             $.notify("I'm over here !");
         }
+       
     })
 }
 
@@ -160,27 +161,52 @@ function addToCart(url, amount, size) {
 //    })
 //}
 
-jQueryAjaxDelete = form => {
-    if (confirm('Are you sure to delete this record ?')) {
-        try {
-            $.ajax({
-                type: 'POST',
-                url: form.action,
-                data: new FormData(form),
-                contentType: false,
-                processData: false,
-                success: function (res) {
-                    $('#view-all').html(res.html);
-                },
-                error: function (err) {
-                    console.log(err)
-                }
-            })
-        } catch (ex) {
-            console.log(ex)
-        }
-    }
+function jQueryAjaxDelete(url) {
+        alert(url);
+
+        //try {
+        //    $.ajax({
+        //        type: 'POST',
+        //        url: route,
+        //        data: { id: id },
+        //        success: function (res) {
+        //            alert(res);
+        //            $("#form-modal .modal-body").html(res);
+        //            $("#form-modal").modal('show');
+
+
+        //        },
+        //        error: function (err) {
+        //            alert("im i here?");
+        //            alert(err);
+        //        }
+        //    })
+        //} catch (ex) {
+        //    alert(ex);
+        //}
+        $.ajax({
+            type: "POST",
+            url: url,
+            success: function (res) {
+                alert(res);
+                //$("#form-modal .modal-body").html(res);
+                $("#form-modal .modal-title").html();
+                $("#form-modal").modal('hide');
+                $("#product-table").html(res);
+
+                $.notify("dung !");
+            },
+            error: function (xhr, status, error) {
+                alert("sai");
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                 
+            }
+        })
+        
+    
 
     //prevent default form submit event
-    return false;
+    
 }
