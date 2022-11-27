@@ -1,0 +1,60 @@
+﻿@using ShoeStoreManagement.Areas.Identity.Data;
+
+@model List<ApplicationUser>
+
+<div class="table-wrap">
+	<table class="table myaccordion table-hover" id="accordion">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th class="button">Name</th>
+				<th class="button">Email</th>
+				<th class="button">Phone</th>
+				<th class="button">Orders</th>
+				<th class="button">Start Date</th>
+				<th class="button">Role</th>
+				<th class="button"></th>
+			</tr>
+		</thead>
+		<tbody>
+			@for (var i = 1; i <= Model.Count; i++)
+			{
+				<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
+
+					<th scope="row">@i</th>
+					<td>
+						@if (Model[i - 1].AvatarName != null)
+						{
+							<img src="~/image/@Model[i-1].AvatarName"
+						 class="rounded-circle"
+						 height="40" width="40"
+						 asp-append-version="true" />
+						}
+						@Model[i-1].UserName
+					</td>
+					<td>@Model[i-1].Email</td>
+					<td>@Model[i-1].PhoneNumber</td>
+					<td>numbers of Orders</td>
+					<td>@Model[i-1].CreatedDate</td>
+					<td>@Model[i-1].Role</td>
+					<td>
+						<a onclick="showContent('@Url.Action("Edit","User",null,Context.Request.Scheme)','Edit User @Model[i-1].UserName','@Model[i-1].Id')" class="table-icon">
+							<i class="fas fa-edit"></i>
+						</a>
+					</td>
+
+
+					@*                       <td>
+				<i class="fa" aria-hidden="true"></i>
+				</td>*@
+				</tr>
+			}
+			@*<tr>
+			<td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
+			</td>
+			</tr>*@
+
+		</tbody>
+	</table>
+</div>

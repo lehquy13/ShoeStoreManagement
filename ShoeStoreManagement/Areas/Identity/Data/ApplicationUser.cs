@@ -10,16 +10,17 @@ public class ApplicationUser : IdentityUser
 {
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-    [NotMapped]
-    public string SingleAddress { get; set; } = string.Empty;
+    [Required]
+    public string SingleAddress { get; set; } = "";
 
-    [NotMapped]
+    [Required]
     public string Role { get; set; } = "Customer";
 
     [NotMapped]
     public Cart? Cart { get; set; }
 
     [DataType(DataType.DateTime)]
+    [Required]
     public DateTime Birthday { get; set; }
 
     public List<Address> Addresses { get; set; } = new List<Address>();

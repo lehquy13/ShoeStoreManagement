@@ -25,12 +25,12 @@
 			<div class="row">
 				<div class="col d-grid gap-2">
 					<div class="form-floating">
-						<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
+						<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A" required>
 						<label for="floatingInput">Enter Name</label>
 						<span asp-validation-for="ProductName" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="Color" class="form-control" id="floatingInput" placeholder="Black">
+						<input type="text" asp-for="Color" class="form-control" id="floatingInput" placeholder="Black" required>
 						<label for="floatingInput">Enter Color</label>
 						<span asp-validation-for="Color" class="text-danger"></span>
 					</div>
@@ -42,13 +42,13 @@
 				</div>
 				<div class="col d-grid gap-2" style="height:fit-content">
 					<div class="form-floating">
-						<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
+						<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example" required>
 						</select>
 						<label for="selectCategory">Category</label>
 						<span asp-validation-for="ProductCategoryId" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
+						<input type="text" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20" required>
 						<label for="floatingInput">Enter Price</label>
 						<span asp-validation-for="ProductUnitPrice" class="text-danger"></span>
 					</div>
