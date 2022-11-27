@@ -43,7 +43,7 @@
 </style>
 
 <div class="row">
-    <form method="post" action="Admin/Product/Index" class="col-2 borderCustom1">
+    <form asp-action="taolao" asp-area="Admin" asp-controller="Product" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);" autocomplete="off">
         <div class="col">
             <div class="row">
                 <ii class="row-1 h6 mb-2 mt-4">Category</ii>
@@ -95,7 +95,7 @@
                 </div>
             </div>
 
-            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="me here1" />
+            <button class="btn btn-secondary rounded w-100 mt-5" type="submit" />
         </div> @*used to col-3 vs col-10*@
     </form>
 

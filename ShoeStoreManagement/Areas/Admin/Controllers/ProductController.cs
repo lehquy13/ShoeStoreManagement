@@ -42,7 +42,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
 
 
-		public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
+        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
             , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IWebHostEnvironment webHostEnvironment, IImageCRUD imageCRUD)
         {
             _logger = logger;
@@ -200,10 +200,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             foreach (Product i in products)
             {
-                if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio) || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+                if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio)
+                    || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice)
+                    && maxCheck(maxvalue, i.ProductUnitPrice))
                     productFilter.Add(i);
             }
-            this.priceRadio = priceRadio; 
+            this.priceRadio = priceRadio;
             this.categoryRadio = categoryRadio;
             this.page = page;
             ViewBag.Product = true;
@@ -213,6 +215,45 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             ViewData["page"] = page;
             ViewData["test"] = test;
             return View(new Product());
+        }
+
+        [HttpPost]
+        public IActionResult taolao(string categoryRadio,  string priceRadio, int page = 1)
+        {
+            List<Product> productFilter = new List<Product>();
+            List<string> filters = new List<string>();
+            filters.Add(categoryRadio);
+            filters.Add(priceRadio);
+
+            float minvalue = -1, maxvalue = -1;
+
+            if (products.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(priceRadio))
+                {
+                    string[] strsplt = priceRadio.Split('-', 2, StringSplitOptions.None);
+                    minvalue = float.Parse(strsplt[0]);
+                    maxvalue = float.Parse(strsplt[1]);
+                }
+            }
+
+            foreach (Product i in products)
+            {
+                if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio)
+                    || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice)
+                    && maxCheck(maxvalue, i.ProductUnitPrice))
+                    productFilter.Add(i);
+            }
+            this.priceRadio = priceRadio;
+            this.categoryRadio = categoryRadio;
+            this.page = page;
+            ViewBag.Product = true;
+            ViewData["productCategories"] = productCategories;
+            ViewData["products"] = productFilter;
+            ViewData["filters"] = filters;
+            ViewData["page"] = page;
+            ViewData["test"] = test;
+            return PartialView("ProductTable");
         }
 
         private bool minCheck(float value, float price)
@@ -256,7 +297,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 productVM.Product.TestSizeAmount = productVM.TestSizeAmount;
 
                 ModelState.Clear();
-                
+
                 if (TryValidateModel(productVM))
                 {
                     var temp = productVM.Product.TestSizeAmount.Where(x => x != "0").ToList();
@@ -307,7 +348,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 
-        
+
         [HttpPost]
         public async Task<IActionResult> Edit([Bind("ProductId,Product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
         {
@@ -364,7 +405,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
                 productVM.Product.Sizes = await _sizeDetailCRUD.GetAllByIdAsync(productVM.Product.ProductId);
                 productVM.Product.Amount = 0;
-                foreach(var i in productVM.Product.Sizes)
+                foreach (var i in productVM.Product.Sizes)
                 {
                     productVM.Product.Amount += i.Amount;
                 }
@@ -420,39 +461,39 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         private async Task load()
         {
-			List<Product> productFilter = new List<Product>();
-			List<string> filters = new List<string>();
-			filters.Add(categoryRadio);
-			filters.Add(priceRadio);
+            List<Product> productFilter = new List<Product>();
+            List<string> filters = new List<string>();
+            filters.Add(categoryRadio);
+            filters.Add(priceRadio);
 
-			float minvalue = -1, maxvalue = -1;
-			products = await _productCRUD.GetAllAsync();
-			if (products.Count > 0)
-			{
-				if (!string.IsNullOrEmpty(priceRadio))
-				{
-					string[] strsplt = priceRadio.Split('-', 2, StringSplitOptions.None);
-					minvalue = float.Parse(strsplt[0]);
-					maxvalue = float.Parse(strsplt[1]);
-				}
-			}
+            float minvalue = -1, maxvalue = -1;
+            products = await _productCRUD.GetAllAsync();
+            if (products.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(priceRadio))
+                {
+                    string[] strsplt = priceRadio.Split('-', 2, StringSplitOptions.None);
+                    minvalue = float.Parse(strsplt[0]);
+                    maxvalue = float.Parse(strsplt[1]);
+                }
+            }
 
-			foreach (Product i in products)
-			{
-				if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio) || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
-					productFilter.Add(i);
-			}
+            foreach (Product i in products)
+            {
+                if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio) || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+                    productFilter.Add(i);
+            }
 
-			ViewBag.Product = true;
-			ViewData["productCategories"] = productCategories;
-			ViewData["products"] = productFilter;
-			ViewData["filters"] = filters;
-			ViewData["page"] = page;
-			ViewData["test"] = test;
+            ViewBag.Product = true;
+            ViewData["productCategories"] = productCategories;
+            ViewData["products"] = productFilter;
+            ViewData["filters"] = filters;
+            ViewData["page"] = page;
+            ViewData["test"] = test;
 
-		}
+        }
 
-		[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var obj = await _productCRUD.GetByIdAsync(id);
@@ -463,7 +504,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             await load();
-			return PartialView("ProductTable");
+            return PartialView("ProductTable");
         }
 
         // Admin/Edit/id

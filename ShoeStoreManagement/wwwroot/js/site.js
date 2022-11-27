@@ -192,7 +192,6 @@ function jQueryAjaxDelete(url) {
 
 function jQueryAjaxPost(form) {
     var obj = new FormData(form);
-
     try {
         $.ajax({
             type: 'POST',
@@ -217,3 +216,33 @@ function jQueryAjaxPost(form) {
         console.log(ex)
     }
 }
+function jQueryAjaxSort(form) {
+    var obj = new FormData(form);
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: obj,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                $('#product-table').html(res);
+                alert("im hể");
+
+            },
+            error: function (err) {
+                alert("im hể2");
+
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        
+    } catch (ex) {
+
+        alert(ex);
+        alert("im hể 3");
+
+    }
+}
+
