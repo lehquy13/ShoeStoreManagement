@@ -1,17 +1,16 @@
-﻿@model List<ShoeStoreManagement.Core.Models.Product>
-@using ShoeStoreManagement.Areas.Admin.Controllers
+﻿@using ShoeStoreManagement.Areas.Admin.Controllers
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @using ShoeStoreManagement.Core.ViewModel;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
 
+@model ProductVM
+
 @{
-	//List<Product>? products = ViewData["products"] as List<Product> ?? null;
-	List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
-	List<string> filters = ViewData["filters"] as List<string> ?? null;
 	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
-	int nProducts = (int)ViewData["page"] - 1;
+
+	int nProducts = Model.nProducts;
 
 	int countPage()
 	{
@@ -19,7 +18,7 @@
 		int numberPages = 0;
 		int numberProducts = 0;
 
-		foreach (Product i in Model)
+		foreach (Product i in Model.products)
 		{
 			numberProducts++;
 		}
@@ -49,17 +48,17 @@
 				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
 				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
-					@if (string.IsNullOrEmpty(filters[0]))
+					@if (string.IsNullOrEmpty(Model.filters[0]))
 					{
 						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
 					}
-					@if (!string.IsNullOrEmpty(filters[0]))
+					@if (!string.IsNullOrEmpty(Model.filters[0]))
 					{
 						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
 					}
-					@foreach (ProductCategory i in productCategories)
+					@foreach (ProductCategory i in Model.productCategories)
 					{
-						if (i.ProductCategoryName.Equals(filters[0]))
+						if (i.ProductCategoryName.Equals(Model.filters[0]))
 						{
 							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
 						}
@@ -79,7 +78,7 @@
 				<div class="radioLayoutTabCustom row-cols-6 w-100">
 					@foreach (string i in priceFilters)
 					{
-						if (i.Equals(filters[1]))
+						if (i.Equals(Model.filters[1]))
 						{
 							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
 						}
@@ -101,63 +100,8 @@
 
 	<div class="container col-10">
 		<div class="row">
-			<div class="col-md-12">
-				<div class="table-wrap">
-					<table class="table myaccordion table-hover" id="accordion">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th class="button">Name</th>
-								<th class="button">Price</th>
-								<th class="button">Color</th>
-								<th class="button">Category</th>
-								<th class="button">Amount</th>
-								<th class="button">Edit</th>
-								<th class="button">Add to cart</th>
-							</tr>
-						</thead>
-						<tbody>
-							@if (Model != null)
-							{
-								var a = nProducts * 10;
-								for (int i = (nProducts) * 10; i < Model.Count; i++)
-								{
-									a++;
-									if (a == (nProducts + 1) * 10 + 1) break;
-
-									<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
-
-										<th scope="row">@a</th>
-										<td>
-											@if(Model[i].ImageName != null) {
-												<img src="~/image/@Model[i].ImageName"
-												 class="rounded-circle"
-												 height="40" width="40"
-												 asp-append-version="true" />
-											}
-											@Model[i].ProductName
-										</td>
-										<td>@Model[i].ProductUnitPrice</td>
-										<td>@Model[i].Color</td>
-										<td>@Model[i].ProductCategory.ProductCategoryName</td>
-										<td>@Model[i].Amount</td>
-										<td>
-											<a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Edit Product @Model[i].ProductName','@Model[i].ProductId')" class="border-1 table-icon">
-												<i class="fas fa-edit"></i>
-											</a>
-										</td>
-										<td>
-											<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@Model[i].ProductId')" class="link-info table-icon">
-												<i class="fas fa-cart-plus"></i>
-											</a>
-										</td>
-									</tr>
-
-								}
-							}
-						</tbody>
-					</table>
-				</div>
+			<div class="col-md-12" id="hihi">
+				<partial name="_ViewAll" model=@Model.products view-data="ViewData"/>
 			</div>
 		</div>
 

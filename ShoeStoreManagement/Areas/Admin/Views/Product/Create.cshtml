@@ -1,11 +1,11 @@
 ﻿@using ShoeStoreManagement.Core.ViewModel;
 @using ShoeStoreManagement.Core.Models;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model Product;
+
+@model ProductVM;
 
 @{
-	List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? new List<ProductCategory>();
-	Model.Sizes = new List<SizeDetail>() {
+	Model.product.Sizes = new List<SizeDetail>() {
 		new SizeDetail() {Size = 35, Amount = 0},
 		new SizeDetail() {Size = 36, Amount = 0},
 		new SizeDetail() {Size = 37, Amount = 0},
@@ -24,51 +24,52 @@
 		<div class="col-8" style="height:fit-content">
 			<div class="row">
 				<div class="col d-grid gap-2">
+					<input asp-for="product.ProductId" hidden>
 					<div class="form-floating">
-						<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A" required>
+						<input type="text" asp-for="product.ProductName" class="form-control" id="floatingInput" placeholder="Annanas A" required>
 						<label for="floatingInput">Enter Name</label>
-						<span asp-validation-for="ProductName" class="text-danger"></span>
+						<span asp-validation-for="product.ProductName" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="Color" class="form-control" id="floatingInput" placeholder="Black" required>
+						<input type="text" asp-for="product.Color" class="form-control" id="floatingInput" placeholder="Black" required>
 						<label for="floatingInput">Enter Color</label>
-						<span asp-validation-for="Color" class="text-danger"></span>
+						<span asp-validation-for="product.Color" class="text-danger"></span>
 					</div>
 					<div class="form-floating flex-grow-1">
-						<textarea class="form-control" style="height:120px" asp-for="Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+						<textarea class="form-control" style="height:120px" asp-for="product.Description" placeholder="Leave a comment here" id="floatingTextarea" required></textarea>
 						<label for="floatingTextarea">Enter Product</label>
-						<span asp-validation-for="Description" class="text-danger"></span>
+						<span asp-validation-for="product.Description" class="text-danger"></span>
 					</div>
 				</div>
 				<div class="col d-grid gap-2" style="height:fit-content">
 					<div class="form-floating">
-						<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example" required>
+						<select class="form-select" asp-for="product.ProductCategoryId" asp-items="@(new SelectList(Model.productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example" required>
 						</select>
 						<label for="selectCategory">Category</label>
-						<span asp-validation-for="ProductCategoryId" class="text-danger"></span>
+						<span asp-validation-for="product.ProductCategoryId" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20" required>
+						<input type="text" asp-for="product.ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20" required>
 						<label for="floatingInput">Enter Price</label>
-						<span asp-validation-for="ProductUnitPrice" class="text-danger"></span>
+						<span asp-validation-for="product.ProductUnitPrice" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="number" asp-for="Amount" readonly class="form-control" id="floatingInput" placeholder="1">
+						<input type="number" asp-for="product.Amount" readonly class="form-control" id="floatingInput" placeholder="1">
 						<label for="floatingInput">Dont Enter ME:> Amount</label>
-						<span asp-validation-for="Amount" class="text-danger"></span>
+						<span asp-validation-for="product.Amount" class="text-danger"></span>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 				@*<img src="image/shoe.jpg" class="img h-auto col-4" alt="image" />*@
 				<div class="form-floating">
-					<input asp-for="Image" accept="image/*" />
+					<input asp-for="product.Image" accept="image/*" />
 				</div>
 			</div>
 		</div>
 		<div class="col-4">
 			<div class="form-group">
-				@foreach (var i in Model.Sizes)
+				@foreach (var i in Model.product.Sizes)
 				{
 					<div class="form-check mt-2">
 						<input class="form-check-input" type="checkbox" value="@i.Size" name="TestSize" id="checkbox_@i.Size" checked="@i.IsChecked" />

@@ -9,10 +9,10 @@
 
 
 <div class="d-flex flex-column gap-4">
-	<p class="h2">@productVM.Product.ProductName</p>
+	<p class="h2">@productVM.product.ProductName</p>
 	<div>
 		<span class="h6">Color</span>
-		<p class="h5 mt-1">@productVM.Product.Color</p>
+		<p class="h5 mt-1">@productVM.product.Color</p>
 	</div>
 	<div>
 		<span class="h6">Amount</span>
@@ -32,7 +32,7 @@
 
 			var disabled = "disabled";
 
-			foreach (var item in productVM.Product.Sizes)
+			foreach (var item in productVM.product.Sizes)
 			{
 				if (item.Size == i)
 				{
@@ -72,7 +72,7 @@
 	protected void LoadAmount(int size)
 	{
 		productVM.Size = size;
-		productVM.Amount = productVM.Product.Sizes.Where(x => x.Size == size).First().Amount;
+		productVM.Amount = productVM.product.Sizes.Where(x => x.Size == size).First().Amount;
 
 		StateHasChanged();
 	}

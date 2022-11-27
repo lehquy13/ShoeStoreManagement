@@ -1,4 +1,5 @@
-﻿using ShoeStoreManagement.Core.Models;
+﻿using ShoeStoreManagement.Areas.Identity.Data;
+using ShoeStoreManagement.Core.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
@@ -7,9 +8,15 @@ namespace ShoeStoreManagement.Core.ViewModel
 {
     public class ProductVM
     {
-        public string ProductId { get; set; } = string.Empty;
+        public string productId { get; set; } = string.Empty;
 
-        public Product Product { get; set; } = new Product();
+        public Product? product { get; set; }
+
+        public List<Product>? products { get; set; }
+
+        public List<ProductCategory>? productCategories { get; set; }
+
+        public ApplicationUser? currentUser { get; set; }
 
         public int Amount { get; set; } = 1;
 
@@ -17,8 +24,7 @@ namespace ShoeStoreManagement.Core.ViewModel
 
         public int AmountSelected { get; set; } = 1;
 
-        public IFormFile Image { get; set; } = null;
-
+        public IFormFile? Image { get; set; } = null;
 
         [NotMapped]
         public List<string> TestSize { get; set; } = new List<string>();
@@ -28,5 +34,13 @@ namespace ShoeStoreManagement.Core.ViewModel
 
         [NotMapped]
         public Dictionary<int, int> SizeHashtable { get; set; } = new Dictionary<int, int>();   
+
+        public List<SizeDetail>? sizes { get; set; }
+
+        public List<string>? filters { get; set; }
+
+        public int page { get; set; } = 1;
+
+        public int nProducts { get; set; } = 0;
     }
 }

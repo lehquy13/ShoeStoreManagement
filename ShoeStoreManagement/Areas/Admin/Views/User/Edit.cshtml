@@ -63,7 +63,7 @@
 		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
 		<div>
 			<button type="submit" class="btn btn-primary">Submit</button>
-			<a class="btn btn-secondary" >
+			<a class="btn btn-secondary" onclick="deleteSth('@Url.Action("Delete","User",Model.user.Id,Context.Request.Scheme)', '@Model.user.Id')" >
 				Delete
 			</a>
 		</div>

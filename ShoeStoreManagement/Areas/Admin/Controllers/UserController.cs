@@ -210,6 +210,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", _userVM) });
         }
 
+        [HttpPost]
         public IActionResult Delete(string id)
         {
             var obj = _applicationuserCRUD.GetByIdAsync(id).Result;
@@ -220,9 +221,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     _addressCRUD.DeleteAllAdressByIdAsync(obj.Id);
                     _applicationuserCRUD.Remove(obj);
                 }
-
+                _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
         }
     }
 }
