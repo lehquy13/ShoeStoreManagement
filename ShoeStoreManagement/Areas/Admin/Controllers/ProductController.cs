@@ -320,7 +320,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         
         [HttpPost]
-        public async Task<IActionResult> Edit([Bind("ProductId,Product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
+        public async Task<IActionResult> Edit([Bind("ProductId,product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
         {
             var product = productVM.product;
 
@@ -359,7 +359,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             await _sizeDetailCRUD.Update(newDetail);
 
                         }
-                        else if (amount == 0 || !product.TestSize.Contains(i.ToString()))
+                        else if (amount == 0 || !productVM.TestSize.Contains(i.ToString()))
                         {
                             _sizeDetailCRUD.Remove(newDetail);
                         }
@@ -426,7 +426,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
 
                 await load();
-                return PartialView("ProductTable");
+                return PartialView("_ViewAll",_productVM.products);
             }
             return RedirectToAction("Index");
         }
