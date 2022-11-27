@@ -1,7 +1,7 @@
 ﻿@using ShoeStoreManagement.Core.Models;
 @using ShoeStoreManagement.Core.ViewModel;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model ProductVM;
+@model Product;
 
 @{
 	List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? new List<ProductCategory>();
@@ -13,41 +13,40 @@
 		}
 	}
 }
-<!-- Modal -->
 
-<form method="post" asp-action="Edit" asp-controller="Product" asp-area="Admin" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data">
+<form method="post" action="Admin/Product/Edit" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data" onsubmit="return editSth(this);">
 	<div class="row">
 		<div class="col-8">
 			<div class="row">
 				<input hidden asp-for="ProductId" />
 				<div class="col d-grid gap-2">
 					<div class="form-floating">
-						<input type="text" asp-for="Product.ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
+						<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
 						<label for="floatingInput">Enter Name</label>
-						<span asp-validation-for="Product.ProductName" class="text-danger"></span>
+						<span asp-validation-for="ProductName" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="Product.Color" class="form-control" id="floatingInput" placeholder="Black">
+						<input type="text" asp-for="Color" class="form-control" id="floatingInput" placeholder="Black">
 						<label for="floatingInput">Enter Color</label>
-						<span asp-validation-for="Product.Color" class="text-danger"></span>
+						<span asp-validation-for="Color" class="text-danger"></span>
 					</div>
 					<div class="form-floating flex-grow-1">
-						<textarea class="form-control" style="height:120px" asp-for="Product.Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+						<textarea class="form-control" style="height:120px" asp-for="Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
 						<label for="floatingTextarea">Enter Descripiton</label>
-						<span asp-validation-for="Product.Description" class="text-danger"></span>
+						<span asp-validation-for="Description" class="text-danger"></span>
 					</div>
 				</div>
 				<div class="col d-grid gap-2" style="height:fit-content">
 					<div class="form-floating">
-						<select class="form-select" asp-for="Product.ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
+						<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
 						</select>
 						<label for="selectCategory">Category</label>
-						<span asp-validation-for="Product.ProductCategoryId" class="text-danger"></span>
+						<span asp-validation-for="ProductCategoryId" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="Product.ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
+						<input type="text" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
 						<label for="floatingInput">Enter Price</label>
-						<span asp-validation-for="Product.ProductUnitPrice" class="text-danger"></span>
+						<span asp-validation-for="ProductUnitPrice" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
 						<input type="number" asp-for="Amount" readonly class="form-control" id="floatingInput" placeholder="1">
@@ -57,9 +56,9 @@
 				</div>
 			</div>
 			<div class="row">
-				@if (Model.Product.ImageName != null)
+				@if (Model.ImageName != null)
 				{
-					<img src="~/image/@Model.Product.ImageName" style="width:200px; height:auto"
+					<img src="~/image/@Model.ImageName" style="width:200px; height:auto"
 					 asp-append-version="true" />
 
 					<div class="form-floating">

@@ -1,4 +1,4 @@
-﻿@model ShoeStoreManagement.Core.Models.Product
+﻿@model List<ShoeStoreManagement.Core.Models.Product>
 @using ShoeStoreManagement.Areas.Admin.Controllers
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
@@ -7,7 +7,7 @@
 @using Microsoft.AspNetCore.Components.Web;
 
 @{
-	List<Product>? products = ViewData["products"] as List<Product> ?? null;
+	//List<Product>? products = ViewData["products"] as List<Product> ?? null;
 	List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
 	List<string> filters = ViewData["filters"] as List<string> ?? null;
 	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
@@ -19,7 +19,7 @@
 		int numberPages = 0;
 		int numberProducts = 0;
 
-		foreach (Product i in products)
+		foreach (Product i in Model)
 		{
 			numberProducts++;
 		}
@@ -117,10 +117,10 @@
 							</tr>
 						</thead>
 						<tbody>
-							@if (products != null)
+							@if (Model != null)
 							{
 								var a = nProducts * 10;
-								for (int i = (nProducts) * 10; i < products.Count; i++)
+								for (int i = (nProducts) * 10; i < Model.Count; i++)
 								{
 									a++;
 									if (a == (nProducts + 1) * 10 + 1) break;
@@ -129,25 +129,25 @@
 
 										<th scope="row">@a</th>
 										<td>
-											@if(products[i].ImageName != null) {
-												<img src="~/image/@products[i].ImageName"
+											@if(Model[i].ImageName != null) {
+												<img src="~/image/@Model[i].ImageName"
 												 class="rounded-circle"
 												 height="40" width="40"
 												 asp-append-version="true" />
 											}
-											@products[i].ProductName
+											@Model[i].ProductName
 										</td>
-										<td>@products[i].ProductUnitPrice</td>
-										<td>@products[i].Color</td>
-										<td>@products[i].ProductCategory.ProductCategoryName</td>
-										<td>@products[i].Amount</td>
+										<td>@Model[i].ProductUnitPrice</td>
+										<td>@Model[i].Color</td>
+										<td>@Model[i].ProductCategory.ProductCategoryName</td>
+										<td>@Model[i].Amount</td>
 										<td>
-											<a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Im not here','@products[i].ProductId')" class="border-1 table-icon">
+											<a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Edit Product @Model[i].ProductName','@Model[i].ProductId')" class="border-1 table-icon">
 												<i class="fas fa-edit"></i>
 											</a>
 										</td>
 										<td>
-											<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@products[i].ProductId')" class="link-info table-icon">
+											<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@Model[i].ProductId')" class="link-info table-icon">
 												<i class="fas fa-cart-plus"></i>
 											</a>
 										</td>
@@ -191,11 +191,8 @@
 	</div>
 </div>
 
-@{
-	ProductVM metmoi = new ProductVM() { };
-}
-
-<partial name="Create.cshtml" view-data="ViewData" model="metmoi"></partial>
+<a onclick="showContent2('@Url.Action("Create","Product",null,Context.Request.Scheme)','Add new Product')" class="border-1 table-icon btn btn-primary icon-plus">
+</a>
 
 @{
 	<partial name="./_ValidationScriptsPartial"></partial>

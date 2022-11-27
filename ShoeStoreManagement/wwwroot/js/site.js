@@ -59,6 +59,26 @@ function showContent(url, title, id) {
   })
 }
 
+function showContent2(url, title) {
+
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: { },
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+            //$.notify("I'm over here !");
+            //$.notify("Access granted", "success", { position: "right" });
+            $("#form-modal .modal-title").notify(
+                "I'm to the right of this box",
+                { position: "top" }
+            );
+        }
+    })
+}
+
 function deteleItem(url, id) {
     alert(url);
     $.ajax({
@@ -149,13 +169,86 @@ function addToCart(url, amount, size) {
     })
 }
 
-//function loadAmount(url, size) {
-//    alert(url)
-//    $.ajax({
-//        type: "GET",
-//        url: url,
-//        data: { size: size }
-//        success: function () {
-//        }
-//    })
-//}
+editSth = form => {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.isValid) {
+                    $('#form-modal .modal-body').html('');
+                    $('#form-modal .modal-title').html('');
+                    $('#form-modal').modal('hide');
+                    $('#hihi').html(res.html);
+                }
+                else {
+                    $('#form-modal .modal-body').html(res.html);
+                }
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        return false;
+    } catch (ex) {
+        console.log(ex)
+    }
+}
+
+createSth = form => {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.isValid) {
+                    $('#form-modal .modal-body').html('');
+                    $('#form-modal .modal-title').html('');
+                    $('#form-modal').modal('hide');
+                    $('#hihi').html(res.html);
+                }
+                else {
+                    alert("invalid");
+                    $('#form-modal .modal-body').html(res.html);
+                }
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        return false;
+    } catch (ex) {
+        console.log(ex)
+    }
+}
+
+function deleteSth(url, id) {
+    alert("Delete this item?")
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { id: id },
+        contentType: false,
+        processData: false,
+        success: function (res) {
+            if (res.isValid) {
+                $('#hihi').html(res.html);
+                $('#form-modal .modal-body').html('');
+                $('#form-modal .modal-title').html('');
+                $('#form-modal').modal('hide');
+            }
+            else {
+                alert("invalid");
+                $('#form-modal .modal-body').html(res.html);
+            }
+        }
+    })
+}

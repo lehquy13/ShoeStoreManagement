@@ -1,11 +1,11 @@
 ﻿@using ShoeStoreManagement.Core.ViewModel;
 @using ShoeStoreManagement.Core.Models;
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model ProductVM;
+@model Product;
 
 @{
 	List<ProductCategory> productCategories = ViewData["productCategories"] as List<ProductCategory> ?? new List<ProductCategory>();
-	Model.Product.Sizes = new List<SizeDetail>() {
+	Model.Sizes = new List<SizeDetail>() {
 		new SizeDetail() {Size = 35, Amount = 0},
 		new SizeDetail() {Size = 36, Amount = 0},
 		new SizeDetail() {Size = 37, Amount = 0},
@@ -19,89 +19,75 @@
 	};
 }
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary icon-plus rounded position-fixed" style="right:160px; bottom:40px;" data-toggle="modal" to data-target="#CModal">
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="CModal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
-		<form method="post" asp-action="Create" asp-controller="Product" asp-area="Admin" class="modal-content w-auto px-3 py-3 border-0" enctype="multipart/form-data">
-			<div class="modal-header border-0">
-				<h5 class="modal-title" id="ModalLabel">Add new Product</h5>
-			</div>
-			<div class="modal-body p-0 mt-2" style="width: 850px">
-				<div class="row">
-					<div class="col-8" style="height:fit-content">
-						<div class="row">
-							<div class="col d-grid gap-2">
-								<div class="form-floating">
-									<input type="text" asp-for="Product.ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
-									<label for="floatingInput">Enter Name</label>
-									<span asp-validation-for="Product.ProductName" class="text-danger"></span>
-								</div>
-								<div class="form-floating">
-									<input type="text" asp-for="Product.Color" class="form-control" id="floatingInput" placeholder="Black">
-									<label for="floatingInput">Enter Color</label>
-									<span asp-validation-for="Product.Color" class="text-danger"></span>
-								</div>
-								<div class="form-floating flex-grow-1">
-									<textarea class="form-control" style="height:120px" asp-for="Product.Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
-									<label for="floatingTextarea">Enter Product</label>
-									<span asp-validation-for="Product.Description" class="text-danger"></span>
-								</div>
-							</div>
-							<div class="col d-grid gap-2" style="height:fit-content">
-								<div class="form-floating">
-									<select class="form-select" asp-for="Product.ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
-									</select>
-									<label for="selectCategory">Category</label>
-									<span asp-validation-for="Product.ProductCategoryId" class="text-danger"></span>
-								</div>
-								<div class="form-floating">
-									<input type="text" asp-for="Product.ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
-									<label for="floatingInput">Enter Price</label>
-									<span asp-validation-for="Product.ProductUnitPrice" class="text-danger"></span>
-								</div>
-								<div class="form-floating">
-									<input type="number" asp-for="Product.Amount" readonly class="form-control" id="floatingInput" placeholder="1">
-									<label for="floatingInput">Dont Enter ME:> Amount</label>
-									<span asp-validation-for="Product.Amount" class="text-danger"></span>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							@*<img src="image/shoe.jpg" class="img h-auto col-4" alt="image" />*@
-							<div class="form-floating">
-								<input asp-for="Image" accept="image/*" />
-							</div>
-						</div>
+<form method="post" action="Admin/Product/Create" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data" onsubmit="return createSth(this);">
+	<div class="row">
+		<div class="col-8" style="height:fit-content">
+			<div class="row">
+				<div class="col d-grid gap-2">
+					<div class="form-floating">
+						<input type="text" asp-for="ProductName" class="form-control" id="floatingInput" placeholder="Annanas A">
+						<label for="floatingInput">Enter Name</label>
+						<span asp-validation-for="ProductName" class="text-danger"></span>
 					</div>
-					<div class="col-4">
-						<div class="form-group">
-							@foreach (var i in Model.Product.Sizes)
-							{
-								<div class="form-check mt-2">
-									<input class="form-check-input" type="checkbox" value="@i.Size" name="TestSize" id="checkbox_@i.Size" checked="@i.IsChecked" />
-									<label class="form-check-label ml-5 d-flex align-items-center" for="@i.Size">
-										@i.Size
-										<input type="number" value="@i.Amount" name="TestSizeAmount" id="input_@i.Amount" class="form-control ms-2" />
-									</label>
-								</div>
-							}
-						</div>
-
+					<div class="form-floating">
+						<input type="text" asp-for="Color" class="form-control" id="floatingInput" placeholder="Black">
+						<label for="floatingInput">Enter Color</label>
+						<span asp-validation-for="Color" class="text-danger"></span>
+					</div>
+					<div class="form-floating flex-grow-1">
+						<textarea class="form-control" style="height:120px" asp-for="Description" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+						<label for="floatingTextarea">Enter Product</label>
+						<span asp-validation-for="Description" class="text-danger"></span>
+					</div>
+				</div>
+				<div class="col d-grid gap-2" style="height:fit-content">
+					<div class="form-floating">
+						<select class="form-select" asp-for="ProductCategoryId" asp-items="@(new SelectList(productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
+						</select>
+						<label for="selectCategory">Category</label>
+						<span asp-validation-for="ProductCategoryId" class="text-danger"></span>
+					</div>
+					<div class="form-floating">
+						<input type="text" asp-for="ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20">
+						<label for="floatingInput">Enter Price</label>
+						<span asp-validation-for="ProductUnitPrice" class="text-danger"></span>
+					</div>
+					<div class="form-floating">
+						<input type="number" asp-for="Amount" readonly class="form-control" id="floatingInput" placeholder="1">
+						<label for="floatingInput">Dont Enter ME:> Amount</label>
+						<span asp-validation-for="Amount" class="text-danger"></span>
 					</div>
 				</div>
 			</div>
-			<div class="modal-footer d-flex justify-content-between">
-				<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-				<button type="submit" class="btn btn-primary" onclick="location.href = '@(Url.Action("Create", "Product"))'">Submit</button>
+			<div class="row">
+				@*<img src="image/shoe.jpg" class="img h-auto col-4" alt="image" />*@
+				<div class="form-floating">
+					<input asp-for="Image" accept="image/*" />
+				</div>
 			</div>
-			@Html.AntiForgeryToken()
-		</form>
+		</div>
+		<div class="col-4">
+			<div class="form-group">
+				@foreach (var i in Model.Sizes)
+				{
+					<div class="form-check mt-2">
+						<input class="form-check-input" type="checkbox" value="@i.Size" name="TestSize" id="checkbox_@i.Size" checked="@i.IsChecked" />
+						<label class="form-check-label ml-5 d-flex align-items-center" for="@i.Size">
+							@i.Size
+							<input type="number" value="@i.Amount" name="TestSizeAmount" id="input_@i.Amount" class="form-control ms-2" />
+						</label>
+					</div>
+				}
+			</div>
+
+		</div>
 	</div>
-</div>
+	<div class="modal-footer d-flex justify-content-between">
+		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</div>
+	@Html.AntiForgeryToken()
+</form>
 
 @section Scripts {
 	@{

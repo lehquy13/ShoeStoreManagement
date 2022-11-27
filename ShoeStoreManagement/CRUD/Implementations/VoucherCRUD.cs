@@ -54,7 +54,6 @@ namespace ShoeStoreManagement.CRUD.Implementations
                     obj.Value = updateVoucher.Value;
                     obj.ValueType = updateVoucher.ValueType;
                     _applicationDBContext.SaveChanges();
-
                 }
             }
             

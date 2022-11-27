@@ -1,83 +1,77 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
-@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.ViewModel;
 @using ShoeStoreManagement.Core.Enums;
 @using ValueType = ShoeStoreManagement.Core.Enums.ValueType;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
-@model Voucher
+@model VoucherVM
 
-@{
-    List<ConditionType> conditionTypes = ViewData["conditionTypes"] as List<ConditionType> ?? new List<ConditionType>() { };
-    List<ValueType> valueTypes = ViewData["valueTypes"] as List<ValueType> ?? new List<ValueType>() { };
-    List<ExpireType> expiredTypes = ViewData["expiredTypes"] as List<ExpireType> ?? new List<ExpireType>() { };
-}
+<form method="post" asp-action="Create" asp-controller="Voucher" asp-area="Admin" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data" onsubmit="return createSth(this);">
+	<div class="row">
+		<div class="col-sm d-flex flex-column gap-2">
+			<div>
+				<div class="form-floating">
+					<select class="form-select" asp-for="voucher.ConditionType" asp-items="@(new SelectList(Model.conditionTypes))" id="floatingSelect" aria-label="Floating label select example">
+					</select>
+					<label for="floatingSelect">Enter Condition</label>
+					<span asp-validation-for="voucher.ConditionType" class="text-danger"></span>
+				</div>
+				<div class="form-floating">
+					<input type="number" asp-for="voucher.ConditionValue" class="form-control" id="floatingInput" placeholder="$50">
+					<label for="floatingInput">Enter Condition Value</label>
+					<span asp-validation-for="voucher.ConditionValue" class="text-danger"></span>
+				</div>
+				<div class="form-floating">
+					<input type="date" asp-for="voucher.CreatedDate" class="form-control" id="floatingInput" placeholder="02-12-2022">
+					<label for="floatingInput">Enter Start Date</label>
+					<span asp-validation-for="voucher.CreatedDate" class="text-danger"></span>
+				</div>
+			</div>
+		</div>
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary icon-plus rounded position-fixed" style="right:160px; bottom:40px;" data-toggle="modal" to data-target="#Modal">
-</button>
+		<div class="col-sm d-flex flex-column">
+			<div class="form-floating">
+				<select class="form-select" asp-for="voucher.ValueType" asp-items="@(new SelectList(Model.valueTypes))" id="floatingSelect" aria-label="Floating label select example">
+				</select>
+				<label for="floatingSelect">Enter Value Type</label>
+				<span asp-validation-for="voucher.ValueType" class="text-danger"></span>
+			</div>
+			<div class="form-floating">
+				<input type="number" asp-for="voucher.Value" class="form-control" id="floatingInput" placeholder="5">
+				<label for="floatingInput">Enter Value</label>
+				<span asp-validation-for="voucher.Value" class="text-danger"></span>
+			</div>
+			<div class="form-floating">
+				<select class="form-select" asp-for="voucher.ExpiredType" asp-items="@(new SelectList(Model.expireTypes))" id="floatingSelect" aria-label="Floating label select example">
+				</select>
+				<label for="floatingSelect">Enter Expired Type</label>
+				<span asp-validation-for="voucher.ExpiredType" class="text-danger"></span>
+			</div>
+			<div class="form-floating">
+				<input type="text" asp-for="voucher.ExpiredValue" class="form-control" id="floatingInput" placeholder="">
+				<label for="floatingInput">Enter Expired Value</label>
+				<span asp-validation-for="voucher.ExpiredValue" class="text-danger"></span>
+			</div>
+			<div class="d-flex form-floating">
+				<input type="text" asp-for="voucher.Code" placeholder="hehe" id="voucherCode" class="form-control flex-fill" />
+				<label for="floatingInput">Enter Code</label>
+				<button class="btn btn-primary h-100">Auto-generate</button>
+			</div>
+			<span asp-validation-for="voucher.Code" class="text-danger"></span>
+		</div>
+	</div>
+	<div class="modal-footer d-flex justify-content-between">
+		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+		<div>
+			<button type="submit" class="btn btn-primary">Submit</button>
+		</div>
+	</div>
+	@Html.AntiForgeryToken()
+</form>
 
-<!-- Modal -->
-<div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered d-flex justify-content-center" role="document">
-        <form method="post" action="Admin/Voucher/Create" class="modal-content w-auto px-3 py-3">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel" style="margin-left:auto;margin-right:auto">Add a new Voucher</h5>
-            </div>
-            <div class="modal-body p-0 mt-2" style="width: 800px; height: 400px">
-                <div class="row">
-                    <div class="col-sm d-flex flex-column gap-2">
-                        <div>
-                            <div class="form-floating">
-                                <select class="form-select" asp-for="ConditionType" asp-items="@(new SelectList(conditionTypes))" id="floatingSelect" aria-label="Floating label select example">
-                                    <option selected>--</option>
-                                </select>
-                                <label for="floatingSelect">Enter Condition</label>
-                            </div>
-                            <div class="form-floating">
-                                <input type="number" asp-for="ConditionValue" class="form-control" id="floatingInput" placeholder="$50">
-                                <label for="floatingInput">Enter Condition Value</label>
-                            </div>
-                            <div class="form-floating">
-                                <input type="date" asp-for="CreatedDate" class="form-control" id="floatingInput" placeholder="02-12-2022">
-                                <label for="floatingInput">Enter Start Date</label>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-sm d-flex flex-column">
-                        <div class="form-floating">
-                            <select class="form-select" asp-for="ValueType" asp-items="@(new SelectList(valueTypes))" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>--</option>
-                            </select>
-                            <label for="floatingSelect">Enter Value Type</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="number" asp-for="Value" class="form-control" id="floatingInput" placeholder="5">
-                            <label for="floatingInput">Enter Value</label>
-                        </div>
-                        <div class="form-floating">
-                            <select class="form-select" asp-for="ExpiredType" asp-items="@(new SelectList(expiredTypes))" id="floatingSelect" aria-label="Floating label select example">
-                                <option selected>--</option>
-                            </select>
-                            <label for="floatingSelect">Enter Expired Type</label>
-                        </div>
-                        <div class="form-floating">
-                            <input type="text" asp-for="ExpiredValue" class="form-control" id="floatingInput" placeholder="">
-                            <label for="floatingInput">Enter Expired Value</label>
-                        </div>
-                        <div class="d-flex form-floating">
-                            <input type="text" asp-for="Code" placeholder="hehe" id="voucherCode" class="form-control flex-fill" />
-                            <label for="floatingInput">Enter Code</label>
-                            <button class="btn btn-primary h-100">Auto-generate</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-between">
-                <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-                <div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+@section Scripts {
+	@{
+		<partial name="./_ValidationScriptsPartial"></partial>
+	}
+	}

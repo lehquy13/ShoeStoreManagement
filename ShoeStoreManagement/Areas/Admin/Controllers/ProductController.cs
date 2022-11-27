@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Models;
-using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Interfaces;
-using System.Drawing;
 using System.Security.Claims;
 using Image = ShoeStoreManagement.Core.Models.Image;
 
@@ -172,7 +170,17 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return PartialView(product);
         }
 
-        //[HttpPost]
+        //[HttpGet]
+        //public IActionResult Index()
+        //{
+        //    ViewBag.Product = true;
+        //    ViewData["productCategories"] = productCategories;
+        //    //ViewData["products"] = productFilter;
+        //    ViewData["page"] = 1;
+
+        //    return View(products);
+        //}
+
         public IActionResult Index(string categoryRadio, string priceRadio, int page = 1)
         {
             List<Product> productFilter = new List<Product>();
@@ -200,11 +208,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             ViewBag.Product = true;
             ViewData["productCategories"] = productCategories;
-            ViewData["products"] = productFilter;
+            //ViewData["products"] = productFilter;
             ViewData["filters"] = filters;
             ViewData["page"] = page;
             ViewData["test"] = test;
-            return View(new Product());
+
+            return View(productFilter);
         }
 
         private bool minCheck(float value, float price)
@@ -231,108 +240,116 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Create(ProductVM productVM)
+        public async Task<IActionResult> Create(Product product)
         {
-            if (productVM.Product != null)
+            if (product != null)
             {
-                if (productVM.Product.ProductCategoryId != null)
+                if (product.ProductCategoryId != null)
                 {
-                    productVM.Product.ProductCategory = _productCategoryCRUD.GetByIdAsync(productVM.Product.ProductCategoryId).Result;//note
+                    product.ProductCategory = _productCategoryCRUD.GetByIdAsync(product.ProductCategoryId).Result ?? new ProductCategory();//note
                 }
                 else
                 {
-                    return NotFound(productVM.Product.ProductCategoryId);
+                    return NotFound(product.ProductCategoryId);
 
                 }
-                productVM.Product.TestSize = productVM.TestSize;
-                productVM.Product.TestSizeAmount = productVM.TestSizeAmount;
+
+                if (product.Image == null)
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        product.Image = new FormFile(stream, 0, 0, "name", "fileName");
+                    }
+                }
 
                 ModelState.Clear();
-                
-                if (TryValidateModel(productVM))
+                if (TryValidateModel(product))
                 {
-                    var temp = productVM.Product.TestSizeAmount.Where(x => x != "0").ToList();
+                    var temp = product.TestSizeAmount.Where(x => x != "0").ToList();
 
-                    for (var i = 0; i < productVM.Product.TestSize.Count; i++)
+                    for (var i = 0; i < product.TestSize.Count; i++)
                     {
-                        _sizeDetailCRUD.CreateAsync(new SizeDetail()
+                        await _sizeDetailCRUD.CreateAsync(new SizeDetail()
                         {
-                            Size = int.Parse(productVM.Product.TestSize[i]),
+                            Size = int.Parse(product.TestSize[i]),
                             Amount = int.Parse(temp[i]),
-                            ProductId = productVM.Product.ProductId
+                            ProductId = product.ProductId
                         });
                     }
 
+                    string fileName = "";
+
                     // Add image
-                    string wwwRootPath = _hostEnvironment.WebRootPath;
-                    string fileName = Path.GetFileNameWithoutExtension(productVM.Image.FileName);
-                    string extension = Path.GetExtension(productVM.Image.FileName);
-                    fileName = fileName + extension;
-
-                    Image image = new Image()
+                    if (product.Image.Length > 0)
                     {
-                        ImageName = fileName,
-                        ImageFile = productVM.Image,
-                        Title = "hi",
-                        ProductId = productVM.Product.ProductId,
-                    };
+                        string wwwRootPath = _hostEnvironment.WebRootPath;
+                        fileName = Path.GetFileNameWithoutExtension(product.Image.FileName);
+                        string extension = Path.GetExtension(product.Image.FileName);
+                        fileName = fileName + extension;
 
-                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
-                    using (var fileStream = new FileStream(path, FileMode.Create))
-                    {
-                        image.ImageFile.CopyToAsync(fileStream);
+                        Image image = new Image()
+                        {
+                            ImageName = fileName,
+                            ImageFile = product.Image,
+                            Title = "hi",
+                            ProductId = product.ProductId,
+                        };
+
+                        string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await image.ImageFile.CopyToAsync(fileStream);
+                        }
+
+                         await _imageCRUD.CreateAsync(image);
                     }
 
-                    _imageCRUD.CreateAsync(image);
+                    product.ImageName = fileName;
 
-                    productVM.Product.ImageName = fileName;
-
-                    _productCRUD.CreateAsync(productVM.Product);
+                    await _productCRUD.CreateAsync(product);
 
                     TempData["success"] = "Category is Created Successfully!!";
-                    return RedirectToAction("Index");
+                    return Json(new { isValid = true });
                 }
-                return View(productVM);
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", product) });
             }
-
             return NotFound();
         }
 
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductVM productVM)
+        public async Task<IActionResult> Edit(Product product)
         {
-            if (productVM.Product.ProductCategoryId == null)
+            if (product.ProductCategoryId == null)
             {
-                return NotFound(productVM.Product.ProductCategoryId);
+                return NotFound(product.ProductCategoryId);
             }
             else
             {
-                productVM.Product.ProductCategory = _productCategoryCRUD.GetByIdAsync(productVM.Product.ProductCategoryId).Result;//note
+                product.ProductCategory = _productCategoryCRUD.GetByIdAsync(product.ProductCategoryId).Result ?? new ProductCategory();//note
 
             }
 
-            productVM.Product.ImageName = "";
+            product.ImageName = "";
 
-            if (productVM.Image == null)
+            if (product.Image == null)
             {
                 using (var stream = new MemoryStream())
                 {
-                    productVM.Image = new FormFile(stream, 0, 0, "name", "fileName");
+                    product.Image = new FormFile(stream, 0, 0, "name", "fileName");
                 }
             }
 
             ModelState.Clear();
-            if (TryValidateModel(productVM))
+            if (TryValidateModel(product))
             {
-                productVM.Product.ProductId = productVM.ProductId;
 
                 for (var i = 35; i <= 44; i++)
                 {
-                    var tempDetail = _sizeDetailCRUD.GetProductSizeAsync(productVM.ProductId, i).Result;
-                    int amount = Int32.Parse(productVM.TestSizeAmount[i - 35]);
-                    var newDetail = new SizeDetail() { Amount = amount, Size = i, ProductId = productVM.ProductId };
+                    var tempDetail = _sizeDetailCRUD.GetProductSizeAsync(product.ProductId, i).Result;
+                    int amount = Int32.Parse(product.TestSizeAmount[i - 35]);
+                    var newDetail = new SizeDetail() { Amount = amount, Size = i, ProductId = product.ProductId };
 
                     if (tempDetail != null)
                     {
@@ -341,7 +358,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             await _sizeDetailCRUD.Update(newDetail);
 
                         }
-                        else if (amount == 0 || !productVM.TestSize.Contains(i.ToString()))
+                        else if (amount == 0 || !product.TestSize.Contains(i.ToString()))
                         {
                             _sizeDetailCRUD.Remove(newDetail);
                         }
@@ -353,27 +370,27 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             {
                                 Size = i,
                                 Amount = amount,
-                                ProductId = productVM.Product.ProductId
+                                ProductId = product.ProductId
                             });
                     }
                 }
 
-                _productCRUD.Update(productVM.Product);
+                _productCRUD.Update(product);
 
-                if (productVM.Image.Length > 0)
+                if (product.Image.Length > 0)
                 {
                     // Add image
                     string wwwRootPath = _hostEnvironment.WebRootPath;
-                    string fileName = Path.GetFileNameWithoutExtension(productVM.Image.FileName);
-                    string extension = Path.GetExtension(productVM.Image.FileName);
+                    string fileName = Path.GetFileNameWithoutExtension(product.Image.FileName);
+                    string extension = Path.GetExtension(product.Image.FileName);
                     fileName = fileName + extension;
 
                     Image image = new Image()
                     {
                         ImageName = fileName,
-                        ImageFile = productVM.Image,
+                        ImageFile = product.Image,
                         Title = "hi",
-                        ProductId = productVM.ProductId,
+                        ProductId = product.ProductId,
                     };
 
                     string path = Path.Combine(wwwRootPath + "/Image/", fileName);
@@ -382,7 +399,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         await image.ImageFile.CopyToAsync(fileStream);
                     }
 
-                    List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(productVM.Product.ProductId).Result;
+                    List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(product.ProductId).Result;
 
                     if (imgs.Count > 0)
                     {
@@ -396,15 +413,15 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         {
                             ImageName = image.ImageName,
                             Title = "new",
-                            ProductId = productVM.ProductId,
+                            ProductId = product.ProductId,
                         });
                     }
                 }
 
 
-                return RedirectToAction("Index");
+                return Json(new { isValid = true, url = Url.Action("Index", "Product", null, Request.HttpContext.Request.Scheme) });
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", product) });
         }
 
         [ValidateAntiForgeryToken]
@@ -427,18 +444,21 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             var obj = await _productCRUD.GetByIdAsync(id);
             if (obj != null)
             {
-                obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result;
+                obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result ?? new ProductCategory();
                 ViewData["productCategories"] = productCategories;
 
-                ProductVM productVM = new ProductVM();
-                productVM.Product = obj;
-                productVM.ProductId = obj.ProductId;
-                productVM.SizeHashtable = obj.SizeHashtable;
-
-                return PartialView(productVM);
+                return PartialView(obj);
 
             }
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewData["productCategories"] = productCategories;
+
+            return PartialView(new Product());
         }
     }
 }
