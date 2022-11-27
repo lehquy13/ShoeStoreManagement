@@ -9,7 +9,8 @@
 		 class="card-img-top img h-auto"
 		 asp-append-version="true" @onclick="NavigateToDetail" />
 	<div class="card-body">
-		<p class="fw-bold h5 mb-2">@product.ProductName</p>
+		<p class="fw-bold h5 mb-1">@product.ProductName</p>
+		<p class="h5 mb-2">@product.Color</p>
 		<p class="h5 mb-2">@product.ProductUnitPrice</p>
 	</div>
 	@if (!isLiked)

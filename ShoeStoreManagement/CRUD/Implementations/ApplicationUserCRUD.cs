@@ -43,6 +43,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                 obj.Email = updateApplicationUser.Email;
                 obj.Birthday = updateApplicationUser.Birthday;
                 obj.AvatarName = updateApplicationUser.AvatarName;
+                obj.SingleAddress = updateApplicationUser.SingleAddress;
                 // more and more
                 _applicationDBContext.SaveChanges();
 

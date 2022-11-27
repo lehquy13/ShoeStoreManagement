@@ -23,10 +23,10 @@
 	</div>
 	<div class="col-5 d-flex flex-column justify-content-between">
 		<div class="d-flex flex-column gap-4">
-			<p class="h2">@Model.Product.ProductName</p>
+			<p class="h2">@Model.product.ProductName</p>
 			<div>
 				<span class="h6">Color</span>
-				<p class="h5 mt-1">@Model.Product.Color</p>
+				<p class="h5 mt-1">@Model.product.Color</p>
 			</div>
 			<div>
 				<span class="h6">Amount</span>
@@ -46,7 +46,7 @@
 
 					disabled = "disabled";
 
-					foreach (var item in Model.Product.Sizes)
+					foreach (var item in Model.product.Sizes)
 					{
 						if (item.Size == i)
 						{
@@ -72,7 +72,7 @@
 	<div class="col">
 		<span class="h6">Description</span>
 		<p class="caption mt-1">
-			@Model.Product.Description
+			@Model.product.Description
 		</p>
 	</div>
 </form>

@@ -1,11 +1,9 @@
 ﻿@*CUSTOMER*@
 @using ShoeStoreManagement.Views.Shared.Components;
-@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.ViewModel;
 @using ShoeStoreManagement.Areas.Identity.Data
-@{
-	List<ApplicationUser> users = ViewData["applicationUser"] as List<ApplicationUser> ?? new List<ApplicationUser>();
-	List<string> roles = ViewData["userRoles"] as List<string> ?? new List<string>();
-}
+
+@model UserVM
 
 <div class="row borderCustom">
 	<div class="col-2 borderCustom1">
@@ -24,66 +22,12 @@
 
 	<div class="container col-10">
 		<div class="row">
-			<div class="col-md-12">
-				<div class="table-wrap">
-					<table class="table myaccordion table-hover" id="accordion">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th class="button">Name</th>
-								<th class="button">Email</th>
-								<th class="button">Phone</th>
-								<th class="button">Orders</th>
-								<th class="button">Start Date</th>
-								<th class="button">Role</th>
-								<th class="button"></th>
-							</tr>
-						</thead>
-						<tbody>
-							@for (var i = 1; i <= users.Count; i++)
-							{
-								<tr data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="collapsed align-middle">
-
-									<th scope="row">@i</th>
-									<td>
-										@if (users[i - 1].AvatarName != null)
-										{
-											<img src="~/image/@users[i-1].AvatarName"
-												 class="rounded-circle"
-												 height="40" width="40"
-												 asp-append-version="true" />
-										}
-										@users[i-1].UserName
-									</td>
-									<td>@users[i-1].Email</td>
-									<td>@users[i-1].PhoneNumber</td>
-									<td>numbers of Orders</td>
-									<td>@users[i-1].CreatedDate</td>
-									<td>@roles[i-1]</td>
-									<td>
-										<a onclick="showContent('@Url.Action("Edit","User",null,Context.Request.Scheme)','Im here','@users[i-1].Id')" class="table-icon">
-											<i class="fas fa-edit"></i>
-										</a>
-									</td>
-
-
-									@*                       <td>
-								<i class="fa" aria-hidden="true"></i>
-								</td>*@
-								</tr>
-							}
-							@*<tr>
-							<td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
-							</td>
-							</tr>*@
-
-						</tbody>
-					</table>
-				</div>
+			<div class="col-md-12" id="hihi">
+				<partial name="_ViewAll" model=@Model.applicationUsers />
 			</div>
 		</div>
 	</div>
 </div>
 
-<partial name="Create.cshtml" />
+<a onclick="showContent2('@Url.Action("Create","User",null,Context.Request.Scheme)','Add new User')" class="border-1 table-icon btn btn-primary icon-plus">
+</a>

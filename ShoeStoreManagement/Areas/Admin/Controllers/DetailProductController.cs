@@ -47,8 +47,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             product.Sizes = sizeDetails;
 
-            _productVM.ProductId = product.ProductId;
-            _productVM.Product = product;
+            _productVM.productId = product.ProductId;
+            _productVM.product = product;
 
             return View(_productVM);
         }
@@ -58,7 +58,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             _productVM.Size = size;
 
-            SizeDetail? sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(_productVM.ProductId, size).Result;
+            SizeDetail? sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(_productVM.productId, size).Result;
 
             if(sizeDetail == null)
             {
@@ -67,7 +67,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             _productVM.Amount = sizeDetail.Amount;
 
-            return Redirect("Index/" + _productVM.ProductId);
+            return Redirect("Index/" + _productVM.productId);
         }
 
         [HttpPost]
@@ -84,14 +84,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _cartCRUD.CreateAsync(cart);
             }
 
-            Product? product = _productCRUD.GetByIdAsync(_productVM.ProductId).Result;
+            Product? product = _productCRUD.GetByIdAsync(_productVM.productId).Result;
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(_productVM.ProductId, cart.CartId, productVM.Size).Result;
+            CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(_productVM.productId, cart.CartId, productVM.Size).Result;
 
             if (cartDetail != null)
             {
@@ -107,7 +107,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 cartDetail = new CartDetail()
                 {
                     CartId = cart.CartId,
-                    ProductId = _productVM.ProductId,
+                    ProductId = _productVM.productId,
                     Amount = productVM.AmountSelected,
                     Size = productVM.Size,
                     CartDetailTotalSum = product.ProductUnitPrice,
@@ -116,7 +116,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _cartDetailCRUD.CreateAsync(cartDetail);
             }
 
-            return Redirect("Index/" + _productVM.ProductId);
+            return Redirect("Index/" + _productVM.productId);
         }
     }
 }

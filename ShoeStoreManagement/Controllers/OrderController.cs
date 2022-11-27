@@ -123,7 +123,7 @@ namespace ShoeStoreManagement.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(OrderVM? orderVM)
+        public async Task<IActionResult> Create(OrderVM? orderVM)
         {
             if (orderVM.currOrder == null)
             {
@@ -243,7 +243,7 @@ namespace ShoeStoreManagement.Controllers
 
                 _orderDetailCRUD.CreateAsync(item);
 
-                CartDetail? cartDetail = _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId, item.Size).Result;
+                CartDetail? cartDetail = await _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId, item.Size);
 
 
                 //Subtract amount of size
@@ -257,14 +257,14 @@ namespace ShoeStoreManagement.Controllers
                     item.Product = ob.Result;
                     _cartDetailCRUD.Remove(cartDetail.CartDetailId);
                 }
-                SizeDetail? sizeDetail = _sizeDetailCRUD.GetProductSizeAsync(item.ProductId, item.Size).Result;
+                SizeDetail? sizeDetail = await _sizeDetailCRUD.GetProductSizeAsync(item.ProductId, item.Size);
 
                 if (sizeDetail != null)
                 {
                     if (sizeDetail.Amount >= item.Amount)
                     {
                         sizeDetail.Amount -= item.Amount;
-                        _sizeDetailCRUD.Update(sizeDetail);
+                        await _sizeDetailCRUD.Update(sizeDetail);
                     }
                     else
                     {

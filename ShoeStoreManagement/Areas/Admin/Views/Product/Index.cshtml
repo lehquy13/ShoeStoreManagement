@@ -1,28 +1,27 @@
-﻿@model ShoeStoreManagement.Core.Models.Product
-@using ShoeStoreManagement.Areas.Admin.Controllers
+﻿@using ShoeStoreManagement.Areas.Admin.Controllers
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @using ShoeStoreManagement.Core.ViewModel;
 @using Microsoft.AspNetCore.Components;
 @using Microsoft.AspNetCore.Components.Web;
 
-@{
-    List<Product>? products = ViewData["products"] as List<Product> ?? null;
-    List<ProductCategory>? productCategories = ViewData["productCategories"] as List<ProductCategory> ?? null;
-    List<string> filters = ViewData["filters"] as List<string> ?? null;
-    List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
-    int nProducts = (int)ViewData["page"] - 1;
+@model ProductVM
 
-    int countPage()
-    {
+@{
+	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
+
+	int nProducts = Model.nProducts;
+
+	int countPage()
+	{
 
         int numberPages = 0;
         int numberProducts = 0;
 
-        foreach (Product i in products)
-        {
-            numberProducts++;
-        }
+		foreach (Product i in Model.products)
+		{
+			numberProducts++;
+		}
 
         numberPages = numberProducts / 10;
 
@@ -48,26 +47,26 @@
             <div class="row">
                 <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-                <div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
-                    @if (string.IsNullOrEmpty(filters[0]))
-                    {
-                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
-                    }
-                    @if (!string.IsNullOrEmpty(filters[0]))
-                    {
-                        <label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
-                    }
-                    @foreach (ProductCategory i in productCategories)
-                    {
-                        if (i.ProductCategoryName.Equals(filters[0]))
-                        {
-                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
-                        }
-                        else
-                        {
-                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
-                        }
-                    }
+				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+					@if (string.IsNullOrEmpty(Model.filters[0]))
+					{
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+					}
+					@if (!string.IsNullOrEmpty(Model.filters[0]))
+					{
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+					}
+					@foreach (ProductCategory i in Model.productCategories)
+					{
+						if (i.ProductCategoryName.Equals(Model.filters[0]))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
+						}
+						else
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
+						}
+					}
 
                 </div>
 
@@ -76,49 +75,68 @@
             <div class="row mt-3">
                 <ii class="row-1 h6">Price</ii>
 
-                <div class="radioLayoutTabCustom row-cols-6 w-100">
-                    @foreach (string i in priceFilters)
-                    {
-                        if (i.Equals(filters[1]))
-                        {
-                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
-                        }
-                        else if (string.IsNullOrEmpty(i))
-                        {
-                            <label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
-                        }
-                        else
-                        {
-                            <label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
-                        }
-                    }
-                </div>
-            </div>
+				<div class="radioLayoutTabCustom row-cols-6 w-100">
+					@foreach (string i in priceFilters)
+					{
+						if (i.Equals(Model.filters[1]))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
+						}
+						else if (string.IsNullOrEmpty(i))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+						}
+						else
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+						}
+					}
+				</div>
+			</div>
 
             <button class="btn btn-secondary rounded w-100 mt-5" type="submit" />
         </div> @*used to col-3 vs col-10*@
     </form>
 
-    <div class="container col-10" id="product-table">
-        @await Html.PartialAsync("ProductTable.cshtml",Model)
-    </div>
-</div>
-<div class="modal fade" tabindex="-1" role="dialog" id="form-modal">
-    <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
-        <div class="modal-content border-0 px-3 py-3" style="width:fit-content">
-            <div class="modal-header pt-4 pb-2">
-                <h5 class="modal-title"></h5>
-            </div>
-            <div class="modal-body">
-            </div>
-        </div>
-    </div>
-</div>
-@{
-    ProductVM metmoi = new ProductVM() { };
-}
+	<div class="container col-10">
+		<div class="row">
+			<div class="col-md-12" id="hihi">
+				<partial name="_ViewAll" model=@Model.products view-data="ViewData"/>
+			</div>
+		</div>
 
-<partial name="Create.cshtml" view-data="ViewData" model="metmoi"></partial>
+		<form method="post" action="Admin/Product/Index">
+			<nav class="container">
+				<ul class="pagination" style="display:flex; flex-direction:row">
+					@if (nProducts != 0)
+					{
+						if (nProducts > 1) nProducts -= 1;
+						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+					}
+					@for (int i = 1; i <= @countPage(); i++)
+					{
+						if (i == nProducts + 1)
+						{
+							<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+						}
+						else
+						{
+							<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
+						}
+					}
+					@if (nProducts + 1 != @countPage())
+					{
+						nProducts += 2;
+						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+					}
+				</ul>
+			</nav>
+		</form>
+	</div>
+</div>
+
+<a onclick="showContent2('@Url.Action("Create","Product",null,Context.Request.Scheme)','Add new Product')" class="border-1 table-icon btn btn-primary icon-plus">
+</a>
 
 @{
     <partial name="./_ValidationScriptsPartial"></partial>

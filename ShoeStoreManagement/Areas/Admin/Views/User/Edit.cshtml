@@ -1,86 +1,58 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
-@using ShoeStoreManagement.Core.Models;
+@using ShoeStoreManagement.Core.ViewModel;
 @using Microsoft.AspNetCore.Identity;
 @using ShoeStoreManagement.Areas.Identity.Data
-@model ApplicationUser
-@{
-	List<ApplicationUser> users = ViewData["applicationUser"] as List<ApplicationUser> ?? new List<ApplicationUser>();
-	List<string> roles = ViewData["userRoles"] as List<string> ?? new List<string>();
-}
+@model UserVM
 
-<!-- Modal -->
-<form method="post" asp-action="Edit" asp-controller="User" asp-area="Admin" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data">
-@*	<div class="modal-header">
-		<h5 class="modal-title" id="ModalLabel">@Model.UserName</h5>
-	</div>*@
+<form method="post" asp-action="Edit" asp-controller="User" asp-area="Admin" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data" onsubmit="return editSth(this);">
 	<div class="modal-body border-0">
 		<div class="row">
 			<div class="col-6 d-flex flex-column gap-2">
 				<div class="form-floating">
-					<input type="text" class="form-control" id="floatingInput" placeholder="name" asp-for="@Model.UserName">
+					<input type="text" class="form-control" id="floatingInput" placeholder="name" asp-for="user.UserName" required>
 					<label for="floatingInput">Enter Name</label>
+					<span asp-validation-for="user.UserName" class="text-danger"></span>
 				</div>
 				<div class="form-floating">
-					<input type="email" class="form-control" id="floatingInput" placeholder="abc@gm.uit.edu.vn" asp-for="@Model.Email">
+					<input type="email" class="form-control" id="floatingInput" placeholder="abc@gm.uit.edu.vn" asp-for="user.Email" required>
 					<label for="floatingInput">Enter Email</label>
 				</div>
-				<div class="form-floating">
-					<input type="text" class="form-control" hidden id="floatingInput" placeholder="abc@gm.uit.edu.vn" asp-for="@Model.Id">
-					<label for="floatingInput" hidden>Id</label>
+				<div class="form-floating" hidden>
+					<input type="text" class="form-control" hidden id="floatingInput" placeholder="abc@gm.uit.edu.vn" asp-for="user.Id" required>
+					<label for="floatingInput">Id</label>
 				</div>
 				<div class="flex-grow-1">
-					@if (Model.AvatarName != null)
+					@if (Model.user.AvatarName != null)
 					{
-						<img src="~/image/@Model.AvatarName"
+						<img src="~/image/@Model.user.AvatarName"
 						 style="width:200px; height:auto"
 						 asp-append-version="true" />
 					}
 
 					<div class="form-floating">
-						<input asp-for="Avatar" accept="image/*" class="form-control" />
+						<input asp-for="user.Avatar" accept="image/*" class="form-control" />
 					</div>
 				</div>
 			</div>
 			<div class="col-6 d-grid gap-2">
 				<div class="form-floating">
-					<select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="@Model.Role">
-						@if (roles != null)
-						{
-							int a = 1;
-							<option value="@Model.Role" selected="selected">
-								@Model.Role
-							</option>
-							foreach (var obj in roles)
-							{
-								if (obj != Model.Role)
-								{
-									a++;
-									<option value="@obj">
-										@obj
-									</option>
-
-								}
-							}
-						}
+					<select class="form-select" id="floatingSelect" aria-label="Floating label select example" asp-for="user.Role" asp-items="@(new SelectList(Model.roles, "Name", "Name"))" required>
 					</select>
 					<label for="floatingSelect">Enter Role</label>
 				</div>
 				<div class="form-floating">
-					<input type="tel" class="form-control" id="floatingInput" placeholder="094xxxxx73" asp-for="@Model.PhoneNumber">
+					<input type="tel" class="form-control" id="floatingInput" placeholder="094xxxxx73" asp-for="user.PhoneNumber" required>
 					<label for="floatingInput">Enter Phone</label>
 				</div>
 				<div class="form-floating">
-					<input type="date" class="form-control" id="floatingInput" placeholder="02-02-2002" asp-for="@Model.Birthday">
+					<input type="date" class="form-control" id="floatingInput" placeholder="02-02-2002" asp-for="user.Birthday" required>
 					<label for="floatingInput">Enter Birthday</label>
+					<span asp-validation-for="user.UserName" class="text-danger"></span>
 				</div>
 				<div class="form-floating">
-					<select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-						<option selected>Open this select menu</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
-					</select>
-					<label for="floatingSelect">Voucher</label>
+					<input asp-for="user.SingleAddress" class="form-control" id="floatingInput" placeholder="address..." required>
+					<label for="floatingInput">Address</label>
+					<span asp-validation-for="user.SingleAddress" class="text-danger"></span>
 				</div>
 			</div>
 		</div>
@@ -91,10 +63,9 @@
 		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
 		<div>
 			<button type="submit" class="btn btn-primary">Submit</button>
-			<button type="submit" class="btn btn-secondary" asp-action="Delete" asp-controller="User"
-					asp-route-id=@Model.Id>
+			<a class="btn btn-secondary" onclick="deleteSth('@Url.Action("Delete","User",Model.user.Id,Context.Request.Scheme)', '@Model.user.Id')" >
 				Delete
-			</button>
+			</a>
 		</div>
 		
 	</div>

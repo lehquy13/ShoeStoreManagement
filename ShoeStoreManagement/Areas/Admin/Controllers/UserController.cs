@@ -18,12 +18,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly IWebHostEnvironment _hostEnvironment;
         private readonly IApplicationUserCRUD _applicationuserCRUD;
         private readonly UserManager<ApplicationUser> _usermanager;
-        private List<ApplicationUser>? applicationUsers;
-        private List<string>? applicationuserRoles;
         private readonly RoleManager<IdentityRole> _rolemanager;
-        private List<IdentityRole>? roles;
         private readonly IAddressCRUD _addressCRUD;
         private readonly ICartCRUD _cartCRUD;
+        private static UserVM _userVM = new UserVM();
 
         public UserController(ILogger<UserController> logger, IApplicationUserCRUD applicationuserCRUD, UserManager<ApplicationUser> usermanager,
             RoleManager<IdentityRole> roleManager, IAddressCRUD addressCRUD, ICartCRUD cartCRUD, IWebHostEnvironment hostEnvironment)
@@ -42,15 +40,15 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private void Init()
         {
             // Get All Users
-            applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+            _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
 
             // Get User's Role
-            applicationuserRoles = new List<string>();
-            roles = new List<IdentityRole>();
+            _userVM.applicationuserRoles = new List<string>();
+            _userVM.roles = new List<IdentityRole>();
 
 
             // Get All Roles
-            roles = _rolemanager.Roles.ToList();
+            _userVM.roles = _rolemanager.Roles.ToList();
         }
 
         public IActionResult Index(string filter)
@@ -62,7 +60,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             List<ApplicationUser> users = new List<ApplicationUser>();
 
-            foreach (ApplicationUser i in applicationUsers)
+            foreach (ApplicationUser i in _userVM.applicationUsers)
             {
                 var role = _usermanager.GetRolesAsync(i).Result.ToList();
                 if (role != null && role.Count != 0)
@@ -75,28 +73,35 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             if (role.Equals(filter))
                             {
                                 users.Add(i);
-                                applicationuserRoles.Add(role[0]);
+                                _userVM.applicationuserRoles.Add(role[0]);
                             }
                         }
                         else
                         {
                             users.Add(i);
-                            applicationuserRoles.Add(role[0]);
+                            _userVM.applicationuserRoles.Add(role[0]);
                         }
                     }
                 }
             }
+            _userVM.applicationUsers = users;
 
-            ViewData["applicationUser"] = users;
-            ViewData["userRoles"] = applicationuserRoles;
-            ViewData["allRoles"] = roles;
-            return View();
+            return View(_userVM);
         }
 
-
-        [HttpPost]
-        public IActionResult Create(ApplicationUser obj)
+        [HttpGet]
+        public IActionResult Create()
         {
+            _userVM.user = new ApplicationUser();
+
+            return PartialView(_userVM);
+        }
+
+        [ValidateAntiForgeryToken]
+        [HttpPost]
+        public IActionResult Create(UserVM userVM)
+        {
+            var obj = userVM.user;
 
             if (obj.Avatar == null)
             {
@@ -108,7 +113,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             // Haven't done with user creating conditions
             ModelState.Clear();
-            if (TryValidateModel(obj) && obj.Role != string.Empty)
+            if (TryValidateModel(obj))
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
@@ -135,13 +140,15 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 _usermanager.AddToRoleAsync(obj, obj.Role).Wait();
 
-                return RedirectToAction("Index");
+                _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
-            return View(obj);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", _userVM) });
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null || id == "")
             {
@@ -154,15 +161,19 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 {
                     return NotFound();
                 }
-                obj.Role = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
-                ViewData["userRoles"] = roles;
-                return PartialView(obj);
+
+                _userVM.user = obj;
+                
+                return PartialView(_userVM);
             }
         }
 
+        [ValidateAntiForgeryToken]
         [HttpPost]
-        public IActionResult Edit(ApplicationUser obj)
+        public IActionResult Edit(UserVM userVM)
         {
+            var obj = userVM.user;
+
             if (obj.Avatar == null)
             {
                 using (var stream = new MemoryStream())
@@ -192,24 +203,27 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 _applicationuserCRUD.Update(obj);
 
-                return RedirectToAction("Index");
+                _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
-            return View(obj);
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", _userVM) });
         }
-        public async Task<IActionResult> Delete(string id)
+
+        [HttpPost]
+        public IActionResult Delete(string id)
         {
-            var obj = await _applicationuserCRUD.GetByIdAsync(id);
+            var obj = _applicationuserCRUD.GetByIdAsync(id).Result;
             if (obj != null) // xu ly admin se k xoa acc 
             {
-                obj.Role = _usermanager.GetRolesAsync(obj).Result.ToList()[0];
                 if (obj.Role != "Admin")
                 {
                     _addressCRUD.DeleteAllAdressByIdAsync(obj.Id);
                     _applicationuserCRUD.Remove(obj);
                 }
-
+                _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
             }
-            return RedirectToAction("Index");
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
         }
     }
 }

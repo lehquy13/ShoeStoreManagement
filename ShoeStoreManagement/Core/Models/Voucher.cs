@@ -16,7 +16,7 @@ namespace ShoeStoreManagement.Core.Models
         [DisplayFormat(DataFormatString = "{0:DD-MM-YYYY}")]
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        [Required]
+        [Required(ErrorMessage = "Request Type Required")]
         public ExpireType ExpiredType { get; set; } = ExpireType.Amount;
 
         [Required]

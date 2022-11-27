@@ -17,7 +17,7 @@
 
 <form class="row" method="post" action="DetailProduct/CreateCartItem">
 	<div class="col-4">
-		<img src="~/image/@Model.Product.ImageName" asp-append-version="true" class="w-100" />
+		<img src="~/image/@Model.product.ImageName" asp-append-version="true" class="w-100" />
 
 	</div>
 	<div class="col-5 d-flex flex-column justify-content-between">
@@ -30,7 +30,7 @@
 	<div class="col">
 		<span class="h6">Description</span>
 		<p class="caption mt-1">
-			@Model.Product.Description
+			@Model.product.Description
 		</p>
 	</div>
 </form>
