@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Models;
@@ -35,8 +36,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private ApplicationUser _currentUser;
         private Cart _userCart;
         //private static ProductVM _productVM = new ProductVM();
+        private string categoryRadio = "";
+        private string priceRadio = "";
+        private int page = 1;
 
-        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
+
+
+		public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
             , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IWebHostEnvironment webHostEnvironment, IImageCRUD imageCRUD)
         {
             _logger = logger;
@@ -197,7 +203,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio) || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
                     productFilter.Add(i);
             }
-
+            this.priceRadio = priceRadio; 
+            this.categoryRadio = categoryRadio;
+            this.page = page;
             ViewBag.Product = true;
             ViewData["productCategories"] = productCategories;
             ViewData["products"] = productFilter;
@@ -299,19 +307,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 
-        [ValidateAntiForgeryToken]
+        
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductVM productVM)
+        public async Task<IActionResult> Edit([Bind("ProductId,Product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
         {
             if (productVM.Product.ProductCategoryId == null)
             {
                 return NotFound(productVM.Product.ProductCategoryId);
             }
             else
-            {
                 productVM.Product.ProductCategory = _productCategoryCRUD.GetByIdAsync(productVM.Product.ProductCategoryId).Result;//note
-
-            }
 
             productVM.Product.ImageName = "";
 
@@ -357,6 +362,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             });
                     }
                 }
+                productVM.Product.Sizes = await _sizeDetailCRUD.GetAllByIdAsync(productVM.Product.ProductId);
+                productVM.Product.Amount = 0;
+                foreach(var i in productVM.Product.Sizes)
+                {
+                    productVM.Product.Amount += i.Amount;
+                }
 
                 _productCRUD.Update(productVM.Product);
 
@@ -401,14 +412,47 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
                 }
 
-
-                return RedirectToAction("Index");
+                await load();
+                return PartialView("ProductTable");
             }
             return RedirectToAction("Index");
         }
 
-        [ValidateAntiForgeryToken]
-        [HttpPost]
+        private async Task load()
+        {
+			List<Product> productFilter = new List<Product>();
+			List<string> filters = new List<string>();
+			filters.Add(categoryRadio);
+			filters.Add(priceRadio);
+
+			float minvalue = -1, maxvalue = -1;
+			products = await _productCRUD.GetAllAsync();
+			if (products.Count > 0)
+			{
+				if (!string.IsNullOrEmpty(priceRadio))
+				{
+					string[] strsplt = priceRadio.Split('-', 2, StringSplitOptions.None);
+					minvalue = float.Parse(strsplt[0]);
+					maxvalue = float.Parse(strsplt[1]);
+				}
+			}
+
+			foreach (Product i in products)
+			{
+				if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio) || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+					productFilter.Add(i);
+			}
+
+			ViewBag.Product = true;
+			ViewData["productCategories"] = productCategories;
+			ViewData["products"] = productFilter;
+			ViewData["filters"] = filters;
+			ViewData["page"] = page;
+			ViewData["test"] = test;
+
+		}
+
+		[HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var obj = await _productCRUD.GetByIdAsync(id);
@@ -417,7 +461,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
                 _productCRUD.Remove(obj);
             }
-            return RedirectToAction("Index");
+
+            await load();
+			return PartialView("ProductTable");
         }
 
         // Admin/Edit/id
