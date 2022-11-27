@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Models;
@@ -30,7 +31,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly UserManager<ApplicationUser> _usermanager;
         private static ProductVM _productVM = new ProductVM();
 
-        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
+
+
+		public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
             , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IWebHostEnvironment webHostEnvironment, IImageCRUD imageCRUD)
         {
             _logger = logger;
@@ -315,9 +318,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 
-        [ValidateAntiForgeryToken]
+        
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductVM productVM)
+        public async Task<IActionResult> Edit([Bind("ProductId,Product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
         {
             var product = productVM.product;
 
@@ -372,6 +375,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             });
                     }
                 }
+                productVM.product.Sizes = await _sizeDetailCRUD.GetAllByIdAsync(productVM.product.ProductId);
+                productVM.product.Amount = 0;
+                foreach(var i in productVM.product.Sizes)
+                {
+                    productVM.product.Amount += i.Amount;
+                }
 
                 _productCRUD.Update(product);
 
@@ -416,14 +425,41 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
                 }
 
-
-                return Json(new { isValid = true, url = Url.Action("Index", "Product", null, Request.HttpContext.Request.Scheme) });
+                await load();
+                return PartialView("ProductTable");
             }
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", product) });
+            return RedirectToAction("Index");
         }
 
-        [ValidateAntiForgeryToken]
-        [HttpPost]
+        private async Task load()
+        {
+			List<Product> productFilter = new List<Product>();
+			List<string> filters = new List<string>();
+			filters.Add(_productVM.categoryRadio);
+			filters.Add(_productVM.priceRadio);
+
+			float minvalue = -1, maxvalue = -1;
+            _productVM.products = await _productCRUD.GetAllAsync();
+			if (_productVM.products.Count > 0)
+			{
+				if (!string.IsNullOrEmpty(_productVM.priceRadio))
+				{
+					string[] strsplt = _productVM.priceRadio.Split('-', 2, StringSplitOptions.None);
+					minvalue = float.Parse(strsplt[0]);
+					maxvalue = float.Parse(strsplt[1]);
+				}
+			}
+
+			foreach (Product i in _productVM.products)
+			{
+				if ((i.ProductCategory.ProductCategoryName.Equals(_productVM.categoryRadio) || string.IsNullOrEmpty(_productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+					productFilter.Add(i);
+			}
+
+			ViewBag.Product = true;
+		}
+
+		[HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var obj = await _productCRUD.GetByIdAsync(id);
@@ -432,10 +468,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
                 _productCRUD.Remove(obj);
             }
-            return RedirectToAction("Index");
+
+            await load();
+			return PartialView("_ViewAll",_productVM.products);
         }
 
-        // Admin/Edit/id
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
@@ -443,8 +480,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             if (obj != null)
             {
                 obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result ?? new ProductCategory();
+                _productVM.product = obj;
 
-                return PartialView(obj);
+                return PartialView(_productVM);
 
             }
             return RedirectToAction("Index");

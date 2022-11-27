@@ -41,6 +41,10 @@ namespace ShoeStoreManagement.Core.ViewModel
 
         public int page { get; set; } = 1;
 
+        public string categoryRadio { get; set; } = "";
+
+        public string priceRadio { get; set; } = "";
+
         public int nProducts { get; set; } = 0;
     }
 }

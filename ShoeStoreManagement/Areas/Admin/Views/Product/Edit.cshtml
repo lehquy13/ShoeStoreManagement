@@ -7,9 +7,9 @@
 @{
 	for (int i = 35; i <= 44; i++)
 	{
-		if (!Model.SizeHashtable.ContainsKey(i))
+		if (!Model.product.SizeHashtable.ContainsKey(i))
 		{
-			Model.SizeHashtable.Add(i, 0);
+			Model.product.SizeHashtable.Add(i, 0);
 		}
 	}
 }
@@ -72,7 +72,7 @@
 			<div class="form-group">
 				@for (int i = 35; i <= 44; i++)
 				{
-					var obj = Model.SizeHashtable[i];
+					var obj = Model.product.SizeHashtable[i];
 					<div class="form-check mt-2">
 						@if (obj > 0)
 						{
@@ -84,7 +84,7 @@
 						}
 						<label class="form-check-label d-flex align-items-center">
 							@i
-							<input type="number" value="@Model.SizeHashtable[i]" name="TestSizeAmount" id="input_@Model.SizeHashtable[i]" class="form-control ms-2" />
+							<input type="number" value="@Model.product.SizeHashtable[i]" name="TestSizeAmount" id="input_@Model.product.SizeHashtable[i]" class="form-control ms-2" />
 						</label>
 					</div>
 				}
@@ -93,7 +93,7 @@
 	</div>
 	<div class="d-flex justify-content-end mt-3 pe-3">
 		<button type="submit" class="btn btn-primary flex-grow-1">Submit</button>
-		<button type="submit" class="btn btn-secondary ms-1 icon-delete" >
+		<button type="button" class="btn btn-secondary ms-1 icon-delete" onclick="jQueryAjaxDelete('@Url.Action("Delete","Product",new {id = @Model.product.ProductId})')">
 			Delete
 		</button>
 	</div>
@@ -102,7 +102,7 @@
 
 
 @section Scripts {
-	@{
-		<partial name="./_ValidationScriptsPartial"></partial>
-	}
+    @{
+        <partial name="./_ValidationScriptsPartial"></partial>
+    }
 	}
