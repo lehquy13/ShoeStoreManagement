@@ -316,10 +316,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return NotFound(productVM.Product.ProductCategoryId);
             }
             else
-            {
                 productVM.Product.ProductCategory = _productCategoryCRUD.GetByIdAsync(productVM.Product.ProductCategoryId).Result;//note
-
-            }
 
             productVM.Product.ImageName = "";
 
@@ -364,6 +361,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                                 ProductId = productVM.Product.ProductId
                             });
                     }
+                }
+                productVM.Product.Sizes = await _sizeDetailCRUD.GetAllByIdAsync(productVM.Product.ProductId);
+                productVM.Product.Amount = 0;
+                foreach(var i in productVM.Product.Sizes)
+                {
+                    productVM.Product.Amount += i.Amount;
                 }
 
                 _productCRUD.Update(productVM.Product);
