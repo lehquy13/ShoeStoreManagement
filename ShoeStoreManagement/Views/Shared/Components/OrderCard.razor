@@ -2,7 +2,9 @@
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Web;
 
-<div class="row mb-5 p-0 gx-0">
+@inject NavigationManager UriHelper
+
+<div class="row mb-5 p-0 gx-0" @onclick="NavigateToDetail">
     <div class="col-8 p-0">
         @if (order.OrderDetails.Count > 0) {
             @foreach (var item in order.OrderDetails)
@@ -34,5 +36,13 @@
     public Order order { get; set; } = null!;
 
     [Parameter]
+    public string orderId { get; set; } = "";
+
+    [Parameter]
     public Order totalAmount { get; set; } = null!;
+
+    void NavigateToDetail()
+	{
+		UriHelper.NavigateTo("Order/OrderDetail/" + orderId, true);
+	}
 }

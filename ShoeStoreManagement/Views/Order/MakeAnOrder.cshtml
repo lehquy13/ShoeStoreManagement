@@ -1,13 +1,9 @@
 ﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @using ShoeStoreManagement.Core.Enums;
-@using ShoeStoreManagement.Core.ViewModels;
+@using ShoeStoreManagement.Core.ViewModel;
 
 @model OrderVM
-
-@{
-	List<DeliveryMethods> deliveryMethods = ViewData["deliveryMethods"] as List<DeliveryMethods> ?? new List<DeliveryMethods>();
-}
 
 <form method="post" action="Order/ConfirmOrder" class="row d-flex justify-content-between">
 	<div class="col-7">
@@ -23,7 +19,7 @@
 		<div class="d-flex flex-column mt-5">
 			<span class="h6 mb-1">Delivery Method</span>
 			<div class="form-floating">
-				<select class="form-select" asp-for="currOrder.DeliverryMethods" asp-items="@(new SelectList(deliveryMethods))" id="selectPM" aria-label="Floating label select example">
+				<select class="form-select" asp-for="currOrder.DeliverryMethods" asp-items="@(new SelectList(Model.deliveryMethods))" id="selectPM" aria-label="Floating label select example">
 				</select>
 				<span asp-validation-for="currOrder.DeliverryMethods" class="text-danger"></span>
 			</div>

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ShoeStoreManagement.Core.Models;
 
-namespace ShoeStoreManagement.Core.ViewModels;
+namespace ShoeStoreManagement.Core.ViewModel;
 
 public class CustomerDialogVM
 {

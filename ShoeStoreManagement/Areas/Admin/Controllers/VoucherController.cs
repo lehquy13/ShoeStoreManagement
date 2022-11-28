@@ -67,7 +67,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 if (obj.ConditionType == ConditionType.NewCustomer)
                 {
-                    obj.ConditionValue = "";
+                    obj.ConditionValue = "0";
                 }
 
                 _voucherCRUD.CreateAsync(obj);
@@ -102,6 +102,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                if (obj.CreatedDate > DateTime.Now)
+                {
+                    obj.State = VoucherStatus.ComingSoon;
+                }
+
                 _voucherCRUD.Update(obj);
 
                 _voucherVM.vouchers = _voucherCRUD.GetAllAsync().Result;

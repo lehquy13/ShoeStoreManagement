@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ShoeStoreManagement.Core.Models;
 
-namespace ShoeStoreManagement.Core.ViewModels;
+namespace ShoeStoreManagement.Core.ViewModel;
 
 public class OrderVM
 {
@@ -18,6 +18,10 @@ public class OrderVM
 
     public Order? currOrder { get; set; } = new Order();
 
+    public List<DeliveryMethods>? deliveryMethods { get; set; }
+
+    public List<PaymentMethod>? paymentMethods { get; set; }
+
     public List<string> pickitems { get; set; } = new List<string>();
 
     public List<string> pickingQuantity { get; set; } = new List<string>();
@@ -25,7 +29,9 @@ public class OrderVM
     public List<string> pickingSize { get; set; } = new List<string>();
 
     public int totalAmount { get; set; } = 0;
+
     public float totalPayment { get; set; } = 0;
+
     public List<Order> allOrders { get; set; } = new List<Order>();
 
     public bool isOnProcessing { get; set; } = false;

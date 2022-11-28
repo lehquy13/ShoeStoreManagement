@@ -10,15 +10,13 @@
 
 	List<string> ids = new List<string>();
 
-	foreach (var i in Model.CartDetails)
+	for (var i = 0; i < Model.CartDetails.Count; i++)
 	{
-		ids.Add(i.CartDetailId);
+		ids.Add(Model.CartDetails[i].CartDetailId);
 
-		if (i.IsChecked == true)
+		if (Model.CartDetails[i].IsChecked == true && disabled != "")
 		{
 			disabled = "";
-
-			break;
 		}
 	}
 }

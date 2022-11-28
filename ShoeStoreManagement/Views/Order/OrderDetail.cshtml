@@ -1,0 +1,81 @@
+﻿@using ShoeStoreManagement.Core.ViewModel;
+@using ShoeStoreManagement.Areas.Identity.Data;
+@using ShoeStoreManagement.Views.Shared.Components;
+
+@model OrderVM
+
+@{
+	var user = Model.currOrder.User ?? new ApplicationUser();
+}
+
+<div class="w-100 d-flex flex-column align-items-center">
+	<div class="w-75 bg-dark shadow" style="padding: 36px 24px 36px 24px;">
+		<div class="d-flex justify-content-between text-light">
+			<div class="">
+				<p class="h4">Status</p>
+				<p class="h5 text-primary">@Model.currOrder.Status</p>
+			</div>
+			<div class="">
+				<p class="caption">Ordered By @Model.currOrder.OrderDate</p>
+			</div>
+		</div>
+
+		<div class="row mt-5">
+			<div class="col-7">
+				@if (Model.currOrder.OrderDetails.Count > 0)
+				{
+					@foreach (var item in Model.currOrder.OrderDetails)
+					{
+						<component type="typeof(OrderItemCard)" render-mode="ServerPrerendered" param-orderDetail=@item param-orderDetailId=@item.OrderDetailId />
+					}
+				}
+			</div>
+			<div class="col-5 text-light">
+				<div class="d-grid gap-2">
+					<p class="h4">Customer</p>
+					<p class="h5">@user.UserName</p>
+					<p class="h5">@user.PhoneNumber</p>
+					<p class="h5">@Model.currOrder.DeliveryAddress</p>
+				</div>
+			</div>
+		</div>
+
+		<div class="text-light mt-5 row">
+			<div class="d-grid gap-2 col-7">
+				<p class="h4">Payment</p>
+				<p class="h5">@Model.currOrder.PaymentMethod</p>
+			</div>
+			<div class="d-grid gap-2 col-5">
+				<p class="h4">Delivery</p>
+				<p class="h5">@Model.currOrder.DeliverryMethods</p>
+			</div>
+		</div>
+
+		<div class="w-100 mt-5 text-light">
+			<div class="d-flex flex-column justify-content-between w-100">
+				<div class="">
+					<div class="d-flex justify-content-between">
+						<span class="caption">Items Amount</span>
+						<span class="caption">@Model.totalAmount</span>
+					</div>
+					<div class="d-flex justify-content-between mt-2">
+						<span class="h6">Price</span>
+						<span class="h6">$@Model.currOrder.OrderTotalPayment</span>
+					</div>
+					<div class="d-flex justify-content-between mt-2">
+						<span class="caption">Delivery Fee</span>
+						<span class="caption">$@Model.currOrder.DeliveryCharge</span>
+					</div>
+					<div class="d-flex justify-content-between h2 mt-2 text-primary">
+						<span>Total</span>
+						<span>$@Model.currOrder.OrderTotalPrice</span>
+					</div>
+					@*<button type="submit" class="btn btn-primary icon-arrow w-100 mt-3">Next</button>*@
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+

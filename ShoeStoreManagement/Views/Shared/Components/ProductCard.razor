@@ -6,20 +6,23 @@
 
 <div class="card border-0 col-4 mb-5" style="height:fit-content">
 	<img src="image/@imageName"
-		 class="card-img-top img h-auto"
+		 class="card-img-top img w-100 h-auto"
 		 asp-append-version="true" @onclick="NavigateToDetail" />
 	<div class="card-body">
-		<p class="fw-bold h5 mb-1">@product.ProductName</p>
-		<p class="h5 mb-2">@product.Color</p>
-		<p class="h5 mb-2">@product.ProductUnitPrice</p>
+		<p class="fw-bold h4 text-dark mb-1">@product.ProductName</p>
+		<div class="d-flex justify-content-between">
+			<p class="caption mb-2">@product.Color</p>
+			<p class="h6 mb-2">@product.ProductUnitPrice</p>
+		</div>
+		<p class="caption text-primary mb-2">@product.Description</p>
 	</div>
 	@if (!isLiked)
 	{
-		<button class="btn btn-primary" type="button" @onclick="AddToWishList">Add to WishList</button>
+		<button class="btn btn-primary icon-heart" type="button" @onclick="AddToWishList">Add to WishList</button>
 	}
 	else
 	{
-		<button class="btn btn-secondary" type="button" @onclick="RemoveFromWishList">Remove from WishList</button>
+		<button class="btn btn-secondary icon-heart" type="button" @onclick="RemoveFromWishList">Remove from WishList</button>
 	}
 </div>
 
