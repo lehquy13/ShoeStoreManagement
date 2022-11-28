@@ -206,7 +206,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult taolao(ProductVM productVM)
+        public IActionResult Sort(ProductVM productVM)
         {
             List<Product> productFilter = new List<Product>();
             _productVM.filters = new List<string>();
