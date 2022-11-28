@@ -255,8 +255,6 @@ function deleteSth(url, id) {
 }
 
 function jQueryAjaxDelete(url) {
-
-   
     $.ajax({
         type: "POST",
         url: url,
@@ -276,11 +274,7 @@ function jQueryAjaxDelete(url) {
 
         }
     })
-
-
-
     //prevent default form submit event
-
 }
 
 function jQueryAjaxPost(form) {
@@ -310,3 +304,4 @@ function jQueryAjaxPost(form) {
         console.log(ex)
     }
 }
+

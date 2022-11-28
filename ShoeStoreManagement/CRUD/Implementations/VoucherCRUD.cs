@@ -53,6 +53,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                     obj.ConditionValue = updateVoucher.ConditionValue;
                     obj.Value = updateVoucher.Value;
                     obj.ValueType = updateVoucher.ValueType;
+                    obj.CreatedDate = updateVoucher.CreatedDate;
                     _applicationDBContext.SaveChanges();
                 }
             }

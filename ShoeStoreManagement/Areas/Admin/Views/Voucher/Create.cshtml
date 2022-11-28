@@ -53,9 +53,9 @@
 				<span asp-validation-for="voucher.ExpiredValue" class="text-danger"></span>
 			</div>
 			<div class="d-flex form-floating">
-				<input type="text" asp-for="voucher.Code" placeholder="hehe" id="voucherCode" class="form-control flex-fill" required />
+				<input type="text" asp-for="voucher.Code" placeholder="hehe" id="hehe" class="form-control flex-fill" required />
 				<label for="floatingInput">Enter Code</label>
-				<button class="btn btn-primary h-100">Auto-generate</button>
+				<button type="button" class="btn btn-primary h-100" onclick="generateCode()">Auto-generate</button>
 			</div>
 			<span asp-validation-for="voucher.Code" class="text-danger"></span>
 		</div>
@@ -75,3 +75,16 @@
 		<partial name="./_ValidationScriptsPartial"></partial>
 	}
 	}
+
+<script>
+	function generateCode() {
+    var code = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < 6; i++) {
+        code += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+	document.getElementById("hehe").value = code;
+}
+</script>
