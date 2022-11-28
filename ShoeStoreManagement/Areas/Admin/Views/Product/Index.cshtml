@@ -10,7 +10,8 @@
 @{
 	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
 
-	int nProducts = Model.nProducts;
+	var nProducts = Model.page;
+	
 
 	int countPage()
 	{
@@ -105,7 +106,7 @@
 			</div>
 		</div>
 
-		<form method="post" action="Admin/Product/Index">
+		<form method="get" action="Admin/Product/Index">
 			<nav class="container">
 				<ul class="pagination" style="display:flex; flex-direction:row">
 					@if (nProducts != 0)
