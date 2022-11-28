@@ -3,33 +3,34 @@
 @using Microsoft.AspNetCore.Components.Web;
 
 <div class="card d-flex flex-row p-0">
-    <img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
-    <div class="card-body d-flex flex-column justify-content-between">
-        <div>
-            <div class="d-flex justify-content-between">
-                <p class="h3">@orderDetail.Product?.ProductName</p>
-                <p class="h6">x @orderDetail.Amount</p>
-            </div>
-            <div class="d-flex justify-content-between align-items-end mt-2 mb-1">
-                <p class="h5">Black</p>
-                <p class="h5 text-dark">$@orderDetail.Product?.ProductUnitPrice</p>
-            </div>
-        </div>
-        <div class="">
-            <p class="m-0 h3 text-primary float-end">$@orderDetail.Payment</p>
-        </div>
-    </div>
+	<img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
+	<div class="card-body d-flex flex-column justify-content-between">
+		<div>
+			<div class="d-flex justify-content-between">
+				<p class="h3">@orderDetail.Product?.ProductName</p>
+				<p class="h6">x @orderDetail.Amount</p>
+			</div>
+			<div class="d-flex align-items-end">
+				<span class="h5">@orderDetail.Product.Color - </span>	
+				<span class="h6">@orderDetail.Size</span>
+			</div>
+		</div>
+		<div class="d-flex justify-content-between align-items-end">
+			<p class="h5 text-dark">$@orderDetail.Product?.ProductUnitPrice</p>
+			<p class="m-0 h3 text-primary">$@orderDetail.Payment</p>
+		</div>
+	</div>
 </div>
 
 @code {
-    [Parameter]
-    public OrderDetail orderDetail { get; set; } = null!;
+	[Parameter]
+	public OrderDetail orderDetail { get; set; } = null!;
 
-    [Parameter]
-    public string orderDetailId { get; set; } = null!;
+	[Parameter]
+	public string orderDetailId { get; set; } = null!;
 
-    private void handleEvent()
-    {
-        
-    }
+	private void handleEvent()
+	{
+
+	}
 }

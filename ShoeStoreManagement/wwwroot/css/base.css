@@ -81,6 +81,12 @@ p {
     text-decoration: none;
 }
 
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .btn-icon {
     width: fit-content;
     height: auto;

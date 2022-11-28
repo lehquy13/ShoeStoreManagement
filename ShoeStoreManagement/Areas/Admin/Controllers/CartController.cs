@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Models;
-using ShoeStoreManagement.Core.ViewModels;
+using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;
 

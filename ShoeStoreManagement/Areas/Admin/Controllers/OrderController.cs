@@ -5,7 +5,7 @@ using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
-using ShoeStoreManagement.Core.ViewModels;
+using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;

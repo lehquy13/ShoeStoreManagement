@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
-using ShoeStoreManagement.Core.ViewModels;
+using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Interfaces;
 using System.Security.Claims;
 using ValueType = ShoeStoreManagement.Core.Enums.ValueType;
@@ -28,6 +28,9 @@ namespace ShoeStoreManagement.Controllers
             _cartDetailCRUD = cartDetailCRUD;
             _voucherCRUD = voucherCRUD;
             _sizeDetailCRUD = sizeDetailCRUD;
+
+            _orderVM.deliveryMethods = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
+            _orderVM.paymentMethods = Enum.GetValues(typeof(PaymentMethod)).Cast<PaymentMethod>().ToList();
         }
 
         public IActionResult Index()
@@ -58,7 +61,6 @@ namespace ShoeStoreManagement.Controllers
             List<Voucher>? vouchers = _voucherCRUD.GetAllAsync().Result;
 
             ViewData["vouchers"] = vouchers;
-            ViewData["deliveryMethods"] = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
 
             _orderVM.currOrder = new Order();
             OrderDetail orderDetail = new OrderDetail();
@@ -109,8 +111,6 @@ namespace ShoeStoreManagement.Controllers
         [HttpPost]
         public IActionResult ConfirmOrder(OrderVM orderVm)
         {
-            ViewData["paymentMethods"] = Enum.GetValues(typeof(PaymentMethod)).Cast<PaymentMethod>().ToList();
-
             _orderVM.currOrder.DeliverryMethods = orderVm.currOrder.DeliverryMethods;
 
             if (orderVm.currOrder.DeliverryMethods == DeliveryMethods.Fast)
@@ -245,11 +245,6 @@ namespace ShoeStoreManagement.Controllers
 
                 CartDetail? cartDetail = await _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId, item.Size);
 
-
-                //Subtract amount of size
-
-
-
                 var ob = _productCRUD.GetByIdAsync(item.ProductId);
 
                 if (cartDetail != null)
@@ -274,6 +269,37 @@ namespace ShoeStoreManagement.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult OrderDetail(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Order? order = _orderCRUD.GetByIdAsync(id).Result;
+
+            if (order != null)
+            {
+                List<OrderDetail> orderDetails = _orderDetailCRUD.GetAllAsync(id).Result;
+
+                if(orderDetails != null)
+                {
+                    foreach(var item in orderDetails)
+                    {
+                        item.Product = _productCRUD.GetByIdAsync(item.ProductId).Result;
+                        order.OrderDetails.Add(item);
+                    }
+                }
+
+                _orderVM.currOrder = order;
+
+                return View(_orderVM);
+            }
+
+            return NotFound();
         }
     }
 }

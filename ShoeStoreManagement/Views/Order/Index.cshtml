@@ -3,6 +3,7 @@
 }
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
+
 @model List<Order>
 
 <div class="row ">
@@ -26,7 +27,7 @@
 
 	<div class="col-9 row borderCustom">
 		@foreach(var item in Model) {
-			<component type="typeof(OrderCard)" accesskey="item" render-mode="ServerPrerendered" param-order=@item />
+			<component type="typeof(OrderCard)" accesskey="item" render-mode="ServerPrerendered" param-order=@item param-orderId=@item.OrderId />
 		}
 	</div>
 </div>
