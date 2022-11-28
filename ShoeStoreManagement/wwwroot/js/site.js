@@ -280,7 +280,7 @@ function jQueryAjaxDelete(url) {
 
 
     //prevent default form submit event
-
+    return false;
 }
 
 function jQueryAjaxPost(form) {
@@ -307,10 +307,14 @@ function jQueryAjaxPost(form) {
         return false;
     } catch (ex) {
         console.log(ex)
+        return false;
+
     }
 }
+
 function jQueryAjaxSort(form) {
     var obj = new FormData(form);
+
     try {
         $.ajax({
             type: 'POST',
@@ -319,23 +323,22 @@ function jQueryAjaxSort(form) {
             processData: false,
             contentType: false,
             success: function (res) {
-                $('#product-table').html(res);
-                alert("im hể");
+                $('#hihi').html(res);
 
             },
             error: function (err) {
-                alert("im hể2");
+                alert(err);
 
                 console.log(err)
             }
         })
         //to prevent default form submit event
+        return false;
         
     } catch (ex) {
 
         alert(ex);
-        alert("im hể 3");
-
+        return false;
     }
 }
 

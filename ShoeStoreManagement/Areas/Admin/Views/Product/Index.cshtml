@@ -42,8 +42,8 @@
 </style>
 
 <div class="row">
-    <form asp-action="taolao" asp-area="Admin" asp-controller="Product" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);" autocomplete="off">
-        <div class="col">
+	<form asp-action="taolao" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
+        <div class="form-group col">
             <div class="row">
                 <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
@@ -94,7 +94,7 @@
 				</div>
 			</div>
 
-            <button class="btn btn-secondary rounded w-100 mt-5" type="submit" />
+            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="its me"/>
         </div> @*used to col-3 vs col-10*@
     </form>
 
