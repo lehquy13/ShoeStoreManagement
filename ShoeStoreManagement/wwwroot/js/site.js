@@ -305,3 +305,14 @@ function jQueryAjaxPost(form) {
     }
 }
 
+/* BACKGROUND */
+
+function removeBg() {
+
+    //var item = document.getElementById("body")
+
+    //item.addClass("body-bg")
+
+    $("#body").addClass("body-bg");
+    return false;
+}

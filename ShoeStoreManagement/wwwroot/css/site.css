@@ -256,3 +256,10 @@
   width: inherit;
   padding: 0px 0px 0px 0px;
 }
+
+.body-bg {
+    background-image: url("../image/Shoe1.png");
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}

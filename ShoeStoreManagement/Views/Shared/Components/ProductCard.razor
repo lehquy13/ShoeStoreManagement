@@ -4,10 +4,17 @@
 
 @inject NavigationManager UriHelper
 
-<div class="card border-0 col-4 mb-5" style="height:fit-content">
+<div class="card border-0 col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-5" style="height:fit-content">
+
+	@if (String.IsNullOrEmpty(imageName))
+	{
+		imageName = "product-empty.png";
+	}
+
 	<img src="image/@imageName"
 		 class="card-img-top img w-100 h-auto"
 		 asp-append-version="true" @onclick="NavigateToDetail" />
+
 	<div class="card-body">
 		<p class="fw-bold h4 text-dark mb-1">@product.ProductName</p>
 		<div class="d-flex justify-content-between">
