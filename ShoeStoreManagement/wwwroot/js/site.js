@@ -342,11 +342,8 @@ function jQueryAjaxSort(form) {
 /* BACKGROUND */
 
 function removeBg() {
-
-    //var item = document.getElementById("body")
-
-    //item.addClass("body-bg")
-
+    alert("me me");
+   
     $("#body").addClass("body-bg");
     return false;
 }
