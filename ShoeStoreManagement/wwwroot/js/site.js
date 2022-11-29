@@ -312,7 +312,9 @@ function jQueryAjaxPost(form) {
 
 function jQueryAjaxSort(form) {
     var obj = new FormData(form);
-
+    for (var pair of obj.entries()) {
+        console.log(pair[0] + ', ' + pair[1]);
+    }
     try {
         $.ajax({
             type: 'POST',

@@ -172,8 +172,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string categoryRadio = "All", string priceRadio = "All", int page = 1)
+        public IActionResult Index(string categoryRadio, string priceRadio , int page = 1)
         {
+            _productVM.products = _productVM.products.OrderBy(o => o.ProductName).ToList();
             List<Product> productFilter = new List<Product>();
             _productVM.filters = new List<string>();
             _productVM.filters.Add(categoryRadio);
@@ -198,11 +199,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     && maxCheck(maxvalue, i.ProductUnitPrice))
                     productFilter.Add(i);
             }
-
+            
+            _productVM.products= productFilter;
             ViewBag.Product = true;
-            _productVM.page = page;
-
-            return View(_productVM);
+			
+            _productVM.page = page-1;
+            ViewData["nProducts"] = _productVM.page;
+			return View(_productVM);
         }
 
         [HttpPost]
@@ -233,10 +236,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     productFilter.Add(i);
             }
 
-
-            _productVM.page = productVM.page;
-
-            return PartialView("_ViewAll", productFilter);
+            productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
+            _productVM.page = productVM.page -1;
+			ViewData["nProducts"] = _productVM.page;
+			return PartialView("_ViewAll", productFilter);
         }
 
 
@@ -345,10 +348,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                     _productCRUD.CreateAsync(product);
 
-                    _productVM.products = _productCRUD.GetAllAsync().Result;
-                    _productVM.nProducts = _productVM.page - 1;
+                    _productVM.products = _productCRUD.GetAllAsync().Result.OrderBy(o => o.ProductName).ToList();
+                    //_productVM.page = 0;
 
-                    TempData["success"] = "Category is Created Successfully!!";
+					//_productVM.nProducts = _productVM.page;
+					ViewData["nProducts"] = _productVM.page;
+
+					TempData["success"] = "Category is Created Successfully!!";
 
                     return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM.products) });
                 }
@@ -495,7 +501,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 if ((i.ProductCategory.ProductCategoryName.Equals(_productVM.categoryRadio) || string.IsNullOrEmpty(_productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
                     productFilter.Add(i);
             }
-
+            _productVM.products = productFilter;
+            _productVM.products = _productVM.products.OrderBy(o=>o.ProductName).ToList();
+            _productVM.page = 0;//reseet nhá
             ViewBag.Product = true;
         }
 
