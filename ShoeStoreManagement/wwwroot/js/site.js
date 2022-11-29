@@ -357,3 +357,11 @@ function jQueryAjaxSort(form) {
     }
 }
 
+/* BACKGROUND */
+
+function removeBg() {
+    alert("me me");
+   
+    $("#body").addClass("body-bg");
+    return false;
+}
