@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Hosting;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Data;
 
@@ -20,15 +21,18 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            ApplicationDbContext applicationDbContext)
+            ApplicationDbContext applicationDbContext,
+            IWebHostEnvironment hostEnvironment)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = applicationDbContext;
+            _hostEnvironment = hostEnvironment;
         }
 
         /// <summary>
@@ -71,6 +75,12 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Name")]
             public string Name { get; set; }
+
+            [Display(Name = "Avatar")]
+            public IFormFile Avatar { get; set; }
+
+            [Display(Name = "Avatar Name")]
+            public string AvatarName { get; set; }
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -78,6 +88,8 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var birthday = user.Birthday;
+            var avatar = user.Avatar;
+            var avatarName = user.AvatarName;
 
             Username = userName;
 
@@ -86,6 +98,8 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber,
                 Birthday = birthday,
                 Name = userName,
+                Avatar = avatar,
+                AvatarName = avatarName,
             };
         }
 
@@ -132,8 +146,45 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
                 user.Birthday = Input.Birthday;
                 _context.ApplicationUsers.Update(user);
                 _context.SaveChanges();
-                
+
                 StatusMessage = "Unexpected error when trying to set birthday.";
+                return RedirectToPage();
+            }
+
+
+            if (Input.Avatar == null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    Input.Avatar = new FormFile(stream, 0, 0, "name", "fileName");
+                }
+            }
+
+            string fileName = "";
+            string wwwRootPath = "";
+
+            if (Input.Avatar.Length > 0)
+            {
+                wwwRootPath = _hostEnvironment.WebRootPath;
+                fileName = Path.GetFileNameWithoutExtension(Input.Avatar.FileName);
+                string extension = Path.GetExtension(Input.Avatar.FileName);
+                fileName = fileName + extension;
+            }
+
+            if (user.AvatarName != fileName)
+            {
+                string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await Input.Avatar.CopyToAsync(fileStream);
+                }
+
+                user.AvatarName = fileName;
+
+                _context.ApplicationUsers.Update(user);
+                _context.SaveChanges();
+
+                StatusMessage = "Unexpected error when trying to set avatar.";
                 return RedirectToPage();
             }
 

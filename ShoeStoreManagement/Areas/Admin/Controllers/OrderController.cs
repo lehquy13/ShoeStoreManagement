@@ -106,11 +106,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult PickItemDialog()
+        public IActionResult PickItemDialog(string filter = "")
         {
             var obj = _productCRUD.GetAllAsync().Result;
 
-            if (obj.Count > 0)
+            if (obj.Count > 0 && string.IsNullOrEmpty(filter))
             {
                 foreach (var i in obj)
                 {
@@ -118,6 +118,27 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 }
             }
+            else if (obj.Count > 0 && filter != "")
+            {
+                List<Product> products = new List<Product>();
+
+                foreach (var i in obj)
+                {
+                    if (i.ProductName.Equals(filter))
+                    {
+                        i.Sizes = _sizeDetailCRUD.GetAllByIdAsync(i.ProductId).Result;
+                        products.Add(i);
+                    }
+                }
+
+                ViewData["products"] = products;
+                _orderVM.searchCount = products.Count;
+                _orderVM.pickitems.Clear();
+                _orderVM.pickingQuantity.Clear();
+                _orderVM.pickingSize.Clear();
+                return PartialView(_orderVM);
+            }
+
             ViewData["products"] = obj;
             _orderVM.pickitems.Clear();
             _orderVM.pickingQuantity.Clear();

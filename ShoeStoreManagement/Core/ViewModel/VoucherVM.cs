@@ -15,5 +15,9 @@ namespace ShoeStoreManagement.Core.ViewModel
 		public List<ValueType>? valueTypes { get; set; }
 
 		public List<ExpireType>? expireTypes { get; set; }
-	}
+
+		public int page { get; set; }
+        public string categoryRadio { get; set; } = "";
+        public List<string>? filters { get; set; }
+    }
 }

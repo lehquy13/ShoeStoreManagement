@@ -35,4 +35,5 @@ public class OrderVM
     public List<Order> allOrders { get; set; } = new List<Order>();
 
     public bool isOnProcessing { get; set; } = false;
+    public int searchCount { get; set; } = 0;
 }

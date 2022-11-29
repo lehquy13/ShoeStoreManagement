@@ -28,9 +28,32 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         public IActionResult Index()
 		{
             ViewBag.Voucher = true;
-
+            _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.ValueType).ToList();
+            _voucherVM.filters = new List<string>();
+            _voucherVM.filters.Add("");
             return View(_voucherVM);
 		}
+
+        [HttpPost]
+        public IActionResult Sort(VoucherVM voucherVM)
+        {
+            List<Voucher> voucherFilters = new List<Voucher>();
+            _voucherVM.filters = new List<string>();
+            _voucherVM.filters.Add(voucherVM.categoryRadio);
+
+            foreach (var i in _voucherVM.vouchers)
+            {
+                if (voucherVM.categoryRadio.Equals("All"))
+                    voucherFilters.Add(i);
+                else if (Enum.GetName(typeof(VoucherStatus), i.State).Equals(voucherVM.categoryRadio))
+                    voucherFilters.Add(i);
+            }
+
+            voucherFilters = voucherFilters.OrderBy(i => i.ValueType).ToList();
+            _voucherVM.page = _voucherVM.page - 1;
+            ViewData["nProducts"] = _voucherVM.page;
+            return PartialView("_ViewAll", voucherFilters);
+        }
 
         [HttpGet]
         public IActionResult Create()

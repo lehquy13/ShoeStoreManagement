@@ -135,6 +135,22 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     obj.AvatarName = fileName;
 
                 }
+                else
+                {
+                    Random rnd = new Random();
+
+                    var num = rnd.Next(1, 3);
+
+                    string? avtName = num switch
+                    {
+                        1 => "avt1.png",
+                        2 => "avt2.png",
+                        3 => "avt3.png",
+                        _ => "avt1.png",
+                    };
+
+                    obj.AvatarName = avtName;
+                }
 
                 _applicationuserCRUD.CreateAsync(obj);
 

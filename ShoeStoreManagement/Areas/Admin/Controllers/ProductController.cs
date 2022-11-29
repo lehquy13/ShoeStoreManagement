@@ -202,7 +202,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             
             _productVM.products= productFilter;
             ViewBag.Product = true;
-			
             _productVM.page = page-1;
             ViewData["nProducts"] = _productVM.page;
 			return View(_productVM);
