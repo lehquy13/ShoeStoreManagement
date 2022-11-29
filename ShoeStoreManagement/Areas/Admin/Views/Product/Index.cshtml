@@ -10,7 +10,8 @@
 @{
 	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
 
-	int nProducts = Model.nProducts;
+	var nProducts = Model.page;
+	
 
 	int countPage()
 	{
@@ -42,8 +43,8 @@
 </style>
 
 <div class="row">
-    <form method="post" action="Admin/Product/Index" class="col-2 borderCustom1">
-        <div class="col">
+	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
+        <div class="form-group col">
             <div class="row">
                 <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
@@ -94,7 +95,7 @@
 				</div>
 			</div>
 
-            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="me here1" />
+            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="its me"/>
         </div> @*used to col-3 vs col-10*@
     </form>
 
@@ -105,7 +106,7 @@
 			</div>
 		</div>
 
-		<form method="post" action="Admin/Product/Index">
+		<form method="get" action="Admin/Product/Index">
 			<nav class="container">
 				<ul class="pagination" style="display:flex; flex-direction:row">
 					@if (nProducts != 0)

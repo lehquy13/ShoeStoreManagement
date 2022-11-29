@@ -33,7 +33,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
 
 
-		public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
+        public ProductController(ILogger<ProductController> logger, IProductCRUD productCRUD, UserManager<ApplicationUser> usermanager
             , IProductCategoryCRUD productCategoryCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IWebHostEnvironment webHostEnvironment, IImageCRUD imageCRUD)
         {
             _logger = logger;
@@ -56,16 +56,17 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 _productVM.products[i].SetCategory(_productVM.productCategories);
                 List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllByIdAsync(_productVM.products[i].ProductId).Result;
-                int totalNumberShoeOfThatSize = 0;
-                foreach (var obj in sizeList)
-                {
-                    obj.IsChecked = true;
-                    //products[i].Sizes.Add(obj);
-                    _productVM.products[i].SizeHashtable.Add(obj.Size, obj.Amount);
+                _productVM.products[i].Sizes = sizeList;
+               // int totalNumberShoeOfThatSize = 0;
+                //for (int j = 0; j < sizeList.Count; j++)
+                //{
+                //    sizeList[j].IsChecked = true;
+                //    //products[i].Sizes.Add(obj);
+                //    //_productVM.products[i].SizeHashtable.Add(sizeList[j].Size, sizeList[j].Amount);
 
-                    totalNumberShoeOfThatSize += obj.Amount;
-                }
-                _productVM.products[i].Amount = totalNumberShoeOfThatSize;
+                //    totalNumberShoeOfThatSize += sizeList[j].Amount;
+                //}
+                //_productVM.products[i].Amount = totalNumberShoeOfThatSize;
                 List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(_productVM.products[i].ProductId).Result;
 
                 if (imgs.Count > 0)
@@ -170,8 +171,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return PartialView(product);
         }
 
-        public IActionResult Index(string categoryRadio = "All", string priceRadio = "All", int page = 1)
+        [HttpGet]
+        public IActionResult Index(string categoryRadio, string priceRadio , int page = 1)
         {
+            _productVM.products = _productVM.products.OrderBy(o => o.ProductName).ToList();
             List<Product> productFilter = new List<Product>();
             _productVM.filters = new List<string>();
             _productVM.filters.Add(categoryRadio);
@@ -191,15 +194,55 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             foreach (var i in _productVM.products)
             {
-                if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio) || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+                if ((i.ProductCategory.ProductCategoryName.Equals(categoryRadio)
+                    || string.IsNullOrEmpty(categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice)
+                    && maxCheck(maxvalue, i.ProductUnitPrice))
+                    productFilter.Add(i);
+            }
+            
+            _productVM.products= productFilter;
+            ViewBag.Product = true;
+			
+            _productVM.page = page-1;
+            ViewData["nProducts"] = _productVM.page;
+			return View(_productVM);
+        }
+
+        [HttpPost]
+        public IActionResult Sort(ProductVM productVM)
+        {
+            List<Product> productFilter = new List<Product>();
+            _productVM.filters = new List<string>();
+            _productVM.filters.Add(productVM.categoryRadio);
+            _productVM.filters.Add(productVM.priceRadio);
+
+            float minvalue = -1, maxvalue = -1;
+
+            if (_productVM.products.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(productVM.priceRadio) && !productVM.priceRadio.Equals("All"))
+                {
+                    string[] strsplt = productVM.priceRadio.Split('-', 2, StringSplitOptions.None);
+                    minvalue = float.Parse(strsplt[0]);
+                    maxvalue = float.Parse(strsplt[1]);
+                }
+            }
+
+            foreach (var i in _productVM.products)
+            {
+                if ((i.ProductCategory.ProductCategoryName.Equals(productVM.categoryRadio)
+                    || string.IsNullOrEmpty(productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice)
+                    && maxCheck(maxvalue, i.ProductUnitPrice))
                     productFilter.Add(i);
             }
 
-            ViewBag.Product = true;
-            _productVM.page = page;
-
-            return View(_productVM);
+            productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
+            _productVM.page = productVM.page -1;
+			ViewData["nProducts"] = _productVM.page;
+			return PartialView("_ViewAll", productFilter);
         }
+
+
 
         private bool minCheck(float value, float price)
         {
@@ -298,17 +341,20 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             image.ImageFile.CopyToAsync(fileStream);
                         }
 
-                         _imageCRUD.CreateAsync(image);
+                        _imageCRUD.CreateAsync(image);
                     }
 
                     product.ImageName = fileName;
 
                     _productCRUD.CreateAsync(product);
 
-                    _productVM.products = _productCRUD.GetAllAsync().Result;
-                    _productVM.nProducts = _productVM.page - 1;
+                    _productVM.products = _productCRUD.GetAllAsync().Result.OrderBy(o => o.ProductName).ToList();
+                    //_productVM.page = 0;
 
-                    TempData["success"] = "Category is Created Successfully!!";
+					//_productVM.nProducts = _productVM.page;
+					ViewData["nProducts"] = _productVM.page;
+
+					TempData["success"] = "Category is Created Successfully!!";
 
                     return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM.products) });
                 }
@@ -318,7 +364,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 
-        
+
         [HttpPost]
         public async Task<IActionResult> Edit([Bind("ProductId,product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
         {
@@ -377,7 +423,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
                 productVM.product.Sizes = await _sizeDetailCRUD.GetAllByIdAsync(productVM.product.ProductId);
                 productVM.product.Amount = 0;
-                foreach(var i in productVM.product.Sizes)
+                foreach (var i in productVM.product.Sizes)
                 {
                     productVM.product.Amount += i.Amount;
                 }
@@ -426,40 +472,42 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
 
                 await load();
-                return PartialView("_ViewAll",_productVM.products);
+                return PartialView("_ViewAll", _productVM.products);
             }
             return RedirectToAction("Index");
         }
 
         private async Task load()
         {
-			List<Product> productFilter = new List<Product>();
-			List<string> filters = new List<string>();
-			filters.Add(_productVM.categoryRadio);
-			filters.Add(_productVM.priceRadio);
+            List<Product> productFilter = new List<Product>();
+            List<string> filters = new List<string>();
+            filters.Add(_productVM.categoryRadio);
+            filters.Add(_productVM.priceRadio);
 
-			float minvalue = -1, maxvalue = -1;
+            float minvalue = -1, maxvalue = -1;
             _productVM.products = await _productCRUD.GetAllAsync();
-			if (_productVM.products.Count > 0)
-			{
-				if (!string.IsNullOrEmpty(_productVM.priceRadio))
-				{
-					string[] strsplt = _productVM.priceRadio.Split('-', 2, StringSplitOptions.None);
-					minvalue = float.Parse(strsplt[0]);
-					maxvalue = float.Parse(strsplt[1]);
-				}
-			}
+            if (_productVM.products.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(_productVM.priceRadio))
+                {
+                    string[] strsplt = _productVM.priceRadio.Split('-', 2, StringSplitOptions.None);
+                    minvalue = float.Parse(strsplt[0]);
+                    maxvalue = float.Parse(strsplt[1]);
+                }
+            }
 
-			foreach (Product i in _productVM.products)
-			{
-				if ((i.ProductCategory.ProductCategoryName.Equals(_productVM.categoryRadio) || string.IsNullOrEmpty(_productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
-					productFilter.Add(i);
-			}
+            foreach (Product i in _productVM.products)
+            {
+                if ((i.ProductCategory.ProductCategoryName.Equals(_productVM.categoryRadio) || string.IsNullOrEmpty(_productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+                    productFilter.Add(i);
+            }
+            _productVM.products = productFilter;
+            _productVM.products = _productVM.products.OrderBy(o=>o.ProductName).ToList();
+            _productVM.page = 0;//reseet nhá
+            ViewBag.Product = true;
+        }
 
-			ViewBag.Product = true;
-		}
-
-		[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
             var obj = await _productCRUD.GetByIdAsync(id);
@@ -470,7 +518,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             await load();
-			return PartialView("_ViewAll",_productVM.products);
+            return PartialView("_ViewAll", _productVM.products);
         }
 
         [HttpGet]
@@ -480,6 +528,26 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             if (obj != null)
             {
                 obj.ProductCategory = _productCategoryCRUD.GetByIdAsync(obj.ProductCategoryId).Result ?? new ProductCategory();
+
+
+                List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllByIdAsync(obj.ProductId).Result;
+                int totalNumberShoeOfThatSize = 0;
+                for (int j = 0; j < sizeList.Count; j++)
+                {
+                    sizeList[j].IsChecked = true;
+                    //products[i].Sizes.Add(obj);
+                    obj.SizeHashtable.Add(sizeList[j].Size, sizeList[j].Amount);
+
+                    totalNumberShoeOfThatSize += sizeList[j].Amount;
+                }
+                obj.Amount = totalNumberShoeOfThatSize;
+                List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(obj.ProductId).Result;
+
+                if (imgs.Count > 0)
+                {
+                    obj.ImageName = imgs[0].ImageName;
+                }
+
                 _productVM.product = obj;
 
                 return PartialView(_productVM);
@@ -488,6 +556,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
     }
 }
