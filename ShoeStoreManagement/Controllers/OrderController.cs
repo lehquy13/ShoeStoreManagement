@@ -122,6 +122,104 @@ namespace ShoeStoreManagement.Controllers
             return View(_orderVM);
         }
 
+        public string CheckVouncher(string id)
+        {
+            // Handle if having voucher code
+            if (!string.IsNullOrEmpty(id))
+            {
+                List<Voucher> vouchers = _voucherCRUD.GetAllAsync().Result;
+                Voucher currentVoucher = null;
+
+                foreach (Voucher voucher in vouchers)
+                {
+                    if (id.Equals(voucher.Code))
+                    {
+                        currentVoucher = voucher;
+                        break;
+                    }
+                }
+
+                if (currentVoucher != null)
+                {
+                    // Handle voucher's type
+                    switch (currentVoucher.ConditionType)
+                    {
+                        case ConditionType.MinPrice:
+                            {
+                                // Debug 01: TotalPayment = 0
+                                if (_orderVM.currOrder.OrderTotalPayment < float.Parse(currentVoucher.ConditionValue))
+                                {
+                                    // Annouce the total price does not satisfy
+                                    return "Condition not match!";
+                                }
+                                break;
+                            }
+                        case ConditionType.NewCustomer:
+                            {
+                                if (_orderCRUD.GetAllAsync(User.FindFirstValue(ClaimTypes.NameIdentifier)).Result != null)
+                                {
+                                    // Annouce that user is not New Customer (first time ordering)
+                                    return "Condition not match!";
+                                }
+                                break;
+                            }
+
+                    }
+
+                    // Handle if expired
+                    switch (currentVoucher.ExpiredType)
+                    {
+                        case ExpireType.ExpiredDate:
+                            {
+                                DateTime expiredDate = DateTime.ParseExact(currentVoucher.ExpiredValue, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture);
+
+                                if (DateTime.Now > expiredDate)
+                                {
+                                    // Annouce that voucer has been expired
+                                    return "Expired!";
+                                }
+                                break;
+                            }
+                        case ExpireType.Amount:
+                            {
+                                if (int.Parse(currentVoucher.ExpiredValue) <= 0)
+                                {
+                                    // Annouce that voucer has been sold out
+                                    return "Out of vouncher!";
+                                }
+                                else
+                                {
+                                    currentVoucher.ExpiredValue = (int.Parse(currentVoucher.ExpiredValue) - 1).ToString();
+                                }
+                                break;
+                            }
+                    }
+
+                    // Handle voucher value type
+                    switch (currentVoucher.ValueType)
+                    {
+                        case ValueType.RealValue:
+                            {
+                                _orderVM.currOrder.OrderTotalPrice -= currentVoucher.Value;
+                                break;
+                            }
+                        case ValueType.Percent:
+                            {
+                                _orderVM.currOrder.OrderTotalPrice -= _orderVM.currOrder.OrderTotalPrice * currentVoucher.Value / 100;
+                                break;
+                            }
+                    }
+                    _orderVM.currOrder.OrderVoucherId = currentVoucher.Id;
+                }
+                else
+                {
+                    // Annouce there is no valid voucher
+                    return "invalid";
+                }
+            }
+            return "invalid";
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create(OrderVM? orderVM)
         {

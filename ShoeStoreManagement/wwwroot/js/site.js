@@ -339,6 +339,36 @@ function jQueryAjaxSort(form) {
     }
 }
 
+function checkVoucher(url) {
+    alert(url);
+    if ($("#voucher-input").val() != null) {
+        alert('if right!');
+
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { id: $("#voucher-input").val() },
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                alert('get res');
+
+                if (res != null) {
+                    $.notify(res);
+                }
+
+            },
+            error: function (err) {
+
+                alert('sai');
+                alert(err);
+
+                console.log(err)
+            }
+        })
+    }
+}
+
 /* BACKGROUND */
 
 function removeBg() {
