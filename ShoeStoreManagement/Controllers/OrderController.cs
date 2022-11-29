@@ -122,6 +122,7 @@ namespace ShoeStoreManagement.Controllers
             return View(_orderVM);
         }
 
+        [HttpPost]
         public string CheckVouncher(string id)
         {
             // Handle if having voucher code
@@ -210,6 +211,7 @@ namespace ShoeStoreManagement.Controllers
                             }
                     }
                     _orderVM.currOrder.OrderVoucherId = currentVoucher.Id;
+                    return "valid";
                 }
                 else
                 {

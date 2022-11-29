@@ -49,7 +49,7 @@ function toCart(url, title, id) {
             $("#size-dialog .modal-body").html(res);
             $("#size-dialog .modal-title").html(title);
             $("#size-dialog").modal('show');
-            $.notify("I'm over here !");
+            
         }
 
     })
@@ -67,10 +67,7 @@ function showContent(url, title, id) {
             $("#form-modal").modal('show');
             //$.notify("I'm over here !");
             //$.notify("Access granted", "success", { position: "right" });
-            $("#form-modal .modal-title").notify(
-                "I'm to the right of this box",
-                { position: "top" }
-            );
+            
         }
     })
 }
@@ -327,9 +324,7 @@ function jQueryAjaxPost(form) {
 
 function jQueryAjaxSort(form) {
     var obj = new FormData(form);
-    for (var pair of obj.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
+
     try {
         $.ajax({
             type: 'POST',
@@ -358,29 +353,30 @@ function jQueryAjaxSort(form) {
 }
 
 function checkVoucher(url) {
-    alert(url);
     if ($("#voucher-input").val() != null) {
-        alert('if right!');
-
+        var id = $("#voucher-input").val();
         $.ajax({
             type: 'POST',
             url: url,
-            data: { id: $("#voucher-input").val() },
-            processData: false,
-            contentType: false,
+            data: { id: id },
             success: function (res) {
-                alert('get res');
-
-                if (res != null) {
-                    $.notify(res);
+                if (res === "valid") {
+                    $("#voucher-input").notify(
+                        res, { position: "left", className: "success", showDuration: 400, showAnimation: 'slideDown' },
+                        
+                    );
                 }
+                else {
 
+                    $("#voucher-input").notify(
+                        res, { position: "left", className: "warn", showDuration: 400, showAnimation: 'slideDown' },
+                    );
+                }
+                
             },
             error: function (err) {
-
                 alert('sai');
                 alert(err);
-
                 console.log(err)
             }
         })
