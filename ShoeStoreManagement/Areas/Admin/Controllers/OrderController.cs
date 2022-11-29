@@ -132,6 +132,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
 
                 ViewData["products"] = products;
+                _orderVM.searchCount = products.Count;
                 _orderVM.pickitems.Clear();
                 _orderVM.pickingQuantity.Clear();
                 _orderVM.pickingSize.Clear();
