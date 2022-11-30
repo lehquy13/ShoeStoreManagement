@@ -106,33 +106,11 @@
 			</div>
 		</div>
 
-		<form method="get" action="Admin/Product/Index">
-			<nav class="container">
-				<ul class="pagination" style="display:flex; flex-direction:row">
-					@if (nProducts != 0)
-					{
-						if (nProducts > 1) nProducts -= 1;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
-					}
-					@for (int i = 1; i <= @countPage(); i++)
-					{
-						if (i == nProducts + 1)
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-						}
-						else
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
-						}
-					}
-					@if (nProducts + 1 != @countPage())
-					{
-						nProducts += 2;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-					}
-				</ul>
-			</nav>
-		</form>
+		
+		<div id="pagi">
+			<partial name="_Pagination" model=@Model view-data="ViewData" />
+		</div>
+		
 	</div>
 </div>
 

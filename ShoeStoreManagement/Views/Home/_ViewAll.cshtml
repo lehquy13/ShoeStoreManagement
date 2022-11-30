@@ -1,0 +1,13 @@
+﻿@using ShoeStoreManagement.Core.Models
+@using ShoeStoreManagement.Views.Shared.Components
+
+@model List<Product>
+
+@foreach (var item in Model)
+{
+	<component type="typeof(ProductCard)"
+					 render-mode="ServerPrerendered"
+					 param-product=@item
+					 param-imageName=@item.ImageName
+					 param-isLiked=@item.IsLiked />
+}

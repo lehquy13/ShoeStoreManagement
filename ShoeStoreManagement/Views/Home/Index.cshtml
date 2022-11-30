@@ -1,54 +1,124 @@
-﻿@{
-	ViewData["Title"] = "Home Page";
-	List<Product>? products = ViewData["products"] as List<Product> ?? null;
-}
+﻿@using ShoeStoreManagement.Core.ViewModel
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
-@model List<Product>;
+@model ProductVM
+
+@{
+	ViewData["Title"] = "Home Page";
+	List<Product>? products = ViewData["products"] as List<Product> ?? null;
+
+	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
+
+	var nProducts = Model.page;
+
+
+	int countPage()
+	{
+
+		int numberPages = 0;
+		int numberProducts = 0;
+
+		foreach (Product i in Model.products)
+		{
+			numberProducts++;
+		}
+
+		float temp = numberProducts / (float)9;
+
+		if (temp - (int)temp == 0)
+			numberPages = (int)temp;
+		else
+			numberPages = (int)temp + 1;
+
+		return numberPages;
+	}
+}
 
 <div class="row ">
-	<div class="col-3 borderCustom1">
-		<div class="col">
-			<div class="row">
-				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
+        <div class="form-group col">
+            <div class="row">
+                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-				<div class="tabCustom row-cols-6">
-					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+								<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+									@if (string.IsNullOrEmpty(Model.filters[0]))
+									{
+										<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+									}
+									@if (!string.IsNullOrEmpty(Model.filters[0]))
+									{
+										<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+									}
+									@foreach (ProductCategory i in Model.productCategories)
+									{
+										if (i.ProductCategoryName.Equals(Model.filters[0]))
+										{
+											<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
+										}
+										else
+										{
+											<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
+										}
+									}
+								</div>
+						</div>
 
-				</div>
+						<div class="row mt-3">
+								<ii class="row-1 h6">Price</ii>
 
-			</div>
+								<div class="radioLayoutTabCustom row-cols-6 w-100">
+									@foreach (string i in priceFilters)
+									{
+										if (i.Equals(Model.filters[1]))
+										{
+											<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
+										}
+										else if (string.IsNullOrEmpty(i))
+										{
+											<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+										}
+										else
+										{
+											<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+										}
+									}
+								</div>
+						</div>
+						<input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="its me"/>
+      </div> @*used to col-3 vs col-10*@
+    </form>
 
-			<div class="row mt-3">
-				<ii class="row-1 h6">Price</ii>
-
-				<div class="radioLayoutTabCustom row-cols-6">
-
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
-
-				</div>
-			</div>
+		<div class="col-9 row" id="hihi">
+			<partial name="_ViewAll" model=@Model.products view-data="ViewData" />
 		</div>
-	</div>
-	<div class="col-9 row">
-		@foreach (var item in Model)
-		{
-			<component type="typeof(ProductCard)"
-				   render-mode="ServerPrerendered"
-				   param-product=@item
-				   param-imageName=@item.ImageName
-				   param-isLiked=@item.IsLiked />
-		}
-	</div>
+
+	<form method="get" action="Index">
+		<nav class="container">
+			<ul class="pagination" style="display:flex; flex-direction:row">
+				@if (nProducts != 0)
+				{
+					if (nProducts > 1) nProducts -= 1;
+					<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+				}
+				@for (int i = 1; i <= @countPage(); i++)
+				{
+					if (i == nProducts + 1)
+					{
+						<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+					}
+					else
+					{
+						<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
+					}
+				}
+				@if (nProducts + 1 != @countPage())
+				{
+					nProducts += 2;
+					<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+				}
+			</ul>
+		</nav>
+	</form>
 </div>
 
-
-
-<component type="typeof(Pagination)" render-mode="Static" />
 

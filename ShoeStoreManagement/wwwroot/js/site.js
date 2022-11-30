@@ -357,6 +357,38 @@ function jQueryAjaxSort(form) {
     }
 }
 
+function jQueryAjaxPagination(form) {
+  var obj = new FormData(form);
+  for (var pair of obj.entries()) {
+    console.log(pair[0] + ', ' + pair[1]);
+  }
+  try {
+    $.ajax({
+      type: 'POST',
+      url: form.action,
+      data: obj,
+      processData: false,
+      contentType: false,
+      success: function (res) {
+        $('#pagi').html(res);
+
+      },
+      error: function (err) {
+        alert(err);
+
+        console.log(err)
+      }
+    })
+    //to prevent default form submit event
+    return false;
+
+  } catch (ex) {
+
+    alert(ex);
+    return false;
+  }
+}
+
 /* BACKGROUND */
 
 function removeBg() {

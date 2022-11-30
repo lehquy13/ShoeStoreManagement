@@ -3,6 +3,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using ShoeStoreManagement.Core.Models;
+using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Models;
@@ -16,19 +17,29 @@ namespace ShoeStoreManagement.Controllers
         private readonly IProductCRUD _productCRUD;
         private readonly IWishListCRUD _wishListCRUD;
         private readonly IWishListDetailCRUD _wishListDetailCRUD;
+        private readonly IProductCategoryCRUD _productCategoryCRUD;
         private readonly IImageCRUD _imageCRUD;
 
-        public HomeController(IProductCRUD productCRUD, IWishListCRUD wishListCRUD, IWishListDetailCRUD wishListDetailCRUD, IImageCRUD imageCRUD)
+        private static ProductVM _productVM = new ProductVM();
+
+        public HomeController(IProductCRUD productCRUD, IWishListCRUD wishListCRUD, IWishListDetailCRUD wishListDetailCRUD, IImageCRUD imageCRUD, IProductCategoryCRUD productCategoryCRUD)
         {
             _productCRUD = productCRUD;
             _wishListCRUD = wishListCRUD;
             _wishListDetailCRUD = wishListDetailCRUD;
             _imageCRUD = imageCRUD;
+            _productCategoryCRUD = productCategoryCRUD;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(string categoryRadio, string priceRadio, int page = 1)
         {
             ViewBag.Home = true;
+
+            List<Product> productFilter = new List<Product>();
+            _productVM.filters = new List<string>();
+            _productVM.filters.Add(categoryRadio);
+            _productVM.filters.Add(priceRadio);
 
             List<Product> list = _productCRUD.GetAllAsync().Result;
 
@@ -54,7 +65,68 @@ namespace ShoeStoreManagement.Controllers
                 }
             }
 
-            return View(list);
+            _productVM.page = page-1;
+            _productVM.productCategories = _productCategoryCRUD.GetAllAsync().Result; 
+            _productVM.products = list;
+            _productVM.products = _productVM.products.OrderBy(o => o.ProductName).ToList();
+
+            return View(_productVM);
+        }
+
+        [HttpPost]
+        public IActionResult Sort(ProductVM productVM)
+        {
+            List<Product> productFilter = new List<Product>();
+            _productVM.filters = new List<string>();
+            _productVM.filters.Add(productVM.categoryRadio);
+            _productVM.filters.Add(productVM.priceRadio);
+
+            float minvalue = -1, maxvalue = -1;
+
+            if (_productVM.products.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(productVM.priceRadio) && !productVM.priceRadio.Equals("All"))
+                {
+                    string[] strsplt = productVM.priceRadio.Split('-', 2, StringSplitOptions.None);
+                    minvalue = float.Parse(strsplt[0]);
+                    maxvalue = float.Parse(strsplt[1]);
+                }
+            }
+
+            foreach (var i in _productVM.products)
+            {
+                if ((i.ProductCategory.ProductCategoryName.Equals(productVM.categoryRadio)
+                    || string.IsNullOrEmpty(productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice)
+                    && maxCheck(maxvalue, i.ProductUnitPrice))
+                    productFilter.Add(i);
+            }
+
+            productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
+            _productVM.page = productVM.page - 1;
+            ViewData["nProducts"] = _productVM.page;
+            return PartialView("_ViewAll", productFilter);
+        }
+
+        private bool minCheck(float value, float price)
+        {
+            if (value == -1)
+                return true;
+
+            if (price >= value)
+                return true;
+            else
+                return false;
+        }
+
+        private bool maxCheck(float value, float price)
+        {
+            if (value == -1)
+                return true;
+
+            if (price < value)
+                return true;
+            else
+                return false;
         }
 
         public IActionResult Privacy()
