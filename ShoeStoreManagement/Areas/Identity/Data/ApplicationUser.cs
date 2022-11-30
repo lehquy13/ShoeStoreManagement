@@ -15,7 +15,7 @@ public class ApplicationUser : IdentityUser
     public string SingleAddress { get; set; } = "";
 
 	[Required]
-    [RegularExpression(@"^[a-zA-Z]*$",ErrorMessage = "Invalid fullname")]
+    [RegularExpression(@"^[a-zA-Z\s*]*$",ErrorMessage = "Invalid fullname")]
 	public string FullName { get; set; } = "";
 
     [Required]
