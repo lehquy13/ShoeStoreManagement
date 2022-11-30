@@ -1,22 +1,68 @@
-﻿@using ShoeStoreManagement.Views.Shared.Components;
+﻿@using ShoeStoreManagement.Core.Models
+@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.ViewModel;
 @using ShoeStoreManagement.Core.Enums;
 
 @model VoucherVM
 
-<div class="row borderCustom">
-	<div class="col-2 borderCustom1">
-		<div class="row">
-			<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+@{
+	List<string> voucherFilters = new List<string> { "Using", "Expired", "ComingSoon" };
 
-			<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
-				<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-				<button class="tabCustom" onclick="openCity(event, 'London')">Using</button>
-				<button class="tabCustom" onclick="openCity(event, 'London')">Out of date</button>
-				<button class="tabCustom" onclick="openCity(event, 'London')">Future</button>
+	var nProducts = Model.page;
+
+	int countPage()
+	{
+
+		int numberPages = 0;
+		int numberVouchers = 0;
+
+		foreach (Voucher i in Model.vouchers)
+		{
+			numberVouchers++;
+		}
+
+		numberPages = numberVouchers / 10;
+
+		if (numberVouchers % 10 != 0)
+			numberPages++;
+
+		return numberPages;
+	}
+}
+
+<div class="row borderCustom">
+	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
+		<div class="form-group col">
+			<div class="row">
+				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+
+				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+					@if (string.IsNullOrEmpty(Model.filters[0]))
+					{
+						<label class="radioLayoutTabCustom"> <input type="radio" value="All" name="categoryRadio" checked />All</label>
+					}
+					@if (!string.IsNullOrEmpty(Model.filters[0]))
+					{
+						<label class="radioLayoutTabCustom"> <input type="radio" value="All" name="categoryRadio" />All</label>
+					}
+					@foreach (string i in voucherFilters)
+					{
+						if (i.Equals(Model.filters[0]))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="categoryRadio" checked />@i</label>
+						}
+						else
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="categoryRadio" />@i</label>
+						}
+					}
+				</div>
+
 			</div>
-		</div>
-	</div> @*used to col-3 vs col-10*@
+
+			<input class="btn btn-secondary rounded w-100 mt-5" type="submit" />
+		</div> @*used to col-3 vs col-10*@
+	</form>
 
 	<div class="container col-10">
 		<div class="row">
@@ -24,6 +70,34 @@
 				<partial name="_ViewAll" model=@Model.vouchers/>
 			</div>
 		</div>
+
+		<form method="get" action="Admin/Voucher/Index">
+			<nav class="container">
+				<ul class="pagination" style="display:flex; flex-direction:row">
+					@if (nProducts != 0)
+					{
+						if (nProducts > 1) nProducts -= 1;
+						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+					}
+					@for (int i = 1; i <= @countPage(); i++)
+					{
+						if (i == nProducts + 1)
+						{
+							<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+						}
+						else
+						{
+							<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
+						}
+					}
+					@if (nProducts + 1 != @countPage())
+					{
+						nProducts += 2;
+						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+					}
+				</ul>
+			</nav>
+		</form>
 	</div>
 </div>
 

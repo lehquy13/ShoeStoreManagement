@@ -1,4 +1,19 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
@@ -34,7 +49,7 @@ function toCart(url, title, id) {
             $("#size-dialog .modal-body").html(res);
             $("#size-dialog .modal-title").html(title);
             $("#size-dialog").modal('show');
-            $.notify("I'm over here !");
+            
         }
 
     })
@@ -52,10 +67,7 @@ function showContent(url, title, id) {
             $("#form-modal").modal('show');
             //$.notify("I'm over here !");
             //$.notify("Access granted", "success", { position: "right" });
-            $("#form-modal .modal-title").notify(
-                "I'm to the right of this box",
-                { position: "top" }
-            );
+            
         }
     })
 }
@@ -94,18 +106,21 @@ function deteleItem(url, id) {
 }
 
 function showContentItem(url, title) {
+  alert($("#searchFilter").val());
     $.ajax({
-        type: "GET",
-        url: url,
-        success: function (res) {
-            $("#form-modal .modal-body").html(res);
-
-            $("#form-modal .modal-title").html(title);
-            $("#form-modal").modal('show');
+      type: "GET",
+      url: url,
+      data: { filter: $("#searchFilter").val() },
+      success: function (res) {
+        $("#form-modal .modal-body").html(res);
+        $("#form-modal .modal-title").html(title);
+        $("#form-modal").modal('show');
+      }
+    });
+    return false;
+  
             //$.notify("I'm over here !");
             //$.notify("Access granted", "success", { position: "right" });
-        }
-    })
 }
 
 function updateAmount(url, id, amount, sum) {
@@ -234,12 +249,12 @@ createSth = form => {
 
 function deleteSth(url, id) {
     alert("Delete this item?")
+    alert(id)
+    alert(url)
     $.ajax({
         type: "POST",
         url: url,
         data: { id: id },
-        contentType: false,
-        processData: false,
         success: function (res) {
             if (res.isValid) {
                 $('#hihi').html(res.html);
@@ -311,9 +326,7 @@ function jQueryAjaxPost(form) {
 
 function jQueryAjaxSort(form) {
     var obj = new FormData(form);
-    for (var pair of obj.entries()) {
-        console.log(pair[0] + ', ' + pair[1]);
-    }
+
     try {
         $.ajax({
             type: 'POST',
@@ -338,6 +351,37 @@ function jQueryAjaxSort(form) {
 
         alert(ex);
         return false;
+    }
+}
+
+function checkVoucher(url) {
+    if ($("#voucher-input").val() != null) {
+        var id = $("#voucher-input").val();
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { id: id },
+            success: function (res) {
+                if (res === "valid") {
+                    $("#voucher-input").notify(
+                        res, { position: "left", className: "success", showDuration: 400, showAnimation: 'slideDown' },
+                        
+                    );
+                }
+                else {
+
+                    $("#voucher-input").notify(
+                        res, { position: "left", className: "warn", showDuration: 400, showAnimation: 'slideDown' },
+                    );
+                }
+                
+            },
+            error: function (err) {
+                alert('sai');
+                alert(err);
+                console.log(err)
+            }
+        })
     }
 }
 

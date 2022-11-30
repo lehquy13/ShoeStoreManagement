@@ -4,7 +4,7 @@ public enum Status
 {
     Waiting = 0,
     Delivering = 1,
-    Finish = 2,
+    Delivered = 2,
     Canceled = 3,
 }
 

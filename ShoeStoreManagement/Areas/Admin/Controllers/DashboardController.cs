@@ -20,7 +20,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 	{
         private List<string> roleList = new List<string>() { "Customer", "Admin" };
         private readonly ILogger<UserController> _logger;
-        private ApplicationDbContext _applicationDbContext;
         private readonly IOrderCRUD _orderCRUD;
         private readonly IProductCRUD _productCRUD;
         private readonly IApplicationUserCRUD _applicationUserCRUD;
@@ -37,11 +36,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _usermanager = userManager;
         }
 
-        DashboardController(ApplicationDbContext applicationDbContext)
-        {
-            _applicationDbContext = applicationDbContext;
-
-        }
+        
 		public IActionResult Index()
 		{
             ViewBag.Home = true;

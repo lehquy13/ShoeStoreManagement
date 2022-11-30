@@ -9,9 +9,9 @@
 		<div class="row">
 			<div class="col-6 d-flex flex-column gap-2">
 				<div class="form-floating">
-					<input type="text" class="form-control" id="floatingInput" placeholder="name" asp-for="user.UserName" required>
+					<input type="text" class="form-control" id="floatingInput" placeholder="name" asp-for="user.FullName" required>
 					<label for="floatingInput">Enter Name</label>
-					<span asp-validation-for="user.UserName" class="text-danger"></span>
+					<span asp-validation-for="user.FullName" class="text-danger"></span>
 				</div>
 				<div class="form-floating">
 					<input type="email" class="form-control" id="floatingInput" placeholder="abc@gm.uit.edu.vn" asp-for="user.Email" required>
@@ -63,7 +63,7 @@
 		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
 		<div>
 			<button type="submit" class="btn btn-primary">Submit</button>
-			<a class="btn btn-secondary" onclick="deleteSth('@Url.Action("Delete","User",Model.user.Id,Context.Request.Scheme)', '@Model.user.Id')" >
+			<a class="btn btn-secondary" onclick="deleteSth('@Url.Action("Delete","User",null,Context.Request.Scheme)', '@Model.user.Id')" >
 				Delete
 			</a>
 		</div>

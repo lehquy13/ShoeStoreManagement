@@ -100,17 +100,19 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     item.OrderTotalPayment += itemDetail.Payment;
                 }
             }
+
+            orderList = orderList.OrderBy(o => o.OrderDate).ToList();
             ViewData["orders"] = orderList;
 
             return View();
         }
 
         [HttpGet]
-        public IActionResult PickItemDialog()
+        public IActionResult PickItemDialog(string filter = "")
         {
             var obj = _productCRUD.GetAllAsync().Result;
 
-            if (obj.Count > 0)
+            if (obj.Count > 0 && string.IsNullOrEmpty(filter))
             {
                 foreach (var i in obj)
                 {
@@ -118,6 +120,27 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 }
             }
+            else if (obj.Count > 0 && filter != "")
+            {
+                List<Product> products = new List<Product>();
+
+                foreach (var i in obj)
+                {
+                    if (i.ProductName.Equals(filter))
+                    {
+                        i.Sizes = _sizeDetailCRUD.GetAllByIdAsync(i.ProductId).Result;
+                        products.Add(i);
+                    }
+                }
+
+                ViewData["products"] = products;
+                _orderVM.searchCount = products.Count;
+                _orderVM.pickitems.Clear();
+                _orderVM.pickingQuantity.Clear();
+                _orderVM.pickingSize.Clear();
+                return PartialView(_orderVM);
+            }
+
             ViewData["products"] = obj;
             _orderVM.pickitems.Clear();
             _orderVM.pickingQuantity.Clear();
@@ -206,15 +229,34 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 			{
                 if(item.OrderId == id)
                 {
-					item.Status = Status.Finish;
+					item.Status = Status.Delivered;
                     _orderCRUD.Update(item);
 				}
 				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
 				
 			}
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
 			ViewData["orders"] = orderList;
 			return RedirectToAction("Index");
         }
+        //Confirm that cus Order is ready and on way delivering
+		public async Task<IActionResult> ConfirmCheck(string id)
+		{
+			var orderList = await _orderCRUD.GetAllOrderAsync();
+			foreach (var item in orderList)
+			{
+				if (item.OrderId == id)
+				{
+					item.Status = Status.Delivering;
+					_orderCRUD.Update(item);
+				}
+				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+
+			}
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+			ViewData["orders"] = orderList;
+			return RedirectToAction("Index");
+		}
 
 		public async Task<IActionResult> CanceledCheck(string id)
 		{
@@ -229,6 +271,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
 				
 			}
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
 			ViewData["orders"] = orderList;
 			return RedirectToAction("Index");
 		}
@@ -320,7 +363,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 //    item.OrderTotalPayment += itemDetail.Payment;
                 //}
             }
-            ViewData["orders"] = orderList;
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+			ViewData["orders"] = orderList;
 
 
             // Clear the admin's cart
@@ -340,11 +384,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             //Handle if user isn't existed
             if (obj == null)
             {
-
+                // no sex loi
                 ApplicationUser newuser = new ApplicationUser();
-                if (id.pickCustomers.UserName != null && id.pickCustomers.Email != null && id.pickCustomers.SingleAddress != null && id.pickCustomers.PhoneNumber != null)
+                if (id.pickCustomers.FullName != null && id.pickCustomers.Email != null && id.pickCustomers.SingleAddress != null && id.pickCustomers.PhoneNumber != null)
                 {
-                    newuser.UserName = id.pickCustomers.UserName;
+                    newuser.FullName = id.pickCustomers.FullName;
                     newuser.Email = id.pickCustomers.Email;
                     newuser.SingleAddress = id.pickCustomers.SingleAddress;
                     newuser.PhoneNumber = id.pickCustomers.PhoneNumber;
@@ -397,31 +441,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 for (var i = 0; i < _orderVM.currentOrderDetail.Count; i++)
                 {
                     //calculate totalprice
-                    //var product = _orderVM.currentOrderDetail[i].Product;
                     var m = _orderVM.currentOrderDetail[i].Amount;
-                    _orderVM.totalPayment += _orderVM.currentOrderDetail[i].Product.ProductUnitPrice * m;//sai nhas
-                    _orderVM.totalAmount += m;//van sai nha
-                                              //reduce product
-                                              //create detail
-
-
-                    //var it = new OrderDetail()
-                    //{
-                    //    OrderId = _orderVM.currOrder.OrderId,
-                    //    Amount = m,
-                    //    Payment = _orderVM.products[i].ProductUnitPrice * m,
-                    //    ProductId = _orderVM.products[i].ProductId
-                    //};
-
+                    _orderVM.totalPayment += _orderVM.currentOrderDetail[i].Product.ProductUnitPrice * m;
+                    _orderVM.totalAmount += m;
 
                     _orderVM.currOrder.OrderDetails.Add(_orderVM.currentOrderDetail[i]);
-                    //_orderVM.currOrder.OrderDetails[i].Amount = _orderVM.totalAmount;
-                    //_orderVM.currOrder.OrderDetails[i].Payment = _orderVM.totalPayment;
                 }
             }
 
             _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
-            _orderVM.currOrder.Status = Core.Enums.Status.Waiting;
+            _orderVM.currOrder.Status = Core.Enums.Status.Delivering;
 
             return View(_orderVM);
         }

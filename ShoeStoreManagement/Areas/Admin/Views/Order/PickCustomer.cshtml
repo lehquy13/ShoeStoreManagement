@@ -47,7 +47,7 @@
 									 height="40" width="40"
 									 asp-append-version="true" />
 									}
-									@Model.customers[i-1].UserName
+									@Model.customers[i-1].FullName
 								</td>
 								<td> @Model.customers[i-1].Email </td>
 								<td> @Model.customers[i-1].PhoneNumber </td>
@@ -72,7 +72,7 @@
 				<input type="text" class="form-control" id="floatingInput" hidden placeholder="Nguyen Van A" asp-for="pickCustomerId">
 			</div>
 			<div class="form-floating">
-				<input type="text" class="form-control" id="floatingInput" placeholder="Nguyen Van A" asp-for="pickCustomers.UserName">
+				<input type="text" class="form-control" id="floatingInput" placeholder="Nguyen Van A" asp-for="pickCustomers.FullName">
 				<label for="floatingInput">Enter Name</label>
 			</div>
 
