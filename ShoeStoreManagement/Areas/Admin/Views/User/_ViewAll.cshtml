@@ -30,7 +30,7 @@
 						 height="40" width="40"
 						 asp-append-version="true" />
 						}
-						@Model[i-1].UserName
+						@Model[i-1].FullName
 					</td>
 					<td>@Model[i-1].Email</td>
 					<td>@Model[i-1].PhoneNumber</td>
@@ -38,7 +38,7 @@
 					<td>@Model[i-1].CreatedDate</td>
 					<td>@Model[i-1].Role</td>
 					<td>
-						<a onclick="showContent('@Url.Action("Edit","User",null,Context.Request.Scheme)','Edit User @Model[i-1].UserName','@Model[i-1].Id')" class="table-icon">
+						<a onclick="showContent('@Url.Action("Edit","User",null,Context.Request.Scheme)','Edit User @Model[i-1].FullName','@Model[i-1].Id')" class="table-icon">
 							<i class="fas fa-edit"></i>
 						</a>
 					</td>

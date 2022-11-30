@@ -38,7 +38,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
             var obj = _applicationDBContext.ApplicationUsers.FindAsync(updateApplicationUser.Id).Result;
             if (obj != null)
             {
-                obj.UserName = updateApplicationUser.UserName;
+                obj.FullName = updateApplicationUser.FullName;
                 obj.PhoneNumber = updateApplicationUser.PhoneNumber;
                 obj.Email = updateApplicationUser.Email;
                 obj.Birthday = updateApplicationUser.Birthday;

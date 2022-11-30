@@ -104,7 +104,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Create(UserVM userVM)
+		public async Task<IActionResult> Create(UserVM userVM)
 		{
 			var obj = userVM.user;
 
@@ -120,9 +120,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 			ModelState.Clear();
 			if (TryValidateModel(obj))
 			{
-				_cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
-				_addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
-
+				
 				// Add image
 				if (obj.Avatar.Length > 0)
 				{
@@ -134,7 +132,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 					string path = Path.Combine(wwwRootPath + "/Image/", fileName);
 					using (var fileStream = new FileStream(path, FileMode.Create))
 					{
-						obj.Avatar.CopyToAsync(fileStream);
+						await obj.Avatar.CopyToAsync(fileStream);
 					}
 
 					obj.AvatarName = fileName;
@@ -157,7 +155,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 					obj.AvatarName = avtName;
 				}
 
-				_applicationuserCRUD.CreateAsync(obj);
+				//await _applicationuserCRUD.CreateAsync(obj);
+				var result = await _usermanager.CreateAsync(obj, "Password0*!");
+				await _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
+				await _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
 
 				_usermanager.AddToRoleAsync(obj, obj.Role).Wait();
 				var users = _applicationuserCRUD.GetAllAsync().Result;
@@ -237,6 +238,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 					}
 
 					obj.AvatarName = fileName;
+				}
+				else
+				{
+					obj.AvatarName = _userVM.user.AvatarName;
 				}
 
 				_applicationuserCRUD.Update(obj);

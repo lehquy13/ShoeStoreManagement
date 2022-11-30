@@ -384,11 +384,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             //Handle if user isn't existed
             if (obj == null)
             {
-
+                // no sex loi
                 ApplicationUser newuser = new ApplicationUser();
-                if (id.pickCustomers.UserName != null && id.pickCustomers.Email != null && id.pickCustomers.SingleAddress != null && id.pickCustomers.PhoneNumber != null)
+                if (id.pickCustomers.FullName != null && id.pickCustomers.Email != null && id.pickCustomers.SingleAddress != null && id.pickCustomers.PhoneNumber != null)
                 {
-                    newuser.UserName = id.pickCustomers.UserName;
+                    newuser.FullName = id.pickCustomers.FullName;
                     newuser.Email = id.pickCustomers.Email;
                     newuser.SingleAddress = id.pickCustomers.SingleAddress;
                     newuser.PhoneNumber = id.pickCustomers.PhoneNumber;
