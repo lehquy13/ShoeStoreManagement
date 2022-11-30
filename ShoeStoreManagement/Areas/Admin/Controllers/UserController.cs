@@ -113,7 +113,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             // Haven't done with user creating conditions
             ModelState.Clear();
-            if (TryValidateModel(obj))
+            if (TryValidateModel(userVM))
             {
                 _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
@@ -160,6 +160,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
+
+            _userVM.user = obj;
+
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", _userVM) });
         }
 
@@ -199,7 +202,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             ModelState.Clear();
-            if (TryValidateModel(obj))
+            if (TryValidateModel(userVM))
             {
                 if (obj.Avatar.Length > 0)
                 {
@@ -223,6 +226,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
+
+
+            _userVM.user = obj;
+
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", _userVM) });
         }
 

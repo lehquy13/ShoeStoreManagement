@@ -6,6 +6,7 @@
 @inject IJSRuntime js
 @inject NavigationManager UriHelper
 
+
 <section class="col-8 col-sm-7">
 	@if (cart.CartDetails.Count > 0)
 	{
@@ -18,6 +19,10 @@
 				  url3=@url3
 				  IsChanged="ReRender" />
 		}
+	}
+	else
+	{
+		<img src="/image/cart-empty.png" class="h-auto float-end opacity-75" width="80%"/>
 	}
 </section>
 
@@ -32,6 +37,7 @@
 	</div>
 	<button class="btn btn-primary mt-5 w-100 @disabled" id="btn-js" @onclick="MakeAnOrder">Make an order</button>
 </section>
+
 
 @code {
 	[Parameter]
@@ -115,8 +121,7 @@
 
 	protected async void MakeAnOrder()
 	{
-		//await js.InvokeVoidAsync("call", new object[] { url4 });
-		UriHelper.NavigateTo("Order/MakeAnOrder" , true);
+		UriHelper.NavigateTo("Order/MakeAnOrder", true);
 	}
 }
 

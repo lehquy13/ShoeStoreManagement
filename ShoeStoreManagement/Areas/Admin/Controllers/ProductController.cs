@@ -301,7 +301,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
 
                 ModelState.Clear();
-                if (TryValidateModel(product))
+                if (TryValidateModel(productVM))
                 {
                     var temp = productVM.TestSizeAmount.Where(x => x != "0").ToList();
 
@@ -349,15 +349,15 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     _productCRUD.CreateAsync(product);
 
                     _productVM.products = _productCRUD.GetAllAsync().Result.OrderBy(o => o.ProductName).ToList();
-                    //_productVM.page = 0;
 
-					//_productVM.nProducts = _productVM.page;
 					ViewData["nProducts"] = _productVM.page;
-
 					TempData["success"] = "Category is Created Successfully!!";
 
                     return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM.products) });
                 }
+
+                _productVM.product = product;
+
                 return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", _productVM) });
             }
             return NotFound();
@@ -389,7 +389,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             ModelState.Clear();
-            if (TryValidateModel(product))
+            if (TryValidateModel(productVM))
             {
 
                 for (var i = 35; i <= 44; i++)
@@ -470,6 +470,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         });
                     }
                 }
+
+                ViewData["nProducts"] = _productVM.page;
+                TempData["success"] = "Category is Created Successfully!!";
 
                 await load();
                 return PartialView("_ViewAll", _productVM.products);

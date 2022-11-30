@@ -217,6 +217,7 @@ createSth = form => {
                 }
                 else {
                     alert("invalid");
+                    alert(res.html);
                     $('#form-modal .modal-body').html(res.html);
                 }
             },
@@ -288,7 +289,8 @@ function jQueryAjaxPost(form) {
             contentType: false,
             processData: false,
             success: function (res) {
-                $("#form-modal .modal-title").html();
+                $('#form-modal .modal-body').html('');
+                $('#form-modal .modal-title').html('');
                 $("#form-modal").modal('hide');
                 $('#hihi').html(res);
 

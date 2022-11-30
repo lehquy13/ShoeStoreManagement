@@ -78,7 +78,15 @@
         opacity: .5;
     }
 
+.btn-size.disabled {
+    background-color: var(--bs-gray-400);
+    opacity: .4;
+    color: black;
+}
 
+.btn-size.active {
+    background-color: var(--bs-dark);
+} 
 
 
 /* Style the tab */

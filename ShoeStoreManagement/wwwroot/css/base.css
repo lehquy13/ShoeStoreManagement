@@ -61,12 +61,13 @@ p {
         transition-duration: 100ms;
     }
     .btn-secondary:active {
-        background-color: inherit;
-        color: inherit;
-        font-weight: inherit;
+        background-color: transparent !important;
+        border: solid;
+        border-width: 1px;
+        border-color: rgb(20, 33, 61);
     }
     .btn-secondary:focus {
-        background-color: inherit;
+        background-color: rgba(20, 33, 61, 0.2);
         color: inherit;
         font-weight: inherit;
     }

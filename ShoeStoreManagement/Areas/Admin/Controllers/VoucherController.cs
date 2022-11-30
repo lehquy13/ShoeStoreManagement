@@ -77,6 +77,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _voucherVM.vouchers ) });
             }
 
+            _voucherVM.voucher = obj;
+
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", _voucherVM) });
         }
 
@@ -113,6 +115,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _voucherVM.vouchers) });
             }
+
+            _voucherVM.voucher = obj;
 
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", _voucherVM) });
         }

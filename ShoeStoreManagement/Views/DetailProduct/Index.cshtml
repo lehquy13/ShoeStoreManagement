@@ -17,8 +17,21 @@
 
 <form class="row" method="post" action="DetailProduct/CreateCartItem">
 	<div class="col-4">
+
+		@if (String.IsNullOrEmpty(Model.product.ImageName)) {
+			Model.product.ImageName = "product-empty.png";
+		}
+
 		<img src="~/image/@Model.product.ImageName" asp-append-version="true" class="w-100" />
 
+		<div class="">
+			@*slide*@
+			<div class="d-flex justify-content-between">
+				<img src="/image/shoe.jpg" class="col-4" />
+				<img src="/image/shoe.jpg" class="col-4" />
+				<img src="/image/shoe.jpg" class="col-4" />
+			</div>
+		</div>
 	</div>
 	<div class="col-5 d-flex flex-column justify-content-between">
 		
@@ -27,24 +40,22 @@
 				   render-mode="ServerPrerendered"
 				   param-url=@Url.Action("AddToCart","DetailProduct",null,Context.Request.Scheme) />
 	</div>
-	<div class="col">
-		<span class="h6">Description</span>
-		<p class="caption mt-1">
-			@Model.product.Description
-		</p>
-	</div>
-</form>
-<div class="row mt-2">
-	<div class="col-4">
-		@*slide*@
-		<div class="d-flex justify-content-between">
-			<img src="/image/shoe.jpg" class="col-4" />
-			<img src="/image/shoe.jpg" class="col-4" />
-			<img src="/image/shoe.jpg" class="col-4" />
+	<div class="col d-flex flex-column justify-content-between">
+		<div>
+			<span class="h6">Description</span>
+			<p class="caption mt-1">
+				@Model.product.Description
+			</p>
+		</div>
+		<div class="border-dash p-3">
+			Voucher
 		</div>
 	</div>
-	<div class="col-5 border-dash p-3">
-		Voucher
-	</div>
-</div>
-}
+</form>
+
+<script>
+	function a() {
+		alert($('#wishlist'))
+		document.getElementById("wishlist").value = "jsbdjfs"
+	}
+</script>

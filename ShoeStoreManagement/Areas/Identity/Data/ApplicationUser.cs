@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ShoeStoreManagement.Core;
 using ShoeStoreManagement.Core.Models;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,6 +20,7 @@ public class ApplicationUser : IdentityUser
     [NotMapped]
     public Cart? Cart { get; set; }
 
+    [MinimunYear(1960)]
     [DataType(DataType.DateTime)]
     [Required]
     public DateTime Birthday { get; set; }
