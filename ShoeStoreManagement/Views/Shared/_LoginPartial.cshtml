@@ -7,7 +7,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item dropdown-item">
-        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @SignInManager.UserManager.FindByNameAsync(UserManager.GetUserName(User)).Result.FullName!</a>
+        <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @SignInManager.UserManager.Users.Where(o => o.Id == UserManager.GetUserId(User)).First().FullName!</a>
         @*<a id="manage" class="nav-link text-dark" asp-area="" asp-controller="ProfileAndSetting" asp-action="Profile" title="Manage">Hello @UserManager.GetUserName(User)!</a>*@
     </li>
     <li class="nav-item dropdown-item">
