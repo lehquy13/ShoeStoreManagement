@@ -84,6 +84,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
                 }
             }
+            users = users.OrderBy(u => u.CreatedDate).ToList();
             _userVM.applicationUsers = users;
 
             return View(_userVM);
@@ -156,7 +157,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 _usermanager.AddToRoleAsync(obj, obj.Role).Wait();
 
-                _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+                var users = _applicationuserCRUD.GetAllAsync().Result;
+				users = users.OrderBy(u => u.CreatedDate).ToList();
+                _userVM.applicationUsers = users;
 
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
@@ -219,9 +222,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 _applicationuserCRUD.Update(obj);
 
-                _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
+				var users = _applicationuserCRUD.GetAllAsync().Result;
+				users = users.OrderBy(u => u.CreatedDate).ToList();
+				_userVM.applicationUsers = users;
 
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
+				return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", _userVM) });
         }
@@ -237,8 +242,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     _addressCRUD.DeleteAllAdressByIdAsync(obj.Id);
                     _applicationuserCRUD.Remove(obj);
                 }
-                _userVM.applicationUsers = _applicationuserCRUD.GetAllAsync().Result;
-            }
+				var users = _applicationuserCRUD.GetAllAsync().Result;
+				users = users.OrderBy(u => u.CreatedDate).ToList();
+				_userVM.applicationUsers = users;
+			}
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
         }
     }

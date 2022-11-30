@@ -100,6 +100,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     item.OrderTotalPayment += itemDetail.Payment;
                 }
             }
+
+            orderList = orderList.OrderBy(o => o.OrderDate).ToList();
             ViewData["orders"] = orderList;
 
             return View();
@@ -233,6 +235,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
 				
 			}
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
 			ViewData["orders"] = orderList;
 			return RedirectToAction("Index");
         }
@@ -250,6 +253,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
 				
 			}
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
 			ViewData["orders"] = orderList;
 			return RedirectToAction("Index");
 		}
@@ -341,7 +345,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 //    item.OrderTotalPayment += itemDetail.Payment;
                 //}
             }
-            ViewData["orders"] = orderList;
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+			ViewData["orders"] = orderList;
 
 
             // Clear the admin's cart
