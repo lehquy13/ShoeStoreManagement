@@ -300,7 +300,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
 
                 ModelState.Clear();
-                if (TryValidateModel(product))
+                if (TryValidateModel(productVM))
                 {
                     var temp = productVM.TestSizeAmount.Where(x => x != "0").ToList();
 

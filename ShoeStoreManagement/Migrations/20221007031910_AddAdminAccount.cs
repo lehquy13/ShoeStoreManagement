@@ -43,7 +43,7 @@ namespace ShoeStoreManagement.Migrations
 			migrationBuilder.Sql(sb.ToString());
 
 			migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{ADMIN_ROLE_GUID}','Admin','ADMIN')");
-			migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{ADMIN_USER_GUID}','Customer','CUSTOMER')");
+			migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{ADMIN_USER_GUID}','Customer','CUSTOMER')");//cái này là dùng guid của 1 bạn admin để làm id, mb
 			migrationBuilder.Sql($"INSERT INTO AspNetRoles (Id, Name, NormalizedName) VALUES ('{PASSENGER_ROLE_GUID}','Passenger','PASSENGER')");
 
 			migrationBuilder.Sql($"INSERT INTO AspNetUserRoles (UserId, RoleId) VALUES ('{ADMIN_USER_GUID}','{ADMIN_ROLE_GUID}')");

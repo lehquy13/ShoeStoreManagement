@@ -231,8 +231,14 @@ createSth = form => {
                     $('#hihi').html(res.html);
                 }
                 else {
-                    alert("invalid");
-                    $('#form-modal .modal-body').html(res.html);
+                    
+                    try {
+                        $('#form-modal .modal-body').removeData('modal');
+                        $('#form-modal .modal-body').html(res.html);
+                    }
+                    catch (e) {
+                        alert(e)
+                    }
                 }
             },
             error: function (err) {
@@ -248,12 +254,12 @@ createSth = form => {
 
 function deleteSth(url, id) {
     alert("Delete this item?")
+    alert(id)
+    alert(url)
     $.ajax({
         type: "POST",
         url: url,
         data: { id: id },
-        contentType: false,
-        processData: false,
         success: function (res) {
             if (res.isValid) {
                 $('#hihi').html(res.html);

@@ -229,7 +229,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 			{
                 if(item.OrderId == id)
                 {
-					item.Status = Status.Finish;
+					item.Status = Status.Delivered;
                     _orderCRUD.Update(item);
 				}
 				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
@@ -239,6 +239,24 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 			ViewData["orders"] = orderList;
 			return RedirectToAction("Index");
         }
+        //Confirm that cus Order is ready and on way delivering
+		public async Task<IActionResult> ConfirmCheck(string id)
+		{
+			var orderList = await _orderCRUD.GetAllOrderAsync();
+			foreach (var item in orderList)
+			{
+				if (item.OrderId == id)
+				{
+					item.Status = Status.Delivering;
+					_orderCRUD.Update(item);
+				}
+				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+
+			}
+			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+			ViewData["orders"] = orderList;
+			return RedirectToAction("Index");
+		}
 
 		public async Task<IActionResult> CanceledCheck(string id)
 		{
@@ -423,31 +441,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 for (var i = 0; i < _orderVM.currentOrderDetail.Count; i++)
                 {
                     //calculate totalprice
-                    //var product = _orderVM.currentOrderDetail[i].Product;
                     var m = _orderVM.currentOrderDetail[i].Amount;
-                    _orderVM.totalPayment += _orderVM.currentOrderDetail[i].Product.ProductUnitPrice * m;//sai nhas
-                    _orderVM.totalAmount += m;//van sai nha
-                                              //reduce product
-                                              //create detail
-
-
-                    //var it = new OrderDetail()
-                    //{
-                    //    OrderId = _orderVM.currOrder.OrderId,
-                    //    Amount = m,
-                    //    Payment = _orderVM.products[i].ProductUnitPrice * m,
-                    //    ProductId = _orderVM.products[i].ProductId
-                    //};
-
+                    _orderVM.totalPayment += _orderVM.currentOrderDetail[i].Product.ProductUnitPrice * m;
+                    _orderVM.totalAmount += m;
 
                     _orderVM.currOrder.OrderDetails.Add(_orderVM.currentOrderDetail[i]);
-                    //_orderVM.currOrder.OrderDetails[i].Amount = _orderVM.totalAmount;
-                    //_orderVM.currOrder.OrderDetails[i].Payment = _orderVM.totalPayment;
                 }
             }
 
             _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
-            _orderVM.currOrder.Status = Core.Enums.Status.Waiting;
+            _orderVM.currOrder.Status = Core.Enums.Status.Delivering;
 
             return View(_orderVM);
         }

@@ -26,30 +26,30 @@
 				<div class="col d-grid gap-2">
 					<input asp-for="product.ProductId" hidden>
 					<div class="form-floating">
-						<input type="text" asp-for="product.ProductName" class="form-control" id="floatingInput" placeholder="Annanas A" required>
+						<input type="text" asp-for="product.ProductName" data-val="false" class="form-control" id="floatingInput" placeholder="Annanas A" >
 						<label for="floatingInput">Enter Name</label>
 						<span asp-validation-for="product.ProductName" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="product.Color" class="form-control" id="floatingInput" placeholder="Black" required>
+						<input type="text" asp-for="product.Color" class="form-control" id="floatingInput" placeholder="Black" >
 						<label for="floatingInput">Enter Color</label>
 						<span asp-validation-for="product.Color" class="text-danger"></span>
 					</div>
 					<div class="form-floating flex-grow-1">
-						<textarea class="form-control" style="height:120px" asp-for="product.Description" placeholder="Leave a comment here" id="floatingTextarea" required></textarea>
+						<textarea class="form-control" style="height:120px" asp-for="product.Description" placeholder="Leave a comment here" id="floatingTextarea" ></textarea>
 						<label for="floatingTextarea">Enter Product</label>
 						<span asp-validation-for="product.Description" class="text-danger"></span>
 					</div>
 				</div>
 				<div class="col d-grid gap-2" style="height:fit-content">
 					<div class="form-floating">
-						<select class="form-select" asp-for="product.ProductCategoryId" asp-items="@(new SelectList(Model.productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example" required>
+						<select class="form-select" asp-for="product.ProductCategoryId" asp-items="@(new SelectList(Model.productCategories, "ProductCategoryId", "ProductCategoryName"))" id="selectCategory" aria-label="Floating label select example">
 						</select>
 						<label for="selectCategory">Category</label>
 						<span asp-validation-for="product.ProductCategoryId" class="text-danger"></span>
 					</div>
 					<div class="form-floating">
-						<input type="text" asp-for="product.ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20" required>
+						<input type="text" asp-for="product.ProductUnitPrice" class="form-control" id="floatingInput" placeholder="$20" >
 						<label for="floatingInput">Enter Price</label>
 						<span asp-validation-for="product.ProductUnitPrice" class="text-danger"></span>
 					</div>
