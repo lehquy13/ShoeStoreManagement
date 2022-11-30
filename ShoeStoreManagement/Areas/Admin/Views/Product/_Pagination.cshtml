@@ -27,7 +27,7 @@
 		return numberPages;
 	}
 }
-<form asp-action="Pagination" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxPagination(this);">
+@*<form asp-action="Pagination" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxPagination(this);">*@
 	<nav class="container">
 		<ul class="pagination" style="display:flex; flex-direction:row">
 			@if (nProducts != 0)
@@ -39,11 +39,11 @@
 			{
 				if (i == nProducts + 1)
 				{
-					<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+					<li class="page-item"><button class="page-link" name="page" value=@i type="button" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)" style="background-color:lightgrey" disabled>@i</button></li>
 				}
 				else
 				{
-					<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
+				<li class="page-item"><button class="page-link" name="page" value=@i type="button" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
 				}
 			}
 			@if (nProducts + 1 != @countPage())
@@ -53,5 +53,5 @@
 			}
 		</ul>
 	</nav>
-</form>
+@*</form>*@
 

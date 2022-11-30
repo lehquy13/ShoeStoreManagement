@@ -209,10 +209,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Pagination(ProductVM productVM)
+        public IActionResult Pagination(string page = "1")
         {
-            ViewBag.Product = true;
-            _productVM.page = productVM.page - 1;
+       
+            _productVM.page = Int32.Parse(page )- 1;
             ViewData["nProducts"] = _productVM.page;
             return PartialView("_Pagination", _productVM);
         }

@@ -80,7 +80,7 @@ function showContent2(url, title) {
     $.ajax({
         type: "GET",
         url: url,
-        data: { },
+        data: {},
         success: function (res) {
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html(title);
@@ -109,21 +109,21 @@ function deteleItem(url, id) {
 }
 
 function showContentItem(url, title) {
-  alert($("#searchFilter").val());
+    alert($("#searchFilter").val());
     $.ajax({
-      type: "GET",
-      url: url,
-      data: { filter: $("#searchFilter").val() },
-      success: function (res) {
-        $("#form-modal .modal-body").html(res);
-        $("#form-modal .modal-title").html(title);
-        $("#form-modal").modal('show');
-      }
+        type: "GET",
+        url: url,
+        data: { filter: $("#searchFilter").val() },
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+        }
     });
     return false;
-  
-            //$.notify("I'm over here !");
-            //$.notify("Access granted", "success", { position: "right" });
+
+    //$.notify("I'm over here !");
+    //$.notify("Access granted", "success", { position: "right" });
 }
 
 function updateAmount(url, id, amount, sum) {
@@ -349,7 +349,7 @@ function jQueryAjaxSort(form) {
         })
         //to prevent default form submit event
         return false;
-        
+
     } catch (ex) {
 
         alert(ex);
@@ -357,43 +357,39 @@ function jQueryAjaxSort(form) {
     }
 }
 
-function jQueryAjaxPagination(form) {
-  var obj = new FormData(form);
-  for (var pair of obj.entries()) {
-    console.log(pair[0] + ', ' + pair[1]);
-  }
-  try {
-    $.ajax({
-      type: 'POST',
-      url: form.action,
-      data: obj,
-      processData: false,
-      contentType: false,
-      success: function (res) {
-        $('#pagi').html(res);
+function jQueryAjaxPagination(url, form) {
+    var obj = form;
 
-      },
-      error: function (err) {
-        alert(err);
+    debugger;
+    try {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {page:obj}
+,
+            success: function (res) {
+                $('#pagi').html(res);
+            },
+            error: function (err) {
+                alert(err);
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        return false;
 
-        console.log(err)
-      }
-    })
-    //to prevent default form submit event
-    return false;
+    } catch (ex) {
 
-  } catch (ex) {
-
-    alert(ex);
-    return false;
-  }
+        alert(ex);
+        return false;
+    }
 }
 
 /* BACKGROUND */
 
 function removeBg() {
     alert("me me");
-   
+
     $("#body").addClass("body-bg");
     return false;
 }
