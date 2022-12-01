@@ -335,6 +335,22 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             return PartialView(_productVM);
         }
 
+		[HttpGet]
+		public IActionResult AddCategory()
+		{
+			_productVM.product = new Product();
+
+			return PartialView(_productVM);
+		}
+
+        [HttpPost]
+        public IActionResult ChangingCategories(ProductVM productVM)
+        {
+            _productVM.product = new Product();
+
+            return PartialView(_productVM);
+        }
+
         [ValidateAntiForgeryToken]
         [HttpPost]
         public async Task< IActionResult> Create(ProductVM productVM)

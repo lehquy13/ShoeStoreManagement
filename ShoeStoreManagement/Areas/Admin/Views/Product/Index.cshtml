@@ -27,8 +27,9 @@
 	<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);">
 		<div class="radioLayoutTabCustom row-cols-6 w-100">
 			<input class="rounded w-10" type="text" name="searchString" />
-			<input class="btn btn-secondary rounded w-10" type="submit"/>
+			<input class="btn btn-secondary rounded w-10" type="submit" value="Search Me" onclick="showContent2('@(Url.Action("AddCategory", "Product"))','Shoe Categories')" />
 		</div>
+		<input class="btn btn-secondary rounded w-10" type="button" value="Add Category" />
 	</form>
 
 	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
