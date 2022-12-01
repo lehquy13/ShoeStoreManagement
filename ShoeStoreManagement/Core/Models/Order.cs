@@ -24,8 +24,6 @@ public class Order
 
     string orderNote = string.Empty;
     //---------------------------------
-    [NotMapped]
-    public string DeliveryAddress { get; set; } = string.Empty;
 
     [Key]
     public string OrderId
@@ -121,4 +119,11 @@ public class Order
 
     [Range(1, 99999)]
     public int TotalAmount { get; set; } = 0;
+
+    [Required]
+    [RegularExpression(@"^([\+]?84[-]?|[0])?[1-9][0-9]{8}$", ErrorMessage = "Invalid Phone Numbber!")]
+    public string PhoneNumber { get; set; } = "";
+
+    [Required]
+    public string DeliveryAddress { get; set; } = "";
 }

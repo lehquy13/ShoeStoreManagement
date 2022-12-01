@@ -17,9 +17,10 @@ namespace ShoeStoreManagement.Controllers
         private readonly IVoucherCRUD _voucherCRUD;
         private readonly ICartCRUD _cartCRUD;
         private readonly ICartDetailCRUD _cartDetailCRUD;
+        private readonly IApplicationUserCRUD _applicationUserCRUD;
         private static OrderVM _orderVM = new OrderVM();
 
-        public OrderController(IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD, ISizeDetailCRUD sizeDetailCRUD)
+        public OrderController(IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD, ISizeDetailCRUD sizeDetailCRUD, IApplicationUserCRUD applicationUserCRUD)
         {
             _orderCRUD = orderCRUD;
             _orderDetailCRUD = orderDetailCRUD;
@@ -31,6 +32,7 @@ namespace ShoeStoreManagement.Controllers
 
             _orderVM.deliveryMethods = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
             _orderVM.paymentMethods = Enum.GetValues(typeof(PaymentMethod)).Cast<PaymentMethod>().ToList();
+            _applicationUserCRUD = applicationUserCRUD;
         }
 
         public IActionResult Index()
@@ -82,6 +84,7 @@ namespace ShoeStoreManagement.Controllers
             }
 
             _orderVM.currOrder.UserId = userId;
+            _orderVM.currOrder.User = _applicationUserCRUD.GetByIdAsync(userId).Result;
             _orderVM.currOrder.OrderVoucherId = "";
             _orderVM.currOrder.OrderDetails.Clear();
             _orderVM.totalAmount = 0;
@@ -112,6 +115,8 @@ namespace ShoeStoreManagement.Controllers
         public IActionResult ConfirmOrder(OrderVM orderVm)
         {
             _orderVM.currOrder.DeliverryMethods = orderVm.currOrder.DeliverryMethods;
+            _orderVM.currOrder.PhoneNumber = orderVm.currOrder.PhoneNumber;
+            _orderVM.currOrder.DeliveryAddress = orderVm.currOrder.DeliveryAddress;
 
             if (orderVm.currOrder.DeliverryMethods == DeliveryMethods.Fast)
             {
@@ -236,7 +241,7 @@ namespace ShoeStoreManagement.Controllers
                 List<Voucher> vouchers = _voucherCRUD.GetAllAsync().Result;
                 Voucher currentVoucher = null;
 
-                foreach(Voucher voucher in vouchers)
+                foreach (Voucher voucher in vouchers)
                 {
                     if (orderVM.currOrder.OrderVoucher.Code.Equals(voucher.Code))
                     {
@@ -257,7 +262,7 @@ namespace ShoeStoreManagement.Controllers
                                 {
                                     // Annouce the total price does not satisfy
                                     return RedirectToAction("Index", "Cart");
-                                }      
+                                }
                                 break;
                             }
                         case ConditionType.NewCustomer:
@@ -269,7 +274,7 @@ namespace ShoeStoreManagement.Controllers
                                 }
                                 break;
                             }
-                            
+
                     }
 
                     // Handle if expired
@@ -279,7 +284,7 @@ namespace ShoeStoreManagement.Controllers
                             {
                                 DateTime expiredDate = DateTime.ParseExact(currentVoucher.ExpiredValue, "MM-dd-yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
-                                if (DateTime.Now > expiredDate) 
+                                if (DateTime.Now > expiredDate)
                                 {
                                     // Annouce that voucer has been expired
                                     return RedirectToAction("Index", "Cart");
@@ -288,7 +293,7 @@ namespace ShoeStoreManagement.Controllers
                             }
                         case ExpireType.Amount:
                             {
-                                if (int.Parse(currentVoucher.ExpiredValue) <= 0) 
+                                if (int.Parse(currentVoucher.ExpiredValue) <= 0)
                                 {
                                     // Annouce that voucer has been sold out
                                     return RedirectToAction("Index", "Cart");
@@ -324,11 +329,13 @@ namespace ShoeStoreManagement.Controllers
                 }
             }
 
-            
+
             _orderVM.currOrder.PaymentMethod = _orderVM.currOrder.PaymentMethod;
             _orderVM.currOrder.TotalAmount = _orderVM.totalAmount;
 
-            _orderCRUD.CreateAsync(_orderVM.currOrder);
+            _orderVM.currOrder.User = null;
+
+            await _orderCRUD.CreateAsync(_orderVM.currOrder);
 
             Cart? cart = _cartCRUD.GetAsync(_orderVM.currOrder.UserId).Result;
 
@@ -337,11 +344,12 @@ namespace ShoeStoreManagement.Controllers
                 return NotFound();
             }
 
+
             foreach (var item in _orderVM.currOrder.OrderDetails)
             {
                 item.Product = null;
 
-                _orderDetailCRUD.CreateAsync(item);
+                await _orderDetailCRUD.CreateAsync(item);
 
                 CartDetail? cartDetail = await _cartDetailCRUD.GetByProductIdAsync(item.ProductId, cart.CartId, item.Size);
 
@@ -385,9 +393,9 @@ namespace ShoeStoreManagement.Controllers
             {
                 List<OrderDetail> orderDetails = _orderDetailCRUD.GetAllAsync(id).Result;
 
-                if(orderDetails != null)
+                if (orderDetails != null)
                 {
-                    foreach(var item in orderDetails)
+                    foreach (var item in orderDetails)
                     {
                         item.Product = _productCRUD.GetByIdAsync(item.ProductId).Result;
                         order.OrderDetails.Add(item);

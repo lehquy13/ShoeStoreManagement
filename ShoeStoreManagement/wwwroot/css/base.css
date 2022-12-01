@@ -30,6 +30,10 @@ p {
     margin: 0;
 }
 
+main {
+    min-height: 52vh;
+}
+
 /*BORDER*/
 .border-app {
     border-color: rgba(20, 33, 61, 0.25);
