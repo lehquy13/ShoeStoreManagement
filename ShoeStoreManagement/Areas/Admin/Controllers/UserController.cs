@@ -196,10 +196,10 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
 				users = users.OrderBy(u => u.CreatedDate).ToList();
 				_userVM.applicationUsers = users;
-
+                ViewData["nProducts"] = 0;
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
-
+            ViewData["nProducts"] = 0;
             _userVM.user = obj;
 
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", _userVM) });

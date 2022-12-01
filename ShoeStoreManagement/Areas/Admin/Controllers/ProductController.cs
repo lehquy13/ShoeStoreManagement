@@ -231,9 +231,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     case "Color":
                         _productVM.products = _productVM.products.OrderBy(i => i.Color).ToList();
                         break;
-                    case "Category":
-                        _productVM.products = _productVM.products.OrderBy(i => i.ProductCategory).ToList();
-                        break;
+                    //case "Category":
+                    //    _productVM.products = _productVM.products.OrderBy(i => i.ProductCategory).ToList();
+                    //    break;
                     case "Amount":
                         _productVM.products = _productVM.products.OrderBy(i => i.Amount).ToList();
                         break;
@@ -541,7 +541,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                         product.Amount += int.Parse(temp[i]);
                     }
-
+                    await _productCRUD.Update(product);
 
                     _productVM.products = _productCRUD.GetAllAsync().Result.OrderBy(o => o.ProductName).ToList();
 

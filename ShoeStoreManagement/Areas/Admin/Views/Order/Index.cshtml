@@ -2,30 +2,31 @@
 @using ShoeStoreManagement.Core.Models;
 @*ORDER*@
 @{
-  List<Order> orders = ViewData["orders"] as List<Order> ?? new List<Order>();
+    List<Order> orders = ViewData["orders"] as List<Order> ?? new List<Order>();
 
-  int nProducts = 0;
-  nProducts = (int)ViewData["nProducts"];
-  //nProducts = Int32.Parse(ViewData["nProducts"].ToString());
+    int nProducts = 0;
+    if (ViewData["nProducts"] != null)
+        nProducts = (int)ViewData["nProducts"];
+    //nProducts = Int32.Parse(ViewData["nProducts"].ToString());
 
-	int countPage()
-	{
+    int countPage()
+    {
 
-		int numberPages = 0;
-		int numberProducts = 0;
+        int numberPages = 0;
+        int numberProducts = 0;
 
-		foreach (Order i in orders)
-		{
-			numberProducts++;
-		}
+        foreach (Order i in orders)
+        {
+            numberProducts++;
+        }
 
-		numberPages = numberProducts / 10;
+        numberPages = numberProducts / 10;
 
-		if (numberProducts % 10 != 0)
-			numberPages++;
+        if (numberProducts % 10 != 0)
+            numberPages++;
 
-		return numberPages;
-	}
+        return numberPages;
+    }
 }
 <style>
 
@@ -108,32 +109,32 @@
                         </tbody>
                     </table>
 
-          <nav class="container">
-            <ul class="pagination" style="display:flex; flex-direction:row">
-              @if (nProducts != 0)
-              {
-                if (nProducts > 1) nProducts -= 1;
-                <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
-              }
-              @for (int i = 1; i <= @countPage(); i++)
-              {
-                if (i == nProducts + 1)
-                {
-                  <li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-                }
-                else
-                {
-                  <li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Order"))',@i)">@i</button></li>
-                }
-              }
-              @if (nProducts + 1 != @countPage() && @countPage() > 0)
-              {
-                nProducts += 2;
-                <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-              }
-            </ul>
-          </nav>
-        </div>
+                    <nav class="container">
+                        <ul class="pagination" style="display:flex; flex-direction:row">
+                            @if (nProducts != 0)
+                            {
+                                if (nProducts > 1) nProducts -= 1;
+                                <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+                            }
+                            @for (int i = 1; i <= @countPage(); i++)
+                            {
+                                if (i == nProducts + 1)
+                                {
+                                    <li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+                                }
+                                else
+                                {
+                                    <li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Order"))',@i)">@i</button></li>
+                                }
+                            }
+                            @if (nProducts + 1 != @countPage() && @countPage() > 0)
+                            {
+                                nProducts += 2;
+                                <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </div>

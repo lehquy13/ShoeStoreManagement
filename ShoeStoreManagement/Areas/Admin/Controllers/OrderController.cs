@@ -105,7 +105,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
 
                     filterList.Add(item);
-                }    
+                }
                 else if (filter.Equals(Enum.GetName(typeof(Status), item.Status)))
                 {
                     item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
@@ -247,72 +247,81 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         {
             _customerDialogVM.customers = _orderVM.customers;
             return View(_customerDialogVM);
-        } 
+        }
         public async Task<IActionResult> CompletedCheck(string id)
-        {			
-			var orderList = await _orderCRUD.GetAllOrderAsync();
-			foreach (var item in orderList)
-			{
-                if(item.OrderId == id)
+        {
+            var orderList = await _orderCRUD.GetAllOrderAsync();
+            foreach (var item in orderList)
+            {
+                if (item.OrderId == id)
                 {
-					item.Status = Status.Delivered;
+                    item.Status = Status.Delivered;
                     _orderCRUD.Update(item);
-				}
-				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
-				
-			}
-			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
-			ViewData["orders"] = orderList;
-			return RedirectToAction("Index");
+                }
+                item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+
+            }
+            orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+            ViewData["orders"] = orderList;
+            return RedirectToAction("Index");
         }
         //Confirm that cus Order is ready and on way delivering
-		public async Task<IActionResult> ConfirmCheck(string id)
-		{
-			var orderList = await _orderCRUD.GetAllOrderAsync();
-			foreach (var item in orderList)
-			{
-				if (item.OrderId == id)
-				{
-					item.Status = Status.Delivering;
-					_orderCRUD.Update(item);
-				}
-				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+        public async Task<IActionResult> ConfirmCheck(string id)
+        {
+            var orderList = await _orderCRUD.GetAllOrderAsync();
+            foreach (var item in orderList)
+            {
+                if (item.OrderId == id)
+                {
+                    if (item.Status == Status.Waiting)
+                        item.Status = Status.Delivering;
+                    else if(item.Status == Status.Delivering)
+                    {
+                        item.Status = Status.Delivered;
+                    }
+                    else
+                    {
+                        _orderCRUD.Update(item);
 
-			}
-			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
-			ViewData["orders"] = orderList;
-			return RedirectToAction("Index");
-		}
+                    }
+                }
+                item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
 
-		public async Task<IActionResult> CanceledCheck(string id)
-		{
-			var orderList = await _orderCRUD.GetAllOrderAsync();
-			foreach (var item in orderList)
-			{
-				if (item.OrderId == id)
-				{
-					item.Status = Status.Canceled;
-					_orderCRUD.Update(item);
-				}
-				item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
-				
-			}
-			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
-			ViewData["orders"] = orderList;
-			return RedirectToAction("Index");
-		}
+            }
+            orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+            ViewData["orders"] = orderList;
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> CanceledCheck(string id)
+        {
+            var orderList = await _orderCRUD.GetAllOrderAsync();
+            foreach (var item in orderList)
+            {
+                if (item.OrderId == id)
+                {
+                    item.Status = Status.Canceled;
+                    _orderCRUD.Update(item);
+                }
+                item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+
+            }
+            orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+            ViewData["orders"] = orderList;
+            return RedirectToAction("Index");
+        }
 
 
-		[HttpGet]
+        [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
             var obj = await _orderCRUD.GetByIdAsync(id);
             if (obj != null)
             {
                 obj.OrderDetails = await _orderDetailCRUD.GetAllAsync(obj.OrderId);
-                
+
                 obj.User = await _applicationuserCRUD.GetByIdAsync(obj.UserId);
-                foreach(var i in obj.OrderDetails)
+                foreach (var i in obj.OrderDetails)
                 {
                     i.Product = await _productCRUD.GetByIdAsync(i.ProductId);
                 }
@@ -339,7 +348,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             }
             _orderVM.currOrder.OrderTotalPrice = _orderVM.currOrder.OrderTotalPayment;
-			await _orderCRUD.CreateAsync(_orderVM.currOrder);
+            await _orderCRUD.CreateAsync(_orderVM.currOrder);
 
 
             foreach (var s in _orderVM.currentOrderDetail)
@@ -347,7 +356,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 var soldAmount = s.Amount;
 
                 var sizeD = _sizeDetailCRUD.GetProductSizeAsync(s.ProductId, s.Size).Result;
-                if (sizeD.Amount > soldAmount)
+                if (sizeD.Amount >= soldAmount)
                     sizeD.Amount -= soldAmount;
                 else
                 {
@@ -370,13 +379,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 await _sizeDetailCRUD.Update(sizeD);
                 var product = s.Product;
                 product.Amount -= soldAmount;
-                _productCRUD.Update(product);
+                await _productCRUD.Update(product);
             }
             foreach (var s in _orderVM.currOrder.OrderDetails)
             {
                 s.Product = null;
                 await _orderDetailCRUD.CreateAsync(s);
             }
+            ViewData["nProducts"] = 0;
             _orderVM = new OrderVM(); // cần clear lại VM
             Init();
 
@@ -390,8 +400,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 //    item.OrderTotalPayment += itemDetail.Payment;
                 //}
             }
-			orderList = orderList.OrderBy(o => o.OrderDate).ToList();
-			ViewData["orders"] = orderList;
+            orderList = orderList.OrderBy(o => o.OrderDate).ToList();
+            ViewData["orders"] = orderList;
 
 
             // Clear the admin's cart
@@ -474,7 +484,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                     _orderVM.currOrder.OrderDetails.Add(_orderVM.currentOrderDetail[i]);
                 }
-                
+
             }
 
             _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
