@@ -66,11 +66,23 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 switch (filter)
                 {
+                    case "Code":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => i.Code).ToList();
+                        break;
+                    case "Condition":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => Enum.GetName(typeof(ConditionType), i.ConditionType)).ToList();
+                        break;
                     case "Value":
                         _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => i.Value).ToList();
                         break;
+                    case "Start":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => i.CreatedDate).ToList();
+                        break;
                     case "Expire":
                         _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => int.Parse(i.ExpiredValue)).ToList();
+                        break;
+                    case "State":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => Enum.GetName(typeof(Status), i.State)).ToList();
                         break;
                 }
             }
@@ -78,11 +90,23 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 switch (filter)
                 {
+                    case "Code":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.Code).ToList();
+                        break;
+                    case "Condition":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => Enum.GetName(typeof(ConditionType), i.ConditionType)).ToList();
+                        break;
                     case "Value":
                         _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.Value).ToList();
                         break;
+                    case "Start":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.CreatedDate).ToList();
+                        break;
                     case "Expire":
                         _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => int.Parse(i.ExpiredValue)).ToList();
+                        break;
+                    case "State":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => Enum.GetName(typeof(Status), i.State)).ToList();
                         break;
                 }
             }

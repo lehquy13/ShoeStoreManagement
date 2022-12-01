@@ -33,13 +33,13 @@
 		<thead>
 			<tr>
 				<th>#</th>
-				<th class="button">Name</th>
-				<th class="button">Price</th>
-				<th class="button">Color</th>
-				<th class="button">Category</th>
-				<th class="button">Amount</th>
-				<th class="button">Edit</th>
-				<th class="button">Add to cart</th>
+				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Name')">Name</th>
+				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Price')">Price</th>
+				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Color')">Color</th>
+				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Category')">Category</th>
+				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Amount')">Amount</th>
+				<th>Edit</th>
+				<th>Add to cart</th>
 			</tr>
 		</thead>
 		<tbody>

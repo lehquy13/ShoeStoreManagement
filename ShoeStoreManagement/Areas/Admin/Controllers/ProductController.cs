@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Areas.Identity.Data;
+using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Interfaces;
@@ -191,6 +192,61 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _productVM.page = page - 1;
             ViewData["nProducts"] = _productVM.page;
             return View(_productVM);
+        }
+
+        [HttpPost]
+        public IActionResult TableSort(string filter = "Name")
+        {
+            if (_productVM.desc)
+            {
+                switch (filter)
+                {
+                    case "Name":
+                        _productVM.products = _productVM.products.OrderByDescending(i => i.ProductName).ToList();
+                        break;
+                    case "Price":
+                        _productVM.products = _productVM.products.OrderByDescending(i => i.ProductUnitPrice).ToList();
+                        break;
+                    case "Color":
+                        _productVM.products = _productVM.products.OrderByDescending(i => i.Color).ToList();
+                        break;
+                    case "Category":
+                        _productVM.products = _productVM.products.OrderByDescending(i => i.ProductCategory).ToList();
+                        break;
+                    case "Amount":
+                        _productVM.products = _productVM.products.OrderByDescending(i => i.Amount).ToList();
+                        break;
+                }
+            }
+            else
+            {
+                switch (filter)
+                {
+                    case "Name":
+                        _productVM.products = _productVM.products.OrderBy(i => i.ProductName).ToList();
+                        break;
+                    case "Price":
+                        _productVM.products = _productVM.products.OrderBy(i => i.ProductUnitPrice).ToList();
+                        break;
+                    case "Color":
+                        _productVM.products = _productVM.products.OrderBy(i => i.Color).ToList();
+                        break;
+                    case "Category":
+                        _productVM.products = _productVM.products.OrderBy(i => i.ProductCategory).ToList();
+                        break;
+                    case "Amount":
+                        _productVM.products = _productVM.products.OrderBy(i => i.Amount).ToList();
+                        break;
+                }
+            }
+
+
+            if (_productVM.desc)
+                _productVM.desc = false;
+            else
+                _productVM.desc = true;
+
+            return PartialView("_ViewAll", _productVM);
         }
 
         [HttpPost]

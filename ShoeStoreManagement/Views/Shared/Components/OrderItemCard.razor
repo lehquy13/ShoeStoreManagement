@@ -2,13 +2,20 @@
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Web;
 
+@if (String.IsNullOrEmpty(orderDetail.Product.ImageName))
+{
+	orderDetail.Product.ImageName = "product-empty.png";
+}
+
 <div class="card d-flex flex-row p-0">
-	<img src="image/shoe.jpg" class="card-img-top img h-auto w-30" alt="image" />
-	<div class="card-body d-flex flex-column justify-content-between">
+	<div class="col-4 col-md-3 p-0">
+		<img src="image/@orderDetail.Product.ImageName" class="card-img-top img h-auto w-100" alt="image" />
+	</div>
+	<div class="card-body col-8 col-md-9 d-flex flex-column justify-content-between">
 		<div>
 			<div class="d-flex justify-content-between">
 				<p class="h3">@orderDetail.Product?.ProductName</p>
-				<p class="h6">x @orderDetail.Amount</p>
+				<p class="h6 mt-2">x @orderDetail.Amount</p>
 			</div>
 			<div class="d-flex align-items-end">
 				<span class="h5">@orderDetail.Product.Color - </span>	

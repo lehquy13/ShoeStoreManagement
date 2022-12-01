@@ -14,15 +14,17 @@ namespace ShoeStoreManagement.Controllers
         private readonly ICartDetailCRUD _cartDetailCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IImageCRUD _imageCRUD;
+        private readonly IProductCategoryCRUD _productCategoryCRUD;
         private static ProductVM _productVM = new ProductVM();
 
-        public DetailProductController(IProductCRUD productCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IImageCRUD imageCRUD)
+        public DetailProductController(IProductCRUD productCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IImageCRUD imageCRUD, IProductCategoryCRUD productCategoryCRUD)
         {
             _productCRUD = productCRUD;
             _sizeDetailCRUD = sizeDetailCRUD;
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
             _imageCRUD = imageCRUD;
+            _productCategoryCRUD = productCategoryCRUD;
         }
 
         [HttpGet]
@@ -57,9 +59,18 @@ namespace ShoeStoreManagement.Controllers
                 }
             }
 
+            ProductCategory? productCategory = _productCategoryCRUD.GetByIdAsync(product.ProductCategoryId).Result;
+
+            if(productCategory != null)
+            {
+                product.ProductCategory = productCategory;
+            }
+
+            List<Product> products = _productCRUD.GetAllAsync().Result.Where(o => o.ProductCategoryId == product.ProductCategoryId).ToList();
+
             _productVM.productId = product.ProductId;
             _productVM.product = product;
-            //_productVM.sizeDetails = sizeDetails;
+            _productVM.products = products;
 
             return View(_productVM);
         }

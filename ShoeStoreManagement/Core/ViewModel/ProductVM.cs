@@ -48,6 +48,8 @@ namespace ShoeStoreManagement.Core.ViewModel
 
 		public int nProducts { get; set; } = 0;
 
+		public bool desc { get; set; } = false;
+
 		public List<ProductCategory> categories = new List<ProductCategory>();
 		public string addCategories = "unknown category";
 

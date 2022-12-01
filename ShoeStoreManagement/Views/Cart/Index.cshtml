@@ -21,7 +21,7 @@
 	}
 }
 
-<div class="row justify-content-sm-between">
+<div class="row justify-content-sm-between mb-5">
 	<component type="typeof(CartCompo)" render-mode="ServerPrerendered" param-cart=@Model param-cartId=@Model.CartId param-cartDetailIds=@ids
 			   param-url1=@Url.Action("UpdateAmount","Cart",null,Context.Request.Scheme)
 			   param-url2=@Url.Action("UpdateChecked","Cart",null,Context.Request.Scheme)
