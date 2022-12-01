@@ -76,7 +76,20 @@ namespace ShoeStoreManagement.Controllers
                 }
             }
 
+            filterList = filterList.OrderBy(o => o.OrderDate).ToList();
+            _orderVM.allOrders = filterList;
+            ViewData["orders"] = filterList;
+            ViewData["nProducts"] = 0;
+
             return View(filterList);
+        }
+
+        [HttpPost]
+        public IActionResult Pagination(int page = 1)
+        {
+            ViewData["orders"] = _orderVM.allOrders;
+            ViewData["nProducts"] = page - 1;
+            return View();
         }
 
         // get id of cart
