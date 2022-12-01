@@ -67,6 +67,7 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Phone]
+            [RegularExpression(@"^([\+]?84[-]?|[0])?[1-9][0-9]{8}$", ErrorMessage = "Invalid Phone Numbber!")]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
@@ -186,7 +187,7 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
                 _context.ApplicationUsers.Update(user);
                 _context.SaveChanges();
 
-                StatusMessage = "Unexpected error when trying to set avatar.";
+                StatusMessage = "Succesful.";
                 return RedirectToPage();
             }
 

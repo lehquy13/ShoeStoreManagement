@@ -33,9 +33,12 @@ namespace ShoeStoreManagement.CRUD.Implementations
 
         public void Update(ProductCategory updateProductCategory)
         {
-
+            var o = this.GetByIdAsync(updateProductCategory.ProductCategoryId).Result;
             if (updateProductCategory != null)
-                _applicationDBContext.ProductCategories.Update(updateProductCategory);
+            {
+                o.ProductCategoryName = updateProductCategory.ProductCategoryName;
+            }
+                //_applicationDBContext.ProductCategories.Update(updateProductCategory);
             _applicationDBContext.SaveChanges();
         }
 
