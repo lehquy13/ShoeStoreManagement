@@ -12,14 +12,15 @@
         <div class="row">
             <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-            <div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
-                <button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-                <button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
-
-            </div>
+            <form method="post">
+				<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+					<button class="tabCustom" asp-action="Index" asp-route-filter="All">All</button>
+          <button class="tabCustom" asp-action="Index" asp-route-filter="Waiting">Waiting</button>
+          <button class="tabCustom" asp-action="Index" asp-route-filter="Delivering">Delivering</button>
+          <button class="tabCustom" asp-action="Index" asp-route-filter="Delivered">Delivered</button>
+          <button class="tabCustom" asp-action="Index" asp-route-filter="Canceled">Canceled</button>
+				</div>
+			</form>
         </div>
     </div> @*used to col-3 vs col-10*@
 
