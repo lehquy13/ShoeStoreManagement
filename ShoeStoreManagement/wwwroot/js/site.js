@@ -34,7 +34,7 @@ function toCart(url, title, id) {
             $("#size-dialog .modal-body").html(res);
             $("#size-dialog .modal-title").html(title);
             $("#size-dialog").modal('show');
-            
+
         }
 
     })
@@ -52,7 +52,7 @@ function showContent(url, title, id) {
             $("#form-modal").modal('show');
             //$.notify("I'm over here !");
             //$.notify("Access granted", "success", { position: "right" });
-            
+
         }
     })
 }
@@ -62,17 +62,14 @@ function showContent2(url, title) {
     $.ajax({
         type: "GET",
         url: url,
-        data: { },
+        data: {},
         success: function (res) {
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html(title);
             $("#form-modal").modal('show');
             //$.notify("I'm over here !");
             //$.notify("Access granted", "success", { position: "right" });
-            $("#form-modal .modal-title").notify(
-                "I'm to the right of this box",
-                { position: "top" }
-            );
+
         }
     })
 }
@@ -91,21 +88,21 @@ function deteleItem(url, id) {
 }
 
 function showContentItem(url, title) {
-  alert($("#searchFilter").val());
+    alert($("#searchFilter").val());
     $.ajax({
-      type: "GET",
-      url: url,
-      data: { filter: $("#searchFilter").val() },
-      success: function (res) {
-        $("#form-modal .modal-body").html(res);
-        $("#form-modal .modal-title").html(title);
-        $("#form-modal").modal('show');
-      }
+        type: "GET",
+        url: url,
+        data: { filter: $("#searchFilter").val() },
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+        }
     });
     return false;
-  
-            //$.notify("I'm over here !");
-            //$.notify("Access granted", "success", { position: "right" });
+
+    //$.notify("I'm over here !");
+    //$.notify("Access granted", "success", { position: "right" });
 }
 
 function updateAmount(url, id, amount, sum) {
@@ -332,7 +329,7 @@ function jQueryAjaxSort(form) {
         })
         //to prevent default form submit event
         return false;
-        
+
     } catch (ex) {
 
         alert(ex);
@@ -341,11 +338,36 @@ function jQueryAjaxSort(form) {
 }
 
 function jQueryAjaxPagination(url, p) {
+    try {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { page: p },
+            success: function (res) {
+                $('#hihi').html(res);
+            },
+            error: function (err) {
+                alert(err);
+
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        return false;
+
+    } catch (ex) {
+
+        alert(ex);
+        return false;
+    }
+}
+
+function jQueryAjaxTableSort(url, filter) {
   try {
     $.ajax({
       type: 'POST',
       url: url,
-      data: { page: p },
+      data: { filter: filter },
       success: function (res) {
         $('#hihi').html(res);
       },
@@ -366,28 +388,28 @@ function jQueryAjaxPagination(url, p) {
 }
 
 function jQueryAjaxSearch(form) {
-  try {
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: { str: s },
-      success: function (res) {
-        $('#hihi').html(res);
-      },
-      error: function (err) {
-        alert(err);
+    try {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { str: s },
+            success: function (res) {
+                $('#hihi').html(res);
+            },
+            error: function (err) {
+                alert(err);
 
-        console.log(err)
-      }
-    })
-    //to prevent default form submit event
-    return false;
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        return false;
 
-  } catch (ex) {
+    } catch (ex) {
 
-    alert(ex);
-    return false;
-  }
+        alert(ex);
+        return false;
+    }
 }
 
 function checkVoucher(url) {
@@ -401,7 +423,7 @@ function checkVoucher(url) {
                 if (res === "valid") {
                     $("#voucher-input").notify(
                         res, { position: "left", className: "success", showDuration: 400, showAnimation: 'slideDown' },
-                        
+
                     );
                 }
                 else {
@@ -410,7 +432,7 @@ function checkVoucher(url) {
                         res, { position: "left", className: "warn", showDuration: 400, showAnimation: 'slideDown' },
                     );
                 }
-                
+
             },
             error: function (err) {
                 alert('sai');
@@ -427,10 +449,18 @@ function createCategory(url) {
         $.ajax({
             type: 'POST',
             url: url,
-            data: { id: id },
+            data: { newC: id },
             success: function (res) {
-                alert(res);
-                $('#form-modal .modal-body').html(res);
+                if (res.isValid === false) {
+                    $("#input-addCategories").notify(
+                        "EXISTED CATEGORY", { position: "left", className: "danger", showDuration: 400, showAnimation: 'slideDown' },
+                    );
+                }
+                else {
+                    $('#form-modal .modal-body').html(res.html);
+                    
+                }
+
             },
             error: function (err) {
                 alert('sai');
@@ -441,9 +471,41 @@ function createCategory(url) {
     }
 }
 
+function EditCategory(url,oldC,id) {
+    if ($("#input-" + id).val() !== null) {
+
+        if ($("#input-" + id).val() !== oldC) {
+         
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { newC: $("#input-" + id).val(), oldC: oldC },
+                success: function (res) {
+                    if (res.isValid === false) {
+                        $("#input-addCategories").notify(
+                            "Error", { position: "left", className: "danger", showDuration: 400, showAnimation: 'slideDown' },
+                        );
+                    }
+                    else {
+                        $('#form-modal .modal-body').html(res.html);
+                        $('#hihi').html(res.html1);
+                    }
+                },
+                error: function (err) {
+                    alert('error');
+                    alert(err);
+                    console.log(err)
+                }
+            })
+        }
+        
+        
+    }
+}
+
 /* BACKGROUND */
 
-function removeBg() {   
+function removeBg() {
     $("#body").addClass("body-bg");
     return false;
 }

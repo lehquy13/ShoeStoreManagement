@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
+using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ValueType = ShoeStoreManagement.Core.Enums.ValueType;
 
@@ -11,7 +12,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class VoucherController : Controller
-	{
+    {
         private readonly IVoucherCRUD _voucherCRUD;
         private static VoucherVM? _voucherVM = new VoucherVM();
 
@@ -20,46 +21,79 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _voucherCRUD = voucherCRUD;
 
             _voucherVM.vouchers = _voucherCRUD.GetAllAsync().Result;
-			foreach (var v in _voucherVM.vouchers)
-			{
-				if (v.ExpiredValue == "0")
-				{
-					v.State = VoucherStatus.Expired;
-				}
-			}
-			_voucherVM.conditionTypes = Enum.GetValues(typeof(ConditionType)).Cast<ConditionType>().ToList();
+            foreach (var v in _voucherVM.vouchers)
+            {
+                if (v.ExpiredValue == "0")
+                {
+                    v.State = VoucherStatus.Expired;
+                }
+            }
+            _voucherVM.conditionTypes = Enum.GetValues(typeof(ConditionType)).Cast<ConditionType>().ToList();
             _voucherVM.valueTypes = Enum.GetValues(typeof(ValueType)).Cast<ValueType>().ToList();
             _voucherVM.expireTypes = Enum.GetValues(typeof(ExpireType)).Cast<ExpireType>().ToList();
         }
         
-        public IActionResult Index()
+        public IActionResult Index(string filter)
 		{
             ViewBag.Voucher = true;
-            _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.ValueType).ThenBy(i => i.CreatedDate).ToList();
-            _voucherVM.filters = new List<string>();
-            _voucherVM.filters.Add("");
-            return View(_voucherVM);
-		}
 
-        [HttpPost]
-        public IActionResult Sort(VoucherVM voucherVM)
-        {
-            List<Voucher> voucherFilters = new List<Voucher>();
-            _voucherVM.filters = new List<string>();
-            _voucherVM.filters.Add(voucherVM.categoryRadio);
+            if (string.IsNullOrEmpty(filter))
+                filter = "All";
 
-            foreach (var i in _voucherVM.vouchers)
+            var vouchers = _voucherCRUD.GetAllAsync().Result;
+            var filterList = new List<Voucher>();
+
+            foreach (var item in vouchers)
             {
-                if (voucherVM.categoryRadio.Equals("All"))
-                    voucherFilters.Add(i);
-                else if (Enum.GetName(typeof(VoucherStatus), i.State).Equals(voucherVM.categoryRadio))
-                    voucherFilters.Add(i);
+                if (filter.Equals("All"))
+                {
+                    filterList.Add(item);
+                }
+                else if (filter.Equals(Enum.GetName(typeof(VoucherStatus), item.State)))
+                {
+                    filterList.Add(item);
+                }
             }
 
-            voucherFilters = voucherFilters.OrderBy(i => i.ValueType).ToList();
-            _voucherVM.page = _voucherVM.page - 1;
-            ViewData["nProducts"] = _voucherVM.page;
-            return PartialView("_ViewAll", voucherFilters);
+            _voucherVM.vouchers = filterList.OrderBy(i => i.ValueType).ToList();
+            return View(_voucherVM);
+        }
+
+        [HttpPost]
+        public IActionResult TableSort(string filter = "Code")
+        {
+            if (_voucherVM.desc)
+            {
+                switch (filter)
+                {
+                    case "Value":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => i.Value).ToList();
+                        break;
+                    case "Expire":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => int.Parse(i.ExpiredValue)).ToList();
+                        break;
+                }
+            }
+            else
+            {
+                switch (filter)
+                {
+                    case "Value":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.Value).ToList();
+                        break;
+                    case "Expire":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => int.Parse(i.ExpiredValue)).ToList();
+                        break;
+                }
+            }
+            
+
+            if (_voucherVM.desc)
+                _voucherVM.desc = false;
+            else
+                _voucherVM.desc = true;
+
+            return PartialView("_ViewAll", _voucherVM.vouchers);
         }
 
         [HttpGet]
@@ -103,14 +137,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _voucherCRUD.CreateAsync(obj);
 
                 _voucherVM.vouchers = _voucherCRUD.GetAllAsync().Result;
-				foreach (var v in _voucherVM.vouchers)
-				{
-					if (v.ExpiredValue == "0")
-					{
-						v.State = VoucherStatus.Expired;
-					}
-				}
-				return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _voucherVM.vouchers ) });
+                foreach (var v in _voucherVM.vouchers)
+                {
+                    if (v.ExpiredValue == "0")
+                    {
+                        v.State = VoucherStatus.Expired;
+                    }
+                }
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _voucherVM.vouchers) });
             }
 
             _voucherVM.voucher = obj;
@@ -149,11 +183,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 _voucherVM.vouchers = _voucherCRUD.GetAllAsync().Result;
 
-                foreach(var v in _voucherVM.vouchers)
+                foreach (var v in _voucherVM.vouchers)
                 {
-                    if(v.ExpiredValue == "0")
+                    if (v.ExpiredValue == "0")
                     {
-                        v.State= VoucherStatus.Expired;
+                        v.State = VoucherStatus.Expired;
                     }
                 }
 
@@ -177,14 +211,14 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _voucherCRUD.Remove(voucher);
             }
             _voucherVM.vouchers = _voucherCRUD.GetAllAsync().Result;
-			foreach (var v in _voucherVM.vouchers)
-			{
-				if (v.ExpiredValue == "0")
-				{
-					v.State = VoucherStatus.Expired;
-				}
-			}
-			return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _voucherVM.vouchers) });
+            foreach (var v in _voucherVM.vouchers)
+            {
+                if (v.ExpiredValue == "0")
+                {
+                    v.State = VoucherStatus.Expired;
+                }
+            }
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _voucherVM.vouchers) });
         }
     }
 }

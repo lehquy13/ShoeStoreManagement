@@ -30,7 +30,12 @@
 						 height="40" width="40"
 						 asp-append-version="true" />
 						}
-						@Model[i-1].FullName
+						@if(@Model[i-1].FullName != "")
+							@Model[i-1].FullName
+						else
+						{
+							@Model[i-1].Email
+						}
 					</td>
 					<td>@Model[i-1].Email</td>
 					<td>@Model[i-1].PhoneNumber</td>

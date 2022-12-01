@@ -10,8 +10,9 @@
     <div class="form-group">
         @foreach (var i in Model.categories)
         {
-            <div class="form-check mt-2">
-                <input class="form-check-label ml-5 d-flex align-items-center" value="@i.ProductCategoryName" readonly />
+            <div class="form-check mt-2 col">
+                <input class="form-check-label ml-5 d-flex col-9 align-items-center" id="input-@i.ProductCategoryId" value="@i.ProductCategoryName" />
+                <button type="button" class="btn btn-primary col-3" onclick="EditCategory('@(Url.Action("EditCategory", "Product"))','@i.ProductCategoryName','@i.ProductCategoryId')">@i.ProductCategoryName Edit</button>
             </div>
         }
     </div>
@@ -19,11 +20,8 @@
 </div>
 
 <input type="text" placeholder="New category ( u wont be able to adjust, so be careful)" name="addCategories" id="input-addCategories" class="form-control ms-2" />
-<button type="button" class="btn btn-primary" onclick="jQueryAjaxPost('@(Url.Action("AddCategory", "Product"))')">Add ne</button>
-<div class="modal-footer d-flex justify-content-between">
-    <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</div>
+<button type="button" class="btn btn-primary" onclick="createCategory('@(Url.Action("AddCategory", "Product"))')">Add ne</button>
+
 @Html.AntiForgeryToken()
 
 
