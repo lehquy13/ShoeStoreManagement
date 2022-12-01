@@ -6,6 +6,7 @@ public enum Status
     Delivering = 1,
     Delivered = 2,
     Canceled = 3,
+    OnCharging = 4
 }
 
 public enum VoucherStatus
