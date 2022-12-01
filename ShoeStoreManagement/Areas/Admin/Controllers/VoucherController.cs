@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
@@ -55,8 +56,18 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
             }
 
+            ViewData["nProducts"] = 0;
             _voucherVM.vouchers = filterList.OrderBy(i => i.ValueType).ToList();
             return View(_voucherVM);
+        }
+
+        [HttpPost]
+        public IActionResult Pagination(int page = 1)
+        {
+            _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.ValueType).ToList();
+
+            ViewData["nProducts"] = page - 1;
+            return PartialView("_ViewAll", _voucherVM.vouchers);
         }
 
         [HttpPost]

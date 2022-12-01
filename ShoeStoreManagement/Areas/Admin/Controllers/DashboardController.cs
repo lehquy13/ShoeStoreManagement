@@ -53,14 +53,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             foreach (ApplicationUser user in users)
             {
                 var i = _usermanager.GetRolesAsync(user).Result;
-                if(i != null && i.Count > 0)
+                if (i != null && i.Count > 0)
                 {
                     if (_usermanager.GetRolesAsync(user).Result.ToList()[0].Equals(roleList[0]))
                         customerNumber++;
                     else if (_usermanager.GetRolesAsync(user).Result.ToList()[0].Equals(roleList[1]))
                         staffNumber++;
                 }
-                
             }
 
             float totalSum = 0;

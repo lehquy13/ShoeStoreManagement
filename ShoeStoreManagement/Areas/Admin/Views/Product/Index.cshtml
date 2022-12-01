@@ -14,92 +14,101 @@
 }
 
 <style>
-    table,
-    thead {
-        border-bottom: dotted;
-        border-bottom: 1px solid rgba(20, 33, 61, 0.1);
-    }
+	table,
+	thead {
+		border-bottom: dotted;
+		border-bottom: 1px solid rgba(20, 33, 61, 0.1);
+	}
 
 </style>
 
-
 <div class="row">
-	<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);">
-		<div class="radioLayoutTabCustom row-cols-6 w-100">
-			<input class="rounded w-10" type="text" name="searchString" />
-			<input class="btn btn-secondary rounded w-10" type="submit" value="Search Me"  />
-		</div>
-		<input class="btn btn-secondary rounded w-10" type="button" value="Add Category" onclick="showContent2('@(Url.Action("AddCategory", "Product"))','Shoe Categories')"/>
-	</form>
-
-	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
-        <div class="form-group col">
-            <div class="row">
-                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
+	<form asp-action="Sort" method="post" class="col-lg-2 d-lg-block collapse borderCustom1 um" onsubmit="return jQueryAjaxSort(this);">
+		<div class="form-group col">
+			<div class="row">
+				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
 				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
 					@if (string.IsNullOrEmpty(Model.filters[0]))
 					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" class="form-check-input" name="categoryRadio" checked />All</label>
 					}
 					@if (!string.IsNullOrEmpty(Model.filters[0]))
 					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" class="form-check-input" name="categoryRadio" />All</label>
 					}
 					@foreach (ProductCategory i in Model.productCategories)
 					{
 						if (i.ProductCategoryName.Equals(Model.filters[0]))
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" class="form-check-input" name="categoryRadio" checked />@i.ProductCategoryName</label>
 						}
 						else
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" class="form-check-input" name="categoryRadio" />@i.ProductCategoryName</label>
 						}
 					}
 
-                </div>
+				</div>
 
-            </div>
+			</div>
 
-            <div class="row mt-3">
-                <ii class="row-1 h6">Price</ii>
+			<div class="row mt-3">
+				<ii class="row-1 h6">Price</ii>
 
 				<div class="radioLayoutTabCustom row-cols-6 w-100">
 					@foreach (string i in priceFilters)
 					{
 						if (i.Equals(Model.filters[1]))
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" class="form-check-input" checked />@i</label>
 						}
 						else if (string.IsNullOrEmpty(i))
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" class="form-check-input" checked />All</label>
 						}
 						else
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" class="form-check-input" />@i</label>
 						}
 					}
 				</div>
 			</div>
 
-            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="Sort"/>
-        </div> @*used to col-3 vs col-10*@
-    </form>
+			<input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="Sort" />
+		</div> @*used to col-3 vs col-10*@
+	</form>
 
-	<div class="container col-10">
+	<div class="col-lg-10 col-md-12 mt-3">
+		<div class="d-flex d-lg-block justify-content-between">
+			<button class="filter-icon border-0 d-lg-none fs-3" data-bs-toggle="collapse" data-bs-target=".um" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+				<span class="h5">Filter</span>
+			</button>
+			<div class="d-flex justify-content-end">
+				<div>
+					<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);" class="d-flex justify-content-end mb-2">
+						<input class="form-control w-10" type="text" name="searchString" />
+						<button class="btn btn-secondary icon-search" type="submit" />
+					</form>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-md-12" id="hihi">
-				<partial name="_ViewAll" model=@Model view-data="ViewData"/>
+				<partial name="_ViewAll" model=@Model view-data="ViewData" />
 			</div>
 		</div>
 	</div>
 </div>
 
-<a onclick="showContent2('@Url.Action("Create","Product",null,Context.Request.Scheme)','Add new Product')" class="border-1 table-icon btn btn-primary icon-plus rounded" style="width:fit-content">
-</a>
+<div class="position-fixed d-flex flex-column gap-2 align-items-end" style="width:fit-content; bottom:60px; right:0">
+	<a class="btn btn-primary rounded" onclick="showContent2('@(Url.Action("AddCategory", "Product"))','Shoe Categories')">Category</a>
+	<a onclick="showContent2('@Url.Action("Create","Product",null,Context.Request.Scheme)','Add new Product')" class="border-1 table-icon btn btn-primary icon-plus rounded" style="width:fit-content">
+	</a>
+</div>
+
 
 @{
-    <partial name="./_ValidationScriptsPartial"></partial>
+		<partial name="./_ValidationScriptsPartial"></partial>
 }

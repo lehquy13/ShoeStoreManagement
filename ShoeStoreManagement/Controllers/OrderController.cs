@@ -2,7 +2,9 @@
 using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
+using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
+using ShoeStoreManagement.Views.Shared.Components;
 using System.Security.Claims;
 using ValueType = ShoeStoreManagement.Core.Enums.ValueType;
 
@@ -37,7 +39,7 @@ namespace ShoeStoreManagement.Controllers
             _addressCRUD= addressCRUD;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string filter)
         {
             ViewBag.Order = true;
 
@@ -45,17 +47,51 @@ namespace ShoeStoreManagement.Controllers
 
             List<Order> orders = _orderCRUD.GetAllAsync(userId).Result;
 
-            foreach (var order in orders)
-            {
-                order.OrderDetails = _orderDetailCRUD.GetAllAsync(order.OrderId).Result;
+            if (string.IsNullOrEmpty(filter))
+                filter = "All";
 
-                foreach (var detail in order.OrderDetails)
+            var filterList = new List<Order>();
+
+            foreach (var item in orders)
+            {
+                if (filter.Equals("All"))
                 {
-                    detail.Product = _productCRUD.GetByIdAsync(detail.ProductId).Result;
+                    item.OrderDetails = _orderDetailCRUD.GetAllAsync(item.OrderId).Result;
+
+                    foreach (var detail in item.OrderDetails)
+                    {
+                        detail.Product = _productCRUD.GetByIdAsync(detail.ProductId).Result;
+                    }
+
+                    filterList.Add(item);
+                }
+                else if (filter.Equals(Enum.GetName(typeof(Status), item.Status)))
+                {
+                    item.OrderDetails = _orderDetailCRUD.GetAllAsync(item.OrderId).Result;
+
+                    foreach (var detail in item.OrderDetails)
+                    {
+                        detail.Product = _productCRUD.GetByIdAsync(detail.ProductId).Result;
+                    }
+
+                    filterList.Add(item);
                 }
             }
 
-            return View(orders);
+            filterList = filterList.OrderBy(o => o.OrderDate).ToList();
+            _orderVM.allOrders = filterList;
+            ViewData["orders"] = filterList;
+            ViewData["nProducts"] = 0;
+
+            return View(filterList);
+        }
+
+        [HttpPost]
+        public IActionResult Pagination(int page = 1)
+        {
+            ViewData["orders"] = _orderVM.allOrders;
+            ViewData["nProducts"] = page - 1;
+            return View();
         }
 
         // get id of cart

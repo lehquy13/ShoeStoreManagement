@@ -12,10 +12,13 @@
 <div>
     <hr />
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-12 col-lg-3 d-lg-block collapse cl">
             <partial name="_ManageNav" />
         </div>
-        <div class="col-md-9">
+        <button class="sort-down-icon border-0 d-lg-none fs-3" data-bs-toggle="collapse" data-bs-target=".cl" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+        </button>
+        <div class="col-12 col-lg-9">
             @RenderBody()
         </div>
     </div>

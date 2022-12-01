@@ -2,15 +2,18 @@
 
 
 using Microsoft.EntityFrameworkCore;
+using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Models;
+using ShoeStoreManagement.Views.Shared.Components;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Claims;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace ShoeStoreManagement.Controllers
 {
@@ -258,13 +261,17 @@ namespace ShoeStoreManagement.Controllers
             return View();
         }
 
-        public IActionResult WishList()
+        public IActionResult WishList(string filter)
         {
             ViewBag.WishList = true;
+
+            if (string.IsNullOrEmpty(filter))
+                filter = "All";
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             WishList? wishList = _wishListCRUD.GetAsync(userId).Result;
+            var filterList = new List<WishListDetail>();
 
             if (wishList != null)
             {
@@ -274,8 +281,25 @@ namespace ShoeStoreManagement.Controllers
                 {
                     item.Product = _productCRUD.GetByIdAsync(item.ProductId).Result;
                 }
+
+                foreach (var item in wishList.WishListDetails)
+                {
+                    if (filter.Equals("All"))
+                    {
+                        filterList.Add(item);
+                    }
+                    else if (filter.Equals(item.Product.ProductCategory.ProductCategoryName))
+                    {
+                        filterList.Add(item);
+                    }
+                }
+
+                filterList = filterList.OrderBy(i => i.Product.ProductName).ToList();
+                wishList.WishListDetails = filterList;
             }
 
+            ViewData["categories"] = _productCategoryCRUD.GetAllAsync().Result;
+            
             return View(wishList);
         }
 

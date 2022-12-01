@@ -8,8 +8,8 @@
 	var user = Model.currOrder.User ?? new ApplicationUser();
 }
 
-<div class="w-100 d-flex flex-column align-items-center">
-	<div class="w-75 bg-dark shadow" style="padding: 36px 24px 36px 24px;">
+<div class="w-100 d-flex flex-column align-items-center mb-5">
+	<div class="col-12 col-md-10 col-lg-9 bg-dark shadow" style="padding: 36px 24px 36px 24px;">
 		<div class="d-flex justify-content-between text-light">
 			<div class="">
 				<p class="h4">Status</p>
@@ -21,7 +21,7 @@
 		</div>
 
 		<div class="row mt-5">
-			<div class="col-7">
+			<div class="col-12 col-lg-7">
 				@if (Model.currOrder.OrderDetails.Count > 0)
 				{
 					@foreach (var item in Model.currOrder.OrderDetails)
@@ -30,7 +30,7 @@
 					}
 				}
 			</div>
-			<div class="col-5 text-light">
+			<div class="col-12 col-lg-5 mt-4 mt-lg-0 text-light">
 				<div class="d-grid gap-2">
 					<p class="h4">Customer</p>
 					<p class="h5">@user.FullName</p>
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 
-		<div class="text-light mt-5 row">
+		<div class="text-light mt-4 mt-lg-5 row">
 			<div class="d-grid gap-2 col-7">
 				<p class="h4">Payment</p>
 				<p class="h5">@Model.currOrder.PaymentMethod</p>
