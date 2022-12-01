@@ -36,10 +36,20 @@
 				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Name')">Name</th>
 				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Price')">Price</th>
 				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Color')">Color</th>
-				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Category')">Category</th>
+				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Category')">
+					<div class="d-none d-lg-block">
+						Category
+					</div>
+				</th>
 				<th class="button" onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Product"))', 'Amount')">Amount</th>
-				<th>Edit</th>
-				<th>Add to cart</th>
+				<th class="button">
+					Edit
+				</th>
+				<th class="button">
+					<div class="d-none d-lg-block">
+						Add to cart
+					</div>
+				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,20 +65,28 @@
 
 						<th scope="row">@a</th>
 						<td>
-							@if (String.IsNullOrEmpty(Model.products[i].ImageName))
-							{
-								Model.products[i].ImageName = "product-empty.png";
-							}
-							
-							<img src="~/image/@Model.products[i].ImageName"
-								 class="rounded-circle"
-								 height="40" width="40"
-								 asp-append-version="true" />
-							@Model.products[i].ProductName
+							<div class="d-flex align-items-center gap-2">
+								@if (String.IsNullOrEmpty(Model.products[i].ImageName))
+								{
+									Model.products[i].ImageName = "product-empty.png";
+								}
+
+								<img src="~/image/@Model.products[i].ImageName"
+							 class="rounded-circle"
+							 height="40" width="40"
+							 asp-append-version="true" />
+								<span class="limit-line">@Model.products[i].ProductName</span>
+							</div>
+
 						</td>
 						<td>$@Model.products[i].ProductUnitPrice</td>
 						<td>@Model.products[i].Color</td>
-						<td>@Model.products[i].ProductCategory.ProductCategoryName</td>
+						<td>
+							<div class="d-none d-lg-block">
+								@Model.products[i].ProductCategory.ProductCategoryName
+							</div>
+
+						</td>
 						<td>@Model.products[i].Amount</td>
 						<td>
 							<a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Edit Product @Model.products[i].ProductName','@Model.products[i].ProductId')" class="border-1 table-icon">
@@ -76,40 +94,39 @@
 							</a>
 						</td>
 						<td>
-							<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@Model.products[i].ProductId')" class="link-info table-icon">
+							<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@Model.products[i].ProductId')" class="link-info table-icon d-none d-lg-block">
 								<i class="fas fa-cart-plus"></i>
 							</a>
 						</td>
 					</tr>
-
 				}
 			}
 		</tbody>
 	</table>
 
-		<nav class="container">
-			<ul class="pagination" style="display:flex; flex-direction:row">
-				@if (nProducts != 0)
+	<nav class="container">
+		<ul class="pagination" style="display:flex; flex-direction:row">
+			@if (nProducts != 0)
+			{
+				if (nProducts > 1) nProducts -= 1;
+				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+			}
+			@for (int i = 1; i <= @countPage(); i++)
+			{
+				if (i == nProducts + 1)
 				{
-					if (nProducts > 1) nProducts -= 1;
-					<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+					<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
 				}
-				@for (int i = 1; i <= @countPage(); i++)
+				else
 				{
-					if (i == nProducts + 1)
-					{
-						<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-					}
-					else
-					{
 					<li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
-					}
 				}
-				@if (nProducts + 1 != @countPage() && @countPage() > 0)
-				{
-					nProducts += 2;
-					<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-				}
-			</ul>
-		</nav>	
+			}
+			@if (nProducts + 1 != @countPage() && @countPage() > 0)
+			{
+				nProducts += 2;
+				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+			}
+		</ul>
+	</nav>
 </div>
