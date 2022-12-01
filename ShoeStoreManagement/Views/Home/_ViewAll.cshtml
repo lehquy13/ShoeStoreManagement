@@ -5,69 +5,97 @@
 @model ProductVM
 
 @{
-	int nProducts = 0;
-	nProducts = Int32.Parse(ViewData["nProducts"].ToString());
+    int nProducts = 0;
+    nProducts = Model.page;
 
-	int countPage()
-	{
+    int countPage()
+    {
 
-		int numberPages = 0;
-		int numberProducts = 0;
+        int numberPages = 0;
+        int numberProducts = 0;
 
-		foreach (Product i in Model.products)
-		{
-			numberProducts++;
-		}
+        foreach (Product i in Model.products)
+        {
+            numberProducts++;
+        }
 
-		numberPages = numberProducts / 10;
+        numberPages = numberProducts / 10;
 
-		if (numberProducts % 10 != 0)
-			numberPages++;
+        if (numberProducts % 10 != 0)
+            numberPages++;
 
-		return numberPages;
-	}
+        return numberPages;
+    }
 }
 
 <div>
-	<div class="col row">
-		@foreach (var item in Model.products)
-		{
-			<div class="col-lg-4 col-sm-6 col-6">
-				<component type="typeof(ProductCard)"
-					   render-mode="ServerPrerendered"
-					   param-product=@item
-					   param-imageName=@item.ImageName
-					   param-isLiked=@item.IsLiked
-					   param-url1=@Url.Action("AddToWishList","Home",null,Context.Request.Scheme)
-					   param-url2=@Url.Action("RemoveFromWishList","Home",null,Context.Request.Scheme) />
-			</div>
-		}
-	</div>
+    <div class="col row">
+        @foreach (var item in Model.products)
+        {
+            <div class="col-lg-4 col-sm-6 col-6">
+                @*<component type="typeof(ProductCard)"
+            render-mode="ServerPrerendered"
+            param-product=@item
+            param-imageName=@item.ImageName
+            param-isLiked=@item.IsLiked
+            param-url1=@Url.Action("AddToWishList","Home",null,Context.Request.Scheme)
+            param-url2=@Url.Action("RemoveFromWishList","Home",null,Context.Request.Scheme) />*@
+                <div class="card border-0 mb-5" style="height:fit-content">
+
+                    @if (String.IsNullOrEmpty(@item.ImageName))
+                    {
+                        item.ImageName = "product-empty.png";
+                    }
+
+                    <img src="image/@item.ImageName"
+                     class="card-img-top img w-100 h-auto"
+                     asp-append-version="true" onclick="(location.href = '@(Url.Action("Index", "DetailProduct",new { id= item.ProductId }))')" />
+
+                    <div class="card-body">
+                        <p class="fw-bold h4 text-dark mb-1 limit-line">@item.ProductName</p>
+                        <div class="d-flex justify-content-between">
+                            <p class="big-caption mb-2">@item.Color</p>
+                            <p class="h4 mb-2 text-dark">@item.ProductUnitPrice</p>
+                        </div>
+                        <p class="big-caption text-primary mb-2">@item.Description</p>
+                    </div>
+                    @if (!@item.IsLiked)
+                    {
+                        <button class="btn btn-primary icon-heart" type="button" onclick="callWithId('@(Url.Action("AddToWishList", "Home"))','@item.ProductId')">Add to WishList</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-secondary icon-heart" type="button" onclick="callWithId1('@(Url.Action("RemoveFromWishList", "Home"))','@item.ProductId')">Remove from WishList</button>
+                    }
+                </div>
+            </div>
+        }
+    </div>
 
 
-	<nav class="container">
-		<ul class="pagination" style="display:flex; flex-direction:row">
-			@if (nProducts != 0)
-			{
-				if (nProducts > 1) nProducts -= 1;
-				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
-			}
-			@for (int i = 1; i <= @countPage(); i++)
-			{
-				if (i == nProducts + 1)
-				{
-					<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-				}
-				else
-				{
-					<li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
-				}
-			}
-			@if (nProducts + 1 != @countPage() && @countPage() > 0)
-			{
-				nProducts += 2;
-				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-			}
-		</ul>
-	</nav>
+    <nav class="container">
+        <ul class="pagination" style="display:flex; flex-direction:row">
+            @if (nProducts != 0)
+            {
+                if (nProducts > 1) nProducts -= 1;
+                <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+            }
+            @for (int i = 1; i <= @countPage(); i++)
+            {
+                if (i == nProducts + 1)
+                {
+                    <li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+                }
+                else
+                {
+                    <li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
+                }
+            }
+            @if (nProducts + 1 != @countPage() && @countPage() > 0)
+            {
+                nProducts += 2;
+                <li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+            }
+        </ul>
+    </nav>
 </div>
