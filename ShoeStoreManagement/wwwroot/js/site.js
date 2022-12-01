@@ -148,13 +148,40 @@ function call(url) {
 
 function callWithId(url, id) {
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: url,
         data: { id: id },
-        success: function () {
+        success: function (res) {
+            if (res.isValid) {
+                $('#hihi').html(res.html);
+                $.notify("Added to your wishlist", "success", { position: "right" });
+            }
+            else {
+                $.notify("Error", "warn", { position: "right" });
+            }
+
         }
     })
 }
+
+function callWithId1(url, id) {
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { id: id },
+        success: function (res) {
+            if (res.isValid) {
+                $('#hihi').html(res.html);
+                $.notify("Removed to your wishlist", "success", { position: "right" });
+            }
+            else {
+                $.notify("Error", "warn", { position: "right" });
+            }
+
+        }
+    })
+}
+
 
 function addToCart(url, amount, size) {
     $.ajax({
@@ -206,8 +233,6 @@ createSth = form => {
             contentType: false,
             processData: false,
             success: function (res) {
-
-
                 if (res.isValid) {
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
@@ -263,7 +288,7 @@ function jQueryAjaxDelete(url) {
             $("#form-modal").modal('hide');
             $("#hihi").html(res);
 
-            $.notify("dung !");
+            $.notify("Delete successfully!","success");
         },
         error: function (xhr, status, error) {
             alert("sai");
@@ -291,7 +316,7 @@ function jQueryAjaxPost(form) {
                 $('#form-modal .modal-title').html('');
                 $("#form-modal").modal('hide');
                 $('#hihi').html(res);
-
+                $.notify("Edit successfully!", "success");
             },
             error: function (err) {
 
@@ -362,28 +387,28 @@ function jQueryAjaxPagination(url, p) {
 }
 
 function jQueryAjaxTableSort(url, filter) {
-  try {
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: { filter: filter },
-      success: function (res) {
-        $('#hihi').html(res);
-      },
-      error: function (err) {
-        alert(err);
+    try {
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { filter: filter },
+            success: function (res) {
+                $('#hihi').html(res);
+            },
+            error: function (err) {
+                alert(err);
 
-        console.log(err)
-      }
-    })
-    //to prevent default form submit event
-    return false;
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+        return false;
 
-  } catch (ex) {
+    } catch (ex) {
 
-    alert(ex);
-    return false;
-  }
+        alert(ex);
+        return false;
+    }
 }
 
 function jQueryAjaxSearch(form) {
@@ -457,7 +482,7 @@ function createCategory(url) {
                 }
                 else {
                     $('#form-modal .modal-body').html(res.html);
-                    
+
                 }
 
             },
@@ -470,11 +495,11 @@ function createCategory(url) {
     }
 }
 
-function EditCategory(url,oldC,id) {
+function EditCategory(url, oldC, id) {
     if ($("#input-" + id).val() !== null) {
 
         if ($("#input-" + id).val() !== oldC) {
-         
+
             $.ajax({
                 type: 'POST',
                 url: url,
@@ -497,8 +522,8 @@ function EditCategory(url,oldC,id) {
                 }
             })
         }
-        
-        
+
+
     }
 }
 
@@ -507,4 +532,21 @@ function EditCategory(url,oldC,id) {
 function removeBg() {
     $("#body").addClass("body-bg");
     return false;
+}
+
+function navigate(url, id) {
+    alert(url);
+    $.ajax({
+        type: 'GET',
+        url: url,
+        data: { id: id },
+        success: function (res) {
+            res.html();
+        },
+        error: function (err) {
+            alert('error');
+            alert(err);
+            console.log(err)
+        }
+    })
 }

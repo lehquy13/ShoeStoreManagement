@@ -88,18 +88,8 @@
     font-family: 'FontAwesome';
     margin: 0 5px 0 5px;
 }
-.filter-list-icon:after {
-    content: "\e17c";
-    font-family: 'FontAwesome';
-    margin: 0 5px 0 5px;
-}
-.bar-filter-icon:after {
-    content: "\e0ad";
-    font-family: 'FontAwesome';
-    margin: 0 5px 0 5px;
-}
-.grid-icon:after {
-    content: "\e198";
+.filter-icon:after {
+    content: "\f0b0";
     font-family: 'FontAwesome';
     margin: 0 5px 0 5px;
 }
@@ -145,6 +135,12 @@
 }
 .bug-icon:after {
     content: "\f188";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+
+.icon-done {
+    content: "\f00c";
     font-family: 'FontAwesome';
     margin: 0 5px 0 5px;
 }

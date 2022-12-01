@@ -99,6 +99,7 @@
 	<div class="d-flex justify-content-end mt-3 pe-3">
 		
 		<button type="submit" class="btn btn-primary flex-grow-1" asp-action="CompletedCheck" asp-controller="Order" asp-route-id=@Model.OrderId >Completed</button>
+		<button type="submit" class="btn btn-primary flex-grow-1" asp-action="ConfirmCheck" asp-controller="Order" asp-route-id=@Model.OrderId >Confirm</button>
 	
 		<button type="submit" class="btn btn-secondary ms-1 icon-delete" asp-action="CanceledCheck" asp-controller="Order" asp-route-id=@Model.OrderId>
 			Cancel

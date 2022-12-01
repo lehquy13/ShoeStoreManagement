@@ -28,12 +28,12 @@
 		<div class="d-flex flex-column mb-5">
 			<span class="h6">Customer Information</span>
 			<div class="form-floating">
-				<input type="text" asp-for="currOrder.DeliveryAddress" class="form-control" id="address-input" placeholder="Van Ninh, Khanh Hoa">
+				<input type="text" asp-for="currOrder.DeliveryAddress" value=@Model.currOrder.User.SingleAddress class="form-control" id="address-input" placeholder="Van Ninh, Khanh Hoa">
 				<label for="floatingInput">Enter Address</label>
 				<span asp-validation-for="currOrder.DeliveryAddress" class="text-danger"></span>
 			</div>
 			<div class="form-floating">
-				<input type="text" asp-for="currOrder.PhoneNumber" class="form-control" id="address-input" placeholder="0927392788">
+				<input type="text" asp-for="currOrder.PhoneNumber" class="form-control" value=@Model.currOrder.User.PhoneNumber id="address-input" placeholder="0927392788">
 				<label for="floatingInput">Enter Phone Number</label>
 				<span asp-validation-for="currOrder.PhoneNumber" class="text-danger"></span>
 			</div>

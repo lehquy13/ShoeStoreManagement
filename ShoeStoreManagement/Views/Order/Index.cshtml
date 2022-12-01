@@ -46,12 +46,16 @@
 		</div>
 	</div>
 
-	<button class="icon-search border-0 d-lg-none" data-bs-toggle="collapse" data-bs-target=".ok" aria-controls="navbarSupportedContent"
-			aria-expanded="false" aria-label="Toggle navigation">
-	</button>
+	<div class="d-flex justify-content-end d-lg-none">
+		<button class="filter-icon border-0 w-auto mb-3" data-bs-toggle="collapse" data-bs-target=".ok" aria-controls="navbarSupportedContent"
+				aria-expanded="false" aria-label="Toggle navigation">
+			<span class="h5">Filter</span>
+		</button>
+	</div>
 
 	<div class="col-12 col-lg-9 row borderCustom">
-		@foreach(var item in Model) {
+		@foreach (var item in Model)
+		{
 			<component type="typeof(OrderCard)" accesskey="item" render-mode="ServerPrerendered" param-order=@item param-orderId=@item.OrderId />
 		}
 	</div>

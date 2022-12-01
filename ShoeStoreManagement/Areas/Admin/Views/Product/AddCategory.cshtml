@@ -4,30 +4,44 @@
 
 @model ProductVM;
 
-
-
 <div class="col">
-    <div class="form-group">
-        @foreach (var i in Model.categories)
-        {
-            <div class="form-check mt-2 col">
-                <input class="form-check-label ml-5 d-flex col-9 align-items-center" id="input-@i.ProductCategoryId" value="@i.ProductCategoryName" />
-                <button type="button" class="btn btn-primary col-3" onclick="EditCategory('@(Url.Action("EditCategory", "Product"))','@i.ProductCategoryName','@i.ProductCategoryId')">@i.ProductCategoryName Edit</button>
-            </div>
-        }
-    </div>
+	<p class="h6 mb-2">Edit old</p>
+	<div class="gap-3">
+		@foreach (var i in Model.categories)
+		{
+			<div class="d-flex mb-3">
+				<div class="form-floating m-0">
+					<input class="form-control" id="input-@i.ProductCategoryId" value="@i.ProductCategoryName" placeholder="-" />
+					<label class="form-label">Name</label>
+				</div>
+				<a class="btn btn-secondary h-auto border-app border table-icon" onclick="EditCategory('@(Url.Action("EditCategory", "Product"))','@i.ProductCategoryName','@i.ProductCategoryId')">
+					<i class="fa-solid fa-check ps-2 pe-2 link-info"></i>
+				</a>
+			</div>
+		}
+	</div>
 
 </div>
 
-<input type="text" placeholder="New category ( u wont be able to adjust, so be careful)" name="addCategories" id="input-addCategories" class="form-control ms-2" />
-<button type="button" class="btn btn-primary" onclick="createCategory('@(Url.Action("AddCategory", "Product"))')">Add ne</button>
+<div class="">
+	<p class="h6 mb-2">Add new</p>
+	<input type="text" placeholder="New category ( u wont be able to adjust, so be careful)" name="addCategories" id="input-addCategories" class="form-control-lg border-primary" />
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+	<button type="button" class="btn btn-primary" onclick="createCategory('@(Url.Action("AddCategory", "Product"))')">
+		Submit
+		<i class="fa-solid fa-check ms-2 fs-5"></i>
+	</button>
+</div>
+
 
 @Html.AntiForgeryToken()
 
 
 @section Scripts {
-    @{
-        <partial name="./_ValidationScriptsPartial"></partial>
-    }
+	@{
+		<partial name="./_ValidationScriptsPartial"></partial>
+	}
 	}
 

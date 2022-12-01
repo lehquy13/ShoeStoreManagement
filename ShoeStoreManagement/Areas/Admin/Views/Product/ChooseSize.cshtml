@@ -32,10 +32,7 @@
 }
 
 <!-- Modal -->
-<form method="post" action="Admin/Product/ToCart" class="modal-content w-auto px-3 py-3">
-	<div class="row">
-		<h5 class="modal-title" id="ModalLabel">Choose sizes</h5>
-	</div>
+<form method="post" action="Admin/Product/ToCart" class="modal-content w-auto border-0">
 	<div class="row p-0 mt-2" style="width: 500px">
 		<div class="row">
 			<div class="col-6">
@@ -96,8 +93,11 @@
 	</div>
 
 	<div class="d-flex justify-content-between align-items-end">
-		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-		<button type="submit" class="btn btn-primary">Submit</button>
+		@*<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>*@
+		<button type="submit" class="btn btn-primary">
+			Submit
+			<i class="fa-solid fa-check ms-2 fs-5"></i>
+		</button>
 	</div>
 	@Html.AntiForgeryToken()
 </form>
