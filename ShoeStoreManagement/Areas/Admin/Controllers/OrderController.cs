@@ -87,22 +87,41 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string filter)
         {
             ViewBag.Order = true;
 
+            if (string.IsNullOrEmpty(filter))
+                filter = "All";
+
             var orderList = await _orderCRUD.GetAllOrderAsync();
+            var filterList = new List<Order>();
             foreach (var item in orderList)
             {
-                item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
-                foreach (var itemDetail in item.OrderDetails)
+                if (filter.Equals("All"))
                 {
-                    item.OrderTotalPayment += itemDetail.Payment;
+                    item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+                    foreach (var itemDetail in item.OrderDetails)
+                    {
+                        item.OrderTotalPayment += itemDetail.Payment;
+                    }
+
+                    filterList.Add(item);
+                }    
+                else if (filter.Equals(Enum.GetName(typeof(Status), item.Status)))
+                {
+                    item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+                    foreach (var itemDetail in item.OrderDetails)
+                    {
+                        item.OrderTotalPayment += itemDetail.Payment;
+                    }
+
+                    filterList.Add(item);
                 }
             }
 
-            orderList = orderList.OrderBy(o => o.OrderDate).ToList();
-            ViewData["orders"] = orderList;
+            filterList = filterList.OrderBy(o => o.OrderDate).ToList();
+            ViewData["orders"] = filterList;
 
             return View();
         }
