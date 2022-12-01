@@ -73,7 +73,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 						i.Role = role[0];
 						if (!filter.Equals("All"))
 						{
-							if (role.Equals(filter))
+							if (role[0].Equals(filter))
 							{
 								users.Add(i);
 								_userVM.applicationuserRoles.Add(role[0]);
