@@ -31,11 +31,12 @@ namespace ShoeStoreManagement.CRUD.Implementations
             _applicationDBContext.SaveChanges();
         }
 
-        public void Update(Product updateProduct)
+        public async Task Update(Product updateProduct)
         {
             if (updateProduct != null)
             {
-                var obj = this.GetByIdAsync(updateProduct.ProductId).Result;
+                var obj = await this.GetByIdAsync(updateProduct.ProductId);
+
                 if (obj != null)
                 {
                     obj.ProductUnitPrice = updateProduct.ProductUnitPrice;
@@ -44,6 +45,7 @@ namespace ShoeStoreManagement.CRUD.Implementations
                     obj.Description= updateProduct.Description;
                     obj.ProductName = updateProduct.ProductName;
                     obj.Amount = updateProduct.Amount;
+                    obj.ImageName = updateProduct.ImageName;
                 }
 
             }

@@ -35,4 +35,7 @@ public class ApplicationUser : IdentityUser
 
     [NotMapped]
     public IFormFile Avatar { get; set; }
+
+    [RegularExpression(@"^([\+]?84[-]?|[0])?[1-9][0-9]{8}$",ErrorMessage = "Invalid Phone Numbber!")]
+    public override string PhoneNumber { get => base.PhoneNumber; set => base.PhoneNumber = value; }
 }

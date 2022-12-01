@@ -2,6 +2,7 @@
 @using ShoeStoreManagement.Core.ViewModel;
 @using Microsoft.AspNetCore.Identity;
 @using ShoeStoreManagement.Areas.Identity.Data
+
 @model UserVM
 
 <form method="post" asp-action="Edit" asp-controller="User" asp-area="Admin" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data" onsubmit="return editSth(this);">
@@ -43,6 +44,7 @@
 				<div class="form-floating">
 					<input type="tel" class="form-control" id="floatingInput" placeholder="094xxxxx73" asp-for="user.PhoneNumber" required>
 					<label for="floatingInput">Enter Phone</label>
+					<span asp-validation-for="user.PhoneNumber" class="text-danger"></span>
 				</div>
 				<div class="form-floating">
 					<input type="date" class="form-control" id="floatingInput" placeholder="02-02-2002" asp-for="user.Birthday" required>

@@ -44,11 +44,17 @@ namespace ShoeStoreManagement.Controllers
 
             product.Sizes = sizeDetails;
 
-            List<Image> img = _imageCRUD.GetAllByProductIdAsync(id).Result;
+            List<Image> images = _imageCRUD.GetAllByProductIdAsync(product.ProductId).Result;
 
-            if (img.Count > 0)
+            if (images != null && images.Count > 0)
             {
-                product.ImageName = img[0].ImageName;
+                product.ImageNames = new List<string>();
+
+                foreach (var item in images)
+                {
+                    if (item.ImageName != product.ImageName)
+                        product.ImageNames.Add(item.ImageName);
+                }
             }
 
             _productVM.productId = product.ProductId;

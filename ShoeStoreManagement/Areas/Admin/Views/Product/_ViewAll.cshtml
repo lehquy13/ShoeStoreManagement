@@ -55,13 +55,15 @@
 
 						<th scope="row">@a</th>
 						<td>
-							@if (Model.products[i].ImageName != null)
+							@if (String.IsNullOrEmpty(Model.products[i].ImageName))
 							{
-								<img src="~/image/@Model.products[i].ImageName"
-									 class="rounded-circle"
-									 height="40" width="40"
-									 asp-append-version="true" />
+								Model.products[i].ImageName = "product-empty.png";
 							}
+							
+							<img src="~/image/@Model.products[i].ImageName"
+								 class="rounded-circle"
+								 height="40" width="40"
+								 asp-append-version="true" />
 							@Model.products[i].ProductName
 						</td>
 						<td>$@Model.products[i].ProductUnitPrice</td>

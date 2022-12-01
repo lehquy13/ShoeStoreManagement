@@ -15,7 +15,7 @@
 	}
 }
 
-<form class="row" method="post" action="DetailProduct/CreateCartItem">
+<form class="row mt-3" method="post" action="DetailProduct/CreateCartItem">
 	<div class="col-4">
 
 		@if (String.IsNullOrEmpty(Model.product.ImageName)) {
@@ -24,12 +24,16 @@
 
 		<img src="~/image/@Model.product.ImageName" asp-append-version="true" class="w-100" />
 
-		<div class="">
+		<div class="mt-2">
 			@*slide*@
 			<div class="d-flex justify-content-between">
-				<img src="/image/shoe.jpg" class="col-4" />
-				<img src="/image/shoe.jpg" class="col-4" />
-				<img src="/image/shoe.jpg" class="col-4" />
+				@if (Model.product.ImageNames.Count > 0) {
+					foreach (var item in Model.product.ImageNames)
+					{
+						<img src="~/image/@item" class="col-4 h-auto"
+					 asp-append-version="true" />
+					}
+				}
 			</div>
 		</div>
 	</div>
