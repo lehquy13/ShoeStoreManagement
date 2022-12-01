@@ -1,19 +1,4 @@
-﻿
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
@@ -225,15 +210,15 @@ createSth = form => {
             contentType: false,
             processData: false,
             success: function (res) {
-                if (res.isValid) {
 
+
+                if (res.isValid) {
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
                     $('#form-modal').modal('hide');
                     $('#hihi').html(res.html);
                 }
                 else {
-                    alert("invalid");
                     alert(res.html);
                     $('#form-modal .modal-body').html(res.html);
                 }

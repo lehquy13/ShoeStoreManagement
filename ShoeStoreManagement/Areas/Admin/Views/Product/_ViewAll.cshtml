@@ -5,7 +5,8 @@
 
 @{
 	int nProducts = 0;
-	nProducts = Int32.Parse(ViewData["nProducts"].ToString());
+	nProducts = Model.page;
+	//nProducts = Int32.Parse(ViewData["nProducts"].ToString());
 
 	int countPage()
 	{

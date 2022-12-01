@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Hosting;
 using ShoeStoreManagement.Areas.Identity.Data;
+using ShoeStoreManagement.Core;
 using ShoeStoreManagement.Data;
 
 namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
@@ -69,6 +70,7 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
+            [MinimunYear(1960)]
             [DataType(DataType.DateTime)]
             [Display(Name = "Birthday")]
             public DateTime Birthday { get; set; }
@@ -147,7 +149,7 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
                 _context.ApplicationUsers.Update(user);
                 _context.SaveChanges();
 
-                StatusMessage = "Unexpected error when trying to set birthday.";
+                StatusMessage = "Update birthdaySuccessful";
                 return RedirectToPage();
             }
 
