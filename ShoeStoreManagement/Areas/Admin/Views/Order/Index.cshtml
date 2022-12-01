@@ -12,15 +12,13 @@
         <div class="row">
             <ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-            <form method="post">
-				<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
-					<button class="tabCustom" asp-action="Index" asp-route-filter="All">All</button>
-          <button class="tabCustom" asp-action="Index" asp-route-filter="Waiting">Waiting</button>
-          <button class="tabCustom" asp-action="Index" asp-route-filter="Delivering">Delivering</button>
-          <button class="tabCustom" asp-action="Index" asp-route-filter="Delivered">Delivered</button>
-          <button class="tabCustom" asp-action="Index" asp-route-filter="Canceled">Canceled</button>
-				</div>
-			</form>
+            <div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+                <a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="All" type="button">All</a>
+                <a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Waiting" type="button">Waiting</a>
+                <a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Delivering" type="button">Delivering</a>
+                <a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Delivered" type="button">Delivered</a>
+                <a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Canceled" type="button">Canceled</a>
+            </div>
         </div>
     </div> @*used to col-3 vs col-10*@
 
