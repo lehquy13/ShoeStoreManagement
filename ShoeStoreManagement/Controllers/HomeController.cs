@@ -10,6 +10,7 @@ using ShoeStoreManagement.CRUD.Interfaces;
 using ShoeStoreManagement.Data;
 using ShoeStoreManagement.Models;
 using ShoeStoreManagement.Views.Shared.Components;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Claims;
 using static NuGet.Packaging.PackagingConstants;
@@ -61,7 +62,7 @@ namespace ShoeStoreManagement.Controllers
 
                     List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
 
-                    if ( img.Count > 0 )
+                    if (img.Count > 0)
                     {
                         item.ImageName = img[0].ImageName;
                     }
@@ -69,7 +70,7 @@ namespace ShoeStoreManagement.Controllers
             }
 
             list = list.OrderBy(i => i.ProductName).ToList();
-            
+
             _productVM.products = list;
 
             _productVM.page = 0;
@@ -119,6 +120,30 @@ namespace ShoeStoreManagement.Controllers
             productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
             _productVM.products = productFilter;
 
+
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            WishList? wishList = _wishListCRUD.GetAsync(userId).Result;
+
+            if (wishList != null)
+            {
+                foreach (var item in _productVM.products)
+                {
+                    if (_wishListDetailCRUD.GetByProductIdAsync(wishList.WishListId, item.ProductId).Result != null)
+                    {
+                        item.IsLiked = true;
+                    }
+
+                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+
+                    if (img.Count > 0)
+                    {
+                        item.ImageName = img[0].ImageName;
+                    }
+                }
+            }
+            if (_productVM.products != null && _productVM.products.Count > 0)
+                _productVM.products = _productVM.products.OrderBy(i => i.ProductName).ToList();
             _productVM.page = productVM.page - 1;
 
             ViewData["nProducts"] = _productVM.page;
@@ -180,6 +205,30 @@ namespace ShoeStoreManagement.Controllers
                 _productVM.products = productFilter;
                 _productVM.page = 0;
             }
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            WishList? wishList = _wishListCRUD.GetAsync(userId).Result;
+
+            if (wishList != null)
+            {
+                foreach (var item in _productVM.products)
+                {
+                    if (_wishListDetailCRUD.GetByProductIdAsync(wishList.WishListId, item.ProductId).Result != null)
+                    {
+                        item.IsLiked = true;
+                    }
+
+                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+
+                    if (img.Count > 0)
+                    {
+                        item.ImageName = img[0].ImageName;
+                    }
+                }
+            }
+            if (_productVM.products != null && _productVM.products.Count > 0)
+                _productVM.products = _productVM.products.OrderBy(i => i.ProductName).ToList();
+
             _productVM.searchString = productVM.searchString;
             ViewData["nProducts"] = _productVM.page;
             return PartialView("_ViewAll", _productVM);
@@ -254,19 +303,19 @@ namespace ShoeStoreManagement.Controllers
             return View(wishList);
         }
 
-        [HttpGet]
-        public void AddToWishList(string id)
+        [HttpPost]
+        public IActionResult AddToWishList(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                return;
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
             }
 
             Product? product = _productCRUD.GetByIdAsync(id).Result;
 
             if (product == null)
             {
-                return;
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -284,21 +333,39 @@ namespace ShoeStoreManagement.Controllers
 
                 _wishListCRUD.CreateAsync(wishList);
             }
-
             wishListDetail.WishListId = wishList.WishListId;
             wishListDetail.ProductId = product.ProductId;
 
             _wishListDetailCRUD.CreateAsync(wishListDetail);
 
-            return;
+            if (wishList != null)
+            {
+                foreach (var item in _productVM.products)
+                {
+                    if (_wishListDetailCRUD.GetByProductIdAsync(wishList.WishListId, item.ProductId).Result != null)
+                    {
+                        item.IsLiked = true;
+                    }
+
+                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+
+                    if (img.Count > 0)
+                    {
+                        item.ImageName = img[0].ImageName;
+                    }
+                }
+            }
+
+
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
         }
 
-        [HttpGet]
-        public void RemoveFromWishList(string id)
+        [HttpPost]
+        public IActionResult RemoveFromWishList(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                return;
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -307,19 +374,43 @@ namespace ShoeStoreManagement.Controllers
 
             if (wishList == null)
             {
-                return;
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
             }
 
             WishListDetail? wishListDetail = _wishListDetailCRUD.GetByProductIdAsync(wishList.WishListId, id).Result;
 
             if (wishListDetail == null)
             {
-                return;
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
+
             }
 
             _wishListDetailCRUD.Remove(wishListDetail);
 
-            return;
+            if (wishList != null)
+            {
+                foreach (var item in _productVM.products)
+                {
+                    if (item.ProductId == id)
+                    {
+                        if (_wishListDetailCRUD.GetByProductIdAsync(wishList.WishListId, item.ProductId).Result == null)
+                        {
+                            item.IsLiked = false;
+                            break;
+                        }
+                    }
+
+
+                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+
+                    if (img.Count > 0)
+                    {
+                        item.ImageName = img[0].ImageName;
+                    }
+                }
+            }
+
+            return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
