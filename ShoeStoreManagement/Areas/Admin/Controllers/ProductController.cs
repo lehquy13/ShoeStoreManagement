@@ -336,18 +336,20 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 		[HttpGet]
-		public IActionResult AddCategory()
+		public async Task<IActionResult> AddCategory()
 		{
-			_productVM.product = new Product();
+            _productVM.categories = await _productCategoryCRUD.GetAllAsync();
+
 
 			return PartialView(_productVM);
 		}
 
         [HttpPost]
-        public IActionResult ChangingCategories(ProductVM productVM)
+        public async Task<IActionResult> AddCategory(string newC)
         {
-            _productVM.product = new Product();
-
+            ProductCategory p = new ProductCategory() { ProductCategoryName = newC };
+            await _productCategoryCRUD.CreateAsync(p);
+            _productVM.categories.Add(p);
             return PartialView(_productVM);
         }
 

@@ -4,29 +4,28 @@
 
 @model ProductVM;
 
-<form method="post" action="Admin/Product/ChangingCategories" class="modal-content border-0" style="width: 760px" enctype="multipart/form-data" onsubmit="return createSth(this);">
 
-    <div class="col-4">
-        <div class="form-group">
-            @foreach (var i in Model.categories)
-            {
-                <div class="form-check mt-2">
-                    <label class="form-check-label ml-5 d-flex align-items-center" for="@i">
-                        @i
-                        <input type="text" value="@i" name="categories" id="input_@i" class="form-control ms-2" />
-                    </label>
-                </div>
-            }
-        </div>
 
+<div class="col">
+    <div class="form-group">
+        @foreach (var i in Model.categories)
+        {
+            <div class="form-check mt-2">
+                <input class="form-check-label ml-5 d-flex align-items-center" value="@i.ProductCategoryName" readonly />
+            </div>
+        }
     </div>
 
-    <div class="modal-footer d-flex justify-content-between">
-        <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-    @Html.AntiForgeryToken()
-</form>
+</div>
+
+<input type="text" placeholder="New category ( u wont be able to adjust, so be careful)" name="addCategories" id="input-addCategories" class="form-control ms-2" />
+<button type="button" class="btn btn-primary" onclick="jQueryAjaxPost('@(Url.Action("AddCategory", "Product"))')">Add ne</button>
+<div class="modal-footer d-flex justify-content-between">
+    <p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+@Html.AntiForgeryToken()
+
 
 @section Scripts {
     @{

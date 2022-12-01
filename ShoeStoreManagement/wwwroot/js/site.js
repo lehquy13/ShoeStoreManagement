@@ -421,11 +421,29 @@ function checkVoucher(url) {
     }
 }
 
+function createCategory(url) {
+    if ($("#input-addCategories").val() != null) {
+        var id = $("#input-addCategories").val();
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { id: id },
+            success: function (res) {
+                alert(res);
+                $('#form-modal .modal-body').html(res);
+            },
+            error: function (err) {
+                alert('sai');
+                alert(err);
+                console.log(err)
+            }
+        })
+    }
+}
+
 /* BACKGROUND */
 
-function removeBg() {
-    alert("me me");
-   
+function removeBg() {   
     $("#body").addClass("body-bg");
     return false;
 }
