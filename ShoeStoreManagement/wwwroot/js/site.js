@@ -365,6 +365,31 @@ function jQueryAjaxPagination(url, p) {
   }
 }
 
+function jQueryAjaxTableSort(url, filter) {
+  try {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: { filter: filter },
+      success: function (res) {
+        $('#hihi').html(res);
+      },
+      error: function (err) {
+        alert(err);
+
+        console.log(err)
+      }
+    })
+    //to prevent default form submit event
+    return false;
+
+  } catch (ex) {
+
+    alert(ex);
+    return false;
+  }
+}
+
 function jQueryAjaxSearch(form) {
   try {
     $.ajax({

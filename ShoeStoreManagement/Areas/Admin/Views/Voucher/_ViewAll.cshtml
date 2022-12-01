@@ -9,9 +9,9 @@
 				<th>#</th>
 				<th>Code</th>
 				<th>Condition</th>
-				<th>Value</th>
+				<th onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Voucher"))', 'Value')">Value</th>
 				<th>Start Date</th>
-				<th>Expire</th>
+				<th onclick="jQueryAjaxTableSort('@(Url.Action("TableSort", "Voucher"))', 'Expire')">Expire</th>
 				<th>State</th>
 				<th></th>
 			</tr>
