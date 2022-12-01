@@ -93,6 +93,7 @@
 .tabCustom {
     float: left;
     background-color: white;
+    text-decoration: none;
     width: 100%;
     height: 300px;
     color: rgba(0,0,0,0.5);
@@ -100,7 +101,7 @@
 }
 
     /* Style the buttons that are used to open the tab content */
-    .tabCustom button {
+    .tabCustom button, .tabCustom a {
         /* IsSelected=Yes */
         /* Auto layout */
         background-color: white;
@@ -116,7 +117,7 @@
         font-size: 14px;
     }
 
-        .tabCustom button:focus, .tabCustom button:active, .tabCustom button:visited {
+        .tabCustom button:focus, .tabCustom a:focus .tabCustom button:active, .tabCustom a:active, .tabCustom button:visited, .tabCustom a:visited {
             text-decoration: underline;
             color: black;
             font-weight: 900;
@@ -126,7 +127,7 @@
             padding-bottom: 16px;
         }
 
-        .tabCustom button:hover {
+        .tabCustom button:hover, .tabCustom a:hover {
             color: black;
             font-weight: 900;
             font-size: 16px;

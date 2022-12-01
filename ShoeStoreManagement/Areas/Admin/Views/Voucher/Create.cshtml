@@ -60,10 +60,13 @@
 			<span asp-validation-for="voucher.Code" class="text-danger"></span>
 		</div>
 	</div>
-	<div class="modal-footer d-flex justify-content-between">
-		<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>
+	<div class="modal-footer mt-4 pe-0 d-flex justify-content-end">
+		@*<p class="icon-back" data-dismiss="modal" aria-label="Back"></p>*@
 		<div>
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<button type="submit" class="btn btn-primary">
+				Submit
+				<i class="fa-solid fa-check ms-2 fs-5"></i>
+				</button>
 		</div>
 	</div>
 	@Html.AntiForgeryToken()

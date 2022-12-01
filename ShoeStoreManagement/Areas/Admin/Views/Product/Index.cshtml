@@ -79,23 +79,21 @@
 		</div> @*used to col-3 vs col-10*@
 	</form>
 
-	<div class="col-lg-10 col-md-12 mt-3">
+	<div class="col-lg-10 col-12 mt-3">
 		<div class="d-flex d-lg-block justify-content-between">
 			<button class="filter-icon border-0 d-lg-none fs-3" data-bs-toggle="collapse" data-bs-target=".um" aria-controls="navbarSupportedContent"
 					aria-expanded="false" aria-label="Toggle navigation">
 				<span class="h5">Filter</span>
 			</button>
 			<div class="d-flex justify-content-end">
-				<div>
-					<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);" class="d-flex justify-content-end mb-2">
-						<input class="form-control w-10" type="text" name="searchString" />
-						<button class="btn btn-secondary icon-search" type="submit" />
-					</form>
-				</div>
+				<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);" class="d-flex justify-content-end mb-2 w-100">
+					<input class="form-control" type="text" name="searchString" />
+					<button class="btn btn-secondary icon-search" type="submit" />
+				</form>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12" id="hihi">
+			<div class="" id="hihi">
 				<partial name="_ViewAll" model=@Model view-data="ViewData" />
 			</div>
 		</div>
@@ -110,5 +108,5 @@
 
 
 @{
-		<partial name="./_ValidationScriptsPartial"></partial>
+	<partial name="./_ValidationScriptsPartial"></partial>
 }

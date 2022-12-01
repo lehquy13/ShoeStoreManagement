@@ -18,10 +18,12 @@
 				<div class="d-flex flex-row">
 					<div class="container">
 						<!--Search-->
-						
 						<!--Huyen oi cuu tui, them cai icon Search vao button-->
-						<input id="searchFilter" type="text" name="filter" />
-						<button onclick="return showContentItem('@Url.Action("PickItemDialog","Order",null,Context.Request.Scheme)','Choose product');" >Search</button> 
+						<div class="d-flex justify-content-end">
+							<input id="searchFilter" type="text" name="filter" class="form-control" />
+							<button onclick="return showContentItem('@Url.Action("PickItemDialog","Order",null,Context.Request.Scheme)','Choose product');" class="icon-search border-primary">Search</button>
+						</div>
+						
 						<div class="row">
 							<input name="customers" hidden value="@Model.customers" />
 							<div class="col-md-12">
@@ -48,12 +50,14 @@
 														<th>
 															<div class="d-flex flex-column">
 																@i.ProductId.Substring(i.ProductId.Length-6,5)
-																@if (i.ImageName != null)
+																@if (String.IsNullOrEmpty(i.ImageName))
 																{
-																	<img src="~/image/@i.ImageName"
+																	i.ImageName = "product-empty.png";
+																}
+																<img src="~/image/@i.ImageName"
 															 height="80" width="80"
 															 asp-append-version="true" />
-																}
+
 															</div>
 
 														</th>

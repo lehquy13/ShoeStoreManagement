@@ -29,7 +29,8 @@
 }
 
 <div class="row borderCustom">
-	<div class="col-2 borderCustom1">
+
+	<div class="col-lg-2 d-lg-block collapse borderCustom1 um">
 		<div class="row">
 			<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
@@ -40,9 +41,15 @@
 				<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="ComingSoon" type="button">ComingSoon</a>
 			</div>
 		</div>
-	</div> @*used to col-3 vs col-10*@
+	</div>
 
-	<div class="container col-10">
+	<div class="col-lg-10 col-12 mt-3 mt-lg-0">
+		<div class="d-flex justify-content-end d-lg-none">
+			<button class="filter-icon border-0 fs-3" data-bs-toggle="collapse" data-bs-target=".um" aria-controls="navbarSupportedContent"
+					aria-expanded="false" aria-label="Toggle navigation">
+				<span class="h5">Filter</span>
+			</button>
+		</div>
 		<div class="row">
 			<div class="col-md-12" id="hihi">
 				<partial name="_ViewAll" model=@Model.vouchers/>
@@ -51,5 +58,5 @@
 	</div>
 </div>
 
-<a onclick="showContent2('@Url.Action("Create","Voucher",null,Context.Request.Scheme)','Add new Voucher')" class="border-1 table-icon btn btn-primary icon-plus">
+<a onclick="showContent2('@Url.Action("Create","Voucher",null,Context.Request.Scheme)','Add new Voucher')" class="btn btn-primary icon-plus rounded position-fixed" style="right:0; bottom:60px;">
 </a>

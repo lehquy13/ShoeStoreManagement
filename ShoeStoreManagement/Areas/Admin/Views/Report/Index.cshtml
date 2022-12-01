@@ -10,8 +10,8 @@
 }
 <form method="post" action="Admin/Report/Index">
 	<div class="row">
-		<div class="col-7 d-flex justify-content-between">
-			<div>
+		<div class="col-lg-7 row col-12 d-flex justify-content-between align-items-end">
+			<div class="col">
 				<label for="fromDate">Month</label>
 					@if (disableSelections[0] == true){
 						<select class="form-select" name="selectedMonth" disabled> 
@@ -33,7 +33,7 @@
 					}
 			</div>
 			
-			<div>
+			<div class="col">
 				<label for="fromDate">Year</label>
 					@if (disableSelections[1] == true){
 						<select class="form-select" name="selectedYear" disabled> 
@@ -54,7 +54,8 @@
 						</select>
 					}
 			</div>
-			<div class="">
+
+			<div class="col">
 				<label>By Time</label>
 				<select class="form-select" name="selectedTime"> 
 					@foreach(string i in times){
@@ -67,17 +68,9 @@
 						}
 					}
 				</select>
-				@*<div class="dropdown">
-					<button id="byTime" class="btn btn-for-dropdown dropdown-toggle" style="width:100px" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-					</button>
-					<div class="dropdown-menu" aria-labelledby="byTime">
-						<input class="dropdown-item" value="Daily" name="selectedTime" onclick="SetByTime('Daily')" />
-						<input class="dropdown-item" value="Monthly" name="selectedTime" onclick="SetByTime('Monthly')" />
-						<input class="dropdown-item" value="Yearly" name="selectedTime" onclick="SetByTime('Yearly')" />
-					</div>
-				</div>*@
 			</div>
-			<div>
+
+			<div class="col">
 				<label>By Type</label>
 				<select class="form-select" name="selectedType">
 					@foreach (string i in types)
@@ -94,22 +87,23 @@
 				</select>
 			</div>
 
-			<div>
-				<input type="submit"/>
+			<div class="col">
+				<button class="btn btn-primary" type="submit">Submit</button>
 			</div>
 		</div>
+
 		<div class="col-5">
-			<button class="btn btn-primary float-end">Print Report</button>
+			<button type="button" class="btn btn-sec float-end">Print Report</button>
 		</div>
 	</div>
 </form>
-<div class="row">
-	<div class="col-7">
+<div class="row mt-5">
+	<div class="col-lg-7 col-12">
 		<canvas id="barChart" class="h-auto"></canvas>
 		<div></div>
 	</div>
-	<div class="col-5">
-		<div class="row border-dash gap-2 p-3">
+	<div class="col-lg-5 col-12">
+		@*<div class="row border-dash gap-2 p-3">
 			<div class="col row gap-2">
 				<div class="bg-white shadow border border-dark static-panel"></div>
 				<div class="bg-white border border-dark shadow static-panel"></div>
@@ -118,7 +112,7 @@
 				<div class="bg-white shadow border border-dark static-panel"></div>
 				<div class="bg-white border border-dark shadow static-panel"></div>
 			</div>
-		</div>
+		</div>*@
 		<div>
 			<component type="typeof(TopProductList)" render-mode="Static" />
 		</div>

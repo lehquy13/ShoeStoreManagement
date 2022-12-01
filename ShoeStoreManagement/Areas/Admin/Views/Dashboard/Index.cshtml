@@ -5,44 +5,40 @@
 }
 
 @*Data Section: numbers of shoes, customer, staff, total profit*@
-<div>
-	<div> 
-		@*Icon or something like that*@
-		<label>Number of Shoes</label>
-		<label>@dataList[0]</label>
+<div class="row">
+	<div class="col-lg-3 col-6 bg-primary d-flex flex-column justify-content-between gap-3 align-items-center pt-3 pb-3 rounded"> 
+		<label class="text-dark h4">Number of Shoes</label>
+		<label class="text-danger fw-bold h3">@dataList[0]</label>
 	</div>
 
-	<div> 
-		@*Icon or something like that*@
-		<label>Number of Customer</label>
-		<label>@dataList[1]</label>
+	<div class="col-lg-3 col-6 bg-light border d-flex flex-column justify-content-between gap-3 align-items-center pt-3 pb-3 rounded">
+		<label class="text-dark h4">Number of Customer</label>
+		<label class="text-info fw-bold h3">@dataList[1]</label>
 	</div>
 
-	<div> 
-		@*Icon or something like that*@
-		<label>Number of Staff</label>
-		<label>@dataList[2]</label>
+	<div class="col-lg-3 col-6 bg-light border d-flex flex-column justify-content-between gap-3 align-items-center pt-3 pb-3 rounded">
+		<label class="text-dark h4">Number of Staff</label>
+		<label class="text-danger fw-bold h3">@dataList[2]</label>
 	</div>
 
-	<div>
-		@*Icon or something like that*@
-		<label>Total Profit</label>
-		<label>@dataList[3]</label>
+	<div class="col-lg-3 col-6 bg-dark d-flex flex-column justify-content-between gap-3 align-items-center pt-3 pb-3 rounded">
+		<label class="text-light h4">Total Profit</label>
+		<label class="text-primary fw-bold h3">@dataList[3]</label>
 	</div>
 </div>
 
 @*Chart Section: one is for the number of order and another is for profit*@ 
-<div>
-	<div>
-		<label>Numbers of Order in this month</label>
-		<div class="col-7">
+<div class="row mt-5">
+	<div class="col-lg-6 col-12">
+		<label class="h6">Numbers of Order in this month</label>
+		<div class="">
 			<canvas id="barChart" class="h-auto"></canvas>
 		</div>
 	</div>
 
-	<div>
-		<label>Profit Each Day in this month</label>
-		<div class="col-7">
+	<div class="col-lg-6 col-12">
+		<label class="h6">Profit Each Day in this month</label>
+		<div >
 			<canvas id="barChart2" class="h-auto"></canvas>
 		</div>
 	</div>

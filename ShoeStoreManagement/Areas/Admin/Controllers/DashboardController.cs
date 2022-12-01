@@ -49,8 +49,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             int staffNumber = 0;
 
             // Handles the numbers of cus and staff
-            List<ApplicationUser> users = _applicationUserCRUD.GetAllAsync().Result.ToList();
-            foreach (ApplicationUser user in users)
+            List<ApplicationUser> users = _applicationUserCRUD.GetAllAsync().Result;
+            foreach (ApplicationUser user in users.ToList())
             {
                 var i = _usermanager.GetRolesAsync(user).Result;
                 if (i != null && i.Count > 0)
