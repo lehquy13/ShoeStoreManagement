@@ -7,7 +7,7 @@
 @model List<Order>
 
 <div class="row ">
-	<div class="col-3 borderCustom1">
+	<div class="col-12 col-lg-3 borderCustom1 ok collapse d-lg-block">
 		<div class="col">
 			<div class="row">
 				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
@@ -18,21 +18,19 @@
 					<button class="tabCustom" onclick="openCity(event, 'London')">Delivering</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Completed</button>
 					<button class="tabCustom" onclick="openCity(event, 'London')">Canceled</button>
-
 				</div>
-
 			</div>
 		</div>
 	</div>
 
-	<div class="col-9 row borderCustom">
+	<button class="icon-search border-0 d-lg-none" data-bs-toggle="collapse" data-bs-target=".ok" aria-controls="navbarSupportedContent"
+			aria-expanded="false" aria-label="Toggle navigation">
+	</button>
+
+	<div class="col-12 col-lg-9 row borderCustom">
 		@foreach(var item in Model) {
 			<component type="typeof(OrderCard)" accesskey="item" render-mode="ServerPrerendered" param-order=@item param-orderId=@item.OrderId />
 		}
 	</div>
 </div>
-
-
-
-<component type="typeof(Pagination)" render-mode="Static"/>
 
