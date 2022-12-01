@@ -164,11 +164,10 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             }
 
             string fileName = "";
-            string wwwRootPath = "";
+            string wwwRootPath = _hostEnvironment.WebRootPath;
 
             if (Input.Avatar.Length > 0)
             {
-                wwwRootPath = _hostEnvironment.WebRootPath;
                 fileName = Path.GetFileNameWithoutExtension(Input.Avatar.FileName);
                 string extension = Path.GetExtension(Input.Avatar.FileName);
                 fileName = fileName + extension;
