@@ -257,6 +257,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
 
+            obj.AvatarName = _userVM.user.AvatarName;
 
             _userVM.user = obj;
 

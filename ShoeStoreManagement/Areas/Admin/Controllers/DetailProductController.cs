@@ -18,14 +18,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private readonly ICartCRUD _cartCRUD;
         private readonly ICartDetailCRUD _cartDetailCRUD;
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
+        private readonly IImageCRUD _imageCRUD;
         private static ProductVM _productVM = new ProductVM();
 
-        public DetailProductController(IProductCRUD productCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD)
+        public DetailProductController(IProductCRUD productCRUD, ISizeDetailCRUD sizeDetailCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IImageCRUD imageCRUD)
         {
             _productCRUD = productCRUD;
             _sizeDetailCRUD = sizeDetailCRUD;
             _cartCRUD = cartCRUD;
             _cartDetailCRUD = cartDetailCRUD;
+            _imageCRUD = imageCRUD;
         }
 
         [HttpGet]
@@ -49,7 +51,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
             _productVM.productId = product.ProductId;
             _productVM.product = product;
-
+            
             return View(_productVM);
         }
 

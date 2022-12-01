@@ -24,7 +24,7 @@ namespace ShoeStoreManagement.Core.ViewModel
 
         public int AmountSelected { get; set; } = 1;
 
-        public IFormFile? Image { get; set; } = null;
+        public IFormFile[] Images { get; set; } = null;
 
         [NotMapped]
         public List<string> TestSize { get; set; } = new List<string>();

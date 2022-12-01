@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using NuGet.Packaging;
 using ShoeStoreManagement.Areas.Identity.Data;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
@@ -57,7 +58,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _productVM.products[i].SetCategory(_productVM.productCategories);
                 List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllByIdAsync(_productVM.products[i].ProductId).Result;
                 _productVM.products[i].Sizes = sizeList;
-               // int totalNumberShoeOfThatSize = 0;
+                // int totalNumberShoeOfThatSize = 0;
                 //for (int j = 0; j < sizeList.Count; j++)
                 //{
                 //    sizeList[j].IsChecked = true;
@@ -172,7 +173,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(string categoryRadio, string priceRadio , int page = 1)
+        public IActionResult Index(string categoryRadio, string priceRadio, int page = 1)
         {
             _productVM.products = _productVM.products.OrderBy(o => o.ProductName).ToList();
             List<Product> productFilter = new List<Product>();
@@ -199,12 +200,12 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     && maxCheck(maxvalue, i.ProductUnitPrice))
                     productFilter.Add(i);
             }
-            
-            _productVM.products= productFilter;
+
+            _productVM.products = productFilter;
             ViewBag.Product = true;
-            _productVM.page = page-1;
+            _productVM.page = page - 1;
             ViewData["nProducts"] = _productVM.page;
-			return View(_productVM);
+            return View(_productVM);
         }
 
         [HttpPost]
@@ -236,9 +237,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
-            _productVM.page = productVM.page -1;
-			ViewData["nProducts"] = _productVM.page;
-			return PartialView("_ViewAll", productFilter);
+            _productVM.page = productVM.page - 1;
+            ViewData["nProducts"] = _productVM.page;
+            return PartialView("_ViewAll", productFilter);
         }
 
 
@@ -317,11 +318,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
 
                     string fileName = "";
+                    string wwwRootPath = _hostEnvironment.WebRootPath;
 
                     // Add image
                     if (product.Image.Length > 0)
                     {
-                        string wwwRootPath = _hostEnvironment.WebRootPath;
                         fileName = Path.GetFileNameWithoutExtension(product.Image.FileName);
                         string extension = Path.GetExtension(product.Image.FileName);
                         fileName = fileName + extension;
@@ -343,14 +344,40 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         _imageCRUD.CreateAsync(image);
                     }
 
+                    if (productVM.Images.Count() > 0)
+                    {
+                        foreach (var item in productVM.Images)
+                        {
+                            string fileName1 = Path.GetFileNameWithoutExtension(item.FileName);
+                            string extension = Path.GetExtension(item.FileName);
+                            fileName1 = fileName1 + extension;
+
+                            Image image = new Image()
+                            {
+                                ImageName = fileName1,
+                                ImageFile = item,
+                                Title = "hi",
+                                ProductId = product.ProductId,
+                            };
+
+                            string path = Path.Combine(wwwRootPath + "/Image/", fileName1);
+                            using (var fileStream = new FileStream(path, FileMode.Create))
+                            {
+                                image.ImageFile.CopyToAsync(fileStream);
+                            }
+
+                            _imageCRUD.CreateAsync(image);
+                        }
+                    }
+
                     product.ImageName = fileName;
 
                     _productCRUD.CreateAsync(product);
 
                     _productVM.products = _productCRUD.GetAllAsync().Result.OrderBy(o => o.ProductName).ToList();
 
-					ViewData["nProducts"] = _productVM.page;
-					TempData["success"] = "Category is Created Successfully!!";
+                    ViewData["nProducts"] = _productVM.page;
+                    TempData["success"] = "Category is Created Successfully!!";
 
                     return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM.products) });
                 }
@@ -363,9 +390,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         }
 
 
-
         [HttpPost]
-        public async Task<IActionResult> Edit([Bind("ProductId,product,TestSizeAmount,TestSize,Image")] ProductVM productVM)
+        public async Task<IActionResult> Edit(ProductVM productVM)
         {
             var product = productVM.product;
 
@@ -376,7 +402,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             else
             {
                 product.ProductCategory = _productCategoryCRUD.GetByIdAsync(product.ProductCategoryId).Result ?? new ProductCategory();//note
-
             }
 
             if (product.Image == null)
@@ -385,6 +410,15 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 {
                     product.Image = new FormFile(stream, 0, 0, "name", "fileName");
                 }
+            }
+
+            if (productVM.Images == null)
+            {
+                productVM.Images = new IFormFile[] { };
+                //using (var stream = new MemoryStream())
+                //{
+                //    //productVM.Images.AddRange(new FormFile(stream, 0, 0, "name", "fileName"));
+                //}
             }
 
             ModelState.Clear();
@@ -427,15 +461,22 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     productVM.product.Amount += i.Amount;
                 }
 
-                _productCRUD.Update(product);
+                string wwwRootPath = _hostEnvironment.WebRootPath;
 
                 if (product.Image.Length > 0)
                 {
                     // Add image
-                    string wwwRootPath = _hostEnvironment.WebRootPath;
                     string fileName = Path.GetFileNameWithoutExtension(product.Image.FileName);
                     string extension = Path.GetExtension(product.Image.FileName);
                     fileName = fileName + extension;
+
+                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await product.Image.CopyToAsync(fileStream);
+                    }
+
+                    Image imgss = _imageCRUD.GetAllByProductIdAsync(product.ProductId).Result.Where(o => o.ImageName == _productVM.product.ImageName).First();
 
                     Image image = new Image()
                     {
@@ -445,19 +486,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         ProductId = product.ProductId,
                     };
 
-                    string path = Path.Combine(wwwRootPath + "/Image/", fileName);
-                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    if (imgss != null)
                     {
-                        await image.ImageFile.CopyToAsync(fileStream);
-                    }
-
-                    List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(product.ProductId).Result;
-
-                    if (imgs.Count > 0)
-                    {
-                        imgs[0].ImageName = image.ImageName;
-                        imgs[0].Title = "updated";
-                        _imageCRUD.Update(imgs[0]);
+                        imgss.ImageName = image.ImageName;
+                        imgss.Title = "updated";
+                        _imageCRUD.Update(imgss);
                     }
                     else
                     {
@@ -468,15 +501,76 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                             ProductId = product.ProductId,
                         });
                     }
+
+                    product.ImageName = fileName;
+                }
+                else
+                {
+                    product.ImageName = _productVM.product.ImageName;
+                }
+
+                await _productCRUD.Update(product);
+
+                if (productVM.Images.Count() > 0)
+                {
+                    List<Image> listImg = _imageCRUD.GetAllByProductIdAsync(product.ProductId).Result;
+
+                    foreach (Image img in listImg)
+                    {
+                        if (img.ImageName != product.ImageName)
+                        {
+                            _imageCRUD.Remove(img);
+                        }
+                    }
+
+                    foreach (var item in productVM.Images)
+                    {
+                        string fileName1 = Path.GetFileNameWithoutExtension(item.FileName);
+                        string extension = Path.GetExtension(item.FileName);
+                        fileName1 = fileName1 + extension;
+
+                        Image image = new Image()
+                        {
+                            ImageName = fileName1,
+                            ImageFile = item,
+                            Title = "hi",
+                            ProductId = product.ProductId,
+                        };
+
+                        string path = Path.Combine(wwwRootPath + "/Image/", fileName1);
+                        using (var fileStream = new FileStream(path, FileMode.Create))
+                        {
+                            await image.ImageFile.CopyToAsync(fileStream);
+                        }
+
+                        await _imageCRUD.CreateAsync(image);
+                    }
                 }
 
                 ViewData["nProducts"] = _productVM.page;
                 TempData["success"] = "Category is Created Successfully!!";
 
                 await load();
+
                 return PartialView("_ViewAll", _productVM.products);
             }
-            return RedirectToAction("Index");
+
+            List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(product.ProductId).Result;
+
+            if (imgs.Count > 0)
+            {
+                _productVM.product.ImageNames = new List<string>();
+
+                foreach (var item in imgs)
+                {
+                    if (item.ImageName != _productVM.product.ImageName)
+                    {
+                        _productVM.product.ImageNames.Add(item.ImageName);
+                    }
+                }
+            }
+
+            return Json(Helper.RenderRazorViewToString(this, "Create", _productVM)); // return json de hien thi loi
         }
 
         private async Task load()
@@ -504,9 +598,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     productFilter.Add(i);
             }
             _productVM.products = productFilter;
-            _productVM.products = _productVM.products.OrderBy(o=>o.ProductName).ToList();
+            _productVM.products = _productVM.products.OrderBy(o => o.ProductName).ToList();
             _productVM.page = 0;//reseet nhá
-            ViewBag.Product = true;
         }
 
         [HttpPost]
@@ -517,6 +610,13 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
                 _productCRUD.Remove(obj);
+
+                List<Image> images = _imageCRUD.GetAllByProductIdAsync(obj.ProductId).Result;
+
+                for (int i = 0; i < images.Count; i++)
+                {
+                    _imageCRUD.Remove(images[i]);
+                }
             }
 
             await load();
@@ -543,11 +643,20 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     totalNumberShoeOfThatSize += sizeList[j].Amount;
                 }
                 obj.Amount = totalNumberShoeOfThatSize;
+
                 List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(obj.ProductId).Result;
 
                 if (imgs.Count > 0)
                 {
-                    obj.ImageName = imgs[0].ImageName;
+                    obj.ImageNames = new List<string>();
+
+                    foreach (var item in imgs)
+                    {
+                        if (item.ImageName != obj.ImageName)
+                        {
+                            obj.ImageNames.Add(item.ImageName);
+                        }
+                    }
                 }
 
                 _productVM.product = obj;

@@ -4,7 +4,7 @@
 
 @{
 	int nProducts = 0;
-	nProducts = Int32.Parse(ViewData["nProducts"].ToString()) ;
+	nProducts = Int32.Parse(ViewData["nProducts"].ToString());
 }
 
 <div class="table-wrap">
@@ -34,13 +34,14 @@
 
 						<th scope="row">@a</th>
 						<td>
-							@if (Model[i].ImageName != null)
+							@if (String.IsNullOrEmpty(Model[i].ImageName))
 							{
-								<img src="~/image/@Model[i].ImageName"
-									 class="rounded-circle"
-									 height="40" width="40"
-									 asp-append-version="true" />
+								Model[i].ImageName = "product-empty.png";
 							}
+							<img src="~/image/@Model[i].ImageName"
+								 class="rounded-circle"
+								 height="40" width="40"
+								 asp-append-version="true" />
 							@Model[i].ProductName
 						</td>
 						<td>$@Model[i].ProductUnitPrice</td>
