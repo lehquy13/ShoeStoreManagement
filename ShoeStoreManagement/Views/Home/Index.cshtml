@@ -12,71 +12,89 @@
 	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
 }
 
-<div class="row ">
-	<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);">
-		<div class="radioLayoutTabCustom row-cols-6 w-100">
-			<input class="rounded w-10" type="text" name="searchString" />
-			<input class="btn btn-secondary rounded w-10" type="submit"/>
-		</div>
-	</form>
+<div class="row">
 
-	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
-        <div class="form-group col">
-            <div class="row">
-                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
+	<form asp-action="Sort" method="post" class="borderCustom1 col-lg-3 d-lg-block d-none" onsubmit="return jQueryAjaxSort(this);">
+		<div class="form-group col">
+			<div class="row">
+				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
 				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
 					@if (string.IsNullOrEmpty(Model.filters[0]))
 					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+						<label class="radioLayoutTabCustom">
+							<input type="radio" class="form-check-input" value="" name="categoryRadio" checked />
+							All
+						</label>
+
 					}
 					@if (!string.IsNullOrEmpty(Model.filters[0]))
 					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+						<label class="radioLayoutTabCustom">
+							<input type="radio" class="form-check-input p-2" value="" name="categoryRadio" />
+							All
+						</label>
 					}
 					@foreach (ProductCategory i in Model.productCategories)
 					{
 						if (i.ProductCategoryName.Equals(Model.filters[0]))
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
+							<label class="radioLayoutTabCustom">
+								<input type="radio" value="@i.ProductCategoryName" class="form-check-input" name="categoryRadio" checked />
+								@i.ProductCategoryName
+							</label>
 						}
 						else
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
+							<label class="radioLayoutTabCustom">
+								<input type="radio" value="@i.ProductCategoryName" class="form-check-input" name="categoryRadio" />
+								@i.ProductCategoryName
+							</label>
 						}
 					}
 
-                </div>
+				</div>
 
-            </div>
+			</div>
 
-            <div class="row mt-3">
-                <ii class="row-1 h6">Price</ii>
+			<div class="row mt-4">
+				<ii class="row-1 h6">Price</ii>
 
-				<div class="radioLayoutTabCustom row-cols-6 w-100">
+				<div class="radioLayoutTabCustom row-cols-6 w-100 mt-2">
 					@foreach (string i in priceFilters)
 					{
 						if (i.Equals(Model.filters[1]))
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" class="form-check-input" checked />@i</label>
 						}
 						else if (string.IsNullOrEmpty(i))
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" class="form-check-input" checked />All</label>
 						}
 						else
 						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" class="form-check-input" />@i</label>
 						}
 					}
 				</div>
 			</div>
 
-            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="Sort"/>
-        </div> @*used to col-3 vs col-10*@
-    </form>
-	<div class="col-9 row" id="hihi">
-		<partial name="_ViewAll" model=@Model view-data="ViewData" />
+			<input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="Sort" />
+		</div>
+	</form>
+
+	<div class="col-lg-9 col-md-12">
+		<div>
+			<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);" class="d-flex justify-content-end mb-2">
+				<input class="w-10" type="text" name="searchString" />
+				<button class="btn btn-secondary icon-search" type="submit" />
+			</form>
+		</div>
+
+		<div class="row" id="hihi">
+			<partial name="_ViewAll" model=@Model view-data="ViewData" />
+		</div>
 	</div>
+
 </div>
 

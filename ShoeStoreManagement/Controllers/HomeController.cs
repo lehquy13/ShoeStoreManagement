@@ -230,19 +230,19 @@ namespace ShoeStoreManagement.Controllers
             return View(wishList);
         }
 
-        [HttpGet("Home/AddToWishList/{id}")]
-        public IActionResult AddToWishList(string id)
+        [HttpGet]
+        public void AddToWishList(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                return NotFound();
+                return;
             }
 
             Product? product = _productCRUD.GetByIdAsync(id).Result;
 
             if (product == null)
             {
-                return NotFound();
+                return;
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -266,15 +266,15 @@ namespace ShoeStoreManagement.Controllers
 
             _wishListDetailCRUD.CreateAsync(wishListDetail);
 
-            return RedirectToAction("Index");
+            return;
         }
 
-        [HttpGet("Home/RemoveFromWishList/{id}")]
-        public IActionResult RemoveFromWishList(string id)
+        [HttpGet]
+        public void RemoveFromWishList(string id)
         {
             if (string.IsNullOrEmpty(id))
             {
-                return NotFound();
+                return;
             }
 
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -283,19 +283,19 @@ namespace ShoeStoreManagement.Controllers
 
             if (wishList == null)
             {
-                return NotFound();
+                return;
             }
 
             WishListDetail? wishListDetail = _wishListDetailCRUD.GetByProductIdAsync(wishList.WishListId, id).Result;
 
             if (wishListDetail == null)
             {
-                return NotFound();
+                return;
             }
 
             _wishListDetailCRUD.Remove(wishListDetail);
 
-            return RedirectToAction("WishList");
+            return;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
