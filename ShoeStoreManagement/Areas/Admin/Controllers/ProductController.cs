@@ -456,6 +456,16 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         product.Image = new FormFile(stream, 0, 0, "name", "fileName");
                     }
                 }
+                if (productVM.Images == null)
+                {
+                    productVM.Images = new IFormFile[] { };
+                    //using (var stream = new MemoryStream())
+                    //{
+                    //    //productVM.Images.AddRange(new FormFile(stream, 0, 0, "name", "fileName"));
+                    //}
+                }
+
+
 
                 ModelState.Clear();
                 if (TryValidateModel(productVM))
@@ -555,7 +565,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
             return NotFound();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> Edit(ProductVM productVM)
@@ -714,6 +723,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                     }
                 }
 
+                await load();
+
                 ViewData["nProducts"] = _productVM.page;
                 TempData["success"] = "Category is Created Successfully!!";
 
@@ -786,7 +797,32 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 }
             }
 
-            await load();
+            List<Product> productFilter = new List<Product>();
+            List<string> filters = new List<string>();
+            filters.Add(_productVM.categoryRadio);
+            filters.Add(_productVM.priceRadio);
+
+            float minvalue = -1, maxvalue = -1;
+            _productVM.products = await _productCRUD.GetAllAsync();
+            if (_productVM.products.Count > 0)
+            {
+                if (!string.IsNullOrEmpty(_productVM.priceRadio))
+                {
+                    string[] strsplt = _productVM.priceRadio.Split('-', 2, StringSplitOptions.None);
+                    minvalue = float.Parse(strsplt[0]);
+                    maxvalue = float.Parse(strsplt[1]);
+                }
+            }
+
+            foreach (Product i in _productVM.products)
+            {
+                if ((i.ProductCategory.ProductCategoryName.Equals(_productVM.categoryRadio) || string.IsNullOrEmpty(_productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice) && maxCheck(maxvalue, i.ProductUnitPrice))
+                    productFilter.Add(i);
+            }
+            _productVM.products = productFilter;
+            _productVM.products = _productVM.products.OrderBy(o => o.ProductName).ToList();
+            //_productVM.page = 0;//reseet nhá
+            ViewBag.Product = true;
             return PartialView("_ViewAll", _productVM);
         }
 
@@ -831,6 +867,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 return PartialView(_productVM);
 
             }
+           
             return RedirectToAction("Index");
         }
 

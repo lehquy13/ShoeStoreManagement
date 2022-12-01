@@ -63,7 +63,7 @@
                          asp-append-version="true" />
                         <div class="ms-2">
                             <div class="d-flex justify-content-between w-100">
-                                @if (Model.product.ImageNames.Count > 0)
+                                @if (Model.product.ImageNames != null && Model.product.ImageNames.Count > 0)
                                     @foreach (var item in Model.product.ImageNames)
                                     {
                                         <img src="~/image/@item" class="col-4 h-auto"

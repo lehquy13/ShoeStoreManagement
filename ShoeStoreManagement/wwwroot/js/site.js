@@ -233,8 +233,6 @@ createSth = form => {
             contentType: false,
             processData: false,
             success: function (res) {
-
-
                 if (res.isValid) {
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
@@ -290,7 +288,7 @@ function jQueryAjaxDelete(url) {
             $("#form-modal").modal('hide');
             $("#hihi").html(res);
 
-            $.notify("dung !");
+            $.notify("Delete successfully!","success");
         },
         error: function (xhr, status, error) {
             alert("sai");
@@ -318,7 +316,7 @@ function jQueryAjaxPost(form) {
                 $('#form-modal .modal-title').html('');
                 $("#form-modal").modal('hide');
                 $('#hihi').html(res);
-
+                $.notify("Edit successfully!", "success");
             },
             error: function (err) {
 
