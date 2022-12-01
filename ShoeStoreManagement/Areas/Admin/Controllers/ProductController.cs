@@ -57,22 +57,6 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _productVM.products[i].SetCategory(_productVM.productCategories);
                 List<SizeDetail> sizeList = _sizeDetailCRUD.GetAllByIdAsync(_productVM.products[i].ProductId).Result;
                 _productVM.products[i].Sizes = sizeList;
-                // int totalNumberShoeOfThatSize = 0;
-                //for (int j = 0; j < sizeList.Count; j++)
-                //{
-                //    sizeList[j].IsChecked = true;
-                //    //products[i].Sizes.Add(obj);
-                //    //_productVM.products[i].SizeHashtable.Add(sizeList[j].Size, sizeList[j].Amount);
-
-                //    totalNumberShoeOfThatSize += sizeList[j].Amount;
-                //}
-                //_productVM.products[i].Amount = totalNumberShoeOfThatSize;
-                List<Image> imgs = _imageCRUD.GetAllByProductIdAsync(_productVM.products[i].ProductId).Result;
-
-                if (imgs.Count > 0)
-                {
-                    _productVM.products[i].ImageName = imgs[0].ImageName;
-                }
             }
 
         }

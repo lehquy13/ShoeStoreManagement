@@ -57,7 +57,7 @@
 						<td>
 							@if (Model.products[i].ImageName != null)
 							{
-								Model[i].ImageName = "product-empty.png";
+								Model.products[i].ImageName = "product-empty.png";
 							}
 							<img src="~/image/@Model.products[i].ImageName"
 								 class="rounded-circle"
