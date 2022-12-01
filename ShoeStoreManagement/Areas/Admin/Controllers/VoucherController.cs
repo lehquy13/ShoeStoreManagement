@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoeStoreManagement.Core.Enums;
 using ShoeStoreManagement.Core.Models;
 using ShoeStoreManagement.Core.ViewModel;
+using ShoeStoreManagement.CRUD.Implementations;
 using ShoeStoreManagement.CRUD.Interfaces;
 using ValueType = ShoeStoreManagement.Core.Enums.ValueType;
 
@@ -31,36 +32,68 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             _voucherVM.valueTypes = Enum.GetValues(typeof(ValueType)).Cast<ValueType>().ToList();
             _voucherVM.expireTypes = Enum.GetValues(typeof(ExpireType)).Cast<ExpireType>().ToList();
         }
-
-        public IActionResult Index()
-        {
+        
+        public IActionResult Index(string filter)
+		{
             ViewBag.Voucher = true;
-            if (_voucherVM.vouchers != null)
-                _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.ValueType).ThenBy(i => i.CreatedDate).ToList();
-            _voucherVM.filters = new List<string>();
-            _voucherVM.filters.Add("");
+
+            if (string.IsNullOrEmpty(filter))
+                filter = "All";
+
+            var vouchers = _voucherCRUD.GetAllAsync().Result;
+            var filterList = new List<Voucher>();
+
+            foreach (var item in vouchers)
+            {
+                if (filter.Equals("All"))
+                {
+                    filterList.Add(item);
+                }
+                else if (filter.Equals(Enum.GetName(typeof(VoucherStatus), item.State)))
+                {
+                    filterList.Add(item);
+                }
+            }
+
+            _voucherVM.vouchers = filterList.OrderBy(i => i.ValueType).ToList();
             return View(_voucherVM);
         }
 
         [HttpPost]
-        public IActionResult Sort(VoucherVM voucherVM)
+        public IActionResult TableSort(string filter = "Code")
         {
-            List<Voucher> voucherFilters = new List<Voucher>();
-            _voucherVM.filters = new List<string>();
-            _voucherVM.filters.Add(voucherVM.categoryRadio);
-
-            foreach (var i in _voucherVM.vouchers)
+            if (_voucherVM.desc)
             {
-                if (voucherVM.categoryRadio.Equals("All"))
-                    voucherFilters.Add(i);
-                else if (Enum.GetName(typeof(VoucherStatus), i.State).Equals(voucherVM.categoryRadio))
-                    voucherFilters.Add(i);
+                switch (filter)
+                {
+                    case "Value":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => i.Value).ToList();
+                        break;
+                    case "Expire":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderByDescending(i => int.Parse(i.ExpiredValue)).ToList();
+                        break;
+                }
             }
+            else
+            {
+                switch (filter)
+                {
+                    case "Value":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => i.Value).ToList();
+                        break;
+                    case "Expire":
+                        _voucherVM.vouchers = _voucherVM.vouchers.OrderBy(i => int.Parse(i.ExpiredValue)).ToList();
+                        break;
+                }
+            }
+            
 
-            voucherFilters = voucherFilters.OrderBy(i => i.ValueType).ToList();
-            _voucherVM.page = _voucherVM.page - 1;
-            ViewData["nProducts"] = _voucherVM.page;
-            return PartialView("_ViewAll", voucherFilters);
+            if (_voucherVM.desc)
+                _voucherVM.desc = false;
+            else
+                _voucherVM.desc = true;
+
+            return PartialView("_ViewAll", _voucherVM.vouchers);
         }
 
         [HttpGet]

@@ -6,8 +6,6 @@
 @model VoucherVM
 
 @{
-	List<string> voucherFilters = new List<string> { "Using", "Expired", "ComingSoon" };
-
 	var nProducts = Model.page;
 
 	int countPage()
@@ -31,38 +29,18 @@
 }
 
 <div class="row borderCustom">
-	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
-		<div class="form-group col">
-			<div class="row">
-				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
+	<div class="col-2 borderCustom1">
+		<div class="row">
+			<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
-					@if (string.IsNullOrEmpty(Model.filters[0]))
-					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="All" name="categoryRadio" checked />All</label>
-					}
-					@if (!string.IsNullOrEmpty(Model.filters[0]))
-					{
-						<label class="radioLayoutTabCustom"> <input type="radio" value="All" name="categoryRadio" />All</label>
-					}
-					@foreach (string i in voucherFilters)
-					{
-						if (i.Equals(Model.filters[0]))
-						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="categoryRadio" checked />@i</label>
-						}
-						else
-						{
-							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="categoryRadio" />@i</label>
-						}
-					}
-				</div>
-
+			<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+				<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="All" type="button">All</a>
+				<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Using" type="button">Using</a>
+				<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Expired" type="button">Expired</a>
+				<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="ComingSoon" type="button">ComingSoon</a>
 			</div>
-
-			<input class="btn btn-secondary rounded w-100 mt-5" type="submit" />
-		</div> @*used to col-3 vs col-10*@
-	</form>
+		</div>
+	</div> @*used to col-3 vs col-10*@
 
 	<div class="container col-10">
 		<div class="row">
@@ -70,34 +48,6 @@
 				<partial name="_ViewAll" model=@Model.vouchers/>
 			</div>
 		</div>
-
-		<form method="get" action="Admin/Voucher/Index">
-			<nav class="container">
-				<ul class="pagination" style="display:flex; flex-direction:row">
-					@if (nProducts != 0)
-					{
-						if (nProducts > 1) nProducts -= 1;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
-					}
-					@for (int i = 1; i <= @countPage(); i++)
-					{
-						if (i == nProducts + 1)
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-						}
-						else
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
-						}
-					}
-					@if (nProducts + 1 != @countPage())
-					{
-						nProducts += 2;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-					}
-				</ul>
-			</nav>
-		</form>
 	</div>
 </div>
 

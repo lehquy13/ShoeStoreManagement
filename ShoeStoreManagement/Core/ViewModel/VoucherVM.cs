@@ -19,5 +19,6 @@ namespace ShoeStoreManagement.Core.ViewModel
 		public int page { get; set; }
         public string categoryRadio { get; set; } = "";
         public List<string>? filters { get; set; }
+        public bool desc { get; set; } = true;
     }
 }
