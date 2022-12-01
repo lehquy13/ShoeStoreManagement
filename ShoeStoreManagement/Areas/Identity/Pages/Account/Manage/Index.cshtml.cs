@@ -76,8 +76,8 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Birthday")]
             public DateTime Birthday { get; set; }
 
-            [Display(Name = "Name")]
-            public string Name { get; set; }
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
 
             [Display(Name = "Avatar")]
             public IFormFile Avatar { get; set; }
@@ -93,6 +93,7 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             var birthday = user.Birthday;
             var avatar = user.Avatar;
             var avatarName = user.AvatarName;
+            var fullName = user.FullName;
 
             Username = userName;
 
@@ -100,7 +101,7 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
             {
                 PhoneNumber = phoneNumber,
                 Birthday = birthday,
-                Name = userName,
+                FullName = fullName,
                 Avatar = avatar,
                 AvatarName = avatarName,
             };
@@ -150,7 +151,18 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
                 _context.ApplicationUsers.Update(user);
                 _context.SaveChanges();
 
-                StatusMessage = "Update birthdaySuccessful";
+                StatusMessage = "Update birthday successful!";
+                return RedirectToPage();
+            }
+
+            var fullName = user.FullName;
+            if (Input.FullName != fullName)
+            {
+                user.FullName = Input.FullName;
+                _context.ApplicationUsers.Update(user);
+                _context.SaveChanges();
+
+                StatusMessage = "Update full name successfull!";
                 return RedirectToPage();
             }
 

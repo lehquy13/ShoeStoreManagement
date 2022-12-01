@@ -88,7 +88,6 @@ function deteleItem(url, id) {
 }
 
 function showContentItem(url, title) {
-    alert($("#searchFilter").val());
     $.ajax({
         type: "GET",
         url: url,

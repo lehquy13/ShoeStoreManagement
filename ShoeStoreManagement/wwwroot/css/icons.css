@@ -50,3 +50,101 @@
     font-size: 20px;
     padding: 8px;
 }
+
+.sort-down-icon:after {
+    content: "\f0dd";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+
+.sort-up-icon:after {
+    content: "\f0de";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.folder-icon:after {
+    content: "\f07b";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.receipt-icon:after {
+    content: "\f543";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+
+.wave-money-icon:after {
+    content: "\f53b";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.wallet-icon:after {
+    content: "\f555";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.mobile-icon:after {
+    content: "\f3cf";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.filter-list-icon:after {
+    content: "\e17c";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.bar-filter-icon:after {
+    content: "\e0ad";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.grid-icon:after {
+    content: "\e198";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.boot-hign-heeled-icon:after {
+    content: "\e33f";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.volumn-icon:after {
+    content: "\f6a8";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.headphone-icon:after {
+    content: "\f025";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.user-icon:after {
+    content: "\f007";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.circle-user-icon:after {
+    content: "\f2bd";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.house-user-icon:after {
+    content: "\e1b0";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.users-icon:after {
+    content: "\f0c0";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.users-plus-icon:after {
+    content: "\f234";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}
+.bug-icon:after {
+    content: "\f188";
+    font-family: 'FontAwesome';
+    margin: 0 5px 0 5px;
+}

@@ -43,7 +43,7 @@ else if (SignInManager.IsSignedIn(User))
                 <a class="nav-link text-secondary @(ViewBag.Order==true?"active":"")" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
             </li>
             <li class="nav-item px-3">
-                <a class="nav-link text-secondary @(ViewBag.Text==true?"active":"")" asp-area="" asp-controller="" asp-action="">...</a>
+                <a class="nav-link text-secondary @(ViewBag.About==true?"active":"")" asp-area="" asp-controller="About" asp-action="">About</a>
             </li>
             @*<partial name="_AdminMenuPartial" />*@
         </ul>

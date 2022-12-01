@@ -338,7 +338,8 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 _orderVM.currOrder.TotalAmount += orderDetail.Amount;
 
             }
-            await _orderCRUD.CreateAsync(_orderVM.currOrder);
+            _orderVM.currOrder.OrderTotalPrice = _orderVM.currOrder.OrderTotalPayment;
+			await _orderCRUD.CreateAsync(_orderVM.currOrder);
 
 
             foreach (var s in _orderVM.currentOrderDetail)
@@ -473,10 +474,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                     _orderVM.currOrder.OrderDetails.Add(_orderVM.currentOrderDetail[i]);
                 }
+                
             }
 
             _orderVM.currOrder.UserId = _orderVM.customers[0].Id;
-            _orderVM.currOrder.Status = Core.Enums.Status.Delivering;
+            _orderVM.currOrder.Status = Core.Enums.Status.OnCharging;
 
             return View(_orderVM);
         }

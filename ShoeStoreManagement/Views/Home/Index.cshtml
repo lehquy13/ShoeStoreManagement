@@ -14,7 +14,7 @@
 
 <div class="row">
 
-	<form asp-action="Sort" method="post" class="borderCustom1 col-lg-3 d-lg-block d-none" onsubmit="return jQueryAjaxSort(this);">
+	<form asp-action="Sort" method="post" class="borderCustom1 col-lg-3 d-lg-block collapse um" onsubmit="return jQueryAjaxSort(this);">
 		<div class="form-group col">
 			<div class="row">
 				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
@@ -84,6 +84,9 @@
 	</form>
 
 	<div class="col-lg-9 col-md-12">
+		<button class="icon-search border-0 d-lg-none" data-bs-toggle="collapse" data-bs-target=".um" aria-controls="navbarSupportedContent"
+				aria-expanded="false" aria-label="Toggle navigation">
+		</button>
 		<div>
 			<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);" class="d-flex justify-content-end mb-2">
 				<input class="w-10" type="text" name="searchString" />
