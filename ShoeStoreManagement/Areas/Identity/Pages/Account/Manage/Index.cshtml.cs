@@ -173,7 +173,7 @@ namespace ShoeStoreManagement.Areas.Identity.Pages.Account.Manage
                 fileName = fileName + extension;
             }
 
-            if (user.AvatarName != fileName)
+            if (user.AvatarName != fileName && fileName != "")
             {
                 string path = Path.Combine(wwwRootPath + "/Image/", fileName);
                 using (var fileStream = new FileStream(path, FileMode.Create))
