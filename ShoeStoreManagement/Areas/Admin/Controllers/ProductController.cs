@@ -232,16 +232,76 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 if ((i.ProductCategory.ProductCategoryName.Equals(productVM.categoryRadio)
                     || string.IsNullOrEmpty(productVM.categoryRadio)) && minCheck(minvalue, i.ProductUnitPrice)
                     && maxCheck(maxvalue, i.ProductUnitPrice))
-                    productFilter.Add(i);
+                {
+                    if (string.IsNullOrEmpty(_productVM.searchString))
+                        productFilter.Add(i);
+                    else if (!string.IsNullOrEmpty(_productVM.searchString.ToLower()) && i.ProductName.ToLower().Contains(_productVM.searchString.ToLower()))
+                        productFilter.Add(i);
+                }
             }
 
             productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
+            _productVM.products = productFilter;
+
             _productVM.page = productVM.page -1;
+
 			ViewData["nProducts"] = _productVM.page;
-			return PartialView("_ViewAll", productFilter);
+			return PartialView("_ViewAll", _productVM);
         }
 
+        [HttpPost]
+        public IActionResult Pagination(int page = 1)
+        {
+            _productVM.page = page - 1;
+            ViewData["nProducts"] = _productVM.page;
+            return PartialView("_ViewAll", _productVM);
+        }
 
+        [HttpPost]
+        public IActionResult Search(ProductVM productVM)
+        {
+            List<Product> productFilter = new List<Product>();
+
+            float minvalue = -1, maxvalue = -1;
+
+            if (!string.IsNullOrEmpty(_productVM.filters[1]) && !_productVM.filters[1].Equals("All"))
+            {
+                string[] strsplt = _productVM.filters[1].Split('-', 2, StringSplitOptions.None);
+                minvalue = float.Parse(strsplt[0]);
+                maxvalue = float.Parse(strsplt[1]);
+            }
+
+            if (!string.IsNullOrEmpty(productVM.searchString))
+            {
+                foreach (var i in _productVM.products)
+                {
+                    if ((i.ProductCategory.ProductCategoryName.Equals(_productVM.filters[0])
+                    || string.IsNullOrEmpty(_productVM.filters[0])) && minCheck(minvalue, i.ProductUnitPrice)
+                    && maxCheck(maxvalue, i.ProductUnitPrice) && i.ProductName.ToLower().Contains(productVM.searchString.ToLower()))
+                        productFilter.Add(i);
+                }
+                productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
+                _productVM.products = productFilter;
+                _productVM.page = 0;
+            } 
+            else
+            {
+                foreach (var i in _productVM.products)
+                {
+                    if ((i.ProductCategory.ProductCategoryName.Equals(_productVM.filters[0])
+                    || string.IsNullOrEmpty(_productVM.filters[0])) && minCheck(minvalue, i.ProductUnitPrice)
+                    && maxCheck(maxvalue, i.ProductUnitPrice))
+                        productFilter.Add(i);
+                }
+
+                productFilter = productFilter.OrderBy(i => i.ProductName).ToList();
+                _productVM.products = productFilter;
+                _productVM.page = 0;
+            }
+            _productVM.searchString = productVM.searchString;
+            ViewData["nProducts"] = _productVM.page;
+            return PartialView("_ViewAll", _productVM);
+        }
 
         private bool minCheck(float value, float price)
         {
@@ -349,10 +409,15 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                     _productVM.products = _productCRUD.GetAllAsync().Result.OrderBy(o => o.ProductName).ToList();
 
+                    _productVM.page = _productVM.products.Count / 10 + 1;
+
+                    if (_productVM.products.Count % 10 != 0)
+                        _productVM.page += 1;
+
 					ViewData["nProducts"] = _productVM.page;
 					TempData["success"] = "Category is Created Successfully!!";
 
-                    return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM.products) });
+                    return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _productVM) });
                 }
 
                 _productVM.product = product;
@@ -474,7 +539,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 TempData["success"] = "Category is Created Successfully!!";
 
                 await load();
-                return PartialView("_ViewAll", _productVM.products);
+                return PartialView("_ViewAll", _productVM);
             }
             return RedirectToAction("Index");
         }
@@ -517,10 +582,11 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             {
                 _sizeDetailCRUD.DeleteAllDetailsByIdAsync(obj.ProductId);
                 _productCRUD.Remove(obj);
+                _productVM.products.Remove(obj);
             }
 
             await load();
-            return PartialView("_ViewAll", _productVM.products);
+            return PartialView("_ViewAll", _productVM);
         }
 
         [HttpGet]

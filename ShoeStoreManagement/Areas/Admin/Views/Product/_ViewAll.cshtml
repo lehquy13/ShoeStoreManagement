@@ -1,10 +1,30 @@
 ﻿@using ShoeStoreManagement.Core.Models
+@using ShoeStoreManagement.Core.ViewModel
 
-@model List<Product>
+@model ProductVM
 
 @{
 	int nProducts = 0;
-	nProducts = Int32.Parse(ViewData["nProducts"].ToString()) ;
+	nProducts = Int32.Parse(ViewData["nProducts"].ToString());
+
+	int countPage()
+	{
+
+		int numberPages = 0;
+		int numberProducts = 0;
+
+		foreach (Product i in Model.products)
+		{
+			numberProducts++;
+		}
+
+		numberPages = numberProducts / 10;
+
+		if (numberProducts % 10 != 0)
+			numberPages++;
+
+		return numberPages;
+	}
 }
 
 <div class="table-wrap">
@@ -25,7 +45,7 @@
 			@if (Model != null)
 			{
 				var a = nProducts * 10;
-				for (int i = (nProducts) * 10; i < Model.Count; i++)
+				for (int i = (nProducts) * 10; i < Model.products.Count; i++)
 				{
 					a++;
 					if (a == (nProducts + 1) * 10 + 1) break;
@@ -34,26 +54,26 @@
 
 						<th scope="row">@a</th>
 						<td>
-							@if (Model[i].ImageName != null)
+							@if (Model.products[i].ImageName != null)
 							{
-								<img src="~/image/@Model[i].ImageName"
+								<img src="~/image/@Model.products[i].ImageName"
 									 class="rounded-circle"
 									 height="40" width="40"
 									 asp-append-version="true" />
 							}
-							@Model[i].ProductName
+							@Model.products[i].ProductName
 						</td>
-						<td>$@Model[i].ProductUnitPrice</td>
-						<td>@Model[i].Color</td>
-						<td>@Model[i].ProductCategory.ProductCategoryName</td>
-						<td>@Model[i].Amount</td>
+						<td>$@Model.products[i].ProductUnitPrice</td>
+						<td>@Model.products[i].Color</td>
+						<td>@Model.products[i].ProductCategory.ProductCategoryName</td>
+						<td>@Model.products[i].Amount</td>
 						<td>
-							<a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Edit Product @Model[i].ProductName','@Model[i].ProductId')" class="border-1 table-icon">
+							<a onclick="showContent('@Url.Action("Edit","Product",null,Context.Request.Scheme)','Edit Product @Model.products[i].ProductName','@Model.products[i].ProductId')" class="border-1 table-icon">
 								<i class="fas fa-edit"></i>
 							</a>
 						</td>
 						<td>
-							<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@Model[i].ProductId')" class="link-info table-icon">
+							<a onclick="showContent('@Url.Action("ChooseSize","Product",null,Context.Request.Scheme)','Choose Sizes','@Model.products[i].ProductId')" class="link-info table-icon">
 								<i class="fas fa-cart-plus"></i>
 							</a>
 						</td>
@@ -63,4 +83,30 @@
 			}
 		</tbody>
 	</table>
+
+		<nav class="container">
+			<ul class="pagination" style="display:flex; flex-direction:row">
+				@if (nProducts != 0)
+				{
+					if (nProducts > 1) nProducts -= 1;
+					<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+				}
+				@for (int i = 1; i <= @countPage(); i++)
+				{
+					if (i == nProducts + 1)
+					{
+						<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+					}
+					else
+					{
+					<li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
+					}
+				}
+				@if (nProducts + 1 != @countPage() && @countPage() > 0)
+				{
+					nProducts += 2;
+					<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+				}
+			</ul>
+		</nav>	
 </div>
