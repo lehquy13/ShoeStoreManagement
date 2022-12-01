@@ -26,10 +26,6 @@
     margin-left: 5px;
 }
 
-.row {
-    margin-right: 0px;
-}
-
 p {
     margin: 0;
 }
@@ -125,10 +121,6 @@ label {
 /*DROPDOWN*/
 .dropdown-menu {
     min-width: auto;
-}
-
-.row {
-    margin-right: 0;
 }
 
 .padding-cart {

@@ -30,37 +30,41 @@
 	<header class="ps-5 pe-5 bg-light">
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
-				<a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
-					<img src="~/image/logo.png" title="logo" width="40px" height="40px" />
-					Shoe
-				</a>
+
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
+
+				<a class="navbar-brand fw-bold" asp-area="" asp-controller="Home" asp-action="Index">
+					<img src="~/image/logo.png" title="logo" width="40px" height="40px" />
+					Shoe
+				</a>
+			
 				<partial name="_HeaderNavbar" />
 
-			</div>
-			<div class="d-flex gap-3 align-items-center">
+				<div class="d-flex gap-3 align-items-center">
+					@if (SignInManager.IsSignedIn(User) && await UserManager.IsInRoleAsync(UserManager.GetUserAsync(User).Result, "admin") == false)
+					{
+						@*<a class="nav-icon-link" asp-controller="Notification" asp-action="Index">
+					<i class="fa-regular fa-bell nav-icon"></i>
+					</a>*@
+						<a class="nav-icon-link" asp-controller="Cart" asp-action="Index">
+							<i class="fa-solid fa-cart-shopping nav-icon"></i>
+						</a>
+					}
 
-				@if (SignInManager.IsSignedIn(User))
-				{
-					<a class="nav-icon-link" asp-controller="Notification" asp-action="Index">
-						<i class="fa-regular fa-bell nav-icon"></i>
-					</a>
-					<a class="nav-icon-link" asp-controller="Cart" asp-action="Index">
-						<i class="fa-solid fa-cart-shopping nav-icon"></i>
-					</a>
-				}
-
-				<div class="dropdown">
-					<button class="nav-icon-link fa-regular fa-circle-user nav-icon border-0 p-0 m-0" type="button" id="drop" data-bs-toggle="dropdown" aria-expanded="false">
-					</button>
-					<div class="dropdown-menu dropdown-menu-end" aria-labelledby="drop">
-						<partial name="_LoginPartial" />
+					<div class="dropdown">
+						<button class="nav-icon-link fa-regular fa-circle-user nav-icon border-0 p-0 m-0" type="button" id="drop" data-bs-toggle="dropdown" aria-expanded="false">
+						</button>
+						<div class="dropdown-menu dropdown-menu-end" aria-labelledby="drop">
+							<partial name="_LoginPartial" />
+						</div>
 					</div>
 				</div>
+
 			</div>
+
 		</nav>
 
 	</header>
@@ -73,36 +77,8 @@
 		</main>
 	</div>
 
-	@* <footer class="border-top">
-	<div class="ft_col_1">
-	<p class="ft_text">Address</p>
-	<p class="ft_text_smaller">P.Linh Trung, Tp.Thu Duc, Tp.Ho Chi Minh</p>
-	<p class="ft_text">Email</p>
-	<p class="ft_text_smaller">abcd@gmail.com</p>
-	<p class="ft_text">Phone number</p>
-	<p class="ft_text_smaller">09xx.xxx.xxx</p>
-	</div>
+	<partial name="_Footer" />
 
-	<div class="ft_col_2">
-	<p class="ft_text">Social Channel</p>
-	<div class="ft_flex">
-	<p class="ft_text_smaller">http://facebook/abcd/2</p>
-	</div>
-
-	<div class="ft_flex">
-	<p class="ft_text_smaller">http://instagram/abcd/2</p>
-	</div>
-	</div>
-
-	<div class="ft_col_3">
-	<p class="ft_text">Policy & Security</p>
-	<p class="ft_text_smaller">http://abcd/policy/2</p>
-	<p class="ft_text">About</p>
-	<p class="ft_text_smaller">http://abcd/about/2</p>
-	<p class="ft_text">Support</p>
-	<p class="ft_text_smaller">09xx.xxx.xxx</p>
-	</div>
-	</footer>*@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 

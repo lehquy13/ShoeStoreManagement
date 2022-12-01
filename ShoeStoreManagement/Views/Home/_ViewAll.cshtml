@@ -32,15 +32,19 @@
 	<div class="col row">
 		@foreach (var item in Model.products)
 		{
-			<component type="typeof(ProductCard)"
-							 render-mode="ServerPrerendered"
-							 param-product=@item
-							 param-imageName=@item.ImageName
-							 param-isLiked=@item.IsLiked />
+			<div class="col-lg-4 col-sm-6 col-6">
+				<component type="typeof(ProductCard)"
+					   render-mode="ServerPrerendered"
+					   param-product=@item
+					   param-imageName=@item.ImageName
+					   param-isLiked=@item.IsLiked
+					   param-url1=@Url.Action("AddToWishList","Home",null,Context.Request.Scheme)
+					   param-url2=@Url.Action("RemoveFromWishList","Home",null,Context.Request.Scheme) />
+			</div>
 		}
 	</div>
-	
-		
+
+
 	<nav class="container">
 		<ul class="pagination" style="display:flex; flex-direction:row">
 			@if (nProducts != 0)
@@ -56,7 +60,7 @@
 				}
 				else
 				{
-				<li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
+					<li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
 				}
 			}
 			@if (nProducts + 1 != @countPage() && @countPage() > 0)
@@ -65,5 +69,5 @@
 				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
 			}
 		</ul>
-	</nav>	
+	</nav>
 </div>

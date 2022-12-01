@@ -2,9 +2,13 @@
 @using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Web;
 
-@inject NavigationManager UriHelper
+@using Microsoft.JSInterop
 
-<div class="card border-0 col-lg-4 col-md-6 col-sm-6 col-xs-6 mb-5" style="height:fit-content">
+@inject NavigationManager UriHelper
+@inject IJSRuntime js
+
+
+<div class="card border-0 mb-5" style="height:fit-content">
 
 	@if (String.IsNullOrEmpty(imageName))
 	{
@@ -16,12 +20,12 @@
 		 asp-append-version="true" @onclick="NavigateToDetail" />
 
 	<div class="card-body">
-		<p class="fw-bold h4 text-dark mb-1">@product.ProductName</p>
+		<p class="fw-bold h4 text-dark mb-1 limit-line">@product.ProductName</p>
 		<div class="d-flex justify-content-between">
-			<p class="caption mb-2">@product.Color</p>
-			<p class="h6 mb-2">@product.ProductUnitPrice</p>
+			<p class="big-caption mb-2">@product.Color</p>
+			<p class="h4 mb-2 text-dark">@product.ProductUnitPrice</p>
 		</div>
-		<p class="caption text-primary mb-2">@product.Description</p>
+		<p class="big-caption text-primary mb-2">@product.Description</p>
 	</div>
 	@if (!isLiked)
 	{
@@ -43,14 +47,26 @@
 	[Parameter]
 	public string imageName { get; set; } = null!;
 
-	void AddToWishList()
+	[Parameter]
+	public string url1 { get; set; } = null!;
+
+	[Parameter]
+	public string url2 { get; set; } = null!;
+
+	async void AddToWishList()
 	{
-		UriHelper.NavigateTo("Home/AddToWishList/" + product.ProductId, true);
+		await js.InvokeVoidAsync("callWithId", new object[] { url1, product.ProductId });
+		isLiked = true;
+
+		StateHasChanged();
 	}
 
-	void RemoveFromWishList()
+	async void RemoveFromWishList()
 	{
-		UriHelper.NavigateTo("Home/RemoveFromWishList/" + product.ProductId, true);
+		await js.InvokeVoidAsync("callWithId", new object[] { url2, product.ProductId });
+		isLiked = false;
+
+		StateHasChanged();
 	}
 
 	void NavigateToDetail()
