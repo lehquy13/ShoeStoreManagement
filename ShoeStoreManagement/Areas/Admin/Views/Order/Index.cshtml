@@ -52,7 +52,21 @@
                                     <td>$@orders[i-1].OrderTotalPayment</td>
                                     <td>@orders[i-1].TotalAmount</td>
                                     <td>@orders[i-1].OrderDate.ToString("dd MMM y HH:mm")</td>
-                                    <td>@orders[i-1].Status.ToString()</td>
+                                        @if (@orders[i - 1].Status.ToString() == "Waiting")
+                                        {
+                                        <td class="h4 text-primary">@orders[i-1].Status.ToString()</td>
+
+                                        }
+                                        else if (@orders[i - 1].Status.ToString() == "Canceled")
+                                        {
+                                        <td class="text-danger">@orders[i-1].Status.ToString()</td>
+
+                                        }
+                                        else
+                                        {
+                                        <td class="text-success">@orders[i-1].Status.ToString()</td>
+
+                                        }
                                     <td>
                                         <a onclick="showContent('@Url.Action("Edit","Order",null,Context.Request.Scheme)','Edit Order','@orders[i-1].OrderId')" class="border-1 table-icon">
                                             <i class="fas fa-edit"></i>
@@ -62,10 +76,10 @@
                                 <i class="fa" aria-hidden="true"></i>
                                 </td>*@
                                 </tr>
-                                
-                                
+
+
                                 }
-                            @*<tr>
+                                @*<tr>
                             <td colspan="6" id="collapseOne" class="acc collapse" data-parent="#accordion" style="">
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Porro iste, facere sunt sequi nostrum ipsa, amet doloremque magnam reiciendis tempore sapiente. Necessitatibus recusandae harum nam sit perferendis quia inventore natus.</p>
                             </td>

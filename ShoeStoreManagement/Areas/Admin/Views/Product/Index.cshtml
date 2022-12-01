@@ -11,26 +11,6 @@
 	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
 
 	var nProducts = Model.page;
-	
-
-	int countPage()
-	{
-
-        int numberPages = 0;
-        int numberProducts = 0;
-
-		foreach (Product i in Model.products)
-		{
-			numberProducts++;
-		}
-
-        numberPages = numberProducts / 10;
-
-        if (numberProducts % 10 != 0)
-            numberPages++;
-
-        return numberPages;
-    }
 }
 
 <style>
@@ -42,7 +22,15 @@
 
 </style>
 
+
 <div class="row">
+	<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);">
+		<div class="radioLayoutTabCustom row-cols-6 w-100">
+			<input class="rounded w-10" type="text" name="searchString" />
+			<input class="btn btn-secondary rounded w-10" type="submit"/>
+		</div>
+	</form>
+
 	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
         <div class="form-group col">
             <div class="row">
@@ -102,37 +90,9 @@
 	<div class="container col-10">
 		<div class="row">
 			<div class="col-md-12" id="hihi">
-				<partial name="_ViewAll" model=@Model.products view-data="ViewData"/>
+				<partial name="_ViewAll" model=@Model view-data="ViewData"/>
 			</div>
 		</div>
-
-		<form method="get" action="Admin/Product/Index">
-			<nav class="container">
-				<ul class="pagination" style="display:flex; flex-direction:row">
-					@if (nProducts != 0)
-					{
-						if (nProducts > 1) nProducts -= 1;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
-					}
-					@for (int i = 1; i <= @countPage(); i++)
-					{
-						if (i == nProducts + 1)
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
-						}
-						else
-						{
-							<li class="page-item"><button class="page-link" name="page" value=@i type="submit">@i</button></li>
-						}
-					}
-					@if (nProducts + 1 != @countPage())
-					{
-						nProducts += 2;
-						<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
-					}
-				</ul>
-			</nav>
-		</form>
 	</div>
 </div>
 

@@ -1,19 +1,4 @@
-﻿
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
@@ -216,6 +201,7 @@ editSth = form => {
 }
 
 createSth = form => {
+    debugger;
     try {
         $.ajax({
             type: 'POST',
@@ -224,6 +210,8 @@ createSth = form => {
             contentType: false,
             processData: false,
             success: function (res) {
+
+
                 if (res.isValid) {
                     $('#form-modal .modal-body').html('');
                     $('#form-modal .modal-title').html('');
@@ -231,7 +219,6 @@ createSth = form => {
                     $('#hihi').html(res.html);
                 }
                 else {
-                    alert("invalid");
                     alert(res.html);
                     $('#form-modal .modal-body').html(res.html);
                 }
@@ -336,7 +323,6 @@ function jQueryAjaxSort(form) {
             contentType: false,
             success: function (res) {
                 $('#hihi').html(res);
-
             },
             error: function (err) {
                 alert(err);
@@ -352,6 +338,56 @@ function jQueryAjaxSort(form) {
         alert(ex);
         return false;
     }
+}
+
+function jQueryAjaxPagination(url, p) {
+  try {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: { page: p },
+      success: function (res) {
+        $('#hihi').html(res);
+      },
+      error: function (err) {
+        alert(err);
+
+        console.log(err)
+      }
+    })
+    //to prevent default form submit event
+    return false;
+
+  } catch (ex) {
+
+    alert(ex);
+    return false;
+  }
+}
+
+function jQueryAjaxSearch(form) {
+  try {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: { str: s },
+      success: function (res) {
+        $('#hihi').html(res);
+      },
+      error: function (err) {
+        alert(err);
+
+        console.log(err)
+      }
+    })
+    //to prevent default form submit event
+    return false;
+
+  } catch (ex) {
+
+    alert(ex);
+    return false;
+  }
 }
 
 function checkVoucher(url) {

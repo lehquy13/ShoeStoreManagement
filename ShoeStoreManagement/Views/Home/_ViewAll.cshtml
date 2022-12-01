@@ -1,0 +1,69 @@
+﻿@using ShoeStoreManagement.Core.Models
+@using ShoeStoreManagement.Core.ViewModel
+@using ShoeStoreManagement.Views.Shared.Components
+
+@model ProductVM
+
+@{
+	int nProducts = 0;
+	nProducts = Int32.Parse(ViewData["nProducts"].ToString());
+
+	int countPage()
+	{
+
+		int numberPages = 0;
+		int numberProducts = 0;
+
+		foreach (Product i in Model.products)
+		{
+			numberProducts++;
+		}
+
+		numberPages = numberProducts / 10;
+
+		if (numberProducts % 10 != 0)
+			numberPages++;
+
+		return numberPages;
+	}
+}
+
+<div>
+	<div class="col row">
+		@foreach (var item in Model.products)
+		{
+			<component type="typeof(ProductCard)"
+							 render-mode="ServerPrerendered"
+							 param-product=@item
+							 param-imageName=@item.ImageName
+							 param-isLiked=@item.IsLiked />
+		}
+	</div>
+	
+		
+	<nav class="container">
+		<ul class="pagination" style="display:flex; flex-direction:row">
+			@if (nProducts != 0)
+			{
+				if (nProducts > 1) nProducts -= 1;
+				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+			}
+			@for (int i = 1; i <= @countPage(); i++)
+			{
+				if (i == nProducts + 1)
+				{
+					<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+				}
+				else
+				{
+				<li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Product"))',@i)">@i</button></li>
+				}
+			}
+			@if (nProducts + 1 != @countPage() && @countPage() > 0)
+			{
+				nProducts += 2;
+				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+			}
+		</ul>
+	</nav>	
+</div>

@@ -73,7 +73,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 						i.Role = role[0];
 						if (!filter.Equals("All"))
 						{
-							if (role.Equals(filter))
+							if (role[0].Equals(filter))
 							{
 								users.Add(i);
 								_userVM.applicationuserRoles.Add(role[0]);
@@ -155,8 +155,17 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 					obj.AvatarName = avtName;
 				}
 
-				//await _applicationuserCRUD.CreateAsync(obj);
-				var result = await _usermanager.CreateAsync(obj, "Password0*!");
+				//add username (that ra la email)
+
+				obj.UserName = obj.Email;
+				obj.NormalizedUserName = obj.UserName.ToUpper();
+				obj.NormalizedEmail = obj.Email.ToUpper();
+                var hasher = new PasswordHasher<ApplicationUser>();
+
+                var passwordHash = hasher.HashPassword(null, "Password0*!");
+				obj.PasswordHash = passwordHash;
+                await _applicationuserCRUD.CreateAsync(obj);
+				//var result = await _usermanager.CreateAsync(obj, "Password0*!");
 				await _cartCRUD.CreateAsync(new Cart() { UserId = obj.Id });
 				await _addressCRUD.CreateAsync(new Address() { AddressDetail = obj.SingleAddress, UserId = obj.Id });
 
@@ -172,7 +181,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 						if (!string.IsNullOrEmpty(role[0]))
 						{
 							i.Role = role[0];
-							users.Add(i);
+							//users.Add(i);
 
 						}
 					}
@@ -250,15 +259,27 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 				_applicationuserCRUD.Update(obj);
 
 				var users = _applicationuserCRUD.GetAllAsync().Result;
+                foreach (ApplicationUser i in users)
+                {
+                    var role = _usermanager.GetRolesAsync(i).Result.ToList();
 
-				users = users.OrderBy(u => u.CreatedDate).ToList();
+                    if (role != null && role.Count != 0)
+                    {
+                        if (!string.IsNullOrEmpty(role[0]))
+                        {
+                            i.Role = role[0];
+                            //users.Add(i);
+
+                        }
+                    }
+                }
+                users = users.OrderBy(u => u.CreatedDate).ToList();
 				_userVM.applicationUsers = users;
 
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
             }
 
             obj.AvatarName = _userVM.user.AvatarName;
-
             _userVM.user = obj;
 
             return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Edit", _userVM) });
@@ -276,7 +297,21 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 					_applicationuserCRUD.Remove(obj);
 				}
 				var users = _applicationuserCRUD.GetAllAsync().Result;
-				users = users.OrderBy(u => u.CreatedDate).ToList();
+                foreach (ApplicationUser i in users)
+                {
+                    var role = _usermanager.GetRolesAsync(i).Result.ToList();
+
+                    if (role != null && role.Count != 0)
+                    {
+                        if (!string.IsNullOrEmpty(role[0]))
+                        {
+                            i.Role = role[0];
+                            //users.Add(i);
+
+                        }
+                    }
+                }
+                users = users.OrderBy(u => u.CreatedDate).ToList();
 				_userVM.applicationUsers = users;
 			}
 			return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAll", _userVM.applicationUsers) });
