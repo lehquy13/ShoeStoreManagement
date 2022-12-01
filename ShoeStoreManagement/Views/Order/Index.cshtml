@@ -1,5 +1,28 @@
 ﻿@{
 	ViewData["Title"] = "Order Page";
+
+	int nProducts = 0;
+	nProducts = (int)ViewData["nProducts"];
+	//nProducts = Int32.Parse(ViewData["nProducts"].ToString());
+
+	int countPage()
+	{
+
+		int numberPages = 0;
+		int numberOrders = 0;
+
+		foreach (Order i in Model)
+		{
+			numberOrders++;
+		}
+
+		numberPages = numberOrders / 10;
+
+		if (numberOrders % 10 != 0)
+			numberPages++;
+
+		return numberPages;
+	}
 }
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
@@ -12,12 +35,12 @@
 			<div class="row">
 				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 
-				<div class="tabCustom row-cols-6">
-					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Waiting Confirm</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Delivering</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Completed</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Canceled</button>
+				<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+					<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="All" type="button">All</a>
+					<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Waiting" type="button">Waiting</a>
+					<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Delivering" type="button">Delivering</a>
+					<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Delivered" type="button">Delivered</a>
+					<a class="tabCustom" style="height:50px;" asp-action="Index" asp-route-filter="Canceled" type="button">Canceled</a>
 				</div>
 			</div>
 		</div>
@@ -36,5 +59,34 @@
 			<component type="typeof(OrderCard)" accesskey="item" render-mode="ServerPrerendered" param-order=@item param-orderId=@item.OrderId />
 		}
 	</div>
+
+	<nav class="container">
+		<ul class="pagination" style="display:flex; flex-direction:row">
+			@if (nProducts != 0)
+			{
+				if (nProducts > 1) nProducts -= 1;
+				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Previous</button></li>
+			}
+			@for (int i = 1; i <= @countPage(); i++)
+			{
+				if (i == nProducts + 1)
+				{
+					<li class="page-item"><button class="page-link" name="page" value=@i type="submit" style="background-color:lightgrey" disabled>@i</button></li>
+				}
+				else
+				{
+					<li class="page-item"><button class="page-link" type="submit" onclick="jQueryAjaxPagination('@(Url.Action("Pagination", "Order"))',@i)">@i</button></li>
+				}
+			}
+			@if (nProducts + 1 != @countPage() && @countPage() > 0)
+			{
+				nProducts += 2;
+				<li class="page-item"><button class="page-link" name="page" value=@nProducts type="submit">Next</button></li>
+			}
+		</ul>
+	</nav>
 </div>
+
+
+
 

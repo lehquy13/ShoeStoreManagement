@@ -1,26 +1,30 @@
-﻿@{
-	ViewData["Title"] = "WishList Page";
-}
-
-@using ShoeStoreManagement.Views.Shared.Components;
+﻿@using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
 @model WishList;
+
+@{
+	ViewData["Title"] = "WishList Page";
+
+	List<ProductCategory> categories = ViewData["categories"] as List<ProductCategory>;
+}
+
+
 
 <div class="row">
 	<div class="col-3">
 		<div class="row">
 			<ii class="row-1 h6">Category</ii>
-
-			<div class="tabCustom row-cols-6">
-				<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-				<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-				<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-				<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-				<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
+				<div class="tabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+				<a class="tabCustom" style="height:50px;" asp-action="WishList" asp-route-filter="All" type="button">All</a>
+				@foreach (ProductCategory i in categories)
+				{
+					<a class="tabCustom" style="height:50px;" asp-action="WishList" asp-route-filter="@i.ProductCategoryName" type="button">@i.ProductCategoryName</a>
+					}
+				</div>
 			</div>
 
 		</div>
-	</div>
+
 	<div class="col-9 row">
 		@if (Model != null && Model.WishListDetails.Count > 0)
 		{
@@ -32,5 +36,3 @@
 		}
 	</div>
 </div>
-
-<p>pagination</p>

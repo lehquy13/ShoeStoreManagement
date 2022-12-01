@@ -119,8 +119,17 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
             }
 
             filterList = filterList.OrderBy(o => o.OrderDate).ToList();
+            _orderVM.allOrders = filterList;
             ViewData["orders"] = filterList;
+            ViewData["nProducts"] = 0;
+            return View();
+        }
 
+        [HttpPost]
+        public IActionResult Pagination(int page = 1)
+        {
+            ViewData["orders"] = _orderVM.allOrders;
+            ViewData["nProducts"] = page - 1;
             return View();
         }
 

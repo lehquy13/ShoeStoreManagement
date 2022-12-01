@@ -7,6 +7,7 @@ using ShoeStoreManagement.CRUD.Interfaces;
 using Microsoft.Extensions.Hosting;
 using ShoeStoreManagement.Core.ViewModel;
 using ShoeStoreManagement.Views.Shared.Components;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 
 namespace ShoeStoreManagement.Areas.Admin.Controllers
@@ -88,13 +89,19 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 				}
 			}
 			users = users.OrderBy(u => u.CreatedDate).ToList();
-
 			_userVM.applicationUsers = users;
-
-			return View(_userVM);
+            ViewData["nProducts"] = 0;
+            return View(_userVM);
 		}
 
-		[HttpGet]
+        [HttpPost]
+        public IActionResult Pagination(int page = 1)
+        {
+            ViewData["nProducts"] = page - 1;
+            return PartialView("_ViewAll", _userVM);
+        }
+
+        [HttpGet]
 		public IActionResult Create()
 		{
 			_userVM.user = new ApplicationUser();
