@@ -1,54 +1,82 @@
-﻿@{
-	ViewData["Title"] = "Home Page";
-	List<Product>? products = ViewData["products"] as List<Product> ?? null;
-}
+﻿@using ShoeStoreManagement.Areas.Admin.Controllers
 @using ShoeStoreManagement.Views.Shared.Components;
 @using ShoeStoreManagement.Core.Models;
-@model List<Product>;
+@using ShoeStoreManagement.Core.ViewModel;
+@using Microsoft.AspNetCore.Components;
+@using Microsoft.AspNetCore.Components.Web;
+
+@model ProductVM
+
+@{
+	ViewData["Title"] = "Home Page";
+	List<string> priceFilters = new List<string> { "", "0-10", "10-100", "100-1000" };
+}
 
 <div class="row ">
-	<div class="col-3 borderCustom1">
-		<div class="col">
-			<div class="row">
-				<ii class="row-1 h6 mb-2 mt-4">Category</ii>
-
-				<div class="tabCustom row-cols-6">
-					<button class="tabCustom" onclick="openCity(event, 'London')">All</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Retro</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Basic</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Street</button>
-					<button class="tabCustom" onclick="openCity(event, 'London')">Sweet</button>
-
-				</div>
-
-			</div>
-
-			<div class="row mt-3">
-				<ii class="row-1 h6">Price</ii>
-
-				<div class="radioLayoutTabCustom row-cols-6">
-
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">0-10</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">10 - 100</label>
-					<label class="radioLayoutTabCustom"> <input type="radio" name="answer">100 - 1000</label>
-
-				</div>
-			</div>
+	<form asp-action="Search" method="post" onsubmit="return jQueryAjaxSort(this);">
+		<div class="radioLayoutTabCustom row-cols-6 w-100">
+			<input class="rounded w-10" type="text" name="searchString" />
+			<input class="btn btn-secondary rounded w-10" type="submit"/>
 		</div>
-	</div>
-	<div class="col-9 row">
-		@foreach (var item in Model)
-		{
-			<component type="typeof(ProductCard)"
-				   render-mode="ServerPrerendered"
-				   param-product=@item
-				   param-imageName=@item.ImageName
-				   param-isLiked=@item.IsLiked />
-		}
+	</form>
+
+	<form asp-action="Sort" method="post" class="col-2 borderCustom1" onsubmit="return jQueryAjaxSort(this);">
+        <div class="form-group col">
+            <div class="row">
+                <ii class="row-1 h6 mb-2 mt-4">Category</ii>
+
+				<div class="radioLayoutTabCustom row-cols-6 w-100" style="max-height:260px; overflow-y:scroll; overflow-x:hidden">
+					@if (string.IsNullOrEmpty(Model.filters[0]))
+					{
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" checked />All</label>
+					}
+					@if (!string.IsNullOrEmpty(Model.filters[0]))
+					{
+						<label class="radioLayoutTabCustom"> <input type="radio" value="" name="categoryRadio" />All</label>
+					}
+					@foreach (ProductCategory i in Model.productCategories)
+					{
+						if (i.ProductCategoryName.Equals(Model.filters[0]))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" checked />@i.ProductCategoryName</label>
+						}
+						else
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i.ProductCategoryName" name="categoryRadio" />@i.ProductCategoryName</label>
+						}
+					}
+
+                </div>
+
+            </div>
+
+            <div class="row mt-3">
+                <ii class="row-1 h6">Price</ii>
+
+				<div class="radioLayoutTabCustom row-cols-6 w-100">
+					@foreach (string i in priceFilters)
+					{
+						if (i.Equals(Model.filters[1]))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" checked />@i</label>
+						}
+						else if (string.IsNullOrEmpty(i))
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="" name="priceRadio" checked />All</label>
+						}
+						else
+						{
+							<label class="radioLayoutTabCustom"> <input type="radio" value="@i" name="priceRadio" />@i</label>
+						}
+					}
+				</div>
+			</div>
+
+            <input class="btn btn-secondary rounded w-100 mt-5" type="submit" value="Sort"/>
+        </div> @*used to col-3 vs col-10*@
+    </form>
+	<div class="col-9 row" id="hihi">
+		<partial name="_ViewAll" model=@Model view-data="ViewData" />
 	</div>
 </div>
-
-
-
-<component type="typeof(Pagination)" render-mode="Static" />
 

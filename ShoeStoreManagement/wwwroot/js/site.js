@@ -336,7 +336,6 @@ function jQueryAjaxSort(form) {
             contentType: false,
             success: function (res) {
                 $('#hihi').html(res);
-
             },
             error: function (err) {
                 alert(err);
@@ -352,6 +351,56 @@ function jQueryAjaxSort(form) {
         alert(ex);
         return false;
     }
+}
+
+function jQueryAjaxPagination(url, p) {
+  try {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: { page: p },
+      success: function (res) {
+        $('#hihi').html(res);
+      },
+      error: function (err) {
+        alert(err);
+
+        console.log(err)
+      }
+    })
+    //to prevent default form submit event
+    return false;
+
+  } catch (ex) {
+
+    alert(ex);
+    return false;
+  }
+}
+
+function jQueryAjaxSearch(form) {
+  try {
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: { str: s },
+      success: function (res) {
+        $('#hihi').html(res);
+      },
+      error: function (err) {
+        alert(err);
+
+        console.log(err)
+      }
+    })
+    //to prevent default form submit event
+    return false;
+
+  } catch (ex) {
+
+    alert(ex);
+    return false;
+  }
 }
 
 function checkVoucher(url) {
