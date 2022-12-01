@@ -152,7 +152,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 foreach (var i in obj)
                 {
-                    if (i.ProductName.Equals(filter))
+                    if (i.ProductName.Contains(filter))
                     {
                         i.Sizes = _sizeDetailCRUD.GetAllByIdAsync(i.ProductId).Result;
                         products.Add(i);
