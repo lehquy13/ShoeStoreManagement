@@ -16,11 +16,12 @@ namespace ShoeStoreManagement.Controllers
         private readonly ISizeDetailCRUD _sizeDetailCRUD;
         private readonly IVoucherCRUD _voucherCRUD;
         private readonly ICartCRUD _cartCRUD;
+        private readonly IAddressCRUD _addressCRUD;
         private readonly ICartDetailCRUD _cartDetailCRUD;
         private readonly IApplicationUserCRUD _applicationUserCRUD;
         private static OrderVM _orderVM = new OrderVM();
 
-        public OrderController(IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD, ISizeDetailCRUD sizeDetailCRUD, IApplicationUserCRUD applicationUserCRUD)
+        public OrderController(IOrderCRUD orderCRUD, IAddressCRUD addressCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD, ICartCRUD cartCRUD, ICartDetailCRUD cartDetailCRUD, IVoucherCRUD voucherCRUD, ISizeDetailCRUD sizeDetailCRUD, IApplicationUserCRUD applicationUserCRUD)
         {
             _orderCRUD = orderCRUD;
             _orderDetailCRUD = orderDetailCRUD;
@@ -33,6 +34,7 @@ namespace ShoeStoreManagement.Controllers
             _orderVM.deliveryMethods = Enum.GetValues(typeof(DeliveryMethods)).Cast<DeliveryMethods>().ToList();
             _orderVM.paymentMethods = Enum.GetValues(typeof(PaymentMethod)).Cast<PaymentMethod>().ToList();
             _applicationUserCRUD = applicationUserCRUD;
+            _addressCRUD= addressCRUD;
         }
 
         public IActionResult Index()
@@ -68,7 +70,7 @@ namespace ShoeStoreManagement.Controllers
             OrderDetail orderDetail = new OrderDetail();
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
+           
             Cart? cart = _cartCRUD.GetAsync(userId).Result;
 
             if (cart == null)
