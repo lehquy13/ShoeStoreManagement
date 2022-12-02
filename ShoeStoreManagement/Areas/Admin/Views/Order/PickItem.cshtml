@@ -54,12 +54,14 @@
 							<th scope="row">@i</th>
 							<td>
 								<div class="d-flex align-items-start">
-									@if (Model.currentOrderDetail[i - 1].Product.ImageName != null)
+									@if (String.IsNullOrEmpty(Model.currentOrderDetail[i - 1].Product.ImageName))
 									{
-										<img src="~/image/@Model.currentOrderDetail[i-1].Product.ImageName"
-								 height="60" width="60"
-								 asp-append-version="true" />
+										Model.currentOrderDetail[i - 1].Product.ImageName = "product-empty.png";
 									}
+									<img src="~/image/@Model.currentOrderDetail[i-1].Product.ImageName"
+										 height="60" width="60"
+										 asp-append-version="true" />
+
 									@Model.currentOrderDetail[i-1].Product.ProductName
 								</div>
 							</td>

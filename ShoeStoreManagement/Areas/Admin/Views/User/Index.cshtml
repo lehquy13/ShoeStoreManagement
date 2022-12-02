@@ -6,7 +6,8 @@
 @model UserVM
 
 <div class="row borderCustom">
-	<div class="col-2 borderCustom1">
+
+	<div class="col-lg-2 d-lg-block collapse borderCustom1 um">
 		<div class="row">
 			<ii class="row-1 h6 mb-2 mt-4">Category</ii>
 			<form method="post">
@@ -21,7 +22,7 @@
 		</div>
 	</div> @*used to col-3 vs col-10*@
 
-	<div class="container col-10">
+	<div class="col-lg-10 col-12 mt-3 mt-lg-0">
 		<div class="row">
 			<div class="col-md-12" id="hihi">
 				<partial name="_ViewAll" model=@Model.applicationUsers />
@@ -30,5 +31,5 @@
 	</div>
 </div>
 
-<a onclick="showContent2('@Url.Action("Create","User",null,Context.Request.Scheme)','Add new User')" class="border-1 table-icon btn btn-primary icon-plus">
+<a onclick="showContent2('@Url.Action("Create","User",null,Context.Request.Scheme)','Add new User')" class="btn btn-primary icon-plus rounded position-fixed" style="right:0; bottom:60px;">
 </a>

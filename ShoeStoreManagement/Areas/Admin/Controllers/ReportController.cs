@@ -22,16 +22,20 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
         private string _selectedTime = "";
         private string _selectedType = "";
         private readonly IOrderCRUD _orderCRUD;
+        private readonly IOrderDetailCRUD _orderDetailCRUD;
+        private readonly IProductCRUD _productCRUD;
 
         private List<Order>? orders;
 
-        public ReportController(ILogger<UserController> logger, IOrderCRUD orderCRUD)
+        public ReportController(ILogger<UserController> logger, IOrderCRUD orderCRUD, IOrderDetailCRUD orderDetailCRUD, IProductCRUD productCRUD)
         {
             _logger = logger;
             _orderCRUD = orderCRUD;
+            _orderDetailCRUD= orderDetailCRUD;
+            _productCRUD= productCRUD;
         }
 
-        public IActionResult Index(string selectedMonth = "", string selectedYear = "", string selectedTime = "Yearly", string selectedType = "Order")
+        public async Task<IActionResult> Index(string selectedMonth = "", string selectedYear = "", string selectedTime = "Yearly", string selectedType = "Order")
 		{
             Init(selectedMonth, selectedYear, selectedTime, selectedType);
 
@@ -55,7 +59,39 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                 disableSelections.Add(false);
             }
 
-            ViewData["disableSelections"] = disableSelections;
+            var BS = new Dictionary<string, int>();
+
+			//Best seller
+			var list = await _orderCRUD.GetAllOrderAsync();
+            foreach(var item in list)
+            {
+                item.OrderDetails = await _orderDetailCRUD.GetAllAsync(item.OrderId);
+                foreach(var sitem in item.OrderDetails)
+                {
+                    if (BS.ContainsKey(sitem.ProductId))
+                    {
+                        BS[sitem.ProductId] += sitem.Amount;
+                    }
+                    else
+                    {
+						BS.Add(sitem.ProductId, sitem.Amount);
+					}
+				}
+            }
+            var newList = new List<Product>();
+			//BS.OrderByDescending(key => key.Value).ToDictionary();
+			foreach (var item in BS.OrderByDescending(key => key.Value))
+			{
+                var o = await _productCRUD.GetByIdAsync(item.Key);
+                if(o!= null)
+                {
+                    newList.Add(o);
+                }
+			}
+
+
+			ViewData["disableSelections"] = disableSelections;
+
             ViewData["VerticalBarChart"] = verticalBarChart;
             ViewData["Selections"] = new List<string> { selectedMonth, selectedYear, selectedTime, selectedType };
             return View();

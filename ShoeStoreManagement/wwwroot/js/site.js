@@ -76,6 +76,7 @@ function showContent2(url, title) {
 
 function deteleItem(url, id) {
     alert(url);
+
     $.ajax({
         type: "POST",
         url: url,
@@ -137,7 +138,6 @@ function deleteCartItem(url, id) {
 }
 
 function call(url) {
-    alert(url)
     $.ajax({
         type: "GET",
         url: url,
@@ -240,7 +240,6 @@ createSth = form => {
                     $('#hihi').html(res.html);
                 }
                 else {
-                    alert(res.html);
                     $('#form-modal .modal-body').html(res.html);
                 }
             },
@@ -257,8 +256,7 @@ createSth = form => {
 
 function deleteSth(url, id) {
     alert("Delete this item?")
-    alert(id)
-    alert(url)
+
     $.ajax({
         type: "POST",
         url: url,
@@ -291,7 +289,6 @@ function jQueryAjaxDelete(url) {
             $.notify("Delete successfully!","success");
         },
         error: function (xhr, status, error) {
-            alert("sai");
             console.log(xhr);
             console.log(status);
             console.log(error);
@@ -346,7 +343,6 @@ function jQueryAjaxSort(form) {
                 $('#hihi').html(res);
             },
             error: function (err) {
-                alert(err);
 
                 console.log(err)
             }

@@ -652,7 +652,18 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
                         await product.Image.CopyToAsync(fileStream);
                     }
 
-                    Image imgss = _imageCRUD.GetAllByProductIdAsync(product.ProductId).Result.Where(o => o.ImageName == _productVM.product.ImageName).First();
+                    var list = await _imageCRUD.GetAllByProductIdAsync(product.ProductId);
+                    Image? imgss = null;
+
+					if (list != null && list.Count > 0)
+                    {
+                        foreach(var name in list)
+                        {
+                            if (name.ImageName == _productVM.product.ImageName)
+                                imgss = name;
+
+						}
+					}
 
                     Image image = new Image()
                     {
