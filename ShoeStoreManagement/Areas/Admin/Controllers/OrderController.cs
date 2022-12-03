@@ -433,6 +433,7 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 
                 _cartCRUD.CreateAsync(new Cart() { UserId = newuser.Id });
                 _addressCRUD.CreateAsync(new Address() { AddressDetail = newuser.SingleAddress, UserId = newuser.Id });
+                newuser.Role = "Passenger";
                 _applicationuserCRUD.CreateAsync(newuser).Wait();
 
                 _usermanager.AddToRoleAsync(newuser, "Passenger").Wait();

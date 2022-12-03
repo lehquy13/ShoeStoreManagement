@@ -61,8 +61,9 @@ namespace ShoeStoreManagement.Areas.Admin.Controllers
 				filter = "All";
 
 			List<ApplicationUser> users = new List<ApplicationUser>();
+		
 			//filter
-			foreach (ApplicationUser i in _userVM.applicationUsers)
+			foreach (ApplicationUser i in _applicationuserCRUD.GetAllAsync().Result)
 			{
 				var role = _usermanager.GetRolesAsync(i).Result.ToList();
 

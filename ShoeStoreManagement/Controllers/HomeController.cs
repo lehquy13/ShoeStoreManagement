@@ -60,12 +60,12 @@ namespace ShoeStoreManagement.Controllers
                         item.IsLiked = true;
                     }
 
-                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+                    //List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
 
-                    if (img.Count > 0)
-                    {
-                        item.ImageName = img[0].ImageName;
-                    }
+                    //if (img.Count > 0)
+                    //{
+                    //    item.ImageName = img[0].ImageName;
+                    //}
                 }
             }
 
@@ -134,12 +134,12 @@ namespace ShoeStoreManagement.Controllers
                         item.IsLiked = true;
                     }
 
-                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+                    //List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
 
-                    if (img.Count > 0)
-                    {
-                        item.ImageName = img[0].ImageName;
-                    }
+                    //if (img.Count > 0)
+                    //{
+                    //    item.ImageName = img[0].ImageName;
+                    //}
                 }
             }
             if (_productVM.products != null && _productVM.products.Count > 0)
@@ -218,12 +218,12 @@ namespace ShoeStoreManagement.Controllers
                         item.IsLiked = true;
                     }
 
-                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+                    //List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
 
-                    if (img.Count > 0)
-                    {
-                        item.ImageName = img[0].ImageName;
-                    }
+                    //if (img.Count > 0)
+                    //{
+                    //    item.ImageName = img[0].ImageName;
+                    //}
                 }
             }
             if (_productVM.products != null && _productVM.products.Count > 0)
@@ -347,12 +347,12 @@ namespace ShoeStoreManagement.Controllers
                         item.IsLiked = true;
                     }
 
-                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+                    //List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
 
-                    if (img.Count > 0)
-                    {
-                        item.ImageName = img[0].ImageName;
-                    }
+                    //if (img.Count > 0)
+                    //{
+                    //    item.ImageName = img[0].ImageName;
+                    //}
                 }
             }
 
@@ -401,12 +401,12 @@ namespace ShoeStoreManagement.Controllers
                     }
 
 
-                    List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
+                    //List<Image> img = _imageCRUD.GetAllByProductIdAsync(item.ProductId).Result;
 
-                    if (img.Count > 0)
-                    {
-                        item.ImageName = img[0].ImageName;
-                    }
+                    //if (img.Count > 0)
+                    //{
+                    //    item.ImageName = img[0].ImageName;
+                    //}
                 }
             }
 
